@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>个人博客</title>
+<base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="lib/css/w3.css">
+<link rel="stylesheet" href="lib/css/font-awesome.min.css">
+<style>
+.top {
+    position: relative; /* 相对定位 */
+    height: 68px;
+    padding-top: 20px;
+    line-height: 50px; /* 行高 */
+    overflow: hidden; /* 溢出内容处理 */
+    z-index: 2; /* 以 position 的设置为前提，设置元素的堆叠顺序 */
+    background-image: url("../lib/images/bg-image.jpg");
+}
+
+.logo {
+    text-decoration: none; /* 文本修饰：无 */
+    line-height: 1; /* 设置数字，该数字会与当前的字体尺寸相乘来设置行间距 */
+    -webkit-font-smoothing: antialiased; /* 抗锯齿 */
+    -moz-osx-font-smoothing: grayscale; /* 抗锯齿 */
+    font-size: 37px;
+    letter-spacing: 3px; /* 字符间距 */
+    color: #428bca;
+    display: block;
+    position: absolute; /* 绝对定位 */
+    top: 17px;
+}
+
+.logo:hover {
+    color: white;
+}
+
+.topnav {
+    position: relative; /* 相对定位 */
+    z-index: 2;
+    font-size: 17px;
+    background-color: #5f5f5f;
+    color: #f1f1f1;
+    width: 100%;
+    padding: 0;
+    letter-spacing: 1px;
+}
+
+.topnav a {
+    padding: 10px 15px 9px 15px !important;
+    display: inline-block;
+}
+
+.topnav li a:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.topnav li a.active {
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+
+a.topnav-localicons {
+    font-size: 20px !important; /* 最高优先级 */
+    padding-top: 6px !important;
+    padding-bottom: 12px !important;
+}
+
+a.topnav-icons {
+    width: 52px;
+    font-size: 20px !important;
+    padding-top: 11px !important;
+    padding-bottom: 13px !important;
+}
+
+a.topnav-icons.fa-home {
+    font-size: 22px !important;
+}
+
+.w3-dropnav {
+    display: none; /* 隐藏 */
+    letter-spacing: 0;
+    margin-top: 44px;
+}
+
+.w3-dropnav .w3-closebtn {
+    padding: 0 16px 16px 16px !important;
+    position: absolute;
+    right: 0;
+}
+
+.w3-dropnav a {
+    display: block;
+    padding: 2px 0 !important;
+}
+
+.w3-dropnav a:hover {
+    background-color: transparent;
+    color: #fff;
+    text-decoration: underline !important;
+}
+
+#leftmenuinner {
+    position: fixed; /* 元素的位置相对于浏览器窗口而固定 */
+    top: 0;
+    padding-top: 112px;
+    padding-bottom: 0;
+    height: 100%;
+    width: 220px;
+    background-color: transparent;
+}
+
+#leftmenuinnerinner {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+#sidenav h2 {
+    font-size: 21px;
+    padding-left: 16px;
+    margin: -4px 0 4px 0;
+    width: 204px;
+}
+
+#sidenav a {
+    padding: 2px 1px 1px 16px;
+}
+
+#sidenav a.active {
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+
+.w3-main {
+    transition: margin-left 0s;
+}
+
+#main {
+    padding: 16px;
+}
+
+.w3-btn, .w3-btn:link, .w3-btn:visited {
+    color: #FFFFFF;
+    background-color: #4CAF50;
+}
+
+.sidesection {
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	margin-left: 15px;
+    margin-bottom: 32px;
+}
+
+.sidesection img {
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	max-width: 100%; 
+	height: auto;
+}
+
+#right {
+    text-align: center;
+    padding: 16px 16px 0 0;
+}
+
+#right a {
+    text-decoration: none;
+}
+
+#right a:hover {
+    text-decoration: underline;
+}
+
+.footer a {
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width:992px) {
+    .top {
+        height: 100px;
+    }
+
+    .top .logo {
+        position: relative;
+        top: 0;
+        width: 100%;
+        text-align: center;
+        margin: auto;
+    }
+
+    .toptext {
+        width: 100%;
+        text-align: center;
+    }
+
+    #sidenav {
+        width: 260px;
+    }
+
+    #leftmenuinner {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 100%;
+        position: relative;
+        width: auto;
+        padding-top: 0;
+        background-color: #f1f1f1;
+    }
+
+    #leftmenuinnerinner {
+        overflow-y: scroll;
+    }
+    
+     .sidesection img {
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		margin-top: 22px;
+		max-width: 100%; 
+		height: auto;
+	}
+}
+
+@media screen and (max-width:601px) {
+    .w3-navbar li a {
+        display: inline-block;
+    }
+    .w3-navbar li a:first-child {
+        padding: 8px 16px;
+    }
+    .w3-dropnav a {
+        display: block;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .top {
+        height: 68px;
+    }
+	
+	.w3-navbar.w3-left {
+        text-align: left;
+    }
+
+    .w3-navbar.w3-right {
+        text-align: right;
+    }
+    
+    .logo {
+    	font-size: 20px;
+    }
+    
+    .sidesection img {
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		margin-top: 20px;
+		max-width: 100%; 
+		height: auto;
+		border-left: 20px solid black;
+		border-right: 20px solid black;
+	}
+}
+
+@media screen and (min-width:1675px) {
+    #main {
+        width: 79%;
+    }
+
+    #right {
+        width: 21%;
+    }
+}
+</style>
+<style>
+body {
+	background-image: url("lib/images/bg-image.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	max-width: 100%;
+	height: auto;
+}
+
+.container p {
+	margin: 0;
+}
+</style>
+</head>
+<body>
+    <div class="w3-container top">
+        <a class="logo" href="index.html">lonelyguo.github.io</a>
+        <div class="w3-right w3-hide-small w3-wide w3-text-white toptext">YOU ARE NOT ALONE, AND I AM HERE WITH YOU!</div>
+    </div>
+
+    <div id="topnav" class="w3-card-2 w3-slim topnav">
+        <!-- 显示滚动条 -->
+        <div style="overflow: auto;">
+            <ul class="w3-navbar w3-left" style="width: 55%; overflow: hidden; height: 44px">
+                <li><a href="javascript:void(0);" class="topnav-localicons w3-hide-large w3-left">☰</a></li>
+                <li><a href="javascript:void(0);" class="topnav-icons fa fa-home w3-left"></a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">古镇景色</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">流金岁月</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">友情链接</a></li>
+            </ul>
+
+            <ul class="w3-navbar w3-right" style="width: 45%; overflow: hidden; height: 44px;">
+                <li class="w3-right">
+                    <a id="topnavbtn_life" href="javascript:void(0);" onclick='w3_open_nav("life")'>
+                        生活随笔 <i class="fa fa-caret-down"></i><i class="fa fa-caret-up" style="display: none"></i>
+                    </a>
+                </li>
+                <li class="w3-right">
+                    <a id="topnavbtn_career" href="javascript:void(0);" onclick='w3_open_nav("career")'>
+                        职业提升 <i class="fa fa-caret-down"></i><i class="fa fa-caret-up" style="display: none"></i>
+                    </a>
+                </li>
+                <li class="w3-right">
+                    <a id="topnavbtn_myself" href="javascript:void(0);" onclick='w3_open_nav("myself")'>
+                        个人简介 <i class="fa fa-caret-down"></i><i class="fa fa-caret-up" style="display: none"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <div id="nav_life" class="w3-dropnav w3-card-2">
+                <span onclick='w3_close_nav("life")' class="w3-closebtn w3-xlarge w3-hover-text-white">×</span>
+                <div class="w3-row-padding w3-padding-xxlarge">
+                    <div class="w3-col l6 m12">
+                        <h3>都市故事</h3>
+						<a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                    <div class="w3-col l6 m12">
+                        <h3>情感经历</h3>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                </div>
+                <br>
+            </div>
+
+            <div id="nav_career" class="w3-dropnav w3-card-2">
+                <span onclick='w3_close_nav("career")' class="w3-closebtn w3-xlarge w3-hover-text-white">×</span>
+                <div class="w3-row-padding w3-padding-xxlarge">
+                    <div class="w3-col m6">
+                        <h3>职场故事</h3>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                    <div class="w3-col m6">
+                        <h3>我的领导是头……</h3>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                </div>
+                <br>
+            </div>
+
+            <div id="nav_myself" class="w3-dropnav w3-card-2">
+                <span onclick='w3_close_nav("myself")' class="w3-closebtn w3-xlarge w3-hover-text-white">×</span>
+                <div class="w3-row-padding w3-padding-xxlarge">
+                    <div class="w3-col l4 m6">
+                        <h3>业余爱好</h3>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                    <div class="w3-col l4 m6">
+                        <h3>个人烦恼</h3>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                    <div class="w3-col l4 m6">
+                        <h3>私人食谱</h3>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidenav" class="w3-sidenav w3-collapse w3-slim">
+        <div id="leftmenuinner">
+            <div id="leftmenuinnerinner" class="w3-light-grey">
+                <h2><span>古镇景色</span></h2>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <br>
+                <h2><span>流金岁月</span></h2>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <br>
+                <h2><span>友情链接</span></h2>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <a target="_top" href="javascript:void(0);">站点测试</a> 
+                <a target="_top" href="javascript:void(0);">站点测试</a>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div id="belowtopnav" class="w3-main w3-light-grey" style="margin-left: 220px;">
+        <div class="w3-row w3-white">
+            <div id="main" class="w3-col l10 m12">
+				<article>
+					<h1>古镇景色</h1>
+					<hr>
+					<p>本站在搭建中……</p>
+				</article>
+				<br>
+				<br>
+				<br>
+				<article>
+					<h1>古镇景色</h1>
+					<hr>
+					<p>本站在搭建中……</p>
+				</article>
+				<br>
+				<br>
+				<br>
+				<article>
+					<h1>古镇景色</h1>
+					<hr>
+					<p>本站在搭建中……</p>
+				</article>
+				<br>
+				<br>
+				<br>
+			</div>
+
+            <div id="right" class="w3-col l2 m12">
+                <div class="sidesection">
+                    <img src="lib/images/hometown/001_s.jpg" alt="ancient town">
+					<div class="container"><p>2016-11-13</p></div>
+				</div>
+                <div class="sidesection">
+                    <img src="lib/images/hometown/002_s.jpg" alt="ancient town">
+					<div class="container"><p>2016-11-13</p></div>
+				</div>
+                <div class="sidesection">
+                    <img src="lib/images/hometown/003_s.jpg" alt="ancient town">
+					<div class="container"><p>2016-11-13</p></div>
+				</div>
+            </div>
+        </div>
+
+        <div id="footer" class="footer w3-container w3-white">
+            <hr>
+            <div class="w3-row w3-center w3-small">
+                <div class="w3-col l3 m3 s12">
+                    <a href="javascript:void(0);" style="white-space: nowrap;">个人简介</a>
+                </div>
+                <div class="w3-col l3 m3 s12">
+                    <a href="javascript:void(0);" style="white-space: nowrap;">职业提升</a>
+                </div>
+                <div class="w3-col l3 m3 s12">
+                    <a href="javascript:void(0);" style="white-space: nowrap;">生活随笔</a>
+                </div>
+                <div class="w3-col l3 m3 s12">
+                    <a href="javascript:void(0);" style="white-space: nowrap;">ABOUT</a>
+                </div>
+            </div>
+            <hr>
+            <div class="w3-row w3-center w3-small">
+                <div class="w3-col l6 m6 s12">
+                    <div class="top10">
+                        <h4>TOP 10 图片</h4>
+                        <a target="_blank" href="lib/images/hometown/004.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/005.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/006.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/007.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/008.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/009.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/010.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/011.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/012.jpg">Ancient Town</a>
+                        <br>
+                        <a target="_blank" href="lib/images/hometown/013.jpg">Ancient Town</a>
+                        <br>
+                    </div>
+                </div>
+                <div class="w3-col l6 m6 s12">
+                    <div class="top10">
+                        <h4>TOP 10 文章</h4>
+                        <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a>
+                        <br> <a href="javascript:void(0);">个人简介</a> <br>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="w3-center w3-small w3-opacity">
+                本站属个人博客，欢迎有识之士前来踩踏！
+                <br>
+                <br>
+                <a href="https://lonelyguo.github.io">lonelyguo.github.io</a>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+    <script src="lib/js/base.js"></script>
+</body>
+</html>
