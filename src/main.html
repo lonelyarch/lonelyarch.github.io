@@ -549,25 +549,25 @@ body {
                 <div class="w3-col l6 m6 s12">
                     <div class="top10">
                         <h4>TOP 10 图片</h4>
-                        <a target="_blank" href="lib/images/hometown/004.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(0);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/005.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(1);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/006.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(2);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/007.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(3);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/008.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(4);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/009.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(5);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/010.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(6);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/011.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(7);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/012.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(8);">Ancient Town</a>
                         <br>
-                        <a target="_blank" href="lib/images/hometown/013.jpg">Ancient Town</a>
+                        <a onclick="openModal();currentDiv(9);">Ancient Town</a>
                         <br>
                     </div>
                 </div>
@@ -598,6 +598,109 @@ body {
             <br>
         </div>
     </div>
-    <script src="lib/js/base.js"></script>
+	<div class="w3-container">
+		<div id="myModal" class="w3-modal w3-black">
+			<span class="w3-text-white w3-xxlarge w3-hover-text-grey w3-container w3-display-topright"
+				onclick="closeModal();" style="cursor: pointer">×</span>
+			<div class="w3-modal-content">
+				<div class="w3-content" style="max-width: 1200px">
+					<img class="mySlides" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%">
+					<img class="mySlides" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%">
+					<div class="w3-row w3-black w3-center">
+						<div class="w3-container w3-display-container">
+							<p id="caption"></p>
+							<span class="w3-display-left w3-btn-floating" onclick="plusDivs(-1)">❮</span>
+							<span class="w3-display-right w3-btn-floating" onclick="plusDivs(1)">❯</span>
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%" onclick="currentDiv(0);" alt="古镇街景">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%" onclick="currentDiv(1);" alt="古镇街景">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%" onclick="currentDiv(2);" alt="古镇街景">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%" onclick="currentDiv(3);" alt="古镇街景">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%" onclick="currentDiv(4);" alt="风景如画">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%" onclick="currentDiv(5);" alt="风景如画">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%" onclick="currentDiv(6);" alt="风景如画">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%" onclick="currentDiv(7);" alt="风景如画">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%" onclick="currentDiv(8);" alt="民风淳朴">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%" onclick="currentDiv(9);" alt="民风淳朴">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%" onclick="currentDiv(10);" alt="民风淳朴">
+						</div>
+						<div class="w3-col s2">
+							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%" onclick="currentDiv(11);" alt="民风淳朴">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="lib/js/base.js"></script>
+	<script>
+		var slideIndex = 0;
+		showDivs(slideIndex);
+
+		function openModal() {
+			document.getElementById("myModal").style.display = "block";
+		}
+
+		function closeModal() {
+			document.getElementById("myModal").style.display = "none";
+		}
+
+		function plusDivs(n) {
+			showDivs(slideIndex += n);
+		}
+
+		function currentDiv(n) {
+			showDivs(slideIndex = n);
+		}
+
+		function showDivs(n) {
+			var i;
+			var x = document.getElementsByClassName("mySlides");
+			var dots = document.getElementsByClassName("top_ten");
+			var captionText = document.getElementById("caption");
+			if (n == x.length) {slideIndex = 0;}
+			if (n == -1) {slideIndex = x.length - 1;}
+			for (i = 0; i < x.length; i++) {
+				x[i].style.display = "none";
+			}
+			for (i = 0; i < dots.length; i++) {
+				dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+			}
+			x[slideIndex].style.display = "block";
+			dots[slideIndex].className += " w3-opacity-off";
+			captionText.innerHTML = dots[slideIndex].alt;
+		}
+	</script>
 </body>
 </html>
