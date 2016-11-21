@@ -57,7 +57,7 @@
 }
 
 .topnav li a.active {
-    background-color: #4CAF50;
+    background-color: #428bca;
     color: #ffffff;
 }
 
@@ -292,9 +292,38 @@ body {
 .container p {
 	margin: 0;
 }
+
+.loader div:nth-child(1) {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #428bca;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
+.loader div:nth-child(2) {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+    display: block;
+}
+
+@keyframes spin { 
+    0% {transform: rotate(0deg);}
+    100% {transform:rotate(360deg);}
+}
 </style>
 </head>
-<body>
+<body onload="close_loader();">
+	<div class="loader"><div></div><div></div></div>
     <div class="w3-container top">
         <a class="logo" href="index.html">lonelyguo.github.io</a>
         <div class="w3-right w3-hide-small w3-wide w3-text-white toptext">YOU ARE NOT ALONE, AND I AM HERE WITH YOU!</div>
@@ -340,13 +369,9 @@ body {
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
                     </div>
                     <div class="w3-col l6 m12">
                         <h3>情感经历</h3>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
@@ -432,53 +457,58 @@ body {
     <div id="sidenav" class="w3-sidenav w3-collapse w3-slim">
         <div id="leftmenuinner">
             <div id="leftmenuinnerinner" class="w3-light-grey">
-                <h2><span>古镇景色</span></h2>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <br>
-                <h2><span>流金岁月</span></h2>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <br>
-                <h2><span>友情链接</span></h2>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <a target="_top" href="javascript:void(0);">站点测试</a> 
-                <a target="_top" href="javascript:void(0);">站点测试</a>
-                <br>
-                <br>
+            	<div class="sidenav_content">
+	                <h2><span>古镇景色</span></h2>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <br>
+	            </div>
+	            <div class="sidenav_content">
+	                <h2><span>流金岁月</span></h2>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <br>
+	            </div>
+	            <div class="sidenav_content">
+	                <h2><span>友情链接</span></h2>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <a target="_top" href="javascript:void(0);">站点测试</a> 
+	                <a target="_top" href="javascript:void(0);">站点测试</a>
+	                <br>
+	            </div>
             </div>
         </div>
     </div>
