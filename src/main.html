@@ -9,34 +9,26 @@
 <link rel="stylesheet" href="lib/css/font-awesome.min.css">
 <style>
 .top {
-    position: relative; /* 相对定位 */
+    position: relative;
     height: 68px;
     padding-top: 20px;
-    line-height: 50px; /* 行高 */
-    overflow: hidden; /* 溢出内容处理 */
-    z-index: 2; /* 以 position 的设置为前提，设置元素的堆叠顺序 */
+    line-height: 50px;
+    overflow: hidden;
+    z-index: 2;
     background-image: url("../lib/images/bg-image.jpg");
 }
 
 .logo {
-    text-decoration: none; /* 文本修饰：无 */
-    line-height: 1; /* 设置数字，该数字会与当前的字体尺寸相乘来设置行间距 */
-    -webkit-font-smoothing: antialiased; /* 抗锯齿 */
-    -moz-osx-font-smoothing: grayscale; /* 抗锯齿 */
-    font-size: 37px;
-    letter-spacing: 3px; /* 字符间距 */
-    color: #428bca;
-    display: block;
-    position: absolute; /* 绝对定位 */
-    top: 17px;
-}
-
-.logo:hover {
-    color: white;
+    position: relative;
+    line-height: 1;
+    font-size: 20px;
+    top: 5px;
+    width: 100%;
+    text-align: center;
 }
 
 .topnav {
-    position: relative; /* 相对定位 */
+    position: relative;
     z-index: 2;
     font-size: 17px;
     background-color: #5f5f5f;
@@ -62,7 +54,7 @@
 }
 
 a.topnav-localicons {
-    font-size: 20px !important; /* 最高优先级 */
+    font-size: 20px !important;
     padding-top: 6px !important;
     padding-bottom: 12px !important;
 }
@@ -79,7 +71,7 @@ a.topnav-icons.fa-home {
 }
 
 .w3-dropnav {
-    display: none; /* 隐藏 */
+    display: none;
     letter-spacing: 0;
     margin-top: 44px;
 }
@@ -91,8 +83,8 @@ a.topnav-icons.fa-home {
 }
 
 .w3-dropnav a {
-    display: block;
-    padding: 2px 0 !important;
+    display: inline-block;
+    padding: 2px 8px 0 0 !important;
 }
 
 .w3-dropnav a:hover {
@@ -102,7 +94,7 @@ a.topnav-icons.fa-home {
 }
 
 #leftmenuinner {
-    position: fixed; /* 元素的位置相对于浏览器窗口而固定 */
+    position: fixed;
     top: 0;
     padding-top: 112px;
     padding-bottom: 0;
@@ -114,9 +106,17 @@ a.topnav-icons.fa-home {
 #leftmenuinnerinner {
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     padding-top: 20px;
+}
+
+#leftmenuinnerinner a {
+    color: #428bca;
+}
+
+#leftmenuinnerinner a:hover {
+    color: white;
 }
 
 #sidenav h2 {
@@ -149,17 +149,17 @@ a.topnav-icons.fa-home {
 }
 
 .sidesection {
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	border-radius: 10px;
-	margin-left: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-left: 15px;
     margin-bottom: 32px;
 }
 
 .sidesection img {
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
-	max-width: 100%; 
-	height: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    max-width: 100%;
+    height: auto;
 }
 
 #right {
@@ -184,21 +184,8 @@ a.topnav-icons.fa-home {
 }
 
 @media screen and (max-width:992px) {
-    .top {
-        height: 100px;
-    }
-
-    .top .logo {
-        position: relative;
+    .logo {
         top: 0;
-        width: 100%;
-        text-align: center;
-        margin: auto;
-    }
-
-    .toptext {
-        width: 100%;
-        text-align: center;
     }
 
     #sidenav {
@@ -217,16 +204,16 @@ a.topnav-icons.fa-home {
     }
 
     #leftmenuinnerinner {
-        overflow-y: scroll;
+        overflow-y: auto;
     }
-    
+
      .sidesection img {
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
-		margin-top: 22px;
-		max-width: 100%; 
-		height: auto;
-	}
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-top: 22px;
+        max-width: 100%; 
+        height: auto;
+    }
 }
 
 @media screen and (max-width:601px) {
@@ -242,31 +229,33 @@ a.topnav-icons.fa-home {
 }
 
 @media screen and (max-width:600px) {
-    .top {
-        height: 68px;
-    }
-	
-	.w3-navbar.w3-left {
+    .w3-navbar.w3-left {
         text-align: left;
     }
 
     .w3-navbar.w3-right {
         text-align: right;
     }
-    
+
     .logo {
-    	font-size: 20px;
+        top: 0;
+        font-size: 15px;
     }
-    
+
     .sidesection img {
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
-		margin-top: 20px;
-		max-width: 100%; 
-		height: auto;
-		border-left: 20px solid black;
-		border-right: 20px solid black;
-	}
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-top: 20px;
+        max-width: 100%; 
+        height: auto;
+        border-left: 20px solid black;
+        border-right: 20px solid black;
+    }
+
+    .w3-dropnav a {
+        display: block;
+        padding: 2px 0 !important;
+    }
 }
 
 @media screen and (min-width:1675px) {
@@ -281,20 +270,20 @@ a.topnav-icons.fa-home {
 </style>
 <style>
 body {
-	background-image: url("lib/images/bg-image.jpg");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	max-width: 100%;
-	height: auto;
+    background-image: url("lib/images/bg-image.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    max-width: 100%;
+    height: auto;
 }
 
 .container p {
-	margin: 0;
+    margin: 0;
 }
 
 .sidenav-content {
-	display: none;
+    display: none;
 }
 
 .loader div:nth-child(1) {
@@ -302,7 +291,7 @@ body {
     left: 50%;
     top: 50%;
     z-index: 1;
-    margin: -75px 0 0 -75px;
+    margin: -75px 0 0 -50px;
     border: 16px solid #f3f3f3;
     border-radius: 50%;
     border-top: 16px solid #428bca;
@@ -324,27 +313,37 @@ body {
     0% {transform: rotate(0deg);}
     100% {transform:rotate(360deg);}
 }
+
+#searcharticles {
+    position: fixed;
+    right: 0;
+    height: 50%;
+    overflow-y: scroll;
+}
 </style>
 </head>
 <body onload="close_loader();">
-	<div class="loader"><div></div><div></div></div>
+    <div class="loader"><div></div><div></div></div>
+
     <div class="w3-container top">
-        <a class="logo" href="index.html">lonelyguo.github.io</a>
-        <div class="w3-right w3-hide-small w3-wide w3-text-white toptext">YOU ARE NOT ALONE, AND I AM HERE WITH YOU!</div>
+        <div class="logo w3-wide w3-text-white">YOU ARE NOT ALONE, AND I AM HERE WITH YOU!</div>
     </div>
 
     <div id="topnav" class="w3-card-2 w3-slim topnav">
         <!-- 显示滚动条 -->
         <div style="overflow: auto;">
             <ul class="w3-navbar w3-left" style="width: 55%; overflow: hidden; height: 44px">
-                <li><a href="javascript:void(0);" class="topnav-localicons w3-hide-large w3-left">☰</a></li>
+                <li><a href="javascript:void(0);" class="topnav-localicons w3-hide-large w3-left" onclick="w3_open();">☰</a></li>
                 <li><a href="javascript:void(0);" class="topnav-icons fa fa-home w3-left"></a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">古镇景色</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">流金岁月</a></li>
-                <li><a href="javascript:void(0);" class="w3-hide-small">友情链接</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">都市故事</a></li>
             </ul>
 
             <ul class="w3-navbar w3-right" style="width: 45%; overflow: hidden; height: 44px;">
+                <li class="w3-right">
+                    <a href="javascript:void(0);" class="topnav-icons w3-right fa fa-search" onclick="search_open();"></a>
+                </li>
                 <li class="w3-right">
                     <a id="topnavbtn_life" href="javascript:void(0);" onclick='w3_open_nav("life")'>
                         生活随笔 <i class="fa fa-caret-down"></i><i class="fa fa-caret-up" style="display: none"></i>
@@ -365,20 +364,20 @@ body {
             <div id="nav_life" class="w3-dropnav w3-card-2">
                 <span onclick='w3_close_nav("life")' class="w3-closebtn w3-xlarge w3-hover-text-white">×</span>
                 <div class="w3-row-padding w3-padding-xxlarge">
-                    <div class="w3-col l6 m12">
-                        <h3>都市故事</h3>
-						<a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
+                    <div class="w3-col l4 m12">
+                        <h3>古镇景色</h3>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                     </div>
-                    <div class="w3-col l6 m12">
-                        <h3>情感经历</h3>
+                    <div class="w3-col l4 m12">
+                        <h3>流金岁月</h3>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
+                    </div>
+                    <div class="w3-col l4 m12">
+                        <h3>都市故事</h3>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
@@ -390,8 +389,8 @@ body {
             <div id="nav_career" class="w3-dropnav w3-card-2">
                 <span onclick='w3_close_nav("career")' class="w3-closebtn w3-xlarge w3-hover-text-white">×</span>
                 <div class="w3-row-padding w3-padding-xxlarge">
-                    <div class="w3-col m6">
-                        <h3>职场故事</h3>
+                    <div class="w3-col m3">
+                        <h3>职场发展</h3>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
@@ -401,8 +400,8 @@ body {
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                     </div>
-                    <div class="w3-col m6">
-                        <h3>我的领导是头……</h3>
+                    <div class="w3-col m9">
+                        <h3>技术积累</h3>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
@@ -435,11 +434,6 @@ body {
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
                     </div>
                     <div class="w3-col l4 m6">
                         <h3>私人食谱</h3>
@@ -458,110 +452,110 @@ body {
         </div>
     </div>
 
-    <div id="sidenav" class="w3-sidenav w3-collapse w3-slim">
+    <div id="myAccordion" class="w3-card-2 w3-light-grey w3-center w3-hide-large w3-accordion" style="display: none; cursor: default">
+        <a href="javascript:void(0);" onclick="w3_close();" class="w3-closebtn w3-xlarge w3-margin-0">×</a><br>
+        <div class="w3-container w3-padding-32">
+            <a class="w3-btn-block w3-light-grey w3-large w3-wide w3-hover-none w3-hover-opacity" onclick="open_xs_menu(event,'myself');" href="javascript:void(0);">
+                个人简介 <i class="fa fa-caret-down"></i><i class="fa fa-caret-up" style="display: none"></i>
+            </a>
+            <div id="sectionxs_myself" class="w3-white w3-accordion-content w3-show"></div>
+            <a class="w3-btn-block w3-light-grey w3-large w3-wide w3-hover-none w3-hover-opacity" onclick="open_xs_menu(event,'career')" href="javascript:void(0);">
+                职业提升 <i class="fa fa-caret-down"></i><i class="fa fa-caret-up" style="display: none"></i>
+            </a>
+            <div id="sectionxs_career" class="w3-white w3-accordion-content w3-show"></div>
+            <a class="w3-btn-block w3-light-grey w3-large w3-wide w3-hover-none w3-hover-opacity" onclick="open_xs_menu(event,'life')" href="javascript:void(0);">
+                生活随笔 <i class="fa fa-caret-down"></i><i class="fa fa-caret-up" style="display: none"></i>
+            </a>
+            <div id="sectionxs_life" class="w3-white w3-accordion-content w3-show"></div>
+        </div>
+    </div>
+
+    <div id="sidenav" class="w3-sidenav w3-collapse w3-slim" style="background-color: transparent;">
         <div id="leftmenuinner">
-            <div id="leftmenuinnerinner" class="w3-light-grey">
-            	<div class="sidenav-content">
-	                <h2><span>古镇景色</span></h2>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <br>
-	            </div>
-	            <div class="sidenav-content">
-	                <h2><span>流金岁月</span></h2>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <br>
-	            </div>
-	            <div class="sidenav-content">
-	                <h2><span>友情链接</span></h2>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <a target="_top" href="javascript:void(0);">站点测试</a> 
-	                <a target="_top" href="javascript:void(0);">站点测试</a>
-	                <br>
-	            </div>
+            <div id="leftmenuinnerinner">
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>古镇景色</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>流金岁月</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>都市故事</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="belowtopnav" class="w3-main w3-light-grey" style="margin-left: 220px;">
+        <div id="searcharticles" class="w3-dropdown-content w3-card-2 w3-light-grey">
+            <input id="searchinput" class="w3-input w3-padding" type="text" placeholder="文章搜索……" onkeyup="search_filter();">
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+            <a href="javascript:void(0);">站点测试</a>
+        </div>
         <div class="w3-row w3-white">
             <div id="main" class="w3-col l10 m12">
-				<article>
-					<h1>古镇景色</h1>
-					<hr>
-					<p>本站在搭建中……</p>
-				</article>
-				<br>
-				<br>
-				<br>
-				<article>
-					<h1>古镇景色</h1>
-					<hr>
-					<p>本站在搭建中……</p>
-				</article>
-				<br>
-				<br>
-				<br>
-				<article>
-					<h1>古镇景色</h1>
-					<hr>
-					<p>本站在搭建中……</p>
-				</article>
-				<br>
-				<br>
-				<br>
-				<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none;">展开评论</a>
-				<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
-				<div id="comment-box"></div>
-			</div>
+                <article>
+                    <h1>古镇景色</h1>
+                    <hr>
+                    <p>本站在搭建中……</p>
+                </article>
+                <br>
+                <br>
+                <br>
+                <article>
+                    <h1>古镇景色</h1>
+                    <hr>
+                    <p>本站在搭建中……</p>
+                </article>
+                <br>
+                <br>
+                <br>
+                <article>
+                    <h1>古镇景色</h1>
+                    <hr>
+                    <p>本站在搭建中……</p>
+                </article>
+                <br>
+                <br>
+                <br>
+                <a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none;">展开评论</a>
+                <a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+                <div id="comment-box"></div>
+            </div>
 
             <div id="right" class="w3-col l2 m12">
                 <div class="sidesection">
                     <img src="lib/images/hometown/001_s.jpg" alt="ancient town">
-					<div class="container"><p>2016-11-13</p></div>
-				</div>
+                    <div class="container"><p>2016-11-13</p></div>
+                </div>
                 <div class="sidesection">
                     <img src="lib/images/hometown/002_s.jpg" alt="ancient town">
-					<div class="container"><p>2016-11-13</p></div>
-				</div>
+                    <div class="container"><p>2016-11-13</p></div>
+                </div>
                 <div class="sidesection">
                     <img src="lib/images/hometown/003_s.jpg" alt="ancient town">
-					<div class="container"><p>2016-11-13</p></div>
-				</div>
+                    <div class="container"><p>2016-11-13</p></div>
+                </div>
             </div>
         </div>
 
@@ -635,110 +629,110 @@ body {
             <br>
         </div>
     </div>
-	<div class="w3-container">
-		<div id="myModal" class="w3-modal w3-black">
-			<span class="w3-text-white w3-xxlarge w3-hover-text-grey w3-container w3-display-topright"
-				onclick="closeModal();" style="cursor: pointer">×</span>
-			<div class="w3-modal-content">
-				<div class="w3-content" style="max-width: 1200px">
-					<img class="mySlides" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%">
-					<img class="mySlides" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%">
-					<div class="w3-row w3-black w3-center">
-						<div class="w3-container w3-display-container">
-							<p id="caption"></p>
-							<span class="w3-display-left w3-btn-floating" onclick="plusDivs(-1)">❮</span>
-							<span class="w3-display-right w3-btn-floating" onclick="plusDivs(1)">❯</span>
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%" onclick="currentDiv(0);" alt="古镇街景">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%" onclick="currentDiv(1);" alt="古镇街景">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%" onclick="currentDiv(2);" alt="古镇街景">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%" onclick="currentDiv(3);" alt="古镇街景">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%" onclick="currentDiv(4);" alt="风景如画">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%" onclick="currentDiv(5);" alt="风景如画">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%" onclick="currentDiv(6);" alt="风景如画">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%" onclick="currentDiv(7);" alt="风景如画">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%" onclick="currentDiv(8);" alt="民风淳朴">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%" onclick="currentDiv(9);" alt="民风淳朴">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%" onclick="currentDiv(10);" alt="民风淳朴">
-						</div>
-						<div class="w3-col s2">
-							<img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%" onclick="currentDiv(11);" alt="民风淳朴">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script src="lib/js/base.js"></script>
-	<script src="lib/js/extension.js"></script>
-	<script>
-		var slideIndex = 0;
-		showDivs(slideIndex);
+    <div class="w3-container">
+        <div id="myModal" class="w3-modal w3-black">
+            <span class="w3-text-white w3-xxlarge w3-hover-text-grey w3-container w3-display-topright"
+                onclick="closeModal();" style="cursor: pointer">×</span>
+            <div class="w3-modal-content">
+                <div class="w3-content" style="max-width: 1200px">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%">
+                    <img class="mySlides" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%">
+                    <div class="w3-row w3-black w3-center">
+                        <div class="w3-container w3-display-container">
+                            <p id="caption"></p>
+                            <span class="w3-display-left w3-btn-floating" onclick="plusDivs(-1)">❮</span>
+                            <span class="w3-display-right w3-btn-floating" onclick="plusDivs(1)">❯</span>
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%" onclick="currentDiv(0);" alt="古镇街景">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%" onclick="currentDiv(1);" alt="古镇街景">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%" onclick="currentDiv(2);" alt="古镇街景">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%" onclick="currentDiv(3);" alt="古镇街景">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%" onclick="currentDiv(4);" alt="风景如画">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%" onclick="currentDiv(5);" alt="风景如画">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%" onclick="currentDiv(6);" alt="风景如画">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%" onclick="currentDiv(7);" alt="风景如画">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%" onclick="currentDiv(8);" alt="民风淳朴">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%" onclick="currentDiv(9);" alt="民风淳朴">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%" onclick="currentDiv(10);" alt="民风淳朴">
+                        </div>
+                        <div class="w3-col s2">
+                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%" onclick="currentDiv(11);" alt="民风淳朴">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="lib/js/base.js"></script>
+    <script src="lib/js/extension.js"></script>
+    <script>
+        var slideIndex = 0;
+        showDivs(slideIndex);
 
-		function openModal() {
-			document.getElementById("myModal").style.display = "block";
-		}
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
 
-		function closeModal() {
-			document.getElementById("myModal").style.display = "none";
-		}
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
 
-		function plusDivs(n) {
-			showDivs(slideIndex += n);
-		}
+        function plusDivs(n) {
+            showDivs(slideIndex += n);
+        }
 
-		function currentDiv(n) {
-			showDivs(slideIndex = n);
-		}
+        function currentDiv(n) {
+            showDivs(slideIndex = n);
+        }
 
-		function showDivs(n) {
-			var i;
-			var x = document.getElementsByClassName("mySlides");
-			var dots = document.getElementsByClassName("top_ten");
-			var captionText = document.getElementById("caption");
-			if (n == x.length) {slideIndex = 0;}
-			if (n == -1) {slideIndex = x.length - 1;}
-			for (i = 0; i < x.length; i++) {
-				x[i].style.display = "none";
-			}
-			for (i = 0; i < dots.length; i++) {
-				dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
-			}
-			x[slideIndex].style.display = "block";
-			dots[slideIndex].className += " w3-opacity-off";
-			captionText.innerHTML = dots[slideIndex].alt;
-		}
-	</script>
+        function showDivs(n) {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("top_ten");
+            var captionText = document.getElementById("caption");
+            if (n == x.length) {slideIndex = 0;}
+            if (n == -1) {slideIndex = x.length - 1;}
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+            }
+            x[slideIndex].style.display = "block";
+            dots[slideIndex].className += " w3-opacity-off";
+            captionText.innerHTML = dots[slideIndex].alt;
+        }
+    </script>
 </body>
 </html>
