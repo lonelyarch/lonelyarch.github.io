@@ -317,8 +317,21 @@ body {
 #searcharticles {
     position: fixed;
     right: 0;
-    height: 50%;
-    overflow-y: scroll;
+    z-index: 3;
+}
+
+#searcharticles div {
+    height: 300px;
+}
+
+@media screen and (max-width:600px) {
+    #searcharticles {
+        width: 100%;
+    }
+
+    #searcharticles div {
+        height: 200px;
+    }
 }
 </style>
 </head>
@@ -501,16 +514,23 @@ body {
     <div id="belowtopnav" class="w3-main w3-light-grey" style="margin-left: 220px;">
         <div id="searcharticles" class="w3-dropdown-content w3-card-2 w3-light-grey">
             <input id="searchinput" class="w3-input w3-padding" type="text" placeholder="文章搜索……" onkeyup="search_filter();">
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
-            <a href="javascript:void(0);">站点测试</a>
+            <div style="overflow-y: auto;">
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+                <a href="javascript:void(0);">站点测试</a>
+            </div>
         </div>
         <div class="w3-row w3-white">
             <div id="main" class="w3-col l10 m12">
