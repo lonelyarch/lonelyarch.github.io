@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>元素重叠</title> 
+<style>
+img {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: -1;
+}
+</style>
+</head>
+<body>
+<h1>标题</h1>
+<img src="src/articles/02/02_2/images/0001_1.jpg" width="200" height="150" />
+<p>由于对图像元素设置了 <span style="color: red;">z-index:&nbsp;&nbsp;-1;</span> ，因此，它将显示于文字之后。如果将 <span style="color: red;">z-index</span> 的值修改为 <span style="color: red;">1</span>，图像则遮盖相应的文字。</p>
+</body>
+</html>

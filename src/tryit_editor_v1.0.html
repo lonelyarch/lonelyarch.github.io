@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tryit Editor v1.0</title>
+<base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="lib/css/w3.css">
+<link rel="stylesheet" href="lib/css/font-awesome.min.css">
+<script>
+    (function() {
+        var url = decodeURI(window.location.href);
+        var index = url.indexOf("?");
+        if(index < 0) {return;}
+        var entry = url.substring(++index, url.length);
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("textareaCode").innerHTML = this.responseText;
+            }
+        }
+        xhttp.open("GET", entry, true);
+        xhttp.send();
+    })();
+</script>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("lib/images/bg-image.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    max-width: 100%;
+    height: auto;
+}
+
+.top {
+    position: relative;
+    height: 68px;
+    padding-top: 20px;
+    line-height: 50px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.logo {
+    position: relative;
+    line-height: 1;
+    font-size: 20px;
+    top: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+.trytopnav {
+    height: 40px;
+    overflow: hidden;
+    min-width: 380px;
+    position: absolute;
+    width: 100%;
+    top: 68px;
+}
+
+.w3-navbar li button {
+    border: none;
+    padding: 8px 16px;
+    display: block;
+    cursor: pointer;
+}
+
+#container {
+    width: 100%;
+    overflow: auto;
+    position: absolute;
+    top: 107px;
+    bottom: 0;
+    height: auto;
+}
+
+#textareacontainer, #iframecontainer {
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+#textarea, #iframe {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top: 1px;
+}
+
+#textarea {
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+#iframe {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+#textareawrapper {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+#iframewrapper {
+    width: 100%;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+#textareaCode {
+    background-color: #ffffff;
+    font-family: consolas, "courier new", monospace;
+    font-size: 15px;
+    height: 100%;
+    width: 100%;
+    padding: 8px;
+    resize: none;
+    border: none;
+    line-height: normal;
+}
+
+#iframeResult {
+    background-color: #ffffff;
+    height: 100%;
+    width: 100%;
+}
+
+@media screen and (max-width: 727px) {
+    .logo {
+        top: 0;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-device-width: 768px) {
+    #iframewrapper {
+        overflow: auto;
+    }
+    #container {
+        min-width: 320px;
+    }
+    .stack {
+        display: none;
+    }
+    #tryhome {
+        display: block;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="w3-container top">
+        <div class="logo w3-wide w3-text-white">YOU ARE NOT ALONE, AND I AM HERE WITH YOU!</div>
+    </div>
+    <div class="trytopnav">
+        <ul class="w3-navbar" style="overflow: auto; padding-left: 10px; border-top: 1px solid rgba(255, 255, 255, 0.3);">
+            <li class="stack" id="tryhome" style="width: auto !important; float: left;">
+                <a href="https://lonelyguo.github.io" class="w3-transparent w3-hover-white w3-hover-text-blue fa fa-home" style="font-size: 25px; margin-top: -2px; color: white;"></a>
+            </li>
+            <li style="width: auto !important; float: left;">
+                <button class="w3-transparent w3-hover-white w3-hover-text-blue" onclick="submitTryit();" style="color: white;">Run »</button>
+            </li>
+        </ul>
+    </div>
+    <div id="container">
+        <div id="textareacontainer">
+            <div id="textarea">
+                <div id="textareawrapper">
+                    <textarea id="textareaCode" spellcheck="false"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id="iframecontainer"><div id="iframe"><div id="iframewrapper"></div></div></div>
+    </div>
+    <script>
+        // submitTryit();
+        function submitTryit() {
+            if(window.editor) {window.editor.save();}
+            var text = document.getElementById("textareaCode").value;
+            var ifr = document.createElement("iframe");
+            ifr.setAttribute("frameborder", "0");
+            ifr.setAttribute("id", "iframeResult");
+            ifr.setAttribute("name", "iframeResult");  
+            document.getElementById("iframewrapper").innerHTML = "";
+            document.getElementById("iframewrapper").appendChild(ifr);
+            var ifrw = (ifr.contentWindow) ? ifr.contentWindow : (ifr.contentDocument.document) ? ifr.contentDocument.document : ifr.contentDocument;
+            ifrw.document.open();
+            ifrw.document.write(text);  
+            ifrw.document.close();
+            if(ifrw.document.body && !ifrw.document.body.isContentEditable) {
+                ifrw.document.body.contentEditable = true;
+                ifrw.document.body.contentEditable = false;
+            }
+        }
+    </script>
+</body>
+</html>

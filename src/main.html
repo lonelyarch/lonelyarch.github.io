@@ -4,9 +4,22 @@
 <title>个人博客</title>
 <base href="/">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="lib/css/w3.css">
 <link rel="stylesheet" href="lib/css/font-awesome.min.css">
+<script>
+    (function() {
+    	var entry = "src/articles/initial/0.txt";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("main").getElementsByTagName("div")[0].innerHTML = this.responseText;
+            }
+        }
+        xhttp.open("GET", entry, true);
+        xhttp.send();
+    })();
+</script>
 <style>
 .top {
     position: relative;
@@ -15,7 +28,6 @@
     line-height: 50px;
     overflow: hidden;
     z-index: 2;
-    background-image: url("lib/images/bg-image.jpg");
 }
 
 .logo {
@@ -162,19 +174,6 @@ a.topnav-icons.fa-home {
     height: auto;
 }
 
-#right {
-    text-align: center;
-    padding: 16px 16px 0 0;
-}
-
-#right a {
-    text-decoration: none;
-}
-
-#right a:hover {
-    text-decoration: underline;
-}
-
 .footer a {
     text-decoration: none;
 }
@@ -257,16 +256,6 @@ a.topnav-icons.fa-home {
         padding: 2px 0 !important;
     }
 }
-
-@media screen and (min-width:1675px) {
-    #main {
-        width: 79%;
-    }
-
-    #right {
-        width: 21%;
-    }
-}
 </style>
 <style>
 body {
@@ -333,6 +322,10 @@ body {
         height: 200px;
     }
 }
+
+.w3-code {
+    border-left: 4px solid #5f5f5f;
+}
 </style>
 </head>
 <body onload="close_loader();">
@@ -351,6 +344,11 @@ body {
                 <li><a href="javascript:void(0);" class="w3-hide-small">古镇景色</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">流金岁月</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">都市故事</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">职场发展</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">技术积累</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">业余爱好</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">个人烦恼</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">私人食谱</a></li>
             </ul>
 
             <ul class="w3-navbar w3-right" style="width: 45%; overflow: hidden; height: 44px;">
@@ -415,8 +413,8 @@ body {
                     </div>
                     <div class="w3-col m9">
                         <h3>技术积累</h3>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">CSS</a>
+                        <a href="javascript:void(0);">JAVA</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
                         <a href="javascript:void(0);">站点测试</a>
@@ -488,7 +486,7 @@ body {
             <div id="leftmenuinnerinner">
                 <div class="sidenav-content w3-text-white">
                     <h2><span>古镇景色</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);" onclick="request('src/articles/01/01_1/0001.txt');">站点测试</a>
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <br>
@@ -502,6 +500,47 @@ body {
                 </div>
                 <div class="sidenav-content w3-text-white">
                     <h2><span>都市故事</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>职场发展</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
+                <!-- 技术积累 -->
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>CSS</span></h2>
+                    <a target="_top" href="javascript:void(0);" onclick="request('src/articles/02/02_2/0001.txt');">CSS 定位</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                    <h2><span>JAVA</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>业余爱好</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>个人烦恼</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                </div>
+                <div class="sidenav-content w3-text-white">
+                    <h2><span>私人食谱</span></h2>
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <a target="_top" href="javascript:void(0);">站点测试</a> 
                     <a target="_top" href="javascript:void(0);">站点测试</a>
@@ -533,48 +572,12 @@ body {
             </div>
         </div>
         <div class="w3-row w3-white">
-            <div id="main" class="w3-col l10 m12">
-                <article>
-                    <h1>古镇景色</h1>
-                    <hr>
-                    <p>本站在搭建中……</p>
-                </article>
-                <br>
-                <br>
-                <br>
-                <article>
-                    <h1>古镇景色</h1>
-                    <hr>
-                    <p>本站在搭建中……</p>
-                </article>
-                <br>
-                <br>
-                <br>
-                <article>
-                    <h1>古镇景色</h1>
-                    <hr>
-                    <p>本站在搭建中……</p>
-                </article>
-                <br>
-                <br>
-                <br>
-                <a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none;">展开评论</a>
-                <a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
-                <div id="comment-box"></div>
-            </div>
-
-            <div id="right" class="w3-col l2 m12">
-                <div class="sidesection">
-                    <img src="lib/images/hometown/001_s.jpg" alt="ancient town">
-                    <div class="container"><p>2016-11-13</p></div>
-                </div>
-                <div class="sidesection">
-                    <img src="lib/images/hometown/002_s.jpg" alt="ancient town">
-                    <div class="container"><p>2016-11-13</p></div>
-                </div>
-                <div class="sidesection">
-                    <img src="lib/images/hometown/003_s.jpg" alt="ancient town">
-                    <div class="container"><p>2016-11-13</p></div>
+            <div id="main" class="w3-col l12 m12">
+            	<div></div>
+                <div>
+	                <a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none;">展开评论</a>
+	                <a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+	                <div id="comment-box"></div>
                 </div>
             </div>
         </div>
@@ -582,60 +585,11 @@ body {
         <div id="footer" class="footer w3-container w3-white">
             <hr>
             <div class="w3-row w3-center w3-small">
-                <div class="w3-col l3 m3 s12">
-                    <a href="javascript:void(0);" style="white-space: nowrap;">个人简介</a>
+                <div class="w3-col l6 m6 s12">
+                    <a href="javascript:void(0);" style="white-space: nowrap;">友情链接</a>
                 </div>
-                <div class="w3-col l3 m3 s12">
-                    <a href="javascript:void(0);" style="white-space: nowrap;">职业提升</a>
-                </div>
-                <div class="w3-col l3 m3 s12">
-                    <a href="javascript:void(0);" style="white-space: nowrap;">生活随笔</a>
-                </div>
-                <div class="w3-col l3 m3 s12">
+                <div class="w3-col l6 m6 s12">
                     <a href="javascript:void(0);" style="white-space: nowrap;">ABOUT</a>
-                </div>
-            </div>
-            <hr>
-            <div class="w3-row w3-center w3-small">
-                <div class="w3-col l6 m6 s12">
-                    <div class="top10">
-                        <h4>TOP 10 图片</h4>
-                        <a onclick="openModal();currentDiv(0);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(1);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(2);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(3);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(4);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(5);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(6);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(7);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(8);">Ancient Town</a>
-                        <br>
-                        <a onclick="openModal();currentDiv(9);">Ancient Town</a>
-                        <br>
-                    </div>
-                </div>
-                <div class="w3-col l6 m6 s12">
-                    <div class="top10">
-                        <h4>TOP 10 文章</h4>
-                        <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a>
-                        <br> <a href="javascript:void(0);">个人简介</a> <br>
-                    </div>
                 </div>
             </div>
             <hr>
@@ -649,110 +603,7 @@ body {
             <br>
         </div>
     </div>
-    <div class="w3-container">
-        <div id="myModal" class="w3-modal w3-black">
-            <span class="w3-text-white w3-xxlarge w3-hover-text-grey w3-container w3-display-topright"
-                onclick="closeModal();" style="cursor: pointer">×</span>
-            <div class="w3-modal-content">
-                <div class="w3-content" style="max-width: 1200px">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%">
-                    <img class="mySlides" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%">
-                    <div class="w3-row w3-black w3-center">
-                        <div class="w3-container w3-display-container">
-                            <p id="caption"></p>
-                            <span class="w3-display-left w3-btn-floating" onclick="plusDivs(-1)">❮</span>
-                            <span class="w3-display-right w3-btn-floating" onclick="plusDivs(1)">❯</span>
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_0.jpg" style="width: 100%" onclick="currentDiv(0);" alt="古镇街景">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_1.jpg" style="width: 100%" onclick="currentDiv(1);" alt="古镇街景">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_2.jpg" style="width: 100%" onclick="currentDiv(2);" alt="古镇街景">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_3.jpg" style="width: 100%" onclick="currentDiv(3);" alt="古镇街景">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_4.jpg" style="width: 100%" onclick="currentDiv(4);" alt="风景如画">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_5.jpg" style="width: 100%" onclick="currentDiv(5);" alt="风景如画">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_6.jpg" style="width: 100%" onclick="currentDiv(6);" alt="风景如画">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_7.jpg" style="width: 100%" onclick="currentDiv(7);" alt="风景如画">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_8.jpg" style="width: 100%" onclick="currentDiv(8);" alt="民风淳朴">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_9.jpg" style="width: 100%" onclick="currentDiv(9);" alt="民风淳朴">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_10.jpg" style="width: 100%" onclick="currentDiv(10);" alt="民风淳朴">
-                        </div>
-                        <div class="w3-col s2">
-                            <img class="top_ten w3-opacity w3-hover-opacity-off" src="lib/images/hometown/img_top10_11.jpg" style="width: 100%" onclick="currentDiv(11);" alt="民风淳朴">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="lib/js/base.js"></script>
     <script src="lib/js/extension.js"></script>
-    <script>
-        var slideIndex = 0;
-        showDivs(slideIndex);
-
-        function openModal() {
-            document.getElementById("myModal").style.display = "block";
-        }
-
-        function closeModal() {
-            document.getElementById("myModal").style.display = "none";
-        }
-
-        function plusDivs(n) {
-            showDivs(slideIndex += n);
-        }
-
-        function currentDiv(n) {
-            showDivs(slideIndex = n);
-        }
-
-        function showDivs(n) {
-            var i;
-            var x = document.getElementsByClassName("mySlides");
-            var dots = document.getElementsByClassName("top_ten");
-            var captionText = document.getElementById("caption");
-            if (n == x.length) {slideIndex = 0;}
-            if (n == -1) {slideIndex = x.length - 1;}
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
-            }
-            x[slideIndex].style.display = "block";
-            dots[slideIndex].className += " w3-opacity-off";
-            captionText.innerHTML = dots[slideIndex].alt;
-        }
-    </script>
 </body>
 </html>

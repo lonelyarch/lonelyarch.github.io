@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>position: relative;</title> 
+<style>
+h2.pos_top {
+	position: relative;
+	top: -55px;
+}
+</style>
+</head>
+<body>
+<h2>标题：该元素以 static 定位，即默认定位</h2>
+<h2 class="pos_top">标题会根据自身的正常位置向上移动 55 像素</h2>
+</body>
+</html>

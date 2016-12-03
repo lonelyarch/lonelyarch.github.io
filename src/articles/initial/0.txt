@@ -1,0 +1,24 @@
+<article>
+    <h1>古镇景色</h1>
+    <hr>
+    <p>本站在搭建中……</p>
+</article>
+<br>
+<br>
+<br>
+<article>
+    <h1>古镇景色</h1>
+    <hr>
+    <p>本站在搭建中……</p>
+</article>
+<br>
+<br>
+<br>
+<article>
+    <h1>古镇景色</h1>
+    <hr>
+    <p>本站在搭建中……</p>
+</article>
+<br>
+<br>
+<br>
