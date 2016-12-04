@@ -13,7 +13,7 @@
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("main").getElementsByTagName("div")[0].innerHTML = this.responseText;
+                document.getElementById("main").innerHTML = this.responseText;
             }
         }
         xhttp.open("GET", entry, true);
@@ -345,7 +345,7 @@ body {
                 <li><a href="javascript:void(0);" class="w3-hide-small">流金岁月</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">都市故事</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">职场发展</a></li>
-                <li><a href="javascript:void(0);" class="w3-hide-small">技术积累</a></li>
+                <li><a href="javascript:void(0);" class="w3-hide-small">知识积累</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">业余爱好</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">个人烦恼</a></li>
                 <li><a href="javascript:void(0);" class="w3-hide-small">私人食谱</a></li>
@@ -412,15 +412,15 @@ body {
                         <a href="javascript:void(0);">站点测试</a>
                     </div>
                     <div class="w3-col m9">
-                        <h3>技术积累</h3>
+                        <h3>知识积累</h3>
                         <a href="javascript:void(0);">CSS</a>
+                        <a href="javascript:void(0);">JAVASCRIPT</a>
+                        <a href="javascript:void(0);">HTML</a>
                         <a href="javascript:void(0);">JAVA</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
-                        <a href="javascript:void(0);">站点测试</a>
+                        <a href="javascript:void(0);">SQL</a>
+                        <a href="javascript:void(0);">LINUX</a>
+                        <a href="javascript:void(0);">英语语法</a>
+                        <a href="javascript:void(0);">杂项记述</a>
                     </div>
                 </div>
                 <br>
@@ -512,14 +512,44 @@ body {
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <br>
                 </div>
-                <!-- 技术积累 -->
+                <!-- 知识积累 -->
                 <div class="sidenav-content w3-text-white">
                     <h2><span>CSS</span></h2>
                     <a target="_top" href="javascript:void(0);" onclick="request('src/articles/02/02_2/0001.txt');">CSS 定位</a>
                     <a target="_top" href="javascript:void(0);">站点测试</a> 
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <br>
+                    <h2><span>JAVASCRIPT</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                    <h2><span>HTML</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
                     <h2><span>JAVA</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                    <h2><span>SQL</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                    <h2><span>LINUX</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                    <h2><span>英语语法</span></h2>
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+                    <a target="_top" href="javascript:void(0);">站点测试</a>
+                    <br>
+                    <h2><span>杂项记述</span></h2>
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <a target="_top" href="javascript:void(0);">站点测试</a> 
                     <a target="_top" href="javascript:void(0);">站点测试</a>
@@ -572,14 +602,7 @@ body {
             </div>
         </div>
         <div class="w3-row w3-white">
-            <div id="main" class="w3-col l12 m12">
-            	<div></div>
-                <div>
-	                <a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none;">展开评论</a>
-	                <a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
-	                <div id="comment-box"></div>
-                </div>
-            </div>
+            <div id="main" class="w3-col l12 m12"></div>
         </div>
 
         <div id="footer" class="footer w3-container w3-white">
