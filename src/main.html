@@ -326,6 +326,10 @@ body {
 .w3-code {
     border-left: 4px solid #5f5f5f;
 }
+
+#myModal a {
+    padding: 2px 1px 1px 16px;
+}
 </style>
 </head>
 <body onload="close_loader();">
@@ -413,14 +417,14 @@ body {
                     </div>
                     <div class="w3-col m9">
                         <h3>知识积累</h3>
-                        <a href="javascript:void(0);">CSS</a>
-                        <a href="javascript:void(0);">JAVASCRIPT</a>
-                        <a href="javascript:void(0);">HTML</a>
-                        <a href="javascript:void(0);">JAVA</a>
-                        <a href="javascript:void(0);">SQL</a>
-                        <a href="javascript:void(0);">LINUX</a>
-                        <a href="javascript:void(0);">英语语法</a>
-                        <a href="javascript:void(0);">杂项记述</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,0);">CSS</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,1);">JAVASCRIPT</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,2);">HTML</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,3);">JAVA</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,4);">SQL</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,5);">LINUX</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,6);">英语语法</a>
+                        <a href="javascript:void(0);" onclick="modal_open(event,4,7);">杂项记述</a>
                     </div>
                 </div>
                 <br>
@@ -514,46 +518,78 @@ body {
                 </div>
                 <!-- 知识积累 -->
                 <div class="sidenav-content w3-text-white">
-                    <h2><span>CSS</span></h2>
-                    <a target="_top" href="javascript:void(0);" onclick="request('src/articles/02/02_2/0001.txt');">CSS 定位</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
-                    <h2><span>JAVASCRIPT</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
-                    <h2><span>HTML</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
-                    <h2><span>JAVA</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
-                    <h2><span>SQL</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
-                    <h2><span>LINUX</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
-                    <h2><span>英语语法</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
-                    <h2><span>杂项记述</span></h2>
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <a target="_top" href="javascript:void(0);">站点测试</a> 
-                    <a target="_top" href="javascript:void(0);">站点测试</a>
-                    <br>
+                	<div class="section_4">
+	                    <h2><span>CSS</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,'src/articles/02/02_2/0001.txt');">CSS 定位</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
+                    <div class="section_4">
+	                    <h2><span>JAVASCRIPT</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
+                    <div class="section_4">
+	                    <h2><span>HTML</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
+                    <div class="section_4">
+	                    <h2><span>JAVA</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
+                    <div class="section_4">
+	                    <h2><span>SQL</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
+                    <div class="section_4">
+	                    <h2><span>LINUX</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
+                    <div class="section_4">
+	                    <h2><span>英语语法</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
+                    <div class="section_4">
+	                    <h2><span>杂项记述</span></h2>
+	                    <div>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);">站点测试</a>
+	                    </div>
+	                    <br>
+                    </div>
                 </div>
                 <div class="sidenav-content w3-text-white">
                     <h2><span>业余爱好</span></h2>
@@ -625,6 +661,16 @@ body {
             <br>
             <br>
         </div>
+    </div>
+    
+    <div id="myModal" class="w3-modal">
+    	<div class="w3-modal-content w3-animate-zoom" style="margin-bottom: 10px;">
+    		<header class="w3-container" style="background-color: #5f5f5f; color: #f1f1f1;">
+    			<span onclick="modal_close();" class="w3-closebtn">×</span>
+    			<h2></h2>
+    		</header>
+    		<div class="w3-container"></div>
+    	</div>
     </div>
     <script src="lib/js/base.js"></script>
     <script src="lib/js/extension.js"></script>
