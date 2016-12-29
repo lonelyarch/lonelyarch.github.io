@@ -1,24 +1,11 @@
-<article>
-    <h1>古镇景色</h1>
-    <hr>
-    <p>本站在搭建中……</p>
-</article>
-<br>
-<br>
-<br>
-<article>
-    <h1>古镇景色</h1>
-    <hr>
-    <p>本站在搭建中……</p>
-</article>
-<br>
-<br>
-<br>
-<article>
-    <h1>古镇景色</h1>
-    <hr>
-    <p>本站在搭建中……</p>
-</article>
-<br>
-<br>
-<br>
+<div class="section part1">
+	<h2>hello 漫川关镇</h2>
+	<div>漫川关，一座人文景观浓厚、民风淳朴且热情好客的古镇，这里远离都市的喧闹，亲近自然，于山水之间静候春夏秋冬。纯净的天空、葱郁的山群、清澈的河流、香火旺盛的鲁班庙以及历史久远的武昌会馆……</div>
+</div>
+<div class="section part2">
+	<h2>地理位置</h2>
+	<div id="allmap"></div>
+</div>
+<div class="section part3" style="margin-bottom: 0;">
+	<h2>游览攻略</h2>
+</div>

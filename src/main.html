@@ -7,19 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="lib/css/w3.css">
 <link rel="stylesheet" href="lib/css/font-awesome.min.css">
-<script>
-    (function() {
-    	var entry = "src/articles/initial/0.txt";
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("main").innerHTML = this.responseText;
-            }
-        }
-        xhttp.open("GET", entry, true);
-        xhttp.send();
-    })();
-</script>
 <style>
 .top {
     position: relative;
@@ -337,6 +324,7 @@ body {
     padding: 2px 1px 1px 16px;
 }
 </style>
+<style id="myst" type="text/css"></style>
 </head>
 <body onload="close_loader();">
     <div class="loader"><div></div><div></div></div>
@@ -680,5 +668,34 @@ body {
     </div>
     <script src="lib/js/base.js"></script>
     <script src="lib/js/extension.js"></script>
+    <script>
+		function common(id, entry) {
+			if((typeof id) == "object" && (typeof entry) == "object" && id.length == entry.length) {
+				if(id.length == 1) {
+					request(id[0], entry[0], false);
+				} else if(id.length == 2) {
+					request(id[0], entry[0]);
+					request(id[1], entry[1], false);
+				}
+			}
+		}
+		var id = ["main", "myst"];
+    	var entry = ["src/articles/initial/0.txt", "src/articles/initial/css/0.css"];
+    	common(id, entry);
+    	
+    	function loadJScript() {
+   			var script = document.createElement("script");
+   			script.type = "text/javascript";
+   			script.src = "https://api.map.baidu.com/api?v=2.0&ak=YuGjSFyOKOnxRrTzrEgz8OkVpFb9h9Kn&callback=init";
+   			document.body.appendChild(script);
+   		}
+   		function init() {
+   			var map = new BMap.Map("allmap");
+   			var point = new BMap.Point(110.073604,33.233946);
+   			map.centerAndZoom(point,15);                 
+   			map.enableScrollWheelZoom();
+   		}  
+    	if(document.getElementById("allmap")) window.onload = loadJScript;
+	</script>
 </body>
 </html>
