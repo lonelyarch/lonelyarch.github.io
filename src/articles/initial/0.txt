@@ -4,7 +4,6 @@
 </div>
 <div class="section part2">
 	<h2>地理位置</h2>
-	<div id="allmap"></div>
 </div>
 <div class="section part3" style="margin-bottom: 0;">
 	<h2>游览攻略</h2>

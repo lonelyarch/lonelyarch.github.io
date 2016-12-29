@@ -672,30 +672,16 @@ body {
 		function common(id, entry) {
 			if((typeof id) == "object" && (typeof entry) == "object" && id.length == entry.length) {
 				if(id.length == 1) {
-					request(id[0], entry[0], false);
+					request(id[0], entry[0]);
 				} else if(id.length == 2) {
 					request(id[0], entry[0]);
-					request(id[1], entry[1], false);
+					request(id[1], entry[1]);
 				}
 			}
 		}
 		var id = ["main", "myst"];
     	var entry = ["src/articles/initial/0.txt", "src/articles/initial/css/0.css"];
     	common(id, entry);
-    	
-    	function loadJScript() {
-   			var script = document.createElement("script");
-   			script.type = "text/javascript";
-   			script.src = "https://api.map.baidu.com/api?v=2.0&ak=YuGjSFyOKOnxRrTzrEgz8OkVpFb9h9Kn&callback=init&s=1";
-   			document.body.appendChild(script);
-   		}
-   		function init() {
-   			var map = new BMap.Map("allmap");
-   			var point = new BMap.Point(110.073604,33.233946);
-   			map.centerAndZoom(point,15);                 
-   			map.enableScrollWheelZoom();
-   		}  
-    	if(document.getElementById("allmap")) window.onload = loadJScript;
 	</script>
 </body>
 </html>
