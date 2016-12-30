@@ -1,6 +1,51 @@
 <div class="section part1">
 	<h2>hello 漫川关镇</h2>
-	<div>漫川关，一座人文景观浓厚、民风淳朴且热情好客的古镇，这里远离都市的喧闹，亲近自然，于山水之间静候春夏秋冬。纯净的天空、葱郁的山群、清澈的河流、香火旺盛的鲁班庙以及历史久远的武昌会馆……</div>
+	<div style="margin: 10px 0;">漫川关，一座人文景观浓厚、民风淳朴且热情好客的古镇，这里远离都市的喧嚣，亲近自然，于山水之间静候春夏秋冬。纯净的天空、葱郁的山群、清澈的河流、香火旺盛的鲁班庙以及历史久远的武昌会馆……纵使你的足迹遍及祖国多娇的山河，漫川古镇还是执着为你留守，心依旧，热烈欢迎你的来访，愿这份望穿秋水的苦终能换回与你相逢的喜悦！漫川古镇欢迎您！</div>
+	<div style="border: 1px solid rgba(255, 255, 255, 0.3); background-color: white;">
+		<div class="w3-container w3-center w3-blue" style="margin: -1px;">
+			<h2>古镇印象</h2>
+		</div>
+		<div class="w3-row-padding w3-margin-top">
+			<div class="w3-third">
+				<div class="w3-card-2">
+					<img src="src/articles/initial/images/img_01.jpg" style="width: 100%">
+					<div class="w3-container w3-text-black"><h6>古镇牌坊</h6></div>
+				</div>
+			</div>
+			<div class="w3-third">
+				<div class="w3-card-2">
+					<img src="src/articles/initial/images/img_02.jpg" style="width: 100%">
+					<div class="w3-container w3-text-black"><h6>会馆概览</h6></div>
+				</div>
+			</div>
+			<div class="w3-third">
+				<div class="w3-card-2">
+					<img src="src/articles/initial/images/img_03.jpg" style="width: 100%">
+					<div class="w3-container w3-text-black"><h6>武昌会馆</h6></div>
+				</div>
+			</div>
+		</div>
+		<div class="w3-row-padding w3-margin-top w3-margin-bottom">
+			<div class="w3-third">
+				<div class="w3-card-2">
+					<img src="src/articles/initial/images/img_04.jpg" style="width: 100%">
+					<div class="w3-container w3-text-black"><h6>鲁班庙</h6></div>
+				</div>
+			</div>
+			<div class="w3-third">
+				<div class="w3-card-2">
+					<img src="src/articles/initial/images/img_05.jpg" style="width: 100%">
+					<div class="w3-container w3-text-black"><h6>楼阁剪影</h6></div>
+				</div>
+			</div>
+			<div class="w3-third">
+				<div class="w3-card-2">
+					<img src="src/articles/initial/images/img_06.jpg" style="width: 100%">
+					<div class="w3-container w3-text-black"><h6>荷塘碧色</h6></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="section part2">
 	<h2>地理位置</h2>
