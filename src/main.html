@@ -484,7 +484,7 @@ body {
             <div id="leftmenuinnerinner">
                 <div class="sidenav-content w3-text-white">
                     <h2><span>古镇景色</span></h2>
-                    <a target="_top" href="javascript:void(0);" onclick="request('src/articles/01/01_1/0001.txt');">站点测试</a>
+                    <a target="_top" href="javascript:void(0);" onclick="request('src/articles/01/01_1/0001.txt','main');">站点测试</a>
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <a target="_top" href="javascript:void(0);">站点测试</a>
                     <br>
@@ -669,19 +669,19 @@ body {
     <script src="lib/js/base.js"></script>
     <script src="lib/js/extension.js"></script>
     <script>
-		function common(id, entry) {
+		function common(entry, id) {
 			if((typeof id) == "object" && (typeof entry) == "object" && id.length == entry.length) {
 				if(id.length == 1) {
-					request(id[0], entry[0]);
+					request(entry[0], id[0]);
 				} else if(id.length == 2) {
-					request(id[0], entry[0]);
-					request(id[1], entry[1]);
+					request(entry[0], id[0]);
+					request(entry[1], id[1]);
 				}
 			}
 		}
 		var id = ["main", "myst"];
     	var entry = ["src/articles/initial/0.txt", "src/articles/initial/css/0.css"];
-    	common(id, entry);
+    	common(entry, id);
 	</script>
 </body>
 </html>
