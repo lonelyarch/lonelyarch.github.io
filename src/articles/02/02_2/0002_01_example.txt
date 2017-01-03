@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>多列布局</title>
+<style>
+.newspaper {
+    -moz-column-count: 3; /* Firefox */
+    -webkit-column-count: 3; /* Safari and Chrome */
+    column-count: 3;
+}
+</style>
+</head>
+<body>
+    <div class="newspaper">
+        戏曲唱词选段：<br>
+        為救李郎離家園，誰料皇榜中狀元，中狀元著紅袍，帽插宮花好哇，好新鮮哪！我也曾赴過琼林宴，我也曾打馬御街前，人人夸我潘安貌，原來紗帽照哇，照嬋娟哪！我考狀元不為把名显，我考狀元不為做高官，為了多情的李公子，夫妻恩愛花兒好月兒圓哪！
+    </div>
+</body>
+</html>

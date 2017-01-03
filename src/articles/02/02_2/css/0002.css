@@ -1,0 +1,26 @@
+.w3-light-grey {
+    background-color: #f1f1f1 !important;
+    color: #000 !important;
+}
+
+.w3-padding-jumbo {
+    padding: 16px 32px !important;
+}
+
+.w3-center {
+    text-align: center !important;
+}
+
+.newspaper {
+    -moz-column-count: 3;
+    -moz-column-gap: 40px;
+    -moz-column-rule: 1px solid lightgrey;
+    column-count: 3;
+    column-gap: 40px;
+    column-rule: 1px solid lightgrey;
+    padding: 15px;
+}
+
+.w3-large {
+    font-size: 18px !important;
+}

@@ -515,8 +515,8 @@ body {
                 	<div class="section_4">
 	                    <h2><span>CSS</span></h2>
 	                    <div>
-		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,'src/articles/02/02_2/0001.txt');">CSS 定位</a>
-		                    <a target="_top" href="javascript:void(0);">站点测试</a> 
+		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,['src/articles/02/02_2/0001.txt']);">CSS 定位</a>
+		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,['src/articles/02/02_2/0002.txt', 'src/articles/02/02_2/css/0002.css']);">CSS 多列布局</a> 
 		                    <a target="_top" href="javascript:void(0);">站点测试</a>
 	                    </div>
 	                    <br>
@@ -669,16 +669,6 @@ body {
     <script src="lib/js/base.js"></script>
     <script src="lib/js/extension.js"></script>
     <script>
-		function common(entry, id) {
-			if((typeof id) == "object" && (typeof entry) == "object" && id.length == entry.length) {
-				if(id.length == 1) {
-					request(entry[0], id[0]);
-				} else if(id.length == 2) {
-					request(entry[0], id[0]);
-					request(entry[1], id[1]);
-				}
-			}
-		}
 		var id = ["main", "myst"];
     	var entry = ["src/articles/initial/0.txt", "src/articles/initial/css/0.css"];
     	common(entry, id);

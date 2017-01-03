@@ -1,0 +1,119 @@
+<article>
+    <h1>CSS 多列布局</h1>
+    <hr>
+    <p>什么是多列布局？直接看效果：</p>
+    <div style="border: 1px solid #ddd">
+        <div class="w3-light-grey w3-padding-jumbo w3-center">
+            <h3>人民日报</h3>
+        </div>
+        <p class="newspaper">
+            <span class="w3-large">人民日报</span><br>
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人民日报（People's Daily）是中国共产党中央委员会机关报，于 1948 年 6 月 15 日在河北省平山县里庄创刊。时由《晋察冀日报》和晋冀鲁豫《人民日报》合并而成，为华北中央局机关报，同时担负党中央机关报职能。毛泽东同志亲笔为人民日报题写报名。
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1949 年 3 月 15 日，人民日报随中央机关迁入北平；8 月 1 日，中共中央决定人民日报为中国共产党中央委员会机关报，并沿用 1948 年 6 月 15 日的期号。
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1992 年，人民日报被联合国教科文组织评为世界十大报纸之一。
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人民日报坚持正确办报方向，积极宣传党的理论和路线方针政策，积极宣传中央重大决策部署，及时传播国内外各领域信息，为中国共产党团结带领全国人民夺取革命、建设、改革的伟大胜利作出了重要贡献。
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……
+        </p>
+    </div>
+    <p>注释：以上示例文字来自<a target="_blank" href="https://baike.baidu.com/" style="color: blue;">《百度百科》</a>。</p>
+    <p>提及多列布局，很容易让人联想到 Bootstrap 的响应式、移动设备优先的流式<a target="_blank" href="http://v3.bootcss.com/css/" style="color: blue;">栅格系统 </a>，对流式栅格系统的学习请自行查阅相关文档，本文主要是对 CSS3 的多列布局做简要介绍，以文本对象为例做相应演示。</p>
+    <p>与CSS 多列布局相关的属性如下所示：</p>
+    <table class="w3-table w3-striped">
+        <tr>
+            <th class="w3-center">属性</th>
+            <th class="w3-center">作用</th>
+        </tr>
+        <tr>
+            <td class="w3-center">column-count</td>
+            <td class="w3-center">指定元素将要被分割的列数</td>
+        </tr>
+        <tr>
+            <td class="w3-center">column-gap</td>
+            <td class="w3-center">指定列间距</td>
+        </tr>
+        <tr>
+            <td class="w3-center">column-rule-style</td>
+            <td class="w3-center">指定列与列之间的边框式样</td>
+        </tr>
+        <tr>
+            <td class="w3-center">column-rule-width</td>
+            <td class="w3-center">指定列与列之间的边框厚度</td>
+        </tr>
+        <tr>
+            <td class="w3-center">column-rule-color</td>
+            <td class="w3-center">指定列与列之间的边框颜色</td>
+        </tr>
+        <tr>
+            <td class="w3-center">column-rule</td>
+            <td class="w3-center">该属性是所有 column-rule-* 属性的简写形式</td>
+        </tr>
+        <tr>
+            <td class="w3-center">column-span</td>
+            <td class="w3-center">指定元素将要跨越的列数</td>
+        </tr>
+        <tr>
+            <td class="w3-center">column-width</td>
+            <td class="w3-center">指定列宽</td>
+        </tr>
+    </table>
+    <hr>
+    <div class="w3-example">
+        <h3>CSS 创建多列</h3>
+        <p><span style="color: red;">column-count</span> 属性指定元素将要被分割的列数。以下示例将 &lt;div&gt; 元素内的文本划分为 3 列：</p>
+        <div class="w3-code">
+            div {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-webkit-column-count: 3; /* Chrome, Safari, Opera */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-moz-column-count: 3; /* Firefox */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;column-count: 3; <br>
+            }<br>
+        </div>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0002_01_example.txt');">Try it Yourself »</a>
+    </div>
+    <hr>
+    <div class="w3-example">
+        <h3>CSS 指定列间距</h3>
+        <p><span style="color: red;">column-gap</span> 属性指定列与列之间的距离。以下示例指定列与列之间的距离为 80 像素：</p>
+        <div class="w3-code">
+            div {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-webkit-column-gap: 80px; /* Chrome, Safari, Opera */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-moz-column-gap: 80px; /* Firefox */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;column-gap: 80px; <br>
+            }<br>
+        </div>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0002_02_example.txt');">Try it Yourself »</a>
+    </div>
+    <hr>
+    <div class="w3-example">
+        <h3>CSS 指定列边框</h3>
+        <p><span style="color: red;">column-rule</span> 属性指定列与列之间的边框厚度、样式、颜色。以下示例指定列与列之间的边框为 5 像素厚度、点状线、蓝色：</p>
+        <div class="w3-code">
+            div {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-webkit-column-rule: 5px dotted blue; /* Chrome, Safari, Opera */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-moz-column-rule: 5px dotted blue; /* Firefox */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;column-rule: 5px dotted blue; <br>
+            }<br>
+        </div>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0002_03_example.txt');">Try it Yourself »</a>
+    </div>
+    <hr>
+    <div class="w3-example">
+        <h3>CSS 指定列宽</h3>
+        <p><span style="color: red;">column-width</span> 属性指定列宽。以下示例指定列宽为 100 像素：</p>
+        <div class="w3-code">
+            div {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-webkit-column-width: 100px; /* Chrome, Safari, Opera */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-moz-column-width: 100px; /* Firefox */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;column-width: 100px; <br>
+            }<br>
+        </div>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0002_04_example.txt');">Try it Yourself »</a>
+    </div>
+    <hr>
+    <p>总结：由于当前的各浏览器对多列布局的支持不尽相同，就 W3C 目前提供的文档 <a target="_blank" href="https://www.w3.org/TR/css3-multicol/" style="color: blue;">CSS Multi-column Layout Module</a> 而言，本文只是对多列布局中的部分属性做了简要介绍和演示，如有十分好学的同学想深入研究的，请自行阅读相关文档。自己动手，丰衣足食。</p>
+</article>
+<br>
+<br>
+<br>
+<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0002');" style="color: #428bca; text-decoration: none;">展开评论</a>
+<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+<div id="comment-box"></div>
