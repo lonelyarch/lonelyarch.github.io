@@ -1,0 +1,32 @@
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+div.polaroid {
+    padding: 10px 10px 20px 10px;
+    border: 1px solid #BFBFBF;
+    background-color: white;
+    box-shadow: 2px 2px 3px #aaaaaa;
+}
+
+div.rotate_l {
+    float: left;
+    -ms-transform: rotate(7deg);
+    -webkit-transform: rotate(7deg);
+    transform: rotate(7deg);
+}
+
+div.rotate_m {
+    float: left;
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+div.rotate_r {
+    float: left;
+    -ms-transform: rotate(-8deg);
+    -webkit-transform: rotate(-8deg);
+    transform: rotate(-8deg);
+}

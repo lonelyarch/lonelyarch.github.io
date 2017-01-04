@@ -1,0 +1,66 @@
+<article>
+    <h1>CSS 图片旋转</h1>
+    <hr>
+    <p>最近在学习 WEB 前端知识的时候看到了图片旋转的示例，加以利用，简单的图片墙就可轻松实现：</p>
+    <div class="w3-example">
+        <h3>CSS 图片旋转</h3>
+        <p><span style="color: red;">transform</span> 属性应用于元素的 2D 或 3D 转换，该属性可对元素进行旋转、缩放、移动等等。以下示例对 &lt;div&gt; 元素进行顺时针 45 度旋转：</p>
+        <div class="w3-code">
+            div {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;transform: rotate(45deg); /* 45degrees */ <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-ms-transform: rotate(45deg); <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;-webkit-transform: rotate(45deg); <br>
+            }<br>
+        </div>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0003_01_example.txt');">Try it Yourself »</a>
+    </div>
+    <p><span style="color: red;">transform</span> 属性可取值如下：</p>
+    <table class="w3-table w3-striped">
+        <tr>
+            <th class="w3-center">值</th>
+            <th class="w3-center">描述</th>
+        </tr>
+        <tr>
+            <td class="w3-center">none</td>
+            <td class="w3-center">定义不进行转换。</td>
+        </tr>
+        <tr>
+            <td class="w3-center">matrix(n,n,n,n,n,n)</td>
+            <td class="w3-center">定义 2D 转换，使用六个值的矩阵。</td>
+        </tr>
+        <tr>
+            <td class="w3-center">……</td>
+            <td class="w3-center">……</td>
+        </tr>
+        <tr>
+            <td class="w3-center">rotate(angle)</td>
+            <td class="w3-center">定义 2D 旋转，在参数中规定角度。</td>
+        </tr>
+        <tr>
+            <td class="w3-center">rotate3d(x,y,z,angle)</td>
+            <td class="w3-center">定义 3D 旋转。</td>
+        </tr>
+        <tr>
+            <td class="w3-center">……</td>
+            <td class="w3-center">……</td>
+        </tr>
+    </table>
+    <hr>
+    <div class="w3-example">
+        <h3>CSS 图片墙</h3>
+        <br>
+        <div class="polaroid rotate_l">
+            <img src="src/articles/02/02_2/images/0003_1.jpg">
+            <p class="caption">图片墙 2017-01-04</p>
+        </div>
+        <div class="polaroid rotate_m">
+            <img src="src/articles/02/02_2/images/0003_2.jpg">
+            <p class="caption">图片墙 2017-01-04</p>
+        </div>
+        <div class="polaroid rotate_r">
+            <img src="src/articles/02/02_2/images/0003_3.jpg">
+            <p class="caption">图片墙 2017-01-04</p>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</article>
