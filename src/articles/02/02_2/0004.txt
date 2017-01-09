@@ -1,0 +1,50 @@
+<article>
+    <div class="w3-container w3-light-gray" style="border-radius: 10px;">
+        <h3>前言：</h3>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 2016 年的 8 月份，本人参加了一场面试，这也是 2016 年里唯一一次面试，时运不济，留下了遗憾和不完美……废话多说无益，还是直接讲重点，本人意识到对 DB 优化方面的知识尚有欠缺，于是就写了这篇文字，也是对数据库相关知识的一次积累，就目前的工作履历和职业方向而言，本人对数据库的认识也是十分浅薄的，现在就 DB 优化的相关知识进行简要整理，如有纰漏，还请童鞋多包涵。</p>
+        <p>参考资料：<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimization.html" style="color: blue;">MySQL 官方文档-最优化</a>。</p>
+    </div>
+    <hr>
+    <header><h3>01. 优化概述</h3></header>
+    <hr>
+    <div class="w3-container w3-light-gray" style="border-radius: 10px;">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于数据库级别而言，数据库性能取决于多个因素，例如数据库表、查询以及配置环境。基于硬件级别而言，这些软件构建会占用 CPU 资源、导致 I/O 操作，而这些相关资源必须是以最低的占用率达到最高的运行效率。如果你致力于改善数据库性能的相关工作，那么，就软件方面而言，你应该先从理解软件的高级规则、指南以及利用执行时间（wall-clock time）测试性能入手。如果你打算成为一名数据库方面的专家，那么，你需要理解更多关于数据库内部运行原理的知识以及从测试 CPU 周期、I/O 操作等方面的工作开始。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通用户主要是基于现存的软硬件之上旨在获得数据库的最佳性能，高级用户则是寻求改善 MySQL 软件本身的可能或开发出自己的存储引擎和硬件设备以扩大 MySQL 的生态系统。</p>
+    </div>
+    <hr>
+    <section>
+        <div class="w3-panel w3-custom-color" style="border-radius: 10px;">
+            <h3>基于数据库级别的优化</h3>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使数据库应用高效的最重要因素在于它的基本设计：</p>
+            <ul>
+                <li><p>数据库表的结构化是否恰当？尤其是列（columns）的数据类型是否正确，每一张数据库表对当前的工作类型而言是否有合适的列（columns）？例如，执行频繁更新的应用通常是多表少列（many tables with few columns，即有多张表且每张表的列数较少），分析大数据的应用通常是少表多列。</p></li>
+                <li><p>为了提高查询效率，索引（<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimization-indexes.html" style="color: blue;">indexes</a>）的设置是否合理、恰当？</p></li>
+                <li>
+                    <p>你对每一张数据库表是否使用了合适的存储引擎？你是否充分利用了每一种存储引擎的优势和特性？尤其是事务型存储引擎（例如 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimizing-innodb.html" style="color: blue;">InnoDB</a>）的选择或非事务型存储引擎（例如 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimizing-myisam.html" style="color: blue;">MyISAM</a>）的选择对性能和可伸缩性是至关重要的。</p>
+                    <p><span style="color: red;">注意：</span>MySQL 5.5 以上版本已经将 InnoDB 作为了新建表的默认存储引擎。实践证明，高级 InnoDB 的性能特性意味着 InnoDB 表通常胜过简单的 MyISAM 表，尤其是对访问饱和的数据库而言。</p>
+                </li>
+                <li><p>每一张表是否使用了适当的行格式？该选择也取决于当前表所使用的存储引擎。尤其，压缩表在使用更少的磁盘空间的同时也减少了读写数据时磁盘的 I/O 操作。压缩对各种基于 InnoDB 表的工作负担和只读 MyISAM 表均有效。</p></li>
+                <li><p>当前应用是否使用了适当的锁策略（<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/locking-issues.html" style="color: blue;">locking strategy</a>）？例如，在适当的时候允许共享访问以便数据库操作可以并发执行，在适当的时候请求独占访问以便关键操作可以获得最高优先级。再者，存储引擎的选择意义重大。InnoDB 存储引擎可自行处理绝大多数的锁问题而不必人为参与，更好地支持数据库并发性，减少测算次数以及调整代码。</p></li>
+                <li><p>所有为缓存预留的内存区域（<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/buffering-caching.html" style="color: blue;">memory areas used for caching</a>）大小是否得当？这就是，既确保有足够的缓存区大小以支持数据的频繁访问又不至于因为缓存区太大而超过了物理内存以致产生内存分页。配置主存（即内存）的是 InnoDB 缓冲池、MyISAM 键缓存（key cache）以及 MySQL 查询缓存。</p></li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <div class="w3-panel w3-custom-color" style="border-radius: 10px;">
+            <h3>基于硬件级别的优化</h3>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;随着数据库所担工作负荷的不断增加，任何数据库应用终究会因为硬件设备而受限。DBA 必须评估是否有调整应用的可能或重新配置服务器以避免这些瓶颈（<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/glossary.html" style="color: blue;">bottlenecks</a>），或是否需要更多的硬件资源。系统瓶颈通常由以下资源引起：</p>
+            <ul>
+                <li><p>磁盘寻道。磁盘查找块数据需要消耗时间，使用现代磁盘，这个时间通常在 10ms 内，理论上每秒能够查找 100 次。新的磁盘对这个消耗时间改善较慢，并且，对单表而言，该消耗时间也很难优化。优化寻道时间的方法是将数据分发到多个磁盘上。</p></li>
+                <li><p>磁盘读写。当磁盘处于适当状态，我们需要读写数据，使用现代磁盘，其传输速率至少在 10-20MB/s。这比寻道更易于优化，你可以从多个磁盘并行读取数据。</p></li>
+                <li><p>CPU 周期。当数据处于主存（即内存）时，我们需要对其进行处理以便得到我们想要的结果。相比内存容量，大表（large tables）是最为常见的受限因素，然而，在小表（small tables）的情况下，寻道通常不是问题。</p></li>
+                <li><p>存储带宽。当 CPU 所需数据量超过其自身的缓存容量时，主存（即内存）带宽成为瓶颈，对绝大多数系统而言，该瓶颈并不常见，但是，却不可忽略。</p></li>
+            </ul>
+        </div>
+    </section>
+</article>
+<br>
+<br>
+<br>
+<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0004');" style="color: #428bca; text-decoration: none;">展开评论</a>
+<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+<div id="comment-box"></div>
