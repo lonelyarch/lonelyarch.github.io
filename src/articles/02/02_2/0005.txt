@@ -1,0 +1,475 @@
+<article>
+    <header><h3>02. SQL 语句的优化</h3></header>
+    <hr>
+    <div class="w3-panel w3-light-gray">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无论是通过解释器直接发出还是通过 API 提交给后台，数据库应用的核心逻辑都是通过 SQL 语句执行的。本章指南将帮助各种 MySQL 应用提速，该指南涵盖用于读写数据的 SQL 操作、SQL 操作时通常的后台开销情况以及用于诸如数据库监控等特定场景的操作。</p>
+    </div>
+    <div>
+        <button class="accordion">02.1&nbsp;&nbsp;SELECT 语句的优化</button>
+        <div class="panel">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查询是以 SELECT 语句的形式对数据库执行所有的查找操作，无论是对动态网页获取再次相应时间还是削减生成大量整夜报告的时间，调优这些语句将是最优先考虑的。</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除了 SELECT 语句之外，对查询的调优技术也可应用于诸如  CREATE TABLE...AS SELECT、INSERT INTO...SELECT 以及 修饰 DELETE 语句的 WHERE 从句，因为这些语句是将面向读取的查询操作与写操作相结合的，因此，对它们而言会有额外的性能考虑。</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MySQL 集群支持连接下推优化，以使达标的连接作用于整个 MySQL 集群中的数据节点，它将被分发且并行执行。有关该优化的更多信息，请阅读 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimization-indexes.html" style="color: blue;">Conditions for NDB pushdown joins</a>。</p>
+        </div>
+        <button class="accordion">02.2&nbsp;&nbsp;数据变更语句的优化</button>
+        <div class="panel">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该部分讲解如何提升数据变更语句的执行效率： INSERT、UPDATE 以及 DELETE。传统的 OLTP 应用和现代 WEB 应用通常会做很多小量的数据变更操作，并发至关重要。数据分析和报表应用通常会运行那些一次将影响多行的数据变更操作，而首要考虑的是写入大量数据的 I/O 操作和保持索引的最新。对大量数据的插入和更新（例如业内熟知的 ETL，即 “extract-transform-load”），有时候你可能要使用其它 SQL 语句或外部命令行，它们将模拟 INSERT、UPDATE 以及 DELETE语句的执行效果。</p>
+        </div>
+        <button class="accordion">02.3&nbsp;&nbsp;数据库权限的优化</button>
+        <div class="panel">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;你的权限设置越复杂，对所有 SQL 语句的开销应用就越大。简化由 GRANT 语句建立的权限能够使 MySQL 在客户端执行语句时减少权限检查的开销。例如，如果你没有授予任何表级或列级权限，服务器不必检查 tables_priv 和 columns_priv 表的内容。相似地，如果你对任何账户不设置资源限制，服务器将不必执行资源计数。如果你有较高关于语句处理的加载，可以考虑使用简化的授权结构以减少权限检查的开销。</p>
+        </div>
+        <button class="accordion">02.4&nbsp;&nbsp;INFORMATION_SCHEMA 查询的优化</button>
+        <div class="panel">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据库监控的应用可能使 INFORMATION_SCHEMA 表的使用很频繁，有关 INFORMATION_SCHEMA 表特定类型的查询可被优化以提高执行效率，我们的目标是最小化文件操作（例如，目录扫描或打开表文件）以收集构成这些动态表的信息。</p>
+            <p><span style="color: red;">注意：</span>比较对数据库和表名基于 INFORMATION_SCHEMA 查询的行为可能与你期望的不同。详情请阅读 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/charset-collation-information-schema.html" style="color: blue;">Using Collation in INFORMATION_SCHEMA Searches</a>。</p>
+            <p style="font-weight: bold;">1）&nbsp;&nbsp;在 WHERE 从句中尝试对数据库和表名使用常量查找值</p>
+            <p>你可以遵循以下原则：</p>
+            <ul>
+                <li><p>查找数据库或表，使用趋于常量的表达式，例如，文本值、返回常量的函数或标量子查询。</p></li>
+                <li><p>避免使用非常量的数据库名查找值（或无查找值）的查询，因为它们需要做数据目录的扫描以找到匹配的数据库目录名。</p></li>
+                <li><p>基于数据库而言，避免使用非常量的表名查找值（或无查找值）的查询，因为它们需要做数据库目录的扫描以找到匹配的表文件。</p></li>
+            </ul>
+            <p>该原则应用于呈现在以下表格内的 INFORMATION_SCHEMA 表，表格呈现了使服务器避免目录扫描的常量查找值对应的列。例如，如果你以  TABLES 查询为基础，在 WHERE 从句中对 TABLE_SCHEMA 使用常量查找值可以避免数据目录扫描。</p>
+            <table>
+                <colgroup><col><col></colgroup>
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Column to specify to avoid data directory scan</th>
+                        <th>Column to specify to avoid database directory scan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/columns-table.html">COLUMNS</a></td>
+                        <td>TABLE_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/key-column-usage-table.html">KEY_COLUMN_USAGE</a></td>
+                        <td>TABLE_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/partitions-table.html">PARTITIONS</a></td>
+                        <td>TABLE_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/referential-constraints-table.html">REFERENTIAL_CONSTRAINTS</a></td>
+                        <td>CONSTRAINT_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/statistics-table.html">STATISTICS</a></td>
+                        <td>TABLE_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/tables-table.html">TABLES</a></td>
+                        <td>TABLE_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/table-constraints-table.html">TABLE_CONSTRAINTS</a></td>
+                        <td>TABLE_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/triggers-table.html">TRIGGERS</a></td>
+                        <td>EVENT_OBJECT_SCHEMA</td>
+                        <td>EVENT_OBJECT_TABLE</td>
+                    </tr>
+                    <tr>
+                        <td><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/views-table.html">VIEWS</a></td>
+                        <td>TABLE_SCHEMA</td>
+                        <td>TABLE_NAME</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>将查询限定在指定常量的数据库名的好处在于只对该名称的数据库目录进行所需检查。例如：</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'test';</pre>
+            <p>文本数据库名 <span style="font-weight: bold;">test</span> 的使用使得服务器只检查 <span style="font-weight: bold;">test</span> 数据库目录，从而忽略可能存在的多个数据库。相比之下，以下查询效率较低，原因是它需要做数据目录的扫描以确定匹配 <span style="font-weight: bold;">'test%'</span> 模式的数据库：</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA LIKE 'test%';</pre>
+            <p>对受限于指定常量的表名的查询而言，检查只需要作用于相应的数据库目录下的对应名称的表。例如：</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'test' AND TABLE_NAME = 't1';</pre>
+            <p>文本表名 <span style="font-weight: bold;">t1</span> 的使用使得服务器只需要检查 <span style="font-weight: bold;">t1</span> 表的相关文件，从而忽略 <span style="font-weight: bold;">test</span> 数据库内可能存在的多张表。相比之下，以下查询需要对 <span style="font-weight: bold;">test</span> 数据库目录进行扫描以确定匹配 <span style="font-weight: bold;">'t%'</span> 模式的表名：</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'test' AND TABLE_NAME LIKE 't%';</pre>
+            <p>以下查询需要扫描数据目录以确定匹配 <span style="font-weight: bold;">'test%'</span> 模式的数据库名，对每个匹配的数据库，它需要做数据库目录扫描以确定匹配 <span style="font-weight: bold;">'t%'</span> 模式的表名：</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'test%' AND TABLE_NAME LIKE 't%';</pre>
+            <p style="font-weight: bold;">2）&nbsp;&nbsp;编写查询时尽可能考虑最小化必须打开的表文件的个数</p>
+            <p>对涉及某些 INFORMATION_SCHEMA 表的列的查询，多个优化以最小化必须打开的表文件的个数是可行的。例如：</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT TABLE_NAME, ENGINE FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'test';</pre>
+            <p>就本例而言，服务器在扫面数据库目录以确定数据库内的表名之后，这些表名变为可用且不再需要文件系统查找，因而，在获取 TABLE_NAME 字段时不必打开相关文件。在不触及其它表文件诸如 <span style="font-weight: bold;">.MYD</span> 或 <span style="font-weight: bold;">.MYI</span> 文件的情况下，ENGINE（存储引擎）值可通过打开表内的 <span style="font-weight: bold;">.frm</span> 文件确定。</p>
+            <p>某些值，例如，对使用 MyISAM 引擎的表的 INDEX_LENGTH 而言就需要打开 <span style="font-weight: bold;">.MYD</span> 文件或 <span style="font-weight: bold;">.MYI</span> 文件。</p>
+            <p>如下代表文件打开优化类型：</p>
+            <ul>
+                <li><p>SKIP_OPEN_TABLE: 不必打开表文件。该信息已在通过扫面数据库目录的查询中可用。</p></li>
+                <li><p>OPEN_FRM_ONLY: 只需要打开表内 <span style="font-weight: bold;">.frm</span> 文件。</p></li>
+                <li><p>OPEN_TRIGGER_ONLY: 只需要打开表内 <span style="font-weight: bold;">.TRG</span> 文件。</p></li>
+                <li><p>OPEN_FULL_TABLE: 无优化信息查找。<span style="font-weight: bold;">.frm</span>、<span style="font-weight: bold;">.MYD</span> 以及 <span style="font-weight: bold;">.MYI</span> 文件必须打开。</p></li>
+            </ul>
+            <p>以下列表明确以上优化类型是如何应用于 INFORMATION_SCHEMA 表的相关列的。对没有命名的表和列而言将无法进行优化应用。</p>
+            <ul>
+                <li><p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/columns-table.html">COLUMNS</a>:  OPEN_FRM_ONLY 应用于所有列。</p></li>
+                <li><p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/key-column-usage-table.html">KEY_COLUMN_USAGE</a>: OPEN_FULL_TABLE 应用于所有列。</p></li>
+                <li><p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/partitions-table.html">PARTITIONS</a>: OPEN_FULL_TABLE 应用于所有列。</p></li>
+                <li><p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/referential-constraints-table.html">REFERENTIAL_CONSTRAINTS</a>: OPEN_FULL_TABLE 应用于所有列。</p></li>
+                <li>
+                    <p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/statistics-table.html">STATISTICS</a>:</p>
+                    <table style="max-width: 425px;">
+                        <colgroup><col><col></colgroup>
+                        <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Optimization type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TABLE_CATALOG</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_SCHEMA</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_NAME</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>NON_UNIQUE</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>INDEX_SCHEMA</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>INDEX_NAME</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>SEQ_IN_INDEX</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>COLUMN_NAME</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>COLLATION</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>CARDINALITY</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>SUB_PART</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>PACKED</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>NULLABLE</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>INDEX_TYPE</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>COMMENT</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+                <li>
+                    <p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/tables-table.html">TABLES</a>:</p>
+                    <table style="max-width: 425px;">
+                        <colgroup><col><col></colgroup>
+                        <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Optimization type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TABLE_CATALOG</td>
+                                <td>SKIP_OPEN_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_SCHEMA</td>
+                                <td>SKIP_OPEN_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_NAME</td>
+                                <td>SKIP_OPEN_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_TYPE</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>ENGINE</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>VERSION</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>ROW_FORMAT</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_ROWS</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>AVG_ROW_LENGTH</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>DATA_LENGTH</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>MAX_DATA_LENGTH</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>INDEX_LENGTH</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>DATA_FREE</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>AUTO_INCREMENT</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>CREATE_TIME</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>UPDATE_TIME</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>CHECK_TIME</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_COLLATION</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>CHECKSUM</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>CREATE_OPTIONS</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_COMMENT</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+                <li><p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/table-constraints-table.html">TABLE_CONSTRAINTS</a>: OPEN_FULL_TABLE 应用于所有列。</p></li>
+                <li><p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/triggers-table.html">TRIGGERS</a>: OPEN_TRIGGER_ONLY 应用于所有列。</p></li>
+                <li>
+                    <p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/views-table.html">VIEWS</a>:</p>
+                    <table style="max-width: 425px;">
+                        <colgroup><col><col></colgroup>
+                        <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Optimization type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TABLE_CATALOG</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_SCHEMA</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>TABLE_NAME</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>VIEW_DEFINITION</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>CHECK_OPTION</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>IS_UPDATABLE</td>
+                                <td>OPEN_FULL_TABLE</td>
+                            </tr>
+                            <tr>
+                                <td>DEFINER</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>SECURITY_TYPE</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>CHARACTER_SET_CLIENT</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                            <tr>
+                                <td>COLLATION_CONNECTION</td>
+                                <td>OPEN_FRM_ONLY</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <p style="font-weight: bold;">3）&nbsp;&nbsp;使用 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 确定服务器是否能够对当前查询使用 INFORMATION_SCHEMA 优化</p>
+            <p>该方法尤其是应用于从多个数据库内检索信息的 INFORMATION_SCHEMA 查询，相关查询可能会耗时较长且影响性能。EXPLAIN 输出中的 <span style="font-weight: bold;">Extra</span> 值（如果有的话）指定服务器能够使用之前描述过的哪种优化以评估 INFORMATION_SCHEMA 查询。以下示例演示你期望在 <span style="font-weight: bold;">Extra</span> 值中看到的各种信息。</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">
+mysql> <strong>EXPLAIN SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE</strong>
+    -> <strong>TABLE_SCHEMA = 'test' AND TABLE_NAME = 'v1'\G</strong>
+*************************************** 1. row ***************************************
+           id: 1
+  select_type: SIMPLE
+        table: VIEWS
+         type: ALL
+possible_keys: NULL
+          key: TABLE_SCHEMA,TABLE_NAME
+      key_len: NULL
+          ref: NULL
+         rows: NULL
+        Extra: Using where; Open_frm_only; Scanned 0 databases
+</pre>
+            <p>常量数据库和表查找值的使用使得服务器避免目录扫描。对涉及 VIEWS.TABLE_NAME 而言，只需打开 <strong>.frm</strong> 文件。</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">
+mysql> <strong>EXPLAIN SELECT TABLE_NAME, ROW_FORMAT FROM INFORMATION_SCHEMA.TABLES\G</strong>
+*************************************** 1. row ***************************************
+           id: 1
+  select_type: SIMPLE
+        table: TABLES
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: NULL
+        Extra: Open_full_table; Scanned all databases
+</pre>
+            <p>没有提供查找值（即没有 WHERE 从句），服务器必须扫描数据目录和每一个数据库目录，对由此确定的每张表，要选择表名和行格式，对 TABLE_NAME 而言不必再打开表文件（SKIP_OPEN_TABLE 优化应用），对 ROW_FORMAT 而言则需要打开所有的表文件（OPEN_FULL_TABLE 应用）。<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 报告  OPEN_FULL_TABLE 是因为它的执行开销要大于 SKIP_OPEN_TABLE。</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">
+mysql> <strong>EXPLAIN SELECT TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES</strong>
+    -> <strong>WHERE TABLE_SCHEMA = 'test'\G</strong>
+*************************************** 1. row ***************************************
+           id: 1
+  select_type: SIMPLE
+        table: TABLES
+         type: ALL
+possible_keys: NULL
+          key: TABLE_SCHEMA
+      key_len: NULL
+          ref: NULL
+         rows: NULL
+        Extra: Using where; Open_frm_only; Scanned 1 database
+</pre>
+            <p>没有提供表名查找值，服务器必须扫描 <strong>test</strong> 数据库目录。对 TABLE_NAME 和 TABLE_TYPE 列，SKIP_OPEN_TABLE 和 OPEN_FRM_ONLY 优化分别予以应用。<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 报告 OPEN_FRM_ONLY 是因为它的执行开销更大。</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">
+mysql> <strong>EXPLAIN SELECT B.TABLE_NAME</strong>
+    -> <strong>FROM INFORMATION_SCHEMA.TABLES AS A, INFORMATION_SCHEMA.COLUMNS AS B</strong>
+    -> <strong>WHERE A.TABLE_SCHEMA = 'test'</strong>
+    -> <strong>AND A.TABLE_NAME = 't1'</strong>
+    -> <strong>AND B.TABLE_NAME = A.TABLE_NAME\G</strong>
+*************************************** 1. row ***************************************
+           id: 1
+  select_type: SIMPLE
+        table: A
+         type: ALL
+possible_keys: NULL
+          key: TABLE_SCHEMA,TABLE_NAME
+      key_len: NULL
+          ref: NULL
+         rows: NULL
+        Extra: Using where; Skip_open_table; Scanned 0 databases
+*************************************** 2. row ***************************************
+           id: 1
+  select_type: SIMPLE
+        table: B
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: NULL
+        Extra: Using where; Open_frm_only; Scanned all databases;
+               Using join buffer            
+</pre>
+            <p>对第一个 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 输出行而言：常量数据库和表查找值使得服务器避免为 TABLES 值做目录扫描。对 TABLES.TABLE_NAME 而言是不再需要表文件的。</p>
+            <p>对第二个 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 输出行而言：所有 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/columns-table.html">COLUMNS</a> 表值均为 OPEN_FRM_ONLY 查找，因此，COLUMNS.TABLE_NAME 需要打开 <strong>.frm</strong> 文件。</p>
+            <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">
+mysql> <strong>EXPLAIN SELECT * FROM INFORMATION_SCHEMA.COLLATIONS\G</strong>
+*************************************** 1. row ***************************************
+           id: 1
+  select_type: SIMPLE
+        table: COLLATIONS
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: NULL
+        Extra:
+</pre>
+        <p>该例没有优化应用，因为 <a>COLLATIONS</a> 是 INFORMATION_SCHEMA 各表中没有可用优化的表之一。</p>
+        </div>
+        <button class="accordion">02.5&nbsp;&nbsp;其它优化技巧</button>
+        <div class="panel">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该部分列出了一些用以提升查询处理速度的杂项技巧：</p>
+            <ul>
+                <li><p>如果你的应用是做多个数据库请求以执行相关更新，那么，将各语句结合成为存储程序有助于性能提升。相似地，如果你的应用是基于多个列值或大量的数据以计算得出单个结果，那么，将计算过程转化为 UDF（user-defined function，即用户自定义方法）有助于性能提升。进而，致使快速的数据库操作可被其它查询、应用甚至是以不同编程语言写就的代码复用。更多信息请阅读 <a class="w3-text-blue" target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/stored-routines.html">Using Stored Routines (Procedures and Functions)</a> 和 <a class="w3-text-blue" target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/adding-functions.html">Adding New Functions to MySQL</a>。</p></li>
+                <li><p>修复任何与 ARCHIVE 表发生的压缩问题时，使用 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimize-table.html">OPTIMIZE TABLE</a>。请阅读<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/archive-storage-engine.html">The ARCHIVE Storage Engine</a>。</p></li>
+                <li><p>如果可能，对报告做诸如 “live” 或 “statistical” 的归类，这使得统计报表所需的数据只由来自于从实时数据中定期生成的汇总表的数据创建。</p></li>
+                <li><p>如果你对某些数据是否适用于行列表结构还不太确定，你可以将数据打包存入 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/blob.html">BLOB</a> 列。对该示例而言，你必须在你的应用中提供用以打包、解包信息的代码，然而，该做法可以节省用以读写相关值集合的 I/O 操作。</p></li>
+                <li><p>应用 WEB 服务器，存储图片和其它二进制文件时是以路径名而非文件自身存储于数据库中的，然而，绝大多数 WEB 服务器缓存文件优于数据库内容，因此，使用文件通常较快。（尽管，就此例而言，你必须处理自身的备份和存储问题。）</p></li>
+                <li><p>如果你确实需要高速，那么，可以查看 MySQL 的底层接口。例如，通过直接访问 MySQL 的 InnoDB 或 MyISAM 存储引擎，相比使用 SQL 接口，你可以获得可观的速度提升。</p></li>
+                <li><p>复制对某些操作而言可以提供性能益处。你可以在复制服务器中分配客户端检索以分割负载。为了避免在备份时降低主服务器的运行速度，你可以使用从服务器进行备份。请阅读 <a class="w3-text-blue" target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/replication.html">Replication</a>。</p></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+        for (i = 0; i < acc.length; i++) {
+            acc[i].onclick = function() {
+                this.classList.toggle("active");
+                this.nextElementSibling.classList.toggle("show");
+            }
+        }
+    </script>
+</article>
+<br>
+<br>
+<br>
+<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0004');" style="color: #428bca; text-decoration: none;">展开评论</a>
+<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+<div id="comment-box"></div>
