@@ -34,10 +34,10 @@
                 <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.21&nbsp;&nbsp;行构造器表达式优化</a></p></li>
                 <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.22&nbsp;&nbsp;如何避免全表扫描</a></p></li>
             </ul>
-            <div id="suModal" class="w3-modal" style="padding-top: 30px;">
+            <div id="suModal" class="w3-modal" style="padding-top: 50px;">
                 <div class="w3-modal-content w3-animate-zoom" style="margin-bottom: 10px;">
                     <header class="w3-container" style="background-color: #5f5f5f; color: #f1f1f1;">
-                        <span onclick="document.getElementById('suModal').style.display='none';" class="w3-closebtn" style="font-size: 22px; padding: 8px 20px !important;">×</span>
+                        <span onclick="document.getElementById('suModal').style.display='none';document.getElementsByTagName('html')[0].style.overflowY='auto';" class="w3-closebtn" style="font-size: 22px; padding: 8px 20px !important;">×</span>
                         <h5>SELECT 语句的优化</h5>
                     </header>
                     <div style="height: 500px;">
@@ -540,6 +540,7 @@ possible_keys: NULL
             	var v = this.getAttribute("idx");
             	e_s.children[v].className = "w3-text-blue";
             	request("src/articles/02/02_2/0005/0005_02_1_" + v + ".txt", "myContent");
+            	document.getElementsByTagName("html")[0].style.overflowY = "hidden";
             }
             e_s.children[i].onclick = function() {
             	for(var j=0; j<len; j++) {
