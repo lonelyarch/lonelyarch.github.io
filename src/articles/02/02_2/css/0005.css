@@ -51,7 +51,7 @@ table {
     width: 100%;
 }
 
-td, th {
+td, th, pre, p {
     overflow: hidden;
     text-overflow: ellipsis;
 }
