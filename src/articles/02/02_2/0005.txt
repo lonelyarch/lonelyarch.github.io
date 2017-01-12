@@ -10,6 +10,67 @@
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查询是以 SELECT 语句的形式对数据库执行所有的查找操作，无论是对动态网页获取再次相应时间还是削减生成大量整夜报告的时间，调优这些语句将是最优先考虑的。</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除了 SELECT 语句之外，对查询的调优技术也可应用于诸如  CREATE TABLE...AS SELECT、INSERT INTO...SELECT 以及 修饰 DELETE 语句的 WHERE 从句，因为这些语句是将面向读取的查询操作与写操作相结合的，因此，对它们而言会有额外的性能考虑。</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MySQL 集群支持连接下推优化，以使达标的连接作用于整个 MySQL 集群中的数据节点，它将被分发且并行执行。有关该优化的更多信息，请阅读 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimization-indexes.html" style="color: blue;">Conditions for NDB pushdown joins</a>。</p>
+        	<ul id="myCatalog_m">
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.01&nbsp;&nbsp;SELECT 语句的执行速度</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.02&nbsp;&nbsp;MySQL 如何优化 WHERE 从句</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.03&nbsp;&nbsp;范围优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.04&nbsp;&nbsp;索引合并优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.05&nbsp;&nbsp;引擎条件下推优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.06&nbsp;&nbsp;索引条件下推优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.07&nbsp;&nbsp;索引扩展的使用</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.08&nbsp;&nbsp;IS NULL 优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.09&nbsp;&nbsp;LEFT JOIN 和 RIGHT JOIN 优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.10&nbsp;&nbsp;NLJ 算法</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.11&nbsp;&nbsp;嵌套连接优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.12&nbsp;&nbsp;外连接的简化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.13&nbsp;&nbsp;多范围读优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.14&nbsp;&nbsp;BNL 和 BKA 连接</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.15&nbsp;&nbsp;ORDER BY 优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.16&nbsp;&nbsp;GROUP BY 优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.17&nbsp;&nbsp;DISTINCT 优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.18&nbsp;&nbsp;子查询优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.19&nbsp;&nbsp;LIMIT 查询优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.20&nbsp;&nbsp;函数调用优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.21&nbsp;&nbsp;行构造器表达式优化</a></p></li>
+                <li><p><a class="w3-text-blue" href="javascript:void(0);">02.1.22&nbsp;&nbsp;如何避免全表扫描</a></p></li>
+            </ul>
+            <div id="suModal" class="w3-modal" style="padding-top: 30px;">
+                <div class="w3-modal-content w3-animate-zoom" style="margin-bottom: 10px;">
+                    <header class="w3-container" style="background-color: #5f5f5f; color: #f1f1f1;">
+                        <span onclick="document.getElementById('suModal').style.display='none';" class="w3-closebtn" style="font-size: 22px; padding: 8px 20px !important;">×</span>
+                        <h5>SELECT 语句的优化</h5>
+                    </header>
+                    <div style="height: 500px;">
+                        <div class="catalog w3-container w3-col l3" style="height: 100%; border-right: 1px solid black;">
+                            <nav id="myCatalog_s" style="padding-top: 12px;">
+                                <a href="javascript:void(0);">01.&nbsp;&nbsp;SELECT 语句的执行速度</a>
+                                <a href="javascript:void(0);">02.&nbsp;&nbsp;MySQL 如何优化 WHERE 从句</a>
+                                <a href="javascript:void(0);">03.&nbsp;&nbsp;范围优化</a>
+                                <a href="javascript:void(0);">04.&nbsp;&nbsp;索引合并优化</a>
+                                <a href="javascript:void(0);">05.&nbsp;&nbsp;引擎条件下推优化</a>
+                                <a href="javascript:void(0);">06.&nbsp;&nbsp;索引条件下推优化</a>
+                                <a href="javascript:void(0);">07.&nbsp;&nbsp;索引扩展的使用</a>
+                                <a href="javascript:void(0);">08.&nbsp;&nbsp;IS NULL 优化</a>
+                                <a href="javascript:void(0);">09.&nbsp;&nbsp;LEFT JOIN 和 RIGHT JOIN 优化</a>
+                                <a href="javascript:void(0);">10.&nbsp;&nbsp;NLJ 算法</a>
+                                <a href="javascript:void(0);">11.&nbsp;&nbsp;嵌套连接优化</a>
+                                <a href="javascript:void(0);">12.&nbsp;&nbsp;外连接的简化</a>
+                                <a href="javascript:void(0);">13.&nbsp;&nbsp;多范围读优化</a>
+                                <a href="javascript:void(0);">14.&nbsp;&nbsp;BNL 和 BKA 连接</a>
+                                <a href="javascript:void(0);">15.&nbsp;&nbsp;ORDER BY 优化</a>
+                                <a href="javascript:void(0);">16.&nbsp;&nbsp;GROUP BY 优化</a>
+                                <a href="javascript:void(0);">17.&nbsp;&nbsp;DISTINCT 优化</a>
+                                <a href="javascript:void(0);">18.&nbsp;&nbsp;子查询优化</a>
+                                <a href="javascript:void(0);">19.&nbsp;&nbsp;LIMIT 查询优化</a>
+                                <a href="javascript:void(0);">20.&nbsp;&nbsp;函数调用优化</a>
+                                <a href="javascript:void(0);">21.&nbsp;&nbsp;行构造器表达式优化</a>
+                                <a href="javascript:void(0);">22.&nbsp;&nbsp;如何避免全表扫描</a>
+                            </nav>
+                        </div>
+                        <div id="myContent" class="w3-container w3-col l9" style="height: 100%; font-size: 12px; overflow: auto;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <button class="accordion">02.2&nbsp;&nbsp;数据变更语句的优化</button>
         <div class="panel">
@@ -463,6 +524,29 @@ possible_keys: NULL
             acc[i].onclick = function() {
                 this.classList.toggle("active");
                 this.nextElementSibling.classList.toggle("show");
+            }
+        }
+        var e_m = document.getElementById("myCatalog_m");
+        var e_s = document.getElementById("myCatalog_s");
+        var len = (e_m.children.length || e_s.children.length);
+        for(var i=0; i<len; i++) {
+        	e_m.children[i].children[0].children[0].setAttribute("idx", i);
+        	e_s.children[i].setAttribute("idx", i);
+            e_m.children[i].children[0].children[0].onclick = function() {
+            	document.getElementById('suModal').style.display='block';
+            	for(var j=0; j<len; j++) {
+            		e_s.children[j].className = "";
+            	}
+            	var v = this.getAttribute("idx");
+            	e_s.children[v].className = "w3-text-blue";
+            	request("src/articles/02/02_2/0005/0005_02_1_" + v + ".txt", "myContent");
+            }
+            e_s.children[i].onclick = function() {
+            	for(var j=0; j<len; j++) {
+            		e_s.children[j].className = "";
+            	}
+            	this.className = "w3-text-blue";
+            	request("src/articles/02/02_2/0005/0005_02_1_" + this.getAttribute("idx") + ".txt", "myContent");
             }
         }
     </script>

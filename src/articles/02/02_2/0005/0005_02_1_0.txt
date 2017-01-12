@@ -1,0 +1,18 @@
+<h6 class="w3-blue w3-center w3-hide-large">01. SELECT 语句的执行速度</h6>
+<p>优化查询主要考虑以下内容：</p>
+<ul>
+    <li>
+        <p>想要让较慢的 <strong>SELECT ... WHERE</strong> 查询变得更快，最先考虑的就是检查是否可对该语句添加索引（<a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/glossary.html" style="color: blue;">index</a>）。对在 <strong>WHERE</strong> 从句中使用的列建立索引可提升评估、过滤以及检索最终结果的速度。为了避免占用过多的磁盘空间，可对在你的应用中使用的许多相关查询构建较小的索引集合以提升执行速度。</p>
+        <p>索引对那些引用多张表的查询尤其重要，这些查询通常会有诸如连接（<a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/glossary.html" style="color: blue;">joins</a>）、外键（<a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/glossary.html" style="color: blue;">foreign keys</a>）等特点。你可以使用 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 语句以确定对 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">SELECT</a> 添加哪些索引。请阅读 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/mysql-indexes.html" style="color: blue;">How MySQL Uses Indexes</a> 和 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/using-explain.html" style="color: blue;">Optimizing Queries with EXPLAIN</a>。</p>
+    </li>
+    <li><p>隔离、调优查询语句的任何部分，例如，耗时过多的函数调用。取决于查询语句的结构化，函数有可能会被结果集中的每一行调用一次，甚至是整张表的每一行，这放大了查询语句的低效。</p></li>
+    <li><p>在查询语句中最小化全表扫描（<a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/glossary.html">full table scans</a>）的次数，尤其是对大表而言。</p></li>
+    <li><p>定期地使用 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/analyze-table.html">ANALYZE TABLE</a> 语句保持表的统计为最新，以使优化器根据所需信息构建高效的执行计划。</p></li>
+    <li><p>理解调优技术、索引技术以及对每张表具体的存储引擎的配置参数。InnoDB 和 MyISAM 有可使查询维持高性能的指南集。详细信息请阅读 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/optimizing-innodb-queries.html" style="color: blue;">Optimizing InnoDB Queries</a> 和 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/optimizing-queries-myisam.html" style="color: blue;">Optimizing MyISAM Queries</a>。</p></li>
+    <li><p>你可以对 InnoDB 表优化单查询事物（single-query transactions），使用的技术请阅读 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/innodb-performance-ro-txn.html">Optimizing InnoDB Read-Only Transactions</a>。</p></li>
+    <li><p>避免将查询变更得晦涩难懂，尤其是在优化器会自动做出某些相同变更的时候。</p></li>
+    <li><p>如果根据基本指南还不能解决性能问题，那么，可通过阅读 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 计划和调整索引、WHERE 从句、连接从句等等来调查具体查询的内部详情。（当你掌握了一定水平的专业知识，面对任何查询，你第一步要做的很可能就是阅读 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 计划。）</p></li>
+    <li><p>调整 MySQL 用以缓存的内存区大小和属性。结合 InnoDB 缓冲池（<a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/glossary.html" style="color: blue;">buffer pool</a>）、MyISAM 键缓存以及 MySQL 查询缓存的高效使用，重复的查询会运行更快，原因在于第二次和后次的检索结果来自内存。</p></li>
+    <li><p>即便是对使用了内存缓冲区、运行较快的查询，你还可以做进一步优化以降低内存缓冲区的使用，让你的应用更加可扩展。可扩展性意味着你的应用在不牺牲较大性能的情况下能够同时处理更多用户、更大量的请求等等。</p></li>
+    <li><p>应对锁问题，在同时访问表时，你的查询速度可能会受其它会话的影响。</p></li>
+</ul>
