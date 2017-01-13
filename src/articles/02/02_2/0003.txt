@@ -51,15 +51,15 @@
         <br>
         <div class="polaroid rotate_l">
             <img src="src/articles/02/02_2/images/0003_1.jpg">
-            <p class="caption">图片墙 2017-01-04</p>
+            <p class="caption w3-center">图片墙 2017-01-04</p>
         </div>
         <div class="polaroid rotate_m">
             <img src="src/articles/02/02_2/images/0003_2.jpg">
-            <p class="caption">图片墙 2017-01-04</p>
+            <p class="caption w3-center">图片墙 2017-01-04</p>
         </div>
         <div class="polaroid rotate_r">
             <img src="src/articles/02/02_2/images/0003_3.jpg">
-            <p class="caption">图片墙 2017-01-04</p>
+            <p class="caption w3-center">图片墙 2017-01-04</p>
         </div>
         <div style="clear: both;"></div>
     </div>
@@ -67,6 +67,6 @@
 <br>
 <br>
 <br>
-<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0002');" style="color: #428bca; text-decoration: none;">展开评论</a>
+<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0003');" style="color: #428bca; text-decoration: none;">展开评论</a>
 <a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
 <div id="comment-box"></div>
