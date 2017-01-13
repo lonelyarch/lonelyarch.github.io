@@ -1,6 +1,7 @@
  <article>
-    <h1>CSS 定位</h1>
-    <hr>
+    <div><h1 style="display: inline;">CSS 定位</h1><h4 style="display: inline; margin: 40px 0 0 0;" class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
+    <div style="clear: both;"></div>
+    <hr style="margin-top: 0;">
     <p class="w3-tooltip">
         对很多初学 CSS(<em>Cascading Style Sheets</em>) 的同学来说，遭遇 <span style="background-color: #ececec; color: red;">position</span> 属性是十分痛苦的事情，而且，这种痛苦是不可规避的。在页面布局中，<span style="background-color: #ececec; color: red;">position</span> 属性几乎无处不在。换言之，如果你想要一个令人叹为观止的页面，那么，理解 <span style="background-color: #ececec; color: red;">position</span> 属性就必须透彻。这就如同，若想要一个绝世温柔的女友，你就必须懂得她的心，懂到令自己心碎。
     </p>

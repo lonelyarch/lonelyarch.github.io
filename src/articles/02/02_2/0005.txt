@@ -1,6 +1,7 @@
 <article>
-    <header><h3>02. SQL 语句的优化</h3></header>
-    <hr>
+    <header><h3 style="display: inline;">02. SQL 语句的优化</h3><h4 style="display: inline; margin: 40px 0 0 0;" class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-11</h4></header>
+    <div style="clear: both;"></div>
+    <hr style="margin-top: 0;">
     <div class="w3-panel w3-light-gray">
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无论是通过解释器直接发出还是通过 API 提交给后台，数据库应用的核心逻辑都是通过 SQL 语句执行的。本章指南将帮助各种 MySQL 应用提速，该指南涵盖用于读写数据的 SQL 操作、SQL 操作时通常的后台开销情况以及用于诸如数据库监控等特定场景的操作。</p>
     </div>
