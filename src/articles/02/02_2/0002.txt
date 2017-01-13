@@ -1,6 +1,7 @@
 <article>
-    <h1>CSS 多列布局</h1>
-    <hr>
+    <div><h1 style="display: inline;">CSS 多列布局</h1><h4 style="display: inline; margin: 40px 0 0 0;" class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-03</h4></div>
+    <div style="clear: both;"></div>
+    <hr style="margin-top: 0;">
     <p>什么是多列布局？直接看效果：</p>
     <div style="border: 1px solid #ddd">
         <div class="w3-light-grey w3-padding-jumbo w3-center">
