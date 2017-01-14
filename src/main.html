@@ -202,6 +202,12 @@ a.topnav-icons.fa-home {
     }
 }
 
+@media screen and (min-width:993px) {
+	#myhd {
+    	display: none;
+    }
+}
+
 @media screen and (max-width:601px) {
     .w3-navbar li a {
         display: inline-block;
@@ -518,9 +524,9 @@ body {
                 	<div class="section_4">
 	                    <h2><span>CSS</span></h2>
 	                    <div>
-		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,{url:'src/articles/02/02_2/0001.txt',id:'main'});">CSS 定位</a>
-                            <a target="_top" href="javascript:void(0);" onclick="select_item(4,[{url:'src/articles/02/02_2/0002.txt',id:'main'},{url:'src/articles/02/02_2/css/0002.css',id:'myst'}]);">CSS 多列布局</a>
-		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,[{url:'src/articles/02/02_2/0003.txt',id:'main'},{url:'src/articles/02/02_2/css/0003.css',id:'myst'}]);">CSS 图片旋转</a> 
+		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,{url:'src/articles/02/02_2/0001.txt',id:'main'});select_list(0,{url:'src/articles/02/02_2/list/0.txt',id:'myhd'});">CSS 定位</a>
+                            <a target="_top" href="javascript:void(0);" onclick="select_item(4,[{url:'src/articles/02/02_2/0002.txt',id:'main'},{url:'src/articles/02/02_2/css/0002.css',id:'myst'}]);select_list(1,{url:'src/articles/02/02_2/list/0.txt',id:'myhd'});">CSS 多列布局</a>
+		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,[{url:'src/articles/02/02_2/0003.txt',id:'main'},{url:'src/articles/02/02_2/css/0003.css',id:'myst'}]);select_list(2,{url:'src/articles/02/02_2/list/0.txt',id:'myhd'});">CSS 图片旋转</a>
 		                    <a target="_top" href="javascript:void(0);">站点测试</a>
 	                    </div>
 	                    <br>
@@ -582,8 +588,8 @@ body {
                     <div class="section_4">
 	                    <h2><span>杂项记述</span></h2>
 	                    <div>
-		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,{url:'src/articles/02/02_2/0004.txt',id:'main'});">DB 优化-01.优化概述</a>
-		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,[{url:'src/articles/02/02_2/0005.txt',id:'main'},{url:'src/articles/02/02_2/css/0005.css',id:'myst'}]);">DB 优化-02.SQL 语句的优化</a> 
+		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,{url:'src/articles/02/02_2/0004.txt',id:'main'});select_list(0,{url:'src/articles/02/02_2/list/7.txt',id:'myhd'});">DB 优化-01.优化概述</a>
+		                    <a target="_top" href="javascript:void(0);" onclick="select_item(4,[{url:'src/articles/02/02_2/0005.txt',id:'main'},{url:'src/articles/02/02_2/css/0005.css',id:'myst'}]);select_list(1,{url:'src/articles/02/02_2/list/7.txt',id:'myhd'});">DB 优化-02.SQL 语句的优化</a> 
 		                    <a target="_top" href="javascript:void(0);">站点测试</a>
 	                    </div>
 	                    <br>
@@ -636,6 +642,7 @@ body {
             </div>
         </div>
         <div class="w3-row w3-white">
+        	<div id="myhd" class="w3-col l12 m12" style="padding-top: 16px;"></div>
             <div id="main" class="w3-col l12 m12"></div>
         </div>
 
