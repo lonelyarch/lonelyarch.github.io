@@ -5,7 +5,7 @@
         <p>参考资料：<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/optimization.html" style="color: blue;">MySQL 官方文档-最优化</a>。</p>
     </div>
     <hr>
-    <header><h3 style="display: inline;">01. 优化概述</h3><h4 style="display: inline; margin: 40px 0 0 0;" class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-09</h4></header>
+    <header><h3>01. 优化概述</h3><h4 class="w3-right w3-margin-0"><i class="fa fa-calendar-o"></i> 2017-01-09</h4></header>
     <div style="clear: both;"></div>
     <hr style="margin-top: 0;">
     <div class="w3-container w3-light-gray" style="border-radius: 10px;">

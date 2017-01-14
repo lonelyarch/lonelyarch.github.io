@@ -1,5 +1,5 @@
  <article>
-    <div><h3 style="display: inline;">CSS 定位</h3><h4 style="display: inline; margin: 40px 0 0 0;" class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
+    <div><h3>CSS 定位</h3><h4 class="w3-right w3-margin-0"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
     <div style="clear: both;"></div>
     <hr style="margin-top: 0;">
     <p class="w3-tooltip">
@@ -27,7 +27,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;background-color: black;<br>
             }<br>
         </div>
-        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001_01_example.txt');">Try it Yourself »</a>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001/0001_01_example.txt');">Try it Yourself »</a>
     </div>
     <p>当 <span style="background-color: #ececec; color: black;">position: fixed;</span> 时，元素的位置相对于浏览器窗口是固定的，即使窗口处于滚动状态，该元素也不会移动。注意：<span style="color: red;">fixed 定位使元素的位置与 <span style="background-color: #ececec; color: black;">normal flow</span> 无关，该元素将不占据空间且可以与其它元素重叠。</span></p>
     <hr>
@@ -43,7 +43,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;left: 20px;<br>
             }<br>
         </div>
-        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001_02_example.txt');">Try it Yourself »</a>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001/0001_02_example.txt');">Try it Yourself »</a>
     </div>
     <p>当 <span style="background-color: #ececec; color: black;">position: relative;</span> 时，元素的位置是相对自身的正常位置进行定位的。相对定位的元素仍然处于 <span style="background-color: #ececec; color: black;">normal flow</span> 内，它原本占据的空间不变：</p>
     <div class="w3-example">
@@ -54,7 +54,7 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;top: -55px;<br>
 			}<br>
         </div>
-        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001_03_example.txt');">Try it Yourself »</a>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001/0001_03_example.txt');">Try it Yourself »</a>
     </div>
     <hr>
     <div class="w3-example">
@@ -66,7 +66,7 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;top: 150px;<br>
 			}<br>
         </div>
-        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001_04_example.txt');">Try it Yourself »</a>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001/0001_04_example.txt');">Try it Yourself »</a>
     </div>
     <p>绝对定位的元素是相对于距离自身最近的已定位的父元素进行定位的，如果该元素没有已定位的父元素，那么，它将相对于 &lt;html&gt; 进行定位。注意：<span style="color: red;">absolute 定位使元素的位置与 <span style="background-color: #ececec; color: black;">normal flow</span> 无关，该元素将不占据空间且可以与其它元素重叠。</span></p>
 	<hr>
@@ -80,7 +80,7 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;z-index: -1;<br>
 			}
         </div>
-        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001_05_example.txt');">Try it Yourself »</a>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0001/0001_05_example.txt');">Try it Yourself »</a>
     </div>
     <p>当已定位的元素与 <span style="background-color: #ececec; color: black;">normal flow</span> 无关时，它可以覆盖页面上的其它元素，这就需要使用 <span style="background-color: #ececec; color: black;">z-index</span> 属性来确定元素的堆叠顺序。</p>
 </article>

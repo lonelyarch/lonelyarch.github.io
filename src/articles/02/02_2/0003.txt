@@ -1,5 +1,5 @@
 <article>
-    <div><h3 style="display: inline;">CSS 图片旋转</h3><h4 style="display: inline; margin: 40px 0 0 0;" class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-04</h4></div>
+    <div><h3>CSS 图片旋转</h3><h4 class="w3-right w3-margin-0"><i class="fa fa-calendar-o"></i> 2017-01-04</h4></div>
     <div style="clear: both;"></div>
     <hr style="margin-top: 0;">
     <p>最近在学习 WEB 前端知识的时候看到了图片旋转的示例，加以利用，简单的图片墙就可轻松实现：</p>
@@ -13,7 +13,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;-webkit-transform: rotate(45deg); <br>
             }<br>
         </div>
-        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0003_01_example.txt');">Try it Yourself »</a>
+        <a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0003/0003_01_example.txt');">Try it Yourself »</a>
     </div>
     <p><span style="color: red;">transform</span> 属性可取值如下：</p>
     <table class="w3-table w3-striped">
