@@ -1,0 +1,93 @@
+<h6 class="w3-blue w3-center w3-hide-large">02. MySQL 如何优化 WHERE 从句</h6>
+<p>该部分讨论对处理 WHERE 从句的优化。示例使用了 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/select.html">SELECT</a> 语句，但是，在 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/delete.html">DELETE</a> 和 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/update.html">UPDATE</a> 语句中，应用于 WHERE 从句的优化是相同的。</p>
+<div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue">
+    <p>由于对 MySQL 优化器的开发仍在进行中，因此，某些与 MySQL 执行优化相关的内容没有记录在该文档。</p>
+</div>
+<p>为了提升算术运算速度，你可能以牺牲可读性为代价重写查询，但是，MySQL 会自动完成相似的优化，你通常可避免该工作，让查询处于更为可理解和可维护的形式。某些由 MySQL 执行的优化如下：</p>
+<ul>
+    <li>
+        <p>移除不必要的圆括号：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">   ((a AND b) AND c OR (((a AND b) AND (c AND d))))
+-> (a AND b AND c) OR (a AND b AND c AND d)</pre>
+    </li>
+    <li>
+        <p>常量叠算：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">   (a&lt;b AND b=c) AND a=5
+-> b&gt;5 AND b=c AND a=5</pre>
+    </li>
+    <li>
+        <p>常量条件的移除（也是常量叠算的前提）：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">   (B>=5 AND B=5) OR (B=6 AND 5=5) OR (B=7 AND 5=6)
+-> B=5 OR B=6</pre>
+    </li>
+    <li>
+        <p>索引使用的常量表达式只进行一次评估。</p>
+    </li>
+    <li>
+        <p>对 MyISAM 和 MEMORY 表而言，作用于单表且无 WHERE 的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html">COUNT(*)</a> 函数的检索结果是直接来自表信息，这种方式也适用于那些只在单表情况下使用的任何 NOT NULL 表达式。</p>
+    </li>
+    <li>
+        <p>非法常量表达式的早期检测。MySQL 将快速检测某些无法查询出结果的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/select.html">SELECT</a> 语句并且做无行返回。</p>
+    </li>
+    <li>
+        <p>如果你没有使用 GROUP BY 或聚合函数（<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html">COUNT()</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html">MIN()</a> 等等），那么，HAVING 将与 WHERE 合并。</p>
+    </li>
+    <li>
+        <p>对连接中的每张表而言，构造更为简单的 WHERE 从句，获得快速的 WHERE 评估以及达到尽可能快速的行过滤。</p>
+    </li>
+    <li>
+        <p>在查询中，最先读取所有常量表，早于其它表。常量表可归纳如下：</p>
+        <ul style="list-style-type: square;">
+            <li><p>空表或单行表。</p></li>
+            <li><p>使用了以 PRIMARY KEY 或 特殊条件下的 UNIQUE 索引修饰的 WHERE 从句的表。该特殊条件为所有索引部分均与常量表达式进行比较且被定义为 NOT NULL。</p></li>
+        </ul>
+        <p>以下所有的表均被作为常量表使用：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT * FROM t WHERE primary_key=1;
+SELECT * FROM t1,t2
+  WHERE t1.primary_key=1 AND t2.primary_key=t1.id;</pre>
+    </li>
+    <li>
+        <P>尝试所有的可能性以找到连接表的最佳连接组合。如果 ORDER BY 和 GROUP BY 从句中的列均来自相同的表，该表在连接时将被优先考虑。</P>
+    </li>
+    <li>
+        <p>如果有 ORDER BY 从句和不同的 GROUP BY 从句或  ORDER BY、GROUP BY 包含的列就连接顺序而言不是来自第一张表，那么，临时表会被创建。</p>
+    </li>
+    <li>
+        <p>如果你使用了 SQL_SMALL_RESULT 选项，那么，MySQL 将使用内存临时表。</p>
+    </li>
+    <li>
+        <p>在优化器认为表扫描的效率不高的情况下，每张表的索引会被查询且最佳索引会被使用。之前，扫描的使用取决于最佳索引是否涵盖表的 30% 以上，但是，该百分比将不再用以确定是使用索引还是扫描。现在，优化器更加复杂，它将基于额外因素做决断，例如表大小、行数以及 I/O 块大小。</p>
+    </li>
+    <li>
+        <p>在某些案例中，MySQL 甚至在不介入数据文件的情况下通过索引读取行。如果所有使用了来自索引的列均为数值型，那么，只有索引树用以解决查询。</p>
+    </li>
+    <li>
+        <p>在每一行输出之前，那些没有匹配  HAVING 从句的行将被略过。</p>
+    </li>
+</ul>
+<p>某些速度较快的查询的示例：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT COUNT(*) FROM tbl_name;
+
+SELECT MIN(key_part1),MAX(key_part1) FROM tbl_name;
+
+SELECT MAX(key_part2) FROM tbl_name
+  WHERE key_part1=constant;
+
+SELECT ... FROM tbl_name
+  ORDER BY key_part1,key_part2,... LIMIT 10;
+
+SELECT ... FROM tbl_name
+  ORDER BY key_part1 DESC, key_part2 DESC, ... LIMIT 10;</pre>
+<p>MySQL 仅使用索引树解决以下查询，假定建立索引的列均为数值型：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT key_part1,key_part2 FROM tbl_name WHERE key_part1=val;
+
+SELECT COUNT(*) FROM tbl_name
+  WHERE key_part1=val1 AND key_part2=val2;
+
+SELECT key_part2 FROM tbl_name GROUP BY key_part1;</pre>
+<p>以下查询使用索引检索已排序的行而不必再单独排序：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT ... FROM tbl_name
+  ORDER BY key_part1,key_part2,... ;
+
+SELECT ... FROM tbl_name
+  ORDER BY key_part1 DESC, key_part2 DESC, ... ;</pre>

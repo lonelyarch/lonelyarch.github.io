@@ -8,19 +8,19 @@
 		<div class="w3-row-padding">
 			<div class="w3-third w3-margin-top">
 				<div class="w3-card-2">
-					<img src="src/articles/initial/images/img_01.jpg" style="width: 100%">
+					<img src="src/articles/initial/images/img_01.jpg" style="width: 100%" />
 					<div class="w3-container w3-text-black"><h6>古镇牌坊</h6></div>
 				</div>
 			</div>
 			<div class="w3-third w3-margin-top">
 				<div class="w3-card-2">
-					<img src="src/articles/initial/images/img_02.jpg" style="width: 100%">
+					<img src="src/articles/initial/images/img_02.jpg" style="width: 100%" />
 					<div class="w3-container w3-text-black"><h6>漫川人家</h6></div>
 				</div>
 			</div>
 			<div class="w3-third w3-margin-top">
 				<div class="w3-card-2">
-					<img src="src/articles/initial/images/img_03.jpg" style="width: 100%">
+					<img src="src/articles/initial/images/img_03.jpg" style="width: 100%" />
 					<div class="w3-container w3-text-black"><h6>武昌会馆</h6></div>
 				</div>
 			</div>
@@ -28,19 +28,19 @@
 		<div class="w3-row-padding">
 			<div class="w3-third w3-margin-top">
 				<div class="w3-card-2">
-					<img src="src/articles/initial/images/img_04.jpg" style="width: 100%">
+					<img src="src/articles/initial/images/img_04.jpg" style="width: 100%" />
 					<div class="w3-container w3-text-black"><h6>鲁班庙</h6></div>
 				</div>
 			</div>
 			<div class="w3-third w3-margin-top">
 				<div class="w3-card-2">
-					<img src="src/articles/initial/images/img_05.jpg" style="width: 100%">
+					<img src="src/articles/initial/images/img_05.jpg" style="width: 100%" />
 					<div class="w3-container w3-text-black"><h6>楼阁剪影</h6></div>
 				</div>
 			</div>
 			<div class="w3-third w3-margin-top">
 				<div class="w3-card-2">
-					<img src="src/articles/initial/images/img_06.jpg" style="width: 100%">
+					<img src="src/articles/initial/images/img_06.jpg" style="width: 100%" />
 					<div class="w3-container w3-text-black"><h6>荷塘碧色</h6></div>
 				</div>
 			</div>
