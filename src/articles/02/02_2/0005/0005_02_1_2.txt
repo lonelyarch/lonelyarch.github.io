@@ -1,0 +1,180 @@
+<h6 class="w3-blue w3-center w3-hide-large">03. 范围优化（Range Optimization）</h6>
+<p><a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain-output.html">range</a> 访问方法使用单索引用以检索被包含在一个或多个索引值之间的表行子集合，它可用于 single-part 或 multiple-part 索引。以下部分给出优化器使用范围访问的条件说明。</p>
+<p id="03.1"><strong>03.1 The Range Access Method for Single-Part Indexes</strong></p>
+<p>对 single-part 索引而言，索引值区间可以方便地用  WHERE 从句中相应的条件取代，表示为范围条件而非“区间”。</p>
+<p>对 single-part 索引的范围条件的定义如下所示：</p>
+<ul>
+    <li><p>对 <strong>BTREE</strong> 和 <strong>HASH</strong> 索引而言，当使用 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;=&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IS NULL</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IS NOT NULL</a> 操作符时，含有常量值的关键部分的比较就是范围条件。</p></li>
+    <li><p>此外，对 <strong>BTREE</strong> 索引而言，当使用 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&gt;=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">BETWEEN</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">!=</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;&gt;</a> 操作符或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html">LIKE</a> 比较（<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html">LIKE</a> 的参数是不以通配符打头的字符串常量）时，含有常量值的关键部分的比较就是范围条件。</p></li>
+    <li><p>对所有的索引类型而言，多范围条件是结合 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">OR</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">AND</a> 以构成范围条件。</p></li>
+</ul>
+<p>以上描述的“常量值”有以下几种形式：</p>
+<ul>
+    <li><p>来自查询字符串的常量</p></li>
+    <li><p>来自相同连接的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain-output.html">const</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain-output.html">system</a> 表中的列</p></li>
+    <li><p>无关子查询结果</p></li>
+    <li><p>任何表达式都由上述类型的子表达式构成</p></li>
+</ul>
+<p>以下有几个在 WHERE 从句中含有范围条件的查询示例：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT * FROM t1
+  WHERE <strong>key_col</strong> &gt; 1
+  AND <strong>key_col</strong> &lt; 10;
+
+SELECT * FROM t1
+  WHERE <strong>key_col</strong> = 1
+  OR <strong>key_col</strong> IN (15,18,20);
+
+SELECT * FROM t1
+  WHERE <strong>key_col</strong> LIKE 'ab%'
+  OR <strong>key_col</strong> BETWEEN 'bar' AND 'foo';</pre>
+<p>某些非常量值在优化器常量传输阶段可转化为常量。</p>
+<p>MySQL 将尝试从 WHERE 从句中为每个可能的索引提取范围条件，在提取过程中，不可用于构建范围条件的条件会被舍弃，产生重复范围的条件会被合并，产生空范围的条件会被移除。</p>
+<p>思考以下语句，语句中的 <strong>key1</strong> 是已构建索引的列而 <strong>nonkey</strong> 没有构建索引：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT * FROM t1 WHERE
+  (key1 &lt; 'abc' AND (key1 LIKE 'abcde%' OR key1 LIKE '%b')) OR
+  (key1 &lt; 'bar' AND nonkey = 4) OR
+  (key1 &lt; 'uux' AND key1 &gt; 'z');</pre>
+<p>对关键字 <strong>key1</strong> 的提取过程如下：</p>
+<ul style="list-style-type: decimal;">
+    <li>
+        <p>以原 WHERE 从句开始：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(key1 &lt; 'abc' AND (key1 LIKE 'abcde%' OR key1 LIKE '%b')) OR
+(key1 &lt; 'bar' AND nonkey = 4) OR
+(key1 &lt; 'uux' AND key1 > 'z')</pre>
+    </li>
+    <li>
+        <p>移除 <strong>nonkey = 4</strong> 和 <strong>key1 LIKE '%b'</strong>，因为它们不能用于范围扫描，移除它们的正确方法是以 <strong>TRUE</strong> 替换之，这样，在做范围扫描时，我们将不会遗漏任何匹配行。使用 <strong>TRUE</strong> 取而代之，我们得到以下形式：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(key1 &lt; 'abc' AND (key1 LIKE 'abcde%' OR TRUE)) OR
+(key1 &lt; 'bar' AND TRUE) OR
+(key1 &lt; 'uux' AND key1 > 'z')</pre>
+    </li>
+    <li>
+        <p>叠算恒真或恒假的条件：</p>
+        <ul style="list-style-type: square;">
+            <li><p><strong>(key1 LIKE 'abcde%' OR TRUE)</strong> 恒真</p></li>
+            <li><p><strong>(key1 &lt; 'uux' AND key1 &gt; 'z')</strong> 恒假</p></li>
+        </ul>
+        <p>使用常量取代这些条件，我们得到以下形式：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(key1 &lt; 'abc' AND TRUE) OR (key1 &lt; 'bar' AND TRUE) OR (FALSE)</pre>
+        <p>移除不必要的 <strong>TRUE</strong>、<strong>FALSE</strong> 常量，我们得到：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(key1 &lt; 'abc') OR (key1 &lt; 'bar')</pre>
+    </li>
+    <li>
+        <p>将重复区间合并为单域，最终条件用于范围扫描：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(key1 &lt; 'bar')</pre>
+    </li>
+</ul>
+<p>通常而言（根据以上示例的演示），用以范围扫描的条件限定要少于 WHERE 从句中的条件限定，MySQL 将执行额外的检查以过滤出满足范围条件而非全部 WHERE 从句的行数据。</p>
+<p>范围条件提取算法能够处理任意深度的嵌套 <a target="_blank" href="">AND</a>/<a target="_blank" href="">OR</a> 结构，它的输出不依赖于 WHERE 从句中条件的出现顺序。</p>
+<p>MySQL 不支持对用于空间索引的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain-output.html">range</a> 访问方法的多范围合并。围绕这个限制，你可以将相同的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/select.html">SELECT</a> 语句使用 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/union.html">UNION</a>，否则，你需要在不同的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/select.html">SELECT</a> 内放置每个空间谓词。</p>
+<p><strong>03.2 The Range Access Method for Multiple-Part Indexes</strong></p>
+<p>multiple-part 索引的范围条件是对 single-part 索引的范围条件的扩展，multiple-part 索引的范围条件将索引行限制在单个或多个关键码元组区间内。关键码元组区间是在关键码元组集合之上定义的，使用索引排序。</p>
+<p>例如，思考已定义为 <strong>key1(key_part1, key_part2, key_part3)</strong> 的 multiple-part 索引，以下是根据关键码的顺序列出的关键码元组集合：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">key_part1  key_part2  key_part3
+  NULL       1          'abc'
+  NULL       1          'xyz'
+  NULL       2          'foo'
+   1         1          'abc'
+   1         1          'xyz'
+   1         2          'abc'
+   2         1          'aaa'</pre>
+<p>条件 <strong>key_part1 = 1</strong> 定义了该区间：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(1,-inf,-inf) &lt;= (key_part1,key_part2,key_part3) &lt; (1,+inf,+inf)</pre>
+<p>该区间涵盖了以上数据集中的第 4、第 5 以及第 6 个元组，可被用于范围访问方法。</p>
+<p>相比之下，条件 <strong>key_part3 = 'abc'</strong> 没有定义单区间，不可用于范围访问方法。</p>
+<p>以下描述更为详尽地表明了范围条件是如何作用于 multiple-part 索引的。</p>
+<ul>
+    <li>
+        <p>对 HASH 索引而言，包含相同值的每个区间都是可用的。这意味着该区间只能在以下形式的条件下产生：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">    key_part1 cmp const1
+AND key_part2 cmp const2
+AND ...
+AND key_partN cmp constN;</pre>
+	    <p>在此，<strong>const1, const2, …</strong> 为常量，<strong>cmp</strong> 是 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;=&gt;</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IS NULL</a> 比较运算符之一，并且这些条件涵盖了所有索引部分（这就是，有 N 个条件，每个条件对应于 N-part 索引的每个部分）。例如，以下是对应于 three-part HASH 索引的范围条件：</p>
+	    <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">key_part1 = 1 AND key_part2 IS NULL AND key_part3 = 'foo'</pre>
+	    <p>有关如何定义常量的内容，请回顾 <a href="src/main.html#03.1" style="color: blue;">03.1 The Range Access Method for Single-Part Indexes</a> 中的内容。</p>
+	</li>
+	<li>
+	    <p>对 BTREE 索引而言，某些由 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">AND</a> 结合而成的多条件下确定的区间可能是不可用的，这种情况出现在，每个条件使用 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;=&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IS NULL</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&gt;=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">!=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">BETWEEN</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">LIKE 'pattern'</a>（'pattern' 不以通配符打头）将关键码部分与常量值进行比较，但是，只要能够确定出匹配条件的所有行的单个关键码元组，那么，该区间（或使用了 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">!=</a> 的双区间）可用。</p>
+	    <p>在比较运算符是 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;=&gt;</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IS NULL</a> 时，优化器将尝试使用额外的关键码部分以确定区间。如果运算符是 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&gt;=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">!=</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&lt;&gt;</a>、<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">BETWEEN</a> 或 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html">LIKE</a>，优化器使用该运算符且不再考虑关键码部分。对以下表达式而言，优化器将使用来自第一个比较中的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">=</a>，它也使用来自第二个比较中的 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">&gt;=</a>，但是，考虑到不再有关键码部分，因此，对区间构建而言，优化器没有使用第三次比较：</p>
+	    <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">key_part1 = 'foo' AND key_part2 &gt;= 10 AND key_part3 &gt; 10</pre>
+	    <p>单区间如下：</p>
+	    <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">('foo',10,-inf) &lt; (key_part1,key_part2,key_part3) &lt; ('foo',+inf,+inf)</pre>
+	    <p>已创建的区间所包含的数据行比在原始条件下的数据行多，这种情况是可能的。例如，以上区间包括值 <strong>('foo', 11, 0)</strong>，但是，却不满足原始条件。</p>
+	</li>
+	<li>
+	    <p>如果覆盖了包含于区间内的行集的条件与 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">OR</a> 结合，那么，它们将构成一个覆盖了包含于联合的自身区间（并集）内的行集的条件。如果这些条件是与 <a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">AND</a> 结合，那么，它们将构成一个覆盖了包含于交叉的自身区间（交集）内的行集的条件。例如，对该条件是 two-part 索引的情况而言：</p>
+	    <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(key_part1 = 1 AND key_part2 &lt; 2) OR (key_part1 &gt; 5)</pre>
+	    <p>该区间如下：</p>
+	    <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">(1,-inf) &lt; (key_part1,key_part2) &lt; (1,2)
+(5,-inf) &lt; (key_part1,key_part2)</pre>
+        <p>在该例中，第一行的区间使用了用于左绑定的一个关键码部分以及用于右绑定的两个关键码部分，第二行的区间只使用了一个关键码部分。<a target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 输出中的 key_len 列表明使用的关键码前缀的最长值。</p>
+        <p>在某些示例中，key_len 可表示，已被使用的关键码部分有可能不是你所期望的。假定 key_part1 和 key_part2 可为 NULL，那么，key_len 列对以下条件将呈现两个关键码部分的长度：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">key_part1 &gt;= 1 AND key_part2 &lt; 2</pre>
+        <p>但事实上，该条件被转化为如下形式：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">key_part1 &gt;= 1 AND key_part2 IS NOT NULL</pre>
+    </li>
+</ul>
+<p><a href="src/main.html#03.1" style="color: blue;">03.1 The Range Access Method for Single-Part Indexes</a> 描述了对有关 single-part 索引的范围条件进行区间结合或消除时是如何执行优化的，对有关 multiple-part 索引的范围条件的执行步骤是相似的。</p>
+<p><strong>03.3 Equality Range Optimization of Many-Valued Comparisons</strong></p>
+<p>思考以下表达式，col_name 是已建立索引的列：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">col_name IN(val1, ..., valN)
+col_name = val1 OR ... OR col_name = valN</pre>
+<p>如果 col_name 与多值中的任何一个值相等，那么，以上每个表达式都将为 true，这些比较（这里的“范围”是单值）和范围比较是等价的。对等价范围比较而言，优化器估算读取符合条件的行数据的消耗如下：</p>
+<ul>
+    <li><p>如果在 col_name 上有唯一索引，那么，对每个范围的行估算为 1，因为在该情况下至多有一行有给定值。</p></li>
+    <li><p>否则，在 col_name 上的任何索引都不唯一，优化器将使用下潜至索引或索引统计的方式估算在每个范围下的行数。</p></li>
+</ul>
+<p>索引下潜时，优化器会对范围的每一端进行下潜并且使用该范围内的行数作为估算值。例如，表达式 col_name IN (10, 20, 30) 有 3 个等价范围，优化器会对每个范围进行两次下潜以生成行估算值。每一对下潜的收获都是对给定值的行的总数的一次估算。</p>
+<p>索引下潜提供准确的行估算，但是，随着表达式内的比较值的数量在增加，优化器将耗时更长以生成行估算值。索引统计的使用虽然不如索引下潜更为准确，但是，对大值列表而言，它可允许更为快速的行估算。</p>
+<p><a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">eq_range_index_dive_limit</a> 系统变量能够使你对优化器在行估算策略上的转换配置值次数。为了允许对至多 N 个等价范围的比较使用索引下潜，需要将 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">eq_range_index_dive_limit</a> 设置为 N+1。若要忽略 N，禁止统计的使用，只保留索引下潜的策略，需要将 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">eq_range_index_dive_limit</a> 设置为 0。</p>
+<p>对表的索引统计进行更新以便做出最佳估算，请使用 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/analyze-table.html">ANALYZE TABLE</a>。</p>
+<p><strong>03.4 Limiting Memory Use for Range Optimization</strong></p>
+<p>为了控制范围优化器的可用内存，需要使用 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">range_optimizer_max_mem_size</a> 系统变量：</p>
+<ul>
+    <li><p>0 值意味着“无限制”。</p></li>
+    <li>
+        <p>值大于 0 时，优化器会跟踪在考虑范围访问方法时的内存消耗，如果超出指定的限制，范围访问方法将被舍弃且其它方法会被考虑以取而代之，包括全表扫描，然而，这可能是不太理想的。如果这种情况发生了（当 N 为当前 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">range_optimizer_max_mem_size</a> 值的时候），会产生以下警告：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">Warning    3170    Memory capacity of N bytes for
+                   'range_optimizer_max_mem_size' exceeded. Range
+                   optimization was not done for this query.</pre>
+    </li>
+</ul>
+<p>对超出可用的范围优化的内存、使优化器回落至不太理想的计划的单个查询，增加 <a>range_optimizer_max_mem_size</a> 值可提升性能。</p>
+<p>估算在处理范围表达式时所需的内存量，请参考以下指导：</p>
+<ul>
+    <li>
+        <p>对如下的简单查询而言，有适用于范围访问方法的候选码，与 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">OR</a> 结合的每个谓词使用大约 230 个字节：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT COUNT(*) FROM t
+WHERE a=1 OR a=2 OR a=3 OR .. . a=N;</pre>
+    </li>
+    <li>
+        <p>相似地，对如下查询而言，与 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">AND</a> 结合的每个谓词使用大约 125 个字节：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT COUNT(*) FROM t
+WHERE a=1 AND b=1 AND c=1 ... N;</pre>
+    </li>
+    <li>
+        <p>含有 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a> 谓词的查询：</p>
+        <pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT COUNT(*) FROM t
+WHERE a IN (1,2, ..., M) AND b IN (1,2, ..., N);</pre>
+        <p>每个 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a> 列表内的文字值可当作一个谓词。如果有两个 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a> 列表，与 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">OR</a> 结合的谓词数是每个列表内的文字值数量的总和。因此，以上示例中的与 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">OR</a> 结合的谓词数为 <strong>M x N</strong>。</p>
+    </li>
+</ul>
+<p>在 MySQL 5.7.11 版本之前，每个与 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html">OR</a> 结合的谓词的字节数都比较高，大约为 700 个字节。</p>
+<p>在 MySQL 5.7.9 版本之前（即就是，在 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">range_optimizer_max_mem_size</a> 的介绍之前），优化器对可能出现在 WHERE 从句中的 16000 项有硬编码限制，当达到这个限制时，优化器会舍弃该计划而考虑其它计划。当前 MySQL 版本中，4MB 大小的 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">range_optimizer_max_mem_size</a> 值大约相当于 MySQL 5.7.9 之前版本的 16000 项限制适用。</p>
+<p>然而，需要注意的是，在 MySQL 5.7.9 之前，如果一个查询由某种特定方式编写，那么，它可以绕过在 WHERE 从句中使用的项数限制。对如 5.7.9 这样的查询，增加 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">range_optimizer_max_mem_size</a> 值以使优化器再次考虑范围访问方法是有必要的。另外，取决于编写条件的方式，用于 WHERE 从句中的各项的内存可能不同。因此，以上近似值应该只作为指导使用。</p>
+<p><strong>03.5 Range Optimization of Row Constructor Expressions</strong></p>
+<p>自 MySQL 5.7.3 起，优化器能够对以下形式的查询应用范围扫描访问方法：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT ... FROM t1 WHERE ( col_1, col_2 ) IN (( 'a', 'b' ), ( 'c', 'd' ));</pre>
+<p>之前，对范围扫描的使用，查询需要写成如下形式：</p>
+<pre class="w3-light-gray" style="padding: 6px; white-space: pre-wrap;">SELECT ... FROM t1 WHERE ( col_1 = 'a' AND col_2 = 'b' )
+OR ( col_1 = 'c' AND col_2 = 'd' );</pre>
+<p>对优化器使用范围扫描而言，查询必须满足以下条件：</p>
+<ul>
+    <li><p>只使用了 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a> 谓词，没有使用 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">NOT IN()</a>。</p></li>
+    <li><p>在 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a> 谓词的左侧，行构造器内只包含列引用。</p></li>
+    <li><p>在 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a> 谓词的右侧，行构造器内只包含运行时常量，该常量或是文字值或是在执行期间绑定了常量的本地列引用。</p></li>
+    <li><p>在 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html">IN()</a> 谓词的右侧，有不只一个行构造器。</p></li>
+</ul>
+<p>与在 MySQL 5.7.3 之前的版本中执行的相似的查询比较，<a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/explain.html">EXPLAIN</a> 对适当的查询的输出已从全表扫描或索引扫描变更为范围扫描，相应的变更也可通过检查  <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html">Handler_read_first</a>、<a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html">Handler_read_key</a> 以及 <a target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html">Handler_read_next</a> 状态变量的值看到。</p>
+<p>有关优化器和行构造器的更多信息，请阅读 <a style="color: blue;" target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/row-constructor-optimization.html">Row Constructor Expression Optimization</a>。</p>
