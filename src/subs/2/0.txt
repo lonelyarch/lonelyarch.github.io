@@ -1,0 +1,34 @@
+<article>
+    <div><h3>CSS 定位</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
+    <div style="clear: both;"></div>
+    <p>对很多初学 CSS(<em>Cascading Style Sheets</em>) 的同学来说，遭遇 <span style="background-color: #ececec; color: red;">position</span> 属性是十分痛苦的事情，而且，这种痛苦是不可规避的。在页面布局中，<span style="background-color: #ececec; color: red;">position</span> 属性几乎无处不在。换言之，如果你想要一个令人叹为观止的页面，那么，理解 <span style="background-color: #ececec; color: red;">position</span> 属性就必须透彻。这就如同，若想要一个绝世温柔的女友，你就必须懂得她的心，懂到令自己心碎。[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/0.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0001.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>
+<hr>
+<article>
+    <div><h3>CSS 多列布局</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-03</h4></div>
+    <div style="clear: both;"></div>
+    <p>什么是多列布局？直接看效果：[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/1.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0002.txt',id:'contents'},{url:'src/articles/02/02_2/css/0002.css',id:'mystyles'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>
+<hr>
+<article>
+    <div><h3>CSS 图片旋转</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-04</h4></div>
+    <div style="clear: both;"></div>
+    <p>最近在学习 WEB 前端知识的时候看到了图片旋转的示例，加以利用，简单的图片墙就可轻松实现：[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/2.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0003.txt',id:'contents'},{url:'src/articles/02/02_2/css/0003.css',id:'mystyles'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>
+<hr>
+<article>
+    <div><h3>DB 优化-01.优化概述</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-09</h4></div>
+    <div style="clear: both;"></div>
+    <p>基于数据库级别而言，数据库性能取决于多个因素，例如数据库表、查询以及配置环境。基于硬件级别而言，这些软件构建会占用 CPU 资源、导致 I/O 操作，而这些相关资源必须是以最低的占用率达到最高的运行效率。如果你致力于改善数据库性能的相关工作，那么，就软件方面而言，你应该先从理解软件的高级规则、指南以及利用执行时间（wall-clock time）测试性能入手。如果你打算成为一名数据库方面的专家，那么，你需要理解更多关于数据库内部运行原理的知识以及从测试 CPU 周期、I/O 操作等方面的工作开始。[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/3.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0004.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>
+<hr>
+<article>
+    <div><h3>DB 优化-02.SQL 语句的优化</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-01-11</h4></div>
+    <div style="clear: both;"></div>
+    <p>无论是通过解释器直接发出还是通过 API 提交给后台，数据库应用的核心逻辑都是通过 SQL 语句执行的。本章指南将帮助各种 MySQL 应用提速，该指南涵盖用于读写数据的 SQL 操作、SQL 操作时通常的后台开销情况以及用于诸如数据库监控等特定场景的操作。[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/4.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0005.txt',id:'contents'},{url:'src/articles/02/02_2/css/0005.css',id:'mystyles'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>

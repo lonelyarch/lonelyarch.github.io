@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>个人博客</title>
+<base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="lib/css/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    #overview h3 {
+        display: inline-block;
+        margin: 0;
+    }
+
+    #overview h4 {
+        display: inline-block;
+        margin: 5px 0 5px 40px;
+    }
+
+    #archives .list .item {
+        overflow: hidden;
+        padding: 0 0 0 120px;
+    }
+
+    #archives .list .item h3 {
+        float: left;
+        margin: 0 0 0 -120px;
+    }
+
+    #archives .list .item ul {
+        list-style: none;
+        margin: 0;
+    }
+
+    #archives .list .item li {
+        padding: 3px 0;
+    }
+
+    #archives .list .item time {
+        color: #999;
+        margin-right: 5px;
+    }
+
+    #archives .list .item a {
+        cursor: pointer;
+
+    }
+
+    #archives .list .item a:hover {
+        color: #2196f3;
+    }
+</style>
+<style>
+.w3-code {border-left: 4px solid #5f5f5f;}
+.w3-custom-color {color:#000!important;background-color:#cce8cf!important;}
+</style>
+<style id="mystyles" type="text/css"></style>
+</head>
+<body class="w3-content" style="max-width: 1600px;">
+    <nav class="w3-sidenav w3-collapse w3-animate-left w3-light-blue" style="z-index: 3; width: 300px;" id="mySidenav">
+        <div class="w3-container">
+            <span class="w3-opennav w3-hide-large w3-xlarge w3-hover-text-grey w3-right" onclick="w3_close();"><i class="fa fa-remove"></i></span>
+        </div>
+        <br>
+        <div class="w3-container">
+            <div style="width: 200px; height: 200px; border-radius:50%; overflow:hidden; margin: auto; text-align: center;">
+                <img src="lib/images/pg.png" style="max-width: 100%; max-height: 100%;" />
+            </div>
+            <p class="w3-center w3-text-white"><strong>程序猿</strong></p>
+        </div>
+        <div class="w3-container">
+            <ul class="w3-ul w3-border w3-white">
+                <li style="padding: 6px 2px;"><a href="src/subs/section_2.html" class="w3-center w3-text-blue w3-padding-0" style="cursor: pointer;"><strong>首页</strong></a></li>
+                <li style="padding: 6px 2px;"><a class="w3-center w3-text-blue w3-padding-0" style="cursor: pointer;"><strong>专题</strong></a></li>
+                <li style="padding: 6px 2px;"><a class="w3-center w3-text-blue w3-padding-0" style="cursor: pointer;" onclick="file();"><strong>归档</strong></a></li>
+                <li style="padding: 6px 2px;"><a class="w3-center w3-text-blue w3-padding-0" style="cursor: pointer;"><strong>友链</strong></a></li>
+                <li style="padding: 6px 2px;"><a class="w3-center w3-text-blue w3-padding-0" style="cursor: pointer;"><strong>关于</strong></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close();" style="cursor: pointer" id="myOverlay"></div>
+    <div class="w3-main" style="margin-left: 300px;">
+        <div class="w3-container">
+            <span class="w3-opennav w3-hide-large w3-xlarge w3-hover-text-grey w3-right" onclick="w3_open();"><i class="fa fa-bars"></i></span>
+        </div>
+        <div id="overview" class="w3-container" style="padding-top: 20px;"></div>
+        <div id="archives" class="w3-container" style="padding-top: 20px;"></div>
+        <div id="contents" class="w3-container" style="padding-top: 20px;"></div>
+        <div id="navigate" class="w3-container">
+            <hr>
+            <nav id="prevtonext"></nav>
+            <nav id="pagination">
+                <a onclick="prev();" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« 上一页</a>
+                <a onclick="next();" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">下一页 »</a>
+                <div style="margin: auto; text-align: center;">
+                    <a onclick="file();" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">博客归档</a>
+                </div>
+            </nav>
+            <hr>
+        </div>
+        <div class="footer w3-container w3-white">
+            <div class="w3-center w3-small w3-opacity">本站属个人博客，欢迎有识之士前来踩踏！<br><br>
+                <a href="https://lonelyguo.github.io">lonelyguo.github.io</a>
+            </div><br><br>
+        </div>
+    </div>
+    <script>
+        var idx = 0;
+        var num = 3;
+
+        (function() {
+            document.getElementById("overview").style.display = "block";
+            document.getElementById("contents").style.display = "none";
+            document.getElementsByClassName("prev")[0].style.display = "none";
+            request("src/subs/2/" + idx + ".txt", "overview");
+        })();
+
+        function file() { // 归档
+            document.getElementById("overview").style.display = "none";
+            document.getElementById("contents").style.display = "none";
+            document.getElementById("navigate").style.display = "none";
+            request("src/subs/arch.txt", "archives");
+            w3_close();
+            document.getElementById("archives").style.display = "block";
+        }
+
+        function next() {
+            idx++;
+            document.getElementsByClassName("prev")[0].style.display = "block";
+            document.getElementsByClassName("next")[0].style.display = "block";
+            if(idx === (num - 1)) {
+                document.getElementsByClassName("next")[0].style.display = "none";
+            }
+            request("src/subs/2/" + idx + ".txt", "overview");
+        }
+
+        function prev() {
+            idx--;
+            document.getElementsByClassName("prev")[0].style.display = "block";
+            document.getElementsByClassName("next")[0].style.display = "block";
+            if(idx === 0) {
+                document.getElementsByClassName("prev")[0].style.display = "none";
+            }
+            request("src/subs/2/" + idx + ".txt", "overview");
+        }
+
+        function fetch(obj) {
+        	document.getElementById("pagination").style.display = "none";
+            document.getElementById("archives").style.display = "none";
+            document.getElementById("overview").style.display = "none";
+            document.getElementById("contents").style.display = "block";
+            document.getElementById("navigate").style.display = "block";
+            if((typeof obj) === "object") {
+                if(Object.prototype.toString.call(obj) === "[object Array]") {
+                    for(var i=0; i<obj.length; i++) {
+                        if(obj[i].url === undefined || obj[i].id === undefined) continue;
+                        request(obj[i].url, obj[i].id);
+                    }
+                }
+            }
+        }
+
+        function request(url, id) {
+            if(typeof url === "string" && typeof id === "string") {
+                if(url.length === 0 || id.length === 0) {}
+                else {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById(id).innerHTML = this.responseText;
+                            if(this.responseText.indexOf("<script>") >= 0 && this.responseText.indexOf("<\/script>") >= 0) {
+                                eval(this.responseText.substring(this.responseText.indexOf("<script>") + 8, this.responseText.indexOf("<\/script>")));
+                            }
+                        } else {
+                            document.getElementById(id).innerHTML = "";
+                        }
+                    }
+                    xhttp.open("GET", url, true);
+                    xhttp.send();
+                }
+            }
+        }
+
+        function w3_open() {
+            document.getElementById("mySidenav").style.display = "block";
+            document.getElementById("myOverlay").style.display = "block";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidenav").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+    </script>
+    <script src="lib/js/extension.js"></script>
+</body>
+</html>

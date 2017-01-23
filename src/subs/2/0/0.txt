@@ -1,0 +1,2 @@
+<a onclick="fetch([{url:'src/subs/2/0/1.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0002.txt',id:'contents'},{url:'src/articles/02/02_2/css/0002.css',id:'mystyles'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">CSS 多列布局 »</a>
+<div style="clear: both;"></div>

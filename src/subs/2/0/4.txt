@@ -1,0 +1,2 @@
+<a onclick="fetch([{url:'src/subs/2/0/3.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0004.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« DB 优化-01.优化概述</a>
+<div style="clear: both;"></div>

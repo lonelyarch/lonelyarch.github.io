@@ -1,0 +1,6 @@
+<article>
+    <div><h3>站点测试</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
+    <div style="clear: both;"></div>
+    <p>求真务实的精神需要赞美……</p>
+    <p><a href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>
