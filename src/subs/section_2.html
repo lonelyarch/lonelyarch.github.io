@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="lib/css/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="lib/css/font-awesome.min.css">
 <style>
     #overview h3 {
         display: inline-block;
@@ -50,6 +50,16 @@
     #archives .list .item a:hover {
         color: #2196f3;
     }
+    
+    #mySidenav {
+    	width: 300px;
+    }
+    
+    @media screen and (max-width:600px) {
+	    #mySidenav {
+	        width: 100%;
+	    }
+	}
 </style>
 <style>
 .w3-code {border-left: 4px solid #5f5f5f;}
@@ -58,7 +68,7 @@
 <style id="mystyles" type="text/css"></style>
 </head>
 <body class="w3-content" style="max-width: 1600px;">
-    <nav class="w3-sidenav w3-collapse w3-animate-left w3-light-blue" style="z-index: 3; width: 300px;" id="mySidenav">
+    <nav class="w3-sidenav w3-collapse w3-animate-left w3-light-blue" style="z-index: 3;" id="mySidenav">
         <div class="w3-container">
             <span class="w3-opennav w3-hide-large w3-xlarge w3-hover-text-grey w3-right" onclick="w3_close();"><i class="fa fa-remove"></i></span>
         </div>
