@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>个人博客</title>
+<base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="lib/css/w3.css">
+<link rel="stylesheet" href="lib/css/font-awesome.min.css">
+<style>
+    #mySidenav {
+    	width: 300px;
+    }
+    
+    @media screen and (max-width:600px) {
+	    #mySidenav {
+	        width: 100%;
+	    }
+	}
+</style>
+</head>
+<body class="w3-content" style="max-width: 1600px;">
+    <nav class="w3-sidenav w3-collapse w3-animate-left w3-light-blue" style="z-index: 3;" id="mySidenav">
+        <div class="w3-container">
+            <span class="w3-opennav w3-hide-large w3-xlarge w3-hover-text-grey w3-right" onclick="w3_close();"><i class="fa fa-remove"></i></span>
+        </div>
+        <br>
+        <div class="w3-container">
+            <div style="width: 200px; height: 200px; border-radius:50%; overflow:hidden; margin: auto; text-align: center;">
+                <img src="lib/images/pg.png" style="max-width: 100%; max-height: 100%;" />
+            </div>
+            <p class="w3-center w3-text-white"><strong>文艺小青年</strong></p>
+        </div>
+        <div class="w3-container">
+            <ul class="w3-ul w3-border w3-white">
+                <li style="padding: 6px 2px;"><a href="src/subs/section_3.html" class="w3-center w3-text-blue w3-padding-0" style="cursor: pointer;"><strong>首页</strong></a></li>
+                <li style="padding: 6px 2px;"><a class="w3-center w3-text-blue w3-padding-0" style="cursor: pointer;"><strong>归档</strong></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close();" style="cursor: pointer" id="myOverlay"></div>
+    <div class="w3-main" style="margin-left: 300px;">
+    	<div class="w3-container">
+    		<span class="w3-opennav w3-hide-large w3-xlarge w3-hover-text-grey w3-right" onclick="w3_open();"><i class="fa fa-bars"></i></span>
+	    </div>
+	    <div class="w3-container">
+	    	<div class="w3-padding-128 w3-center"><p><strong>正在施工，敬请期待……<a href="index.html" class="w3-text-blue" style="text-decoration: none;">返回</a></strong></p></div>
+	    </div>
+    </div>
+    <script>
+	    function w3_open() {
+	        document.getElementById("mySidenav").style.display = "block";
+	        document.getElementById("myOverlay").style.display = "block";
+	    }
+	
+	    function w3_close() {
+	        document.getElementById("mySidenav").style.display = "none";
+	        document.getElementById("myOverlay").style.display = "none";
+	    }
+    </script>
+</body>
+</html>
