@@ -1,0 +1,2 @@
+<a onclick="fetch([{url:'src/subs/2/0/4.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0005.txt',id:'contents'},{url:'src/articles/02/02_2/css/0005.css',id:'mystyles'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« DB 优化-02.SQL 语句的优化</a>
+<div style="clear: both;"></div>

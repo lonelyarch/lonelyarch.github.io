@@ -1,4 +1,11 @@
 <article>
+    <div><h3>锁的故事</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-02-14</h4></div>
+    <div style="clear: both;"></div>
+    <p>在绝大多数的 WEB 应用平台中，数据库扮演着举足轻重的角色，例如，著名的 LAMP（Linux + Apache + MySQL + PHP）组合里的 MySQL 就是为无数个中小型动态网站提供数据管理服务的，它也是迄今为止最流行的开源数据库（The world's most popular open source database，源自<a style="color: blue; text-decoration: none;" target="_blank" href="https://www.mysql.com/">官网</a>），该数据库的社区版应用了 <a style="color: blue; text-decoration: none;" target="_blank" href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL 协议</a>，即在没有特别需求的情况下，你可以把具有卓越性能的社区版 MySQL 视为完全免费。[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/5.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0006.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>
+<hr>
+<article>
     <div><h3>站点测试</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
     <div style="clear: both;"></div>
     <p>求真务实的精神需要赞美……</p>

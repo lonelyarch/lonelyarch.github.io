@@ -1,0 +1,39 @@
+<article>
+    <header><h3>锁的故事</h3><h4 class="w3-right w3-margin-0"><i class="fa fa-calendar-o"></i> 2017-02-14</h4></header>
+    <div style="clear: both;"></div>
+    <hr style="margin-top: 0;">
+    <div class="w3-panel w3-light-gray" style="border-radius: 10px;">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在绝大多数的 WEB 应用平台中，数据库扮演着举足轻重的角色，例如，著名的 LAMP（Linux + Apache + MySQL + PHP）组合里的 MySQL 就是为无数个中小型动态网站提供数据管理服务的，它也是迄今为止最流行的开源数据库（The world's most popular open source database，源自<a style="color: blue; text-decoration: none;" target="_blank" href="https://www.mysql.com/">官网</a>），该数据库的社区版应用了 <a style="color: blue; text-decoration: none;" target="_blank" href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL 协议</a>，即在没有特别需求的情况下，你可以把具有卓越性能的社区版 MySQL 视为完全免费。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么，什么是数据库？简而言之，数据库事实上就是存放数据的仓库，只不过该仓库是在计算机存储设备上，而且数据是按一定的格式存放的。数据库是一个共享资源，可供多个用户使用，允许多个用户同时使用的数据库系统称为多用户数据库系统，例如，飞机订票数据库系统，该系统在同一时刻并发运行的事务可达数百个。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么，什么是事务呢？事务即就是用户定义的一个数据库操作序列，这些操作要么全做要么全不做，是一个不可分割的工作单位，它具有 4 个特性：原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）和持续性（Durability），简称 ACID 特性。事务的执行方式有串行、并行两种，事务在执行过程中需要不同的资源，例如，CPU 资源、I/O 资源以及通信资源等等，当事务以串行方式执行时，许多系统资源将处于空闲状态，因此，为了充分利用系统资源，发挥数据库共享资源的特点，多个事务通常是以并行方式执行。然而，虽然多个事务并行执行可以提高系统资源的利用率，但是，如果不对它加以控制，那么，当多个用户并发地存取数据库时就会产生多个事务同时存取同一数据的情况，这种情况可能会导致数据存取不正确，破坏事务的一致性。为了避免多个事务在并行执行时可能会出现的问题，并发控制机制就此产生。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么，什么是并发控制机制？简单理解，为了保证事务的隔离性和一致性，对并发操作进行正确调度的策略。在没有并发控制机制的情况下，并发操作可引起数据不一致性，这种数据不一致性主要包括：</p>
+        <ul style="list-style-type: decimal; padding-left: 50px;">
+            <li><p>丢失修改（Lost Update）</p></li>
+            <li><p>不可重复读（Non-Repeatable Read）</p></li>
+            <li><p>读“脏”数据（Dirty Read）</p></li>
+        </ul>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">为了解决上述问题，实现并发控制的封锁技术应运而生</span>。所谓封锁，就是事务 T 在对某个数据对象（表、记录等）操作之前，先向系统发送请求，对它加锁。加锁之后，事务 T 就对该数据对象有了一定的控制，在事务 T 释放它的锁之前，其它的事务不能更新此数据对象。</p>
+    </div>
+    <div class="w3-panel w3-custom-color" style="border-radius: 10px;">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>基本的封锁类型有两种：排它锁（Exclusive Locks，简称 X 锁）和共享锁（Share Locks，简称 S 锁）</strong></p>
+        <ul style="list-style-type: decimal; padding-left: 50px;">
+            <li><p>排它锁又称为写锁。若事务 T 对数据对象 A 加上 X 锁，则只允许 T 读取和修改 A，其它任何事务都不能再对 A 加任何类型的锁，直到 T 释放 A 上的锁。这就保证了其它事务在 T 释放 A 上的锁之前不能再读取和修改 A。</p></li>
+            <li><p>共享锁又称为读锁。若事务 T 对数据对象 A 加上 S 锁，则事务 T 可以读 A 但不能修改 A，其它事务只能再对 A 加 S 锁而不能加 X 锁，直到 T 释放 A 上的 S 锁。这就保证了其它事务可以读 A，但在 T 释放 A 上的 S 锁之前不能对 A 做任何修改。</p></li>
+        </ul>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MySQL 的 InnoDB 存储引擎对上述两种基本的封锁类型有着良好的实现，除此之外，InnoDB 存储引擎还包括意向锁（Intention Locks）、行锁（Record Locks）等多种封锁方法，更多信息<a target="_blank" style="color: blue; text-decoration: none;" href="https://dev.mysql.com/doc/refman/5.7/en/innodb-locking.html">戳这里</a>。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>应用场景中的封锁类型：悲观锁和乐观锁</strong></p>
+        <ul style="list-style-type: decimal; padding-left: 50px;">
+        	<li><p>悲观锁：顾名思义，事务 T 在对数据对象 A 的每一次操作中都悲观地认为数据对象 A 会被其它事务所修改而加锁。悲观锁的实现通常是依赖于数据库提供的锁机制，例如，读锁、写锁以及行锁等等都是悲观锁。悲观锁主要使用在写多读少的场景。</p></li>
+        	<li>
+        		<p>乐观锁：它是相对悲观锁而言的，事务 T 在对数据对象 A 的每一次操作中都乐观地认为数据对象 A 不会被其它事务所修改而不必加锁，只有当事务 T 对数据对象 A 进行提交更新的时候，它才会对数据对象 A 是否存在数据冲突进行检查，若存在数据冲突，则返回错误信息做相应处理。乐观锁主要使用在写少读多的场景。</p>
+        		<p>乐观锁的实现方式有两种：使用数据版本（version）记录机制实现、使用时间戳（timestamp）实现。</p>
+        	</li>
+        </ul>
+    </div>
+    <br>
+	<br>
+	<br>
+	<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0006');" style="color: #428bca; text-decoration: none;">展开评论</a>
+	<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+	<div id="comment-box"></div>
+</article>
