@@ -44,7 +44,7 @@
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存 session id 的方法通常是使用 cookie，然而，cookie 是可以被人为禁止的，在 cookie 被人为禁止的情况下还能够把 session id 传回服务器的常用技术就是 <strong>URL 重写</strong>，即把 session id 附加在 URL 路径之后，附加方式有两种：作为 URL 路径的附加信息、作为查询字符串。另一种在禁用 cookie 之后还可回传 session id 给服务器的技术称为<strong>表单隐藏字段</strong>，即服务器会自动修改表单，添加一个隐藏字段，以致在表单提交时能够把 session id 传回至服务器。</p>
     	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在谈论 session 机制的时候，通常会有这样一种误解：关闭浏览器之后，session 就消失。事实上，除非有程序通知服务器删除一个 session，否则，在通常情况下，服务器会始终保留着直至服务器停止或重启，程序一般都是在用户退出登录的时候才有可能发删除 session 的指令，然而，浏览器在关闭之前从来不会主动通知服务器它将要关闭，因此，服务器根本不会有机会知道浏览器已经关闭，之所以会有这种误解，是因为大部分 session 机制都使用了<strong>会话 cookie</strong> 来保存 session id，关闭浏览器之后，这个 session id 就会消失，当浏览器再次连接服务器时也就无法找到原来的 session。如果服务器设置的 cookie 被保存到硬盘上或使用某种方法改写浏览器发出的 HTTP 请求报文，把原来的 session id 发送给服务器，那么，当浏览器再次打开并且连接至服务器时还是能够找到原来的 session。</p>
     	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;恰是由于关闭浏览器不会导致 session 被删除，才迫使服务器为 session 设置了一个失效时间，当距离客户端前一次使用 session 的时间超过这个失效时间时，服务器就可以认为客户端已经停止了活动，才会把 session 删除以节省存储空间。</p>
-    	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;"><strong>特别说明：</strong>本文涉及“session 机制”的相关内容基本来自一个叫<strong>啸笑天</strong>的一篇题目为《session 机制详解》的博文，按照惯例，本文应该引出该篇博文的链接地址，但是，因为承载该篇博文的页面夹杂了丑陋的广告，所以，在多次犹豫之后，本文也终究没有引出题目为《session 机制详解》这篇博文的链接地址，纵然这样，该篇博文也不失为一篇佳作。最后，还是想说，这大概就是一个程序猿的强迫症。</span></p>
+    	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;"><strong>特别说明：</strong>本文涉及“session 机制”的相关内容基本来自一个叫<strong>啸笑天</strong>的一篇题目为《session 机制详解》的博文，按照惯例，本文应该引出该篇博文的链接地址，但是，因为承载该篇博文的页面夹杂了丑陋的广告，所以，在多次犹豫之后，本文也终究没有引出该链接地址，纵然这样，该篇博文也不失为一篇佳作。最后，还是想说，这大概就是一个程序猿的强迫症。</span></p>
     </div>
     <br>
 	<br>
