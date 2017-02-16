@@ -6,6 +6,7 @@
 				<li style="padding: 6px 0;"><a style="cursor: pointer; padding: 0 16px;" onclick="select_item(4,{url:'src/articles/02/02_2/0004.txt',id:'main'});var y=document.getElementById('list').getElementsByTagName('a');for(var i=0;i<y.length;i++){y[i].className='';}this.className='w3-text-blue';">DB 优化-01.优化概述</a></li>
 				<li style="padding: 6px 0;"><a style="cursor: pointer; padding: 0 16px;" onclick="select_item(4,[{url:'src/articles/02/02_2/0005.txt',id:'main'},{url:'src/articles/02/02_2/css/0005.css',id:'myst'}]);var y=document.getElementById('list').getElementsByTagName('a');for(var i=0;i<y.length;i++){y[i].className='';}this.className='w3-text-blue';">DB 优化-02.SQL 语句的优化</a></li>
 				<li style="padding: 6px 0;"><a style="cursor: pointer; padding: 0 16px;" onclick="select_item(4,{url:'src/articles/02/02_2/0006.txt',id:'main'});var y=document.getElementById('list').getElementsByTagName('a');for(var i=0;i<y.length;i++){y[i].className='';}this.className='w3-text-blue';">锁的故事</a></li>
+				<li style="padding: 6px 0;"><a style="cursor: pointer; padding: 0 16px;" onclick="document.getElementById('myst').innerHTML='';select_item(4,{url:'src/articles/02/02_2/0007.txt',id:'main'});var y=document.getElementById('list').getElementsByTagName('a');for(var i=0;i<y.length;i++){y[i].className='';}this.className='w3-text-blue';">cookie &amp; session</a></li>
 			</ul>
 		</div>
 	</div>
