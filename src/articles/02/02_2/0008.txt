@@ -1,0 +1,113 @@
+<article>
+    <header><h3>对迭代器的简要分析</h3><h4 class="w3-right w3-margin-0"><i class="fa fa-calendar-o"></i> 2017-02-17</h4></header>
+    <div style="clear: both;"></div>
+    <hr style="margin-top: 0;">
+    <div class="w3-panel w3-light-gray" style="border-radius: 10px;">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;迭代器（Iterator）：众所周知，Iterator 主要是对 JAVA 集合进行迭代，即遍历 JAVA 集合中的对象，它是一个标准化遍历各类容器里面的所有对象的方法类，是经典的设计模式。</p>
+    </div>
+    <div class="w3-panel w3-custom-color" style="border-radius: 10px;">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在没有使用 Iterator 的情况下，我们是这样处理 ArrayList&lt;E&gt; 集合的遍历：</p>
+        <div class="w3-example" style="margin: 0 30px;">
+            <div class="w3-code">
+                List&lt;String&gt; list = new ArrayList&lt;String&gt;(); <br>
+                for (int i = 0; i &lt; list.size(); i++) { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;String string = list.get(i); <br>
+                } <br>
+            </div>
+        </div>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于这种方式，我们必须知道集合的内部结构——对 size() 方法、get(int index) 方法的调用，同时每一种集合对应一种遍历方法，遍历代码无法复用。以下分为 4 个步骤简要分析 Iterator 是如何做到在不必知道集合的内部结构和代码复用的情况下遍历集合的所有对象的。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>步骤一：</strong>模拟实现 Collection&lt;E&gt; 接口，定义 iterator() 方法。</p>
+        <div class="w3-example" style="margin: 0 30px;">
+            <div class="w3-code">
+                public interface Collection&lt;E&gt; { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public void add(Object o); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public int size(); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public Iterator&lt;E&gt; iterator(); <br>
+                } <br>
+            </div>
+        </div>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>步骤二：</strong>模拟实现 Iterator&lt;E&gt; 接口，定义 next()、hasNext() 方法。</p>
+        <div class="w3-example" style="margin: 0 30px;">
+            <div class="w3-code">
+                public interface Iterator&lt;E&gt; { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public Object next(); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public boolean hasNext(); <br>
+                } <br>
+            </div>
+        </div>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>步骤三：</strong>模拟实现 ArrayList&lt;E&gt; 类。</p>
+        <div class="w3-example" style="margin: 0 30px;">
+            <div class="w3-code" style="height: 300px; overflow-y: auto;">
+                public class ArrayList&lt;E&gt; implements Collection&lt;E&gt; { <br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;// 定义 Object 数组，初始化长度为 10 <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Object[] objects = new Object[10]; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;int index = 0; <br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public void add(Object o) { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (index == objects.length) { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object[] newObjects = new Object[objects.length * 2]; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.arraycopy(objects, 0, newObjects, 0, objects.length); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects = newObjects; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objects[index] = o; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index++; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public int size() { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return index; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;// 实现 iterator() 方法 <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public Iterator&lt;E&gt; iterator() { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return new ArrayListIterator(); // 返回实现了 Iterator&lt;E&gt; 接口的内部类实例 <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;// 定义内部类，实现 Iterator&lt;E&gt; 接口 <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;private class ArrayListIterator implements Iterator&lt;E&gt; { <br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private int currentIndex = 0; <br>
+                    <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 实现 next() 方法 <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@SuppressWarnings("unchecked") <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Override <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public E next() { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E o = (E) objects[currentIndex]; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currentIndex++; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return o; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                    <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 实现 hasNext() 方法 <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Override <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public boolean hasNext() { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (currentIndex >= index) <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return false; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return true; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} <br>
+            } <br>
+            </div>
+        </div>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>步骤四：</strong>测试（为测试需要，实现User类。当然，也可以使用String、Integer等。）</p>
+        <div class="w3-example" style="margin: 0 30px;">
+            <div class="w3-code" style="height: 300px; overflow-y: auto;">
+                public class MainClass { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;public static void main(String[] args) { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// <span style="color: red;">注意：Collection 接口和 ArrayList 类是模拟实现的，不是 jdk 提供的。</span> <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Collection&lt;User&gt; c = new ArrayList&lt;User&gt;(); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (int i = 0; i &lt; 20; i++) { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.add(new User("张三" + i, "0000" + i)); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Iterator&lt;User&gt; it = c.iterator(); // 使用迭代器 <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while (it.hasNext()) { <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User user = (User) it.next(); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("username: " + user.getUsername() + "," + " " + "password: " + user.getPassword()); <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                } <br>
+            </div>
+        </div>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上模拟了 Collection&lt;E&gt;、Iterator&lt;E&gt; 接口以及 ArrayList&lt;E&gt; 类并且进行简单测试，主要是想理解 jdk 实现 Iterator 模式的基本原理，模拟代码均参考 jdk8 的源码。</p>
+    </div>
+</article>

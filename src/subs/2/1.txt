@@ -13,6 +13,13 @@
 </article>
 <hr>
 <article>
+    <div><h3>对迭代器的简要分析</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-02-17</h4></div>
+    <div style="clear: both;"></div>
+    <p>迭代器（Iterator）：众所周知，Iterator 主要是对 JAVA 集合进行迭代，即遍历 JAVA 集合中的对象，它是一个标准化遍历各类容器里面的所有对象的方法类，是经典的设计模式。[...]</p>
+	<p><a onclick="fetch([{url:'src/subs/2/0/7.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0008.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+</article>
+<hr>
+<article>
     <div><h3>站点测试</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
     <div style="clear: both;"></div>
     <p>求真务实的精神需要赞美……</p>

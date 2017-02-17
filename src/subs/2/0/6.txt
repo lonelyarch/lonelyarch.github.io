@@ -1,2 +1,3 @@
 <a onclick="fetch([{url:'src/subs/2/0/5.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0006.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« 锁的故事</a>
+<a onclick="fetch([{url:'src/subs/2/0/7.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0008.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">对迭代器的简要分析 »</a>
 <div style="clear: both;"></div>
