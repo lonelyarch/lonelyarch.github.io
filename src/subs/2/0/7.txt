@@ -1,2 +1,3 @@
 <a onclick="document.getElementById('mystyles').innerHTML='';fetch([{url:'src/subs/2/0/6.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0007.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« cookie &amp; session</a>
+<a onclick="fetch([{url:'src/subs/2/0/8.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0009.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">一个有关算法问题的思考过程 »</a>
 <div style="clear: both;"></div>

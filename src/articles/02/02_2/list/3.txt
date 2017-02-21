@@ -4,6 +4,7 @@
 		<div id="list" class="w3-accordion-content" style="max-height: 200px; overflow-y: auto; border-bottom: 1px solid #ddd;">
 			<ul class="w3-ul">
 				<li style="padding: 6px 0;"><a style="cursor: pointer; padding: 0 16px;" onclick="select_item(4,{url:'src/articles/02/02_2/0008.txt',id:'main'});var y=document.getElementById('list').getElementsByTagName('a');for(var i=0;i<y.length;i++){y[i].className='';}this.className='w3-text-blue';">对迭代器的简要分析</a></li>
+				<li style="padding: 6px 0;"><a style="cursor: pointer; padding: 0 16px;" onclick="select_item(4,{url:'src/articles/02/02_2/0009.txt',id:'main'});var y=document.getElementById('list').getElementsByTagName('a');for(var i=0;i<y.length;i++){y[i].className='';}this.className='w3-text-blue';">一个有关算法问题的思考过程</a></li>
 			</ul>
 		</div>
 	</div>
