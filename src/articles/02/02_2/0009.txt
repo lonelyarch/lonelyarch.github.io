@@ -24,10 +24,10 @@
     	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对测试输入而言，以字母表前几个字母 A 至 E 命名城镇，两镇之间的线路距离（例如，A 至 B 的距离为 5）用 AB5 表示。</p>
     	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图：AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7（<strong style="color: red;">测试数据</strong>）。如图所示：</p>
     	<img alt="赋权图" src="src/articles/02/02_2/images/0009_1.jpg" style="max-width: 100%; max-height: 100%; padding: 0 30px;" />
-    	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主在看完题目之后最先想到的是在算法思想上妇孺皆知的<strong>迪杰斯特拉（Dijkstra）算法</strong>以及图论的相关内容，可惜，远离学生时代的几载春秋之后，它们的内在美在博主的记忆里已经是面目全非……还是长话短说，回忆多了容易烧脑。</p>
+    	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主在看完题目之后最先想到的是在算法思想上妇孺皆知的<strong>迪杰斯特拉（Dijkstra）算法</strong>以及图论的相关内容，可惜，远离学生时代的几载春秋之后，它们的内在美于博主的记忆里已经是面目全非……</p>
     </div>
     <div class="w3-panel w3-custom-color" style="border-radius: 10px;">
-    	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对上述题目，博主用了近乎两天的时间潜心复习了《数据结构》里图的相关知识，例如，有向赋权图的概念、深度优先搜索、广度优先搜索以及迪杰斯特拉算法等，可惜拙于天分，最终还是凭借强大的百度搜索解决了该题。现在，博主有心记录一下自己的解题过程、想法以及答案：</p>
+    	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对上述题目，博主用了几乎两天时间潜心复习了《数据结构》里图的相关知识，有向赋权图的概念、深度优先搜索、广度优先搜索以及迪杰斯特拉算法，可惜拙于天分，最终还是凭借强大的百度搜索解决了该题，不过，在几经烧脑之后，博主对该题有了新的算法实现，现记录一下自己的解题过程、想法以及答案：</p>
     	<ul style="list-style-type: decimal; padding-left: 50px;">
             <li>
             	<p>苦于良策久之，博主无意间想起了曾经解答过一个类似的含有邻接矩阵思想的问题，该问题考察的核心点就是用代码实现数学里的排列组合，现给出代码如下所示：</p>
