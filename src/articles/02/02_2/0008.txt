@@ -110,4 +110,10 @@
         </div>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上模拟了 Collection&lt;E&gt;、Iterator&lt;E&gt; 接口以及 ArrayList&lt;E&gt; 类并且进行简单测试，主要是想理解 jdk 实现 Iterator 模式的基本原理，模拟代码均参考 jdk8 的源码。</p>
     </div>
+    <br>
+	<br>
+	<br>
+	<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0008');" style="color: #428bca; text-decoration: none;">展开评论</a>
+	<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+	<div id="comment-box"></div>
 </article>
