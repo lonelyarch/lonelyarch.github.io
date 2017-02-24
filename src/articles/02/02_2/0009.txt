@@ -274,7 +274,8 @@ import java.util.List;
                             <span class="hljs-keyword">if</span> (ars[idx][j] &gt; <span class="hljs-number">0</span>) { <span class="hljs-comment">// 以邻接矩阵为线索</span>
                                 list.add(list.<span class="hljs-keyword">get</span>(i) + arr[j]);
                                 <span class="hljs-comment">// 根据该题第 7 问的描述，A 结点为起点站而 C 结点是终点站且途经 3 站。</span>
-                                <span class="hljs-keyword">if</span> ((list.<span class="hljs-keyword">get</span>(i) + arr[j]).endsWith(<span class="hljs-string">"C"</span>) &amp;&amp; (list.<span class="hljs-keyword">get</span>(i) + arr[j]).length() == <span class="hljs-number">5</span>) {
+                                <span class="hljs-keyword">if</span> ((list.<span class="hljs-keyword">get</span>(i) + arr[j]).endsWith(<span class="hljs-string">"C"</span>)
+                                		&amp;&amp; (list.<span class="hljs-keyword">get</span>(i) + arr[j]).length() == <span class="hljs-number">5</span>) {
                                     rslt.add(list.<span class="hljs-keyword">get</span>(i) + arr[j]);
                                 }
                             }
@@ -482,7 +483,8 @@ import java.util.List;
                             <span class="hljs-keyword">if</span> (ars[idx][j] &gt; <span class="hljs-number">0</span>) { <span class="hljs-comment">// 以邻接矩阵为线索</span>
                                 <span class="hljs-comment">// 由该题第 8 问的题意可知，求得路径不包含“环”。</span>
                                 <span class="hljs-keyword">if</span> (list.<span class="hljs-keyword">get</span>(i).getRoute().contains(arr[j])) {
-                                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arr[j].equals(<span class="hljs-string">"C"</span>)) { <span class="hljs-comment">// 根据该题第 8 问的描述，终点站为 C 结点。</span>
+                                } <span class="hljs-comment">// 根据该题第 8 问的描述，终点站为 C 结点。</span>
+                                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arr[j].equals(<span class="hljs-string">"C"</span>)) {
                                     rslt.add(list.<span class="hljs-keyword">get</span>(i).getRoute() + arr[j] + <span class="hljs-string">","</span>
                                             + (list.<span class="hljs-keyword">get</span>(i).getDistance() + ars[idx][j]));
                                 } <span class="hljs-keyword">else</span> {
