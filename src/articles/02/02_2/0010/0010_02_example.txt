@@ -1,0 +1,35 @@
+<!-- <a>、<li>、<ul>、<div>、<body>、<html>元素定义了相同的处理函数 -->
+<!DOCTYPE html>
+<html onclick="eventHandler('<html>')">
+    <head>
+        <meta charset="UTF-8">
+        <title>Event Bubbling</title>
+    </head>
+    <body onclick="eventHandler('<body>')">
+        <div onclick="eventHandler('<div>')">
+            <ul onclick="eventHandler('<ul>')">
+                <li onclick="eventHandler('<li>')">
+                    <!-- 当<a>元素为事件源时，<a>、<li>、<ul>、<div>、<body>、<html>的处理函数会被依次执行 -->
+                    <a href="javascript:void(0);" onclick="eventHandler('<a>')">Item #1</a>
+                </li>
+            </ul>
+        </div>
+    </body>
+    <script type="text/javascript">
+        function eventHandler(element) {
+            if(element == '<a>') {
+                alert(element + '元素为事件源');
+            } else if(element == '<li>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<ul>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<div>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<body>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<html>') {
+                alert(element + '元素之事件冒泡');
+            }
+        }
+    </script>
+</html>

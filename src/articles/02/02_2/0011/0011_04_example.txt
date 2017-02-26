@@ -1,0 +1,28 @@
+<!-- 改进代码 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Event Delegation</title>
+    </head>
+    <body>
+        <div id="container">
+            <ul id="list">
+                <li><a href="javascript:void(0);">Item #1</a></li>
+                <li><a href="javascript:void(0);">Item #2</a></li>
+                <li><a href="javascript:void(0);">Item #3</a></li>
+                <li><a href="javascript:void(0);">Item #4</a></li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            window.onload = function() {
+                // 事件委托，即我们将click事件添加在<ul>元素上，再通过相应判断获得事件源
+                document.getElementById("list").addEventListener("click", function(e) {
+                     if(e.target && e.target.nodeName.toLowerCase() == "a") {
+                        alert(e.target.text);
+                     }
+                });
+            }
+        </script>
+    </body>
+</html>

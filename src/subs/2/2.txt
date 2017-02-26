@@ -1,6 +1,6 @@
 <article>
-    <div><h3>站点测试</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
+    <div><h3>事件委托</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-02-26</h4></div>
     <div style="clear: both;"></div>
-    <p>恬不知耻的态度需要唾弃……</p>
-    <p><a href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>事件委托（Event Delegation）：</b>简而言之，依赖于<a style="color: blue; text-decoration: none; cursor: pointer;" onclick="select_item(4,{url:'src/articles/02/02_2/0010.txt',id:'main'});select_list(0,{url:'src/articles/02/02_2/list/1.txt',id:'myhd'});">事件冒泡</a>机制，当我们对 DOM 中的某个元素添加事件的时候，我们可以将事件添加到它的父节点上，即将事件委托给父节点，由父节点来处理事件的响应。[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/10.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0011.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
 </article>

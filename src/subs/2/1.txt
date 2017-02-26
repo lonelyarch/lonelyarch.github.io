@@ -23,13 +23,13 @@
     <div><h3>一个有关算法问题的思考过程</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-02-21</h4></div>
     <div style="clear: both;"></div>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;近两天遇到一个比较棘手的算法问题，现给出问题的描述（原题为英文版）：</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Kiwiland 这个地方的城镇之间有铁路运营服务，出于经济考虑，所有的轨道都是“单向”的，例如，存在一条从 Kaitaia 到 Invercargill 运营线路不意味着一定会有一条从 Invercargill 到 Kaitaia 的运营线路，实际上，即使存在这样的往返线路，这两条线路也是相对独立的，例如，从 A 镇到 B 镇的线路长为 8，从 B 镇到 A 镇的线路长可能为 6。</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Kiwiland 这个地方的城镇之间有铁路运营服务，出于经济考虑，所有的轨道都是“单向”的，例如，存在一条从 Kaitaia 到 Invercargill 运营线路不意味着一定会有一条从 Invercargill 到 Kaitaia 的运营线路，实际上，即使存在这样的往返线路，这两条线路也是相对独立的，例如，从 A 镇到 B 镇的线路长为 8，从 B 镇到 A 镇的线路长可能为 6。[...]</p>
     <p><a onclick="fetch([{url:'src/subs/2/0/8.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0009.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
 </article>
 <hr>
 <article>
-    <div><h3>站点测试</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2016-12-03</h4></div>
+    <div><h3>事件冒泡</h3><h4 class="w3-right"><i class="fa fa-calendar-o"></i> 2017-02-26</h4></div>
     <div style="clear: both;"></div>
-    <p>求真务实的精神需要赞美……</p>
-    <p><a href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>事件冒泡（Event Bubbling）：</b>在某个 DOM 元素上触发了某类事件，例如在 &lt;a&gt; 元素上触发了 click 事件，如果该元素定义了此事件的处理函数，那么该处理函数将被执行，如果该元素没有定义处理函数或该元素的处理函数与父元素的处理函数重名，那么这个 click 事件将会向父元素传播，直到该事件被处理或该事件已经被传播到根元素（document）。[...]</p>
+    <p><a onclick="fetch([{url:'src/subs/2/0/9.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0010.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p>
 </article>

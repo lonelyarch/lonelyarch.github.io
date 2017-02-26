@@ -1,0 +1,132 @@
+<article>
+	<header><h3>事件冒泡</h3><h4 class="w3-right w3-margin-0"><i class="fa fa-calendar-o"></i> 2017-02-26</h4></header>
+    <div style="clear: both;"></div>
+    <hr style="margin-top: 0;">
+    <div class="w3-panel w3-light-gray" style="border-radius: 10px;">
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>事件冒泡（Event Bubbling）：</b>在某个 DOM 元素上触发了某类事件，例如在 &lt;a&gt; 元素上触发了 click 事件，如果该元素定义了此事件的处理函数，那么该处理函数将被执行，如果该元素没有定义处理函数或该元素的处理函数与父元素的处理函数重名，那么这个 click 事件将会向父元素传播，直到该事件被处理或该事件已经被传播到根元素（document）。</p>
+		<p><img alt="事件冒泡" src="src/articles/02/02_2/images/0010_1.jpg" style="max-width: 100%; max-height: 100%; padding: 0 30px;" /></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>示例代码 01：</b></p>
+		<div class="w3-example" style="margin: 0 30px;">
+    		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+    			<pre><code class="hljs"><span class="hljs-comment">&lt;!-- &lt;div&gt;、&lt;html&gt;元素定义了相同的处理函数，&lt;a&gt;、&lt;li&gt;、&lt;ul&gt;、&lt;body&gt;没有定义处理函数 --&gt;</span>
+<span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('html')"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Event Bubbling<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">""</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('div')"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">""</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">""</span>&gt;</span>
+                    <span class="hljs-comment">&lt;!-- 当&lt;a&gt;元素为事件源时，&lt;div&gt;、&lt;html&gt;的处理函数会被依次执行 --&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"javascript:void(0);"</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">""</span>&gt;</span>Item #1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eventHandler</span><span class="hljs-params">(element)</span> {</span>
+            alert(element);
+        }
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+                    		</div>
+                    		<a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0010/0010_01_example.txt');">Try it Yourself »</a>
+                    	</div>
+                    	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>示例代码 02：</b></p>
+                    	<div class="w3-example" style="margin: 0 30px;">
+                    		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+                    			<pre><code class="hljs"><span class="hljs-comment">&lt;!-- &lt;a&gt;、&lt;li&gt;、&lt;ul&gt;、&lt;div&gt;、&lt;body&gt;、&lt;html&gt;元素定义了相同的处理函数 --&gt;</span>
+<span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;html&gt;')"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Event Bubbling<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;body&gt;')"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;div&gt;')"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;ul&gt;')"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;li&gt;')"</span>&gt;</span>
+                    <span class="hljs-comment">&lt;!-- 当&lt;a&gt;元素为事件源时，&lt;a&gt;、&lt;li&gt;、&lt;ul&gt;、&lt;div&gt;、&lt;body&gt;、&lt;html&gt;的处理函数会被依次执行 --&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"javascript:void(0);"</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;a&gt;')"</span>&gt;</span>Item #1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eventHandler</span><span class="hljs-params">(element)</span> {</span>
+            <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;a&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素为事件源'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;li&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;ul&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;div&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;body&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;html&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            }
+        }
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+                    		</div>
+                    		<a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0010/0010_02_example.txt');">Try it Yourself »</a>
+                    	</div>
+                    	<br>
+            		</div>
+            		<div class="w3-panel w3-custom-color" style="border-radius: 10px;">
+            			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>事件冒泡（Event Bubbling）的作用：</b></p>
+            			<ul style="list-style-type: decimal; padding-left: 50px;">
+            				<li><p><span style="color: red;">事件委托</span>；</p></li>
+            				<li><p>使不同元素捕获同一事件，再各自执行处理函数，例如示例代码 02。</p></li>
+            			</ul>
+            			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>阻止事件冒泡（stopPropagation）：</b>在某些时候，我们需要明确事件源或阻止事件传播以降低资源开销，这个时候，阻止事件冒泡将是好的选择。</p>
+            			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>示例代码 03：</b></p>
+            			<div class="w3-example" style="margin: 0 30px;">
+                    		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+                    			<pre><code class="hljs"><span class="hljs-comment">&lt;!-- 虽然&lt;a&gt;、&lt;li&gt;、&lt;ul&gt;、&lt;div&gt;、&lt;body&gt;、&lt;html&gt;元素定义了相同的处理函数，但是，在 eventHandler(element,event) 处理函数被执行之后，由于调用了 stopPropagation() 函数，事件将不再向父节点传播 --&gt;</span>
+<span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;html&gt;',event)"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Event Bubbling<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;body&gt;',event)"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;div&gt;',event)"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;ul&gt;',event)"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;li&gt;',event)"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"javascript:void(0);"</span> <span class="hljs-attribute">onclick</span>=<span class="hljs-value">"eventHandler('&lt;a&gt;',event)"</span>&gt;</span>Item #1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eventHandler</span><span class="hljs-params">(element,event)</span> {</span>
+            <span class="hljs-keyword">if</span>(event &amp;&amp; event.stopPropagation) {
+                event.stopPropagation(); <span class="hljs-comment">// 阻止事件冒泡</span>
+            }
+            <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;a&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素为事件源'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;li&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;ul&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;div&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;body&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(element == <span class="hljs-string">'&lt;html&gt;'</span>) {
+                alert(element + <span class="hljs-string">'元素之事件冒泡'</span>);
+            }
+        }
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+    		</div>
+    		<a target="_blank" class="w3-btn w3-black w3-margin-bottom" onclick="link2page('02/02_2/0010/0010_03_example.txt');">Try it Yourself »</a>
+    	</div>
+    	<br>
+	</div>
+</article>

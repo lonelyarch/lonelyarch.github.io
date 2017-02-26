@@ -1,0 +1,29 @@
+<!-- 缺陷代码 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Event Delegation</title>
+    </head>
+    <body>
+        <div id="container">
+            <ul id="list">
+                <li><a href="javascript:void(0);">Item #1</a></li>
+                <li><a href="javascript:void(0);">Item #2</a></li>
+                <li><a href="javascript:void(0);">Item #3</a></li>
+                <li><a href="javascript:void(0);">Item #4</a></li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            window.onload = function() {
+                var ul = document.getElementById("list");
+                var arr = ul.getElementsByTagName("a");
+                for (var i = 0, l = arr.length; i < l; i++) {
+                    arr[i].onclick = function eventHandler() {
+                        alert(this.textContent);
+                    };
+                }
+            }
+        </script>
+    </body>
+</html>

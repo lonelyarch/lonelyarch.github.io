@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Event Delegation</title>
+        </head>
+    <body>
+        <div id="container">
+            <ul id="list">
+                <li><a href="javascript:void(0);">Item #1</a></li>
+                <li><a href="javascript:void(0);">Item #2</a></li>
+                <li><a href="javascript:void(0);">Item #3</a></li>
+                <li><a href="javascript:void(0);">Item #4</a></li>
+            </ul>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // 创建委托事件，即我们将事件注册在父元素<ul>上，将事件目标设置为<a>元素               
+                $("#list").on("click", "a", function(event) {
+                    alert($(this).text());
+                });
+                // 新增<li>元素         
+                $("#list").append("<li><a href='javascript:void(0);'>Item #5</a></li>");
+            });
+        </script>
+    </body>
+</html>

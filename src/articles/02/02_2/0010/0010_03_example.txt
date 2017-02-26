@@ -1,0 +1,37 @@
+<!-- 虽然<a>、<li>、<ul>、<div>、<body>、<html>元素定义了相同的处理函数，但是，在 eventHandler(element,event) 处理函数被执行之后，由于调用了 stopPropagation() 函数，事件将不再向父节点传播 -->
+<!DOCTYPE html>
+<html onclick="eventHandler('<html>',event)">
+    <head>
+        <meta charset="UTF-8">
+        <title>Event Bubbling</title>
+    </head>
+    <body onclick="eventHandler('<body>',event)">
+        <div onclick="eventHandler('<div>',event)">
+            <ul onclick="eventHandler('<ul>',event)">
+                <li onclick="eventHandler('<li>',event)">
+                    <a href="javascript:void(0);" onclick="eventHandler('<a>',event)">Item #1</a>
+                </li>
+            </ul>
+        </div>
+    </body>
+    <script type="text/javascript">
+        function eventHandler(element,event) {
+            if(event && event.stopPropagation) {
+                event.stopPropagation(); // 阻止事件冒泡
+            }
+            if(element == '<a>') {
+                alert(element + '元素为事件源');
+            } else if(element == '<li>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<ul>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<div>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<body>') {
+                alert(element + '元素之事件冒泡');
+            } else if(element == '<html>') {
+                alert(element + '元素之事件冒泡');
+            }
+        }
+    </script>
+</html>
