@@ -1,0 +1,2 @@
+<a onclick="document.getElementById('mystyles').innerHTML='';fetch([{url:'src/subs/2/0/10.txt',id:'prevtonext'},{url:'src/articles/02/02_2/0011.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« 事件委托</a>
+<div style="clear: both;"></div>

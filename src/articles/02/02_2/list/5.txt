@@ -1,0 +1,10 @@
+<div class="w3-container">
+	<div class="w3-accordion">
+		<button onclick="var x=document.getElementById('list');if(x.className.indexOf('w3-show')==-1){x.className+=' w3-show';}else{x.className=x.className.replace(' w3-show','');};" class="w3-btn-block w3-center-align w3-blue">CSS <i class="fa fa-caret-down"></i></button>
+		<div id="list" class="w3-accordion-content" style="max-height: 200px; overflow-y: auto; border-bottom: 1px solid #ddd;">
+			<ul class="w3-ul">
+				<li style="padding: 6px 0;"><a style="cursor: pointer; padding: 0 16px;" onclick="select_item(4,{url:'src/articles/02/02_2/0012.txt',id:'main'});var y=document.getElementById('list').getElementsByTagName('a');for(var i=0;i<y.length;i++){y[i].className='';}this.className='w3-text-blue';">Ubuntu Kylin 下安装 MySQL 5.7</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+<article>
+	<header><h3>Ubuntu Kylin 下安装 MySQL 5.7</h3><h4 class="w3-right w3-margin-0"><i class="fa fa-calendar-o"></i> 2017-02-28</h4></header>
+    <div style="clear: both;"></div>
+    <hr style="margin-top: 0;">
+    <div class="w3-panel w3-light-gray" style="border-radius: 10px;">
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统：Ubuntu Kylin 16.04.1 LTS（64位）</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参考网址：<a style="color: blue; text-decoration: none;" target="_blank" href="http://dev.mysql.com/doc/refman/5.7/en/linux-installation-debian.html">http://dev.mysql.com/doc/refman/5.7/en/linux-installation-debian.html</a></p>
+		<ul style="list-style-type: decimal; padding-left: 50px;">
+			<li>
+				<p>MySQL 5.7 下载：</p>
+				<p>下载地址为 <a style="color: blue; text-decoration: none;" target="_blank" href="http://dev.mysql.com/downloads/mysql/">http://dev.mysql.com/downloads/mysql/</a>。（注意：在 linux 系统下使用 uGet+aria2 下载软件包。）</p>	
+				<img alt="MySQL 5.7" src="src/articles/02/02_2/images/0012/0012_1.jpg" style="max-width: 100%; max-height: 100%;" />
+			</li>
+			<li>
+				<p>MySQL 5.7 安装：</p>
+				<img alt="MySQL 5.7" src="src/articles/02/02_2/images/0012/0012_2.jpg" style="max-width: 100%; max-height: 100%;" />
+				<p>打开终端，输入命令</p>
+				<p><strong>cd /home/gw/software/mysql-5.7.14</strong></p>
+				<p style="word-wrap: break-word;"><strong>tar -xvf mysql-server_5.7.14-1ubuntu16.04_amd64.deb-bundle.tar</strong></p>
+				<img alt="MySQL 5.7" src="src/articles/02/02_2/images/0012/0012_3.jpg" style="max-width: 100%; max-height: 100%;" />
+				<p>因为 MySQL 5.7 的安装依赖于 libaio1 包，所以首先检查该软件包是否已经安装，在终端输入以下命令</p>
+				<p><strong>dpkg -s libaio1</strong></p>
+				<p>根据提示信息选择安装或略过。如果系统提示没有安装该软件包，则在终端输入以下命令</p>
+				<p><strong>sudo apt-get install libaio1</strong></p>
+				<img alt="MySQL 5.7" src="src/articles/02/02_2/images/0012/0012_4.jpg" style="max-width: 100%; max-height: 100%;" />
+				<p>在 libaio1 软件包安装完成之后，正式开始 mysql-community-server 的安装，在终端输入以下命令</p>
+				<p style="word-wrap: break-word;"><strong>sudo dpkg -i mysql-{common,community-client,client,community-server,server}_*.deb</strong></p>
+				<img alt="MySQL 5.7" src="src/articles/02/02_2/images/0012/0012_5.jpg" style="max-width: 100%; max-height: 100%;" />
+				<p>至此，mysql-community-server 已经安装完成，我们可以在 /etc/mysql，/usr/sbin，/var/lib/mysql 目录下找到 mysql 的相关文件。</p>
+			</li>
+			<li>
+				<p>MySQL 5.7 测试：</p>
+				<p><strong>mysql -h localhost -u root -p sys</strong></p>
+				<img alt="MySQL 5.7" src="src/articles/02/02_2/images/0012/0012_6.jpg" style="max-width: 100%; max-height: 100%;" />
+			</li>
+		</ul>
+	</div>
+</article>
+<br>
+<br>
+<br>
+<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0012');" style="color: #428bca; text-decoration: none;">展开评论</a>
+<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
+<div id="comment-box"></div>
