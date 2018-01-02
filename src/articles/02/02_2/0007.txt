@@ -50,6 +50,3 @@
 <br>
 <br>
 <br>
-<a id="toggle-comment-box" class="w3-right" href="javascript:void(0);" onclick="toggleDuoshuoComments(event,'comment-box','02_02_2_0007');" style="color: #428bca; text-decoration: none;">展开评论</a>
-<a id="retract-comment-box" class="w3-right" href="javascript:void(0);" onclick="retractDuoshuoComments(event,'comment-box');" style="color: #428bca; text-decoration: none; display: none;">收起评论</a>
-<div id="comment-box"></div>
