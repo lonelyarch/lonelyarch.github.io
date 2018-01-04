@@ -87,4 +87,3 @@
 <br>
 <br>
 <br>
-<div id="comments"></div>
