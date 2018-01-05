@@ -1,107 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>个人博客</title>
-<base href="/">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="lib/css/w3.css">
-<style type="text/css">
-.w3-container {
-	padding: 0 0;
-}
-
-.top-wrap {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    height: 70px;
-    color: white;
-    margin: auto;
-}
-
-.bottom-wrap {
-	background: rgba(255, 255, 255, 0) none repeat scroll 0 0;
-	border: 1px solid rgba(255, 255, 255, 0.3);
-	padding: 15px 10px;
-	border-radius: 50%;
-}
-
-.bottom-wrap:hover {
-	background: rgba(255, 255, 255, 0.5) none repeat scroll 0 0;
-    color: white;
-    text-decoration: none;
-}
-
-a {
-    color: #428bca;
-    text-decoration: none;
-}
-
-body {
-	background-image: url(lib/images/bg-image-1.jpg);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	max-width: 100%;
-	height: auto;
-}
-</style>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="lib/w3.css">
 <style>
-.card {
-	width: 20%;
-	height: auto;
+.w3-width {
 	margin: auto;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	transition: 0.3s;
-}
-
-img {
-	border: 1px solid rgba(255, 255, 255, 0.3);
-	border-radius: 8px;
-	padding: 5px;
-}
-
-.w3-row:nth-child(2) {
-	margin-top: 10%;
-}
-
-@media screen and (max-width:992px) {
-	.card {
-		width: 30%;
-	}
-	.w3-row:nth-child(2) {
-		margin-top: 25%;
-	}
+	max-width: 45rem;
+	width: 100%;
 }
 </style>
 </head>
-<body style="font-weight: bold;">
-	<div class="w3-container">
-		<div class="w3-row">
-			<div class="top-wrap">
-				<div class="w3-col m6">
-					<div class="w3-center">
-						<p style="padding: 8px 0;">lonelyguo <span style="border-left: 1px solid white; padding-left: 20px; margin-left: 20px;">我总是独自生活</span></p>
-					</div>
-				</div>
-				<div class="w3-col m6">
-					<ul class="w3-navbar">
-						<li class="w3-col m4"><p><a class="w3-center w3-hover-none w3-hover-text-white" href="src/subs/section_1.html" onfocus="this.blur();">个人简介</a></p></li>
-						<li class="w3-col m4"><p><a class="w3-center w3-hover-none w3-hover-text-white" href="src/subs/section_2.html" onfocus="this.blur();">职业提升</a></p></li>
-						<li class="w3-col m4"><p><a class="w3-center w3-hover-none w3-hover-text-white" href="src/subs/section_3.html" onfocus="this.blur();">生活随笔</a></p></li>
-					</ul>
-				</div>
+<body class="w3-black">
+	<div class="w3-black w3-width" style="height: 68px; padding-top: 20px; text-align: center;">
+		<div class="w3-wide w3-text-white">YOU ARE NOT ALONE, AND I AM HERE WITH YOU!</div>
+	</div>
+	<div id="main" class="w3-width" style="padding-top: 0px;">
+		<div class="w3-row w3-black">
+			<div id="menu" class="w3-light-green w3-width" style="height: 44px; width: 99.5%;">
+				<a class="w3-quarter w3-button w3-hover-black w3-hover-text-white" style="padding: 11px 15px 11px 15px !important;">首页</a>
+				<a class="w3-quarter w3-button w3-hover-black w3-hover-text-white" style="padding: 11px 15px 11px 15px !important;">关于</a>
+				<a class="w3-quarter w3-button w3-hover-black w3-hover-text-white" style="padding: 11px 15px 11px 15px !important;" href="history/index.html">职业提升</a>
+				<a class="w3-quarter w3-button w3-hover-black w3-hover-text-white" style="padding: 11px 15px 11px 15px !important;">生活随笔</a>
 			</div>
-		</div>
-		<div class="w3-row">
-			<div class="card">
-				<img src="lib/images/bg-image-2.jpg" alt="生活照" style="width: 100%;">
+			<div style="padding: 16px;">
+				<section></section>
+				<section></section>
+				<section></section>
 			</div>
-			<p class="w3-center" style="color: white; margin: 20px;">欢迎浏览本站！我总是独自生活，但是，我依然保持着乐观和热情……</p>
-		</div>
-		<div class="w3-row" style="margin-top: 20px;">
-			<p class="w3-center"><a href="src/main.html" class="bottom-wrap">开始</a></p>
-			<br>
 		</div>
 	</div>
+	<script src="lib/w3.js"></script>
 </body>
 </html>
