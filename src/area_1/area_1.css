@@ -1,0 +1,6 @@
+.w3-custom-flip-container,.w3-custom-flip-front,.w3-custom-flip-back{height:300px}
+.w3-custom-flip-container:hover .w3-custom-flip{transform:rotateY(180deg)}
+.w3-custom-flip{transition:0.6s;transform-style:preserve-3d;position:relative}
+.w3-custom-flip-front,.w3-custom-flip-back{backface-visibility:hidden;position:absolute;top:0;left:0}
+.w3-custom-flip-front{z-index:2;transform:rotateY(0deg);background-color:#8bc34a;width:100%}
+.w3-custom-flip-back{transform:rotateY(180deg);background-color:#2196f3;width:100%}

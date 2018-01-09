@@ -6,15 +6,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="lib/css/w3.css">
-<link rel="stylesheet" href="lib/css/w3-custom.css">
+<style id="myst" type="text/css"></style>
 </head>
 <body class="w3-black">
-	<div class="w3-black w3-custom-width" style="height: 68px; padding-top: 20px; text-align: center;">
+	<div class="w3-black w3-width" style="height: 68px; padding-top: 20px; text-align: center;">
 		<div class="w3-wide w3-text-white">YOU ARE NOT ALONE, AND I AM HERE WITH YOU!</div>
 	</div>
-	<div id="main" class="w3-custom-width" style="padding-top: 0px;">
+	<div id="main" class="w3-width" style="padding-top: 0px;">
 		<div class="w3-row w3-black">
-			<div id="menu" class="w3-light-green w3-custom-width" style="height: 44px; z-index:2;">
+			<div id="menu" class="w3-light-green w3-width" style="height: 44px; z-index:2;">
 				<div id="menu-large" class="w3-menu-large">
 					<a class="w3-quarter w3-button w3-hover-black w3-hover-text-white">首页</a>
 					<a class="w3-quarter w3-button w3-hover-black w3-hover-text-white">关于</a>
@@ -26,16 +26,13 @@
 					<a class="w3-button w3-light-green w3-hover-black w3-hover-text-white">关于</a>
 					<a class="w3-button w3-light-green w3-hover-black w3-hover-text-white" href="history/index.html">职业提升</a>
 					<a class="w3-button w3-light-green w3-hover-black w3-hover-text-white">生活随笔</a>
-					<a class="w3-button w3-hover-black w3-hover-text-white icon" onclick="small_menu_open();">☰</a>
-					<script>
-						function small_menu_open(){var x=document.getElementById("menu-small");if(x.className==="w3-menu-small"){x.className+=" responsive";}else{x.className="w3-menu-small";}}
-					</script>
+					<a class="w3-button w3-hover-black w3-hover-text-white icon">☰</a>
 				</div>
 			</div>
-			<div id="area" class="w3-panel"></div>
+			<div id="area" class="w3-panel" style="padding: 0;"></div>
 		</div>
 	</div>
-	<footer class="w3-custom-width">
+	<footer class="w3-width">
 		<hr style="margin-bottom: 10px;">
 		<div class="w3-center w3-opacity" style="height: 22px;">版权 © 2017-2018 柯南道尔</div>
 		<hr style="margin-top: 10px;">

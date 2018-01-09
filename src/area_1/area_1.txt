@@ -1,0 +1,42 @@
+<div class="w3-row">
+	<div class="w3-custom-flip-container w3-quarter">
+		<div class="w3-custom-flip">
+			<div class="w3-custom-flip-front"></div>
+			<div class="w3-custom-flip-back">
+				<div class="w3-display-container" style="height: 300px;">
+					<div class="w3-padding w3-display-middle">工作</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="w3-custom-flip-container w3-quarter">
+		<div class="w3-custom-flip">
+			<div class="w3-custom-flip-front"></div>
+			<div class="w3-custom-flip-back">
+				<div class="w3-display-container" style="height: 300px;">
+					<div class="w3-padding w3-display-middle">美食</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="w3-custom-flip-container w3-quarter">
+		<div class="w3-custom-flip">
+			<div class="w3-custom-flip-front"></div>
+			<div class="w3-custom-flip-back">
+				<div class="w3-display-container" style="height: 300px;">
+					<div class="w3-padding w3-display-middle">摄影</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="w3-custom-flip-container w3-quarter">
+		<div class="w3-custom-flip">
+			<div class="w3-custom-flip-front"></div>
+			<div class="w3-custom-flip-back">
+				<div class="w3-display-container" style="height: 300px;">
+					<div class="w3-padding w3-display-middle">故事</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
