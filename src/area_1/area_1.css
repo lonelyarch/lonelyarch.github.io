@@ -4,3 +4,8 @@
 .w3-custom-flip-front,.w3-custom-flip-back{backface-visibility:hidden;position:absolute;top:0;left:0}
 .w3-custom-flip-front{z-index:2;transform:rotateY(0deg);background-color:#8bc34a;width:100%}
 .w3-custom-flip-back{transform:rotateY(180deg);background-color:#2196f3;width:100%}
+.w3-custom-flip-container:nth-child(1){padding-right:8px}
+.w3-custom-flip-container:nth-child(2){padding:0 8px}
+.w3-custom-flip-container:nth-child(3){padding:0 8px}
+.w3-custom-flip-container:nth-child(4){padding-left:8px}
+@media screen and (max-width:600px){.w3-custom-flip-container:nth-child(1){padding:0;margin-bottom:8px}.w3-custom-flip-container:nth-child(2){padding:0;margin:8px 0}.w3-custom-flip-container:nth-child(3){padding:0;margin:8px 0}.w3-custom-flip-container:nth-child(4){padding:0;margin-top:8px}}
