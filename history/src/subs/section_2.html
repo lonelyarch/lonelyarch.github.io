@@ -121,10 +121,15 @@
         var num = 3;
 
         (function() {
-            document.getElementById("overview").style.display = "block";
-            document.getElementById("contents").style.display = "none";
-            document.getElementsByClassName("prev")[0].style.display = "none";
-            request("src/subs/2/" + idx + ".txt", "overview");
+        	var arg = window.location.search.substring(1);
+        	if("new2old" === arg) {
+        		summ();
+        	} else {
+	            document.getElementById("overview").style.display = "block";
+	            document.getElementById("contents").style.display = "none";
+	            document.getElementsByClassName("prev")[0].style.display = "none";
+	            request("src/subs/2/" + idx + ".txt", "overview");
+        	}
         })();
 
         function file() { // 归档
