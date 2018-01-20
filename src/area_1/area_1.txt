@@ -41,8 +41,8 @@
 	</div>
 </div>
 <div class="w3-row">
-	<p style="margin: 16px 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主姓名，郭伟，2013 年毕业于西北大学计算机科学与技术专业，陕西省山阳县人。毕业至今已将近 5 年，在近 5 年的时间里，工作则占据了大部分的光阴，用一句冠冕堂皇的话来概括这 5 年，那就是工作快乐、劳动光荣。当然，工作原本就是生活的一部分，面对这近 5 年的生活，博主想说，虽然逝去了光阴，但在这 5 年的时间里也终究是没有那么一个能让自己感动到痛哭流涕的故事发生，这不免有些遗憾，也可以说是生活平淡且不完美。即使这样，这 5 年还是固执地改变了一个人，相对于那些刚出校园的学弟学妹们而言，博主着实老了很多。</p>
-	<p style="margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时不我待，岁月如梭。时间匆匆而过，虽然过去的生活总归趋于平淡，但这丝毫不会影响一个人对未来生活的美好向往，对博主而言，下一个 5 年的征程即将开始，博主不免自我激励一番，也算是给自己的一个提醒和警示，珍惜当下的每时每刻，争取下一个 5 年生活会多姿多彩。最后，有想了解博客起源的童鞋<a id="summ" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>，祝君生活快乐！</p>
+	<p style="margin: 16px 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主姓名，郭伟，2013 年毕业于西北大学计算机科学与技术专业，陕西省山阳县人。毕业至今已将近 5 年，太多的事情还没有做，宝贵的光阴就这么没了，蓦然回首，不知不觉就过了许多个春夏秋冬，不禁感慨时间过得快，岁月匆匆如流水。</p>
+	<p style="margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时不我待，年华稍纵即逝。虽然曾经的生活趋于平淡，但这丝毫不会影响一个人对新生活的美好向往，珍惜当下的每时每刻，博主期待下一个 5 年的生活会多姿多彩。最后，有想了解博客起源的童鞋<a id="summ" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>，祝君生活快乐！</p>
 	<script>
 		var summ = document.getElementById("summ");
 		summ.onclick = function() {
