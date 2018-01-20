@@ -1,0 +1,55 @@
+<article>
+    <div><p><strong>Apache Tomcat 8 之源码编译、安装及调试</strong></p><p class="w3-right w3-margin-0">2016-12-03</p></div>
+    <div style="clear: both;"></div>
+    <div><hr style="margin-top: 0;"></div>
+    <div><p>步骤一、JDK、Ant 的安装请参考其他教程。本次 Tomcat 8.0.37 源码编译使用的 JDK、Ant 版本如下所示：</p></div>
+    <div><img class="w3-width" src="src/area_2/articles/0001/images/01.jpg" alt="Oops" /></div>
+    <div><p>步骤二、Tomcat 8.0.37 源码下载： <a target="_blank" href="http://tomcat.apache.org/download-80.cgi" class="w3-text-blue" style="text-decoration: none;">http://tomcat.apache.org/download-80.cgi</a> 。</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/02.jpg" alt="Oops" /></div>
+	<div><p>步骤三、解压 apache-tomcat-8.0.37-src.tar.gz 并对 ./apache-tomcat-8.0.37-src/build.properties.default 文件稍加修改。（这个修改不重要，如果你确实比较懒，请无视步骤三，相信你我的时间都是宝贵的）</p></div>
+	<div><p>解压：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/03.jpg" alt="Oops" /></div>
+	<div><p>修改 build.properties.default 文件：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/04.jpg" alt="Oops" /></div>
+	<div><p>将 base.path 的值修改为你自己很喜欢的目录路径（这个是所需依赖 jar 包的目录位置，在执行编译命令时将自行下载依赖 jar 包）：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/05.jpg" alt="Oops" /></div>
+	<div><p>步骤四、Building Tomcat 。</p></div>
+	<div><p>1.打开终端，从当前目录切换到 ./apache-tomcat-8.0.37-src 下：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/06.jpg" alt="Oops" /></div>
+	<div><p>2.输入 ant 命令，按回车键，静静等候直到看见 BUILD SUCCESSFUL 信息为止：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/07.jpg" alt="Oops" /></div>
+	<div><br /></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/08.jpg" alt="Oops" /></div>
+	<div><p>3.打开 base.path 指向的目录，我们会看到多了 3 个文件夹：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/09.jpg" alt="Oops" /></div>
+	<div><p>步骤五、Building with Eclipse 。</p></div>
+	<div><p>1.在终端下输入 ant ide-eclipse 命令，静静等候（这个过程可能会等很久，视个人网速而定，如果你无法容忍这种漫长的等待，可以粗暴地将终端强行关闭，重新开启终端再次执行 ant ide-eclipse 命令）：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/10.jpg" alt="Oops" /></div>
+	<div><p>在漫长的等待之后，我们可能会看到这样令人沮丧的结果（BUILD FAILED）：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/11.jpg" alt="Oops" /></div>
+	<div><p>2.经过仔细查看，我们会发现问题出在下载 objenesis-1.2-bin.zip 文件的地方，它的下载地址： <a target="_blank" href="https://objenesis.googlecode.com/files/objenesis-1.2-bin.zip" class="w3-text-blue" style="text-decoration: none;">https://objenesis.googlecode.com/files/objenesis-1.2-bin.zip</a> 。于是我们知道这个失败的结局是命中注定的（原因不解释），在此给出可用的下载地址： <a target="_blank" href="https://bintray.com/easymock/distributions/objenesis/1.2" class="w3-text-blue" style="text-decoration: none;">https://bintray.com/easymock/distributions/objenesis/1.2</a> 。</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/12.jpg" alt="Oops" /></div>
+	<div><p>备注： 最新版本为 objenesis-2.4-bin.zip，但是，我们依然下载的是 objenesis-1.2-bin.zip，原因不解释。</p></div>
+	<div><p>3.将下载的 objenesis-1.2-bin.zip 文件解压到 base.path 指向的目录，再次在终端执行 ant ide-eclipse 命令，我们会看到 BUILD SUCCESSFUL 信息神奇的出现：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/13.jpg" alt="Oops" /></div>
+	<div><br /></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/14.jpg" alt="Oops" /></div>
+	<div><p>步骤六、将 Tomcat 8.0.37 源码导入 Eclipse 测试。</p></div>
+	<div><p>1.打开 Eclipse 工具，点击 Window -> Preferences，再点击 java -> Build Path -> Classpath Variables： 新建 TOMCAT_LIBS_BASE 变量，路径为 base.path 指向的目录路径（/home/gw/software/tomcat/apache-tomcat-8.0.37/tomcat-build-libs）</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/15.jpg" alt="Oops" /></div>
+	<div><p>新建 ANT_HOME 变量，路经为 Ant 的安装路径（/home/gw/software-installed/apache-ant-1.9.7）</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/16.jpg" alt="Oops" /></div>
+	<div><br /></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/17.jpg" alt="Oops" /></div>
+	<div><p>2.点击 File->Import，选择 Existing Projects into Workspace 导入 Tomcat 8.0.37 源码：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/18.jpg" alt="Oops" /></div>
+	<div><p>导入 Tomcat 8.0.37 源码之后的目录结构</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/19.jpg" alt="Oops" /></div>
+	<div><p>3.右击 start-tomcat.launch 文件（./res/ide-support/eclipse/start-tomcat.launch），以 debug 方式启动：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/20.jpg" alt="Oops" /></div>
+	<div><p>打开 org.apache.catalina.startup.Bootstrap.java 文件，在程序入口处（main方法处）设置断点，可看到断点拦截成功</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/21.jpg" alt="Oops" /></div>
+	<div><p>在浏览器（Firefox）中输入网址：http://localhost:8080/，我们会看到以下页面。至此，Tomcat 8.0.37 源码编译、安装及调试已经完成</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0001/images/22.jpg" alt="Oops" /></div>
+	<div><p>官方网址： <a target="_blank" href="http://tomcat.apache.org/tomcat-8.0-doc/building.html" class="w3-text-blue" style="text-decoration: none;">http://tomcat.apache.org/tomcat-8.0-doc/building.html</a> 。</p></div>
+</article>
