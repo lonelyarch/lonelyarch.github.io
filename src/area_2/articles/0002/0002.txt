@@ -5,7 +5,7 @@
 	<div><p>步骤一、新建一个 Web 工程（Dynamic Web Project），在 src 目录下新建 HelloWorld.java 文件：</p></div>
 	<div class="w3-example">
 		<div class="w3-code" style="overflow-x: auto;">
-			<pre><code class="hljs avrasm has-numbering">package <span class="hljs-keyword">com</span><span class="hljs-preprocessor">.study</span><span class="hljs-preprocessor">.servlet</span><span class="hljs-comment">;</span>
+			<pre><code class="hljs">package <span class="hljs-keyword">com</span><span class="hljs-preprocessor">.study</span><span class="hljs-preprocessor">.servlet</span><span class="hljs-comment">;</span>
 
 import java<span class="hljs-preprocessor">.io</span><span class="hljs-preprocessor">.IOException</span><span class="hljs-comment">;</span>
 import java<span class="hljs-preprocessor">.io</span><span class="hljs-preprocessor">.PrintWriter</span><span class="hljs-comment">;</span>
@@ -46,7 +46,7 @@ public class HelloWorld extends HttpServlet {
 	<div><p>在 Web 工程的 web/WebContent/WEB-INF 目录下新建 一个 web.xml 文件，内容如下：</p></div>
 	<div class="w3-example">
 		<div class="w3-code" style="overflow-x: auto;">
-			<pre><code class="hljs xml has-numbering"><span class="hljs-pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+			<pre><code class="hljs"><span class="hljs-pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">web-app</span> <span class="hljs-attribute">xmlns:xsi</span>=<span class="hljs-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
     <span class="hljs-attribute">xmlns</span>=<span class="hljs-value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
     <span class="hljs-attribute">xsi:schemaLocation</span>=<span class="hljs-value">"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>

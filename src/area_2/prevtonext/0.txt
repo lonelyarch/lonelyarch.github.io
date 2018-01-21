@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_2/articles/0001/0001.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">Apache Tomcat 8 之源码编译、安装及调试 »</a>
+<div style="clear: both;"></div>

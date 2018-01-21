@@ -1,3 +1,4 @@
+/* Code */
 .hljs{display:block;padding:0.5em;background:#fff;color:#000;font-size:15px}
 .hljs-keyword,.hljs-title{color:#008}
 .hljs-string{color:#080}
@@ -8,3 +9,13 @@
 .hljs-function{color:#008}
 .hljs-doctype,.hljs-params{color:#000}
 .hljs-preprocessor{color:#444}
+/* Archives */
+#archives .list .item{overflow:hidden;padding:0 0 0 120px}
+#archives .list .item div{float:left;margin: 0 0 0 -120px}
+#archives .list .item ul{list-style:none;margin:0}
+#archives .list .item li{padding:3px 0}
+#archives .list .item time{color:#999;margin-right:5px}
+#archives .list .item a{cursor:pointer}
+#archives .list .item a:hover{color:#2196f3}
+/* Global stylesheet */
+hr{opacity:0.60}
