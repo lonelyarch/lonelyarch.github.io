@@ -1,0 +1,10 @@
+.hljs{display:block;padding:0.5em;background:#fff;color:#000;font-size:15px}
+.hljs-keyword,.hljs-title{color:#008}
+.hljs-string{color:#080}
+.hljs-comment{color:#800}
+.hljs-number{color:#066}
+.hljs-value{color:#080}
+.hljs-tag,.hljs-attribute{color:#606}
+.hljs-function{color:#008}
+.hljs-doctype,.hljs-params{color:#000}
+.hljs-preprocessor{color:#444}

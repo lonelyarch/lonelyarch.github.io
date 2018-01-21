@@ -1,0 +1,91 @@
+<article>
+	<div><p><strong>Apache Tomcat 8 之源码调试续篇</strong></p><p class="w3-right w3-margin-0">2016-09-14</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>步骤一、新建一个 Web 工程（Dynamic Web Project），在 src 目录下新建 HelloWorld.java 文件：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-x: auto;">
+			<pre><code class="hljs avrasm has-numbering">package <span class="hljs-keyword">com</span><span class="hljs-preprocessor">.study</span><span class="hljs-preprocessor">.servlet</span><span class="hljs-comment">;</span>
+
+import java<span class="hljs-preprocessor">.io</span><span class="hljs-preprocessor">.IOException</span><span class="hljs-comment">;</span>
+import java<span class="hljs-preprocessor">.io</span><span class="hljs-preprocessor">.PrintWriter</span><span class="hljs-comment">;</span>
+
+import javax<span class="hljs-preprocessor">.servlet</span><span class="hljs-preprocessor">.ServletException</span><span class="hljs-comment">;</span>
+import javax<span class="hljs-preprocessor">.servlet</span><span class="hljs-preprocessor">.http</span><span class="hljs-preprocessor">.HttpServlet</span><span class="hljs-comment">;</span>
+import javax<span class="hljs-preprocessor">.servlet</span><span class="hljs-preprocessor">.http</span><span class="hljs-preprocessor">.HttpServletRequest</span><span class="hljs-comment">;</span>
+import javax<span class="hljs-preprocessor">.servlet</span><span class="hljs-preprocessor">.http</span><span class="hljs-preprocessor">.HttpServletResponse</span><span class="hljs-comment">;</span>
+
+@SuppressWarnings(<span class="hljs-string">"serial"</span>)
+public class HelloWorld extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response<span class="hljs-preprocessor">.setContentType</span>(<span class="hljs-string">"text/html"</span>)<span class="hljs-comment">;</span>
+        PrintWriter <span class="hljs-keyword">out</span> = response<span class="hljs-preprocessor">.getWriter</span>()<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;html&gt;"</span>)<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;head&gt;"</span>)<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;title&gt;Hello World!&lt;/title&gt;"</span>)<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;/head&gt;"</span>)<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;body&gt;"</span>)<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;h1&gt;Hello World!&lt;/h1&gt;"</span>)<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;/body&gt;"</span>)<span class="hljs-comment">;</span>
+        <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;/html&gt;"</span>)<span class="hljs-comment">;</span>
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>此时，我们会看到很多报错信息，如下所示：</p></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/01.jpg" alt="Oops" /></div>
+	<div><p>在 Web 工程目录下右击，选择 Build Path -> Configure Build Path …，打开 Properties for web 对话框，选择左侧栏中的 Java Build Path，在 Projects 菜单下点击 Add… 按钮，如下所示：</p></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/02.jpg" alt="Oops" /></div>
+	<div><p>勾选 tomcat-8.0.x 工程，连续点击 OK 按钮，关闭 Properties for web 对话框，这时，我们会看到所有的错误都神奇地消失：</p></div>
+	<div style="max-width: 344px; margin:0 auto;">
+		<img style="width: 100%;" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/03.jpg" alt="Oops" />
+	</div>
+	<div><br /></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/04.jpg" alt="Oops" /></div>
+	<div><p>在 Web 工程的 web/WebContent/WEB-INF 目录下新建 一个 web.xml 文件，内容如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-x: auto;">
+			<pre><code class="hljs xml has-numbering"><span class="hljs-pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">web-app</span> <span class="hljs-attribute">xmlns:xsi</span>=<span class="hljs-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="hljs-attribute">xmlns</span>=<span class="hljs-value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
+    <span class="hljs-attribute">xsi:schemaLocation</span>=<span class="hljs-value">"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
+    <span class="hljs-attribute">id</span>=<span class="hljs-value">"WebApp_ID"</span> <span class="hljs-attribute">version</span>=<span class="hljs-value">"3.1"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">display-name</span>&gt;</span>web<span class="hljs-tag">&lt;/<span class="hljs-title">display-name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">welcome-file-list</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">welcome-file</span>&gt;</span>index.html<span class="hljs-tag">&lt;/<span class="hljs-title">welcome-file</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">welcome-file</span>&gt;</span>index.htm<span class="hljs-tag">&lt;/<span class="hljs-title">welcome-file</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">welcome-file</span>&gt;</span>index.jsp<span class="hljs-tag">&lt;/<span class="hljs-title">welcome-file</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">welcome-file</span>&gt;</span>default.html<span class="hljs-tag">&lt;/<span class="hljs-title">welcome-file</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">welcome-file</span>&gt;</span>default.htm<span class="hljs-tag">&lt;/<span class="hljs-title">welcome-file</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">welcome-file</span>&gt;</span>default.jsp<span class="hljs-tag">&lt;/<span class="hljs-title">welcome-file</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">welcome-file-list</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">servlet</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">servlet-name</span>&gt;</span>HelloWorld<span class="hljs-tag">&lt;/<span class="hljs-title">servlet-name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">servlet-class</span>&gt;</span>com.study.servlet.HelloWorld<span class="hljs-tag">&lt;/<span class="hljs-title">servlet-class</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 注意 HelloWorld.java 文件的包路径（package com.study.servlet;） --&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">servlet</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-title">servlet-mapping</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">servlet-name</span>&gt;</span>HelloWorld<span class="hljs-tag">&lt;/<span class="hljs-title">servlet-name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">url-pattern</span>&gt;</span>/HelloWorld<span class="hljs-tag">&lt;/<span class="hljs-title">url-pattern</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">servlet-mapping</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">web-app</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤二、点击 Window -> Preferences，选择左侧栏中的 Server -> RuntimeEnvironments，在 Server Runtime Environments 对话框中点击 Add… 按钮，如下所示：</p></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/05.jpg" alt="Oops" /></div>
+	<div><p>选择 Tomcat installation directory: 的路径为 ./apache-tomcat-8.0.37-src/output/build（即 apache-tomcat-8.0.37 源码编译之后的目录路径），点击 Finish 按钮，再是 OK 按钮：</p></div>
+	<div style="max-width: 700px; margin:0 auto;">
+		<img style="width: 100%;" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/06.jpg" alt="Oops" />
+	</div>
+	<div><p>将 Web 工程添加到 Tomcat 中，再 Debug 启动：</p></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/07.jpg" alt="Oops" /></div>
+	<div><p>为了验证对 Tomcat 源码的调试是否成功，我们对 HelloWorld 类的父类（即 HttpServlet 类）里的 service() 方法设置断点，如下所示：</p></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/08.jpg" alt="Oops" /></div>
+	<div><p>在 Tomcat 以 Debug 模式启动完成之后，我们在浏览器的地址栏中输入： http://localhost:8080/web/HelloWorld</p></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/09.jpg" alt="Oops" /></div>
+	<div><p>我们会看到浏览器的提示信息为“正在连接…”，在 HttpServlet 类的 service() 方法中设置的断点处的代码执行已经成功被拦截：</p></div>
+	<div><img class="w3-width" src="http://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/10.jpg" alt="Oops" /></div>
+	<div><p>至此，关于如何对 Tomcat 源码进行调试已经演示完毕！</p></div>
+</article>
