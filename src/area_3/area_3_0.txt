@@ -1,0 +1,7 @@
+<article>
+	<div><p><strong>免费背景音乐</strong></p><p class="w3-right">2017-06-03</p></div>
+	<div style="clear: both;"></div>
+    <div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请不要被这个标题唬住，这里不提供任何背景音乐，博主只能告诉你免费的东西哪里有，之所以打出<strong class="w3-opacity">免费背景音乐</strong>这个幌子，纯粹是因为它独特的文化魅力，任何事物只要和<strong class="w3-opacity">免费</strong>两个字有瓜葛，就有可能引起大家的共鸣，是不是？</p></div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_3/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_3/articles/0001/0001.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>

@@ -1,0 +1,29 @@
+<article>
+	<div><p><strong>免费背景音乐</strong></p><p class="w3-right w3-margin-0">2017-06-03</p></div>
+    <div style="clear: both;"></div>
+    <div><hr style="margin-top: 0;"></div>
+    <div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请不要被这个标题唬住，这里不提供任何背景音乐，博主只能告诉你免费的东西哪里有，之所以打出<strong class="w3-opacity">免费背景音乐</strong>这个幌子，纯粹是因为它独特的文化魅力，任何事物只要和<strong class="w3-opacity">免费</strong>两个字有瓜葛，就有可能引起大家的共鸣，是不是？</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;闲话少扯，先播一首动听的背景音乐《Trail Of The Incas》，再给出它的出处。（《Trail Of The Incas》，中文译为《印加人的足迹》，至于印加人来自何方，请自查百度科普一下。）</p></div>
+	<div>
+		<div class="w3-row w3-width">
+			<div class="music-player w3-half">
+				<div id="outer-circle" class="outer-circle">
+					<div id="inner-circle" class="inner-circle">
+						<div class="content">
+							<a class="w3-show"><i class="fa fa-play" onclick="play();"></i></a>
+							<a class="w3-hide"><i class="fa fa-pause" onclick="pause();"></i></a>
+							<audio src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_3/articles/0001/audio/01.mp3"></audio>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="music-player w3-half">
+				<p style="margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;《Trail Of The Incas》，中文译为《印加人的足迹》，该音乐源自：</p>
+				<p style="text-align: center;"><a target="_blank" href="http://www.purple-planet.com" class="w3-text-blue" style="text-decoration: none;">http://www.purple-planet.com</a></p>
+				<p>有想了解该音乐的版权等相关信息的童鞋<a target="_blank" href="http://www.purple-planet.com/using-our-free-music/4583818250" class="w3-text-blue" style="text-decoration: none;">戳这里</a>，祝您生活快乐！</p>
+			</div>
+		</div>
+	</div>
+	<div><p><strong>特别说明：</strong></p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>请务必重视版权等相关信息。</strong>博主深信每一个人的劳动成果都是用宝贵的时间和精力换回的，生活里没有免费的午餐，天上也掉不下来馅儿饼，这一切都是在自身努力付出之后才能有的收获，尊重他人的劳动成果也就是在维护自身的利益免受窃取。祝您生活快乐！</p></div>
+</article>

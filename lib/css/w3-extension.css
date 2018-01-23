@@ -19,3 +19,11 @@
 #archives .list .item a:hover{color:#2196f3}
 /* Global stylesheet */
 hr{opacity:0.60}
+video,.music-player{border:1px solid white;opacity:0.60;padding:20px 30px;height:222px}
+/* Music Player */
+.outer-circle{border:10px solid #2196f3;border-left-color:#8bc34a;border-right-color:#8bc34a;margin:0 auto;width:180px;height:180px;border-radius:180px;animation:turning_clockwise 0s infinite linear}
+.inner-circle{border:10px solid #8bc34a;border-left-color:#2196f3;border-right-color:#2196f3;margin:10px;width:140px;height:140px;border-radius:140px;animation:turning_anticlockwise 0s infinite linear}
+.content{text-align:center;width:120px;height:120px;line-height:120px;border-radius:120px}
+.content i{cursor:pointer}
+@keyframes turning_clockwise{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes turning_anticlockwise{0%{transform:rotate(720deg)}100%{transform:rotate(0deg)}}
