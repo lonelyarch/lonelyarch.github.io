@@ -12,7 +12,7 @@
 						<div class="content">
 							<a class="w3-show"><i class="fa fa-play" onclick="play();"></i></a>
 							<a class="w3-hide"><i class="fa fa-pause" onclick="pause();"></i></a>
-							<audio src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_3/articles/0001/audio/01.mp3"></audio>
+							<audio src="https://k003.kiwi6.com/hotlink/rc5czcbi5l/01.mp3"></audio>
 						</div>
 					</div>
 				</div>
