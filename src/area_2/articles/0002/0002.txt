@@ -34,15 +34,15 @@ public class HelloWorld extends HttpServlet {
 		</div>
 	</div>
 	<div><p>此时，我们会看到很多报错信息，如下所示：</p></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/01.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0023.jpg" alt="Oops" /></div>
 	<div><p>在 Web 工程目录下右击，选择 Build Path -> Configure Build Path …，打开 Properties for web 对话框，选择左侧栏中的 Java Build Path，在 Projects 菜单下点击 Add… 按钮，如下所示：</p></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/02.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0024.jpg" alt="Oops" /></div>
 	<div><p>勾选 tomcat-8.0.x 工程，连续点击 OK 按钮，关闭 Properties for web 对话框，这时，我们会看到所有的错误都神奇地消失：</p></div>
 	<div style="max-width: 344px; margin:0 auto;">
-		<img style="width: 100%;" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/03.jpg" alt="Oops" />
+		<img style="width: 100%;" src="https://www.wailian.work/images/2018/01/23/0025.jpg" alt="Oops" />
 	</div>
 	<div><br /></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/04.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0026.jpg" alt="Oops" /></div>
 	<div><p>在 Web 工程的 web/WebContent/WEB-INF 目录下新建 一个 web.xml 文件，内容如下：</p></div>
 	<div class="w3-example">
 		<div class="w3-code" style="overflow-x: auto;">
@@ -74,18 +74,18 @@ public class HelloWorld extends HttpServlet {
 		</div>
 	</div>
 	<div><p>步骤二、点击 Window -> Preferences，选择左侧栏中的 Server -> RuntimeEnvironments，在 Server Runtime Environments 对话框中点击 Add… 按钮，如下所示：</p></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/05.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0027.jpg" alt="Oops" /></div>
 	<div><p>选择 Tomcat installation directory: 的路径为 ./apache-tomcat-8.0.37-src/output/build（即 apache-tomcat-8.0.37 源码编译之后的目录路径），点击 Finish 按钮，再是 OK 按钮：</p></div>
 	<div style="max-width: 700px; margin:0 auto;">
-		<img style="width: 100%;" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/06.jpg" alt="Oops" />
+		<img style="width: 100%;" src="https://www.wailian.work/images/2018/01/23/0028.jpg" alt="Oops" />
 	</div>
 	<div><p>将 Web 工程添加到 Tomcat 中，再 Debug 启动：</p></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/07.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0029.jpg" alt="Oops" /></div>
 	<div><p>为了验证对 Tomcat 源码的调试是否成功，我们对 HelloWorld 类的父类（即 HttpServlet 类）里的 service() 方法设置断点，如下所示：</p></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/08.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0030.jpg" alt="Oops" /></div>
 	<div><p>在 Tomcat 以 Debug 模式启动完成之后，我们在浏览器的地址栏中输入： http://localhost:8080/web/HelloWorld</p></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/09.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0031.jpg" alt="Oops" /></div>
 	<div><p>我们会看到浏览器的提示信息为“正在连接…”，在 HttpServlet 类的 service() 方法中设置的断点处的代码执行已经成功被拦截：</p></div>
-	<div><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0002/10.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0032.jpg" alt="Oops" /></div>
 	<div><p>至此，关于如何对 Tomcat 源码进行调试已经演示完毕！</p></div>
 </article>
