@@ -43,7 +43,7 @@
 			<h4>2016.09.13</h4>
 			<p><strong>Apache Tomcat 8 之源码编译、安装及调试</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;步骤一、JDK、Ant 的安装请参考其他教程。本次 Tomcat 8.0.37 源码编译使用的 JDK、Ant 版本如下所示：</p>
-			<p><img class="w3-width" src="https://luckyguo.oss-cn-beijing.aliyuncs.com/blog/src/area_2/articles/0001/images/01.jpg" alt="Oops" /></p>
+			<p><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0001.jpg" alt="Oops" /></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0001/0001.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
