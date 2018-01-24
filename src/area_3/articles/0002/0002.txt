@@ -1,0 +1,9 @@
+<article>
+	<div><p><strong>个人博客改版</strong></p><p class="w3-right w3-margin-0">2018-01-01</p></div>
+    <div style="clear: both;"></div>
+    <div><hr style="margin-top: 0;"></div>
+    <div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当新年的钟声敲响的时候，屋外的世界是一片欢腾，大街上张灯结彩，人头攒动，快乐的氛围也应该是四处洋溢的，可是，博主却依然坚持了老习惯，深居简出，守在家里写代码，这大概就是程序员的宿命。</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回顾逝去的一年，除了工作之外，个人的生活是一如既往的平淡无奇，想来想去也没有什么值得留念和思考的事情，三百多个日夜竟没有任何一天是喜出望外的，博主也只能无奈地感慨时间过得太快，有时候在想，也可能是个人的生活质量改善得太慢。当然，即使曾经的日子不那么令人欢欣鼓舞，然而，只要太阳每天照常升起，一个对生活并不浮夸的憧憬就不会遥远。</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言归正传。2016 年 11 月 13 日是博主在 <strong>GitHub</strong> 上搭建个人博客的第一次提交记录的时间，距今也有一年多了，在着手搭建个人博客之前，博主也曾想过使用诸如 <a target="_blank" href="https://hexo.io/" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">Hexo</a>、<a target="_blank" href="https://jekyllrb.com/" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">Jekyll</a> 等建站工具来实现属于自己的博客园，如果那样的话，个人博客的维护、更新等工作将简单很多，至少可以借助得心应手的 Markdown 编辑器来写文章，也不会因为<strong>多说评论系统</strong>的殒命而跳起来骂街，总之，比起现在的纯手工建站方式要节约时间。但是，正如博主所言，这就是程序员的宿命，在坚持写代码的过程中，除了不断折腾也获得了乐趣，从而掩盖了生活里的许多枯燥的时光，最为重要的一点是，只有纯手工搭建的个人博客，博主才会觉得它是亲生的。最后想说，个人博客之所以改版，也是顺应了时代的潮流，梦想是丰乳肥臀，现实却是骨瘦如柴。</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后结语，有想围观个人博客原版的童鞋<a target="_blank" href="history/index.html" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>。祝您生活快乐！</div>
+</article>

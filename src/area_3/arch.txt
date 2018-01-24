@@ -2,6 +2,13 @@
 <article class="list">
 	<hr>
     <div class="item">
+    	<div><strong>2018-01</strong></div>
+        <ul>
+            <li><time>01日</time><a onclick="initl();fetch([{url:'src/area_3/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_3/articles/0002/0002.txt',id:'contents'}]);">个人博客改版</a></li>
+        </ul>
+    </div>
+	<hr style="border: none; border-top: 1px dotted white;">
+    <div class="item">
     	<div><strong>2017-06</strong></div>
         <ul>
             <li><time>03日</time><a onclick="initl();fetch([{url:'src/area_3/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_3/articles/0001/0001.txt',id:'contents'}]);">免费背景音乐</a></li>
