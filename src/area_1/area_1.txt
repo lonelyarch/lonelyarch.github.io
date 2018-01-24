@@ -3,7 +3,7 @@
 		<div class="w3-custom-flip">
 			<div class="w3-custom-flip-front"></div>
 			<div class="w3-custom-flip-back">
-				<div class="w3-display-container" style="height: 300px; padding: 0 15px; overflow: hidden;">
+				<div class="w3-display-container" style="padding: 0 15px; overflow: hidden;">
 					<p style="text-align: center;">工作</p>
 					<p>身为一名程序员，在历经了几年勤恳的工作之后，虽然曾因各种问题而饱尝了苦与痛，但也确实领略过灵感于指尖敲打之下呈现出的乐趣和得意，这些微不足道的乐趣和得意也恰恰维持着一份坚持不断编码的热情，为了这份热情，再接再厉，人生苦短，你需要coding！</p>
 				</div>
@@ -14,9 +14,9 @@
 		<div class="w3-custom-flip">
 			<div class="w3-custom-flip-front"></div>
 			<div class="w3-custom-flip-back">
-				<div class="w3-display-container" style="height: 300px; padding: 0 15px; overflow: hidden;">
+				<div class="w3-display-container" style="padding: 0 15px; overflow: hidden;">
 					<p style="text-align: center;">美食</p>
-					<p>蒸羊羔、蒸熊掌、蒸鹿尾儿、烧花鸭、烧雏鸡、烧子鹅、卤猪、卤鸭、酱鸡、腊肉、松花小肚儿、晾肉、香肠儿、什锦苏盘、熏鸡白肚儿、清蒸八宝猪、江米酿鸭子、罐儿野鸡、罐儿鹌鹑、卤什件儿、卤子鹅、山鸡、兔脯、菜蟒、银鱼、清蒸哈什蚂……</p>
+					<p>蒸羊羔、蒸熊掌、蒸鹿尾儿、烧花鸭、烧雏鸡、烧子鹅、卤猪、卤鸭、酱鸡、腊肉、松花小肚儿、晾肉、香肠儿、什锦苏盘、熏鸡白肚儿、清蒸八宝猪、江米酿鸭子、罐儿野鸡、罐儿鹌鹑……</p>
 					<p style="text-align: right;">---出自相声贯口《报菜名》</p>
 				</div>
 			</div>
@@ -26,7 +26,7 @@
 		<div class="w3-custom-flip">
 			<div class="w3-custom-flip-front"></div>
 			<div class="w3-custom-flip-back">
-				<div class="w3-display-container" style="height: 300px; padding: 0 15px; overflow: hidden;">
+				<div class="w3-display-container" style="padding: 0 15px; overflow: hidden;">
 					<p style="text-align: center;">摄影</p>
 					<p>虽然生活总体上就像一汪湖水一样平静，但它偶尔也会泛起波浪。以摄影记录下每一个令人印象深刻的画面，等我老了再把一个一个支离破碎的画面拼凑成故事讲给后辈们听，让他们去争论故事里的是是非非。有谁不喜欢故事？</p>
 				</div>
@@ -37,7 +37,7 @@
 		<div class="w3-custom-flip">
 			<div class="w3-custom-flip-front"></div>
 			<div class="w3-custom-flip-back">
-				<div class="w3-display-container" style="height: 300px; padding: 0 15px; overflow: hidden;">
+				<div class="w3-display-container" style="padding: 0 15px; overflow: hidden;">
 					<p style="text-align: center;">故事</p>
 					<p>我听爷爷讲了一个故事，故事里的事是那昨天的事，故事里有好人也有坏人，故事里有好事也有坏事，故事里有多少是是非非，故事里有多少非非是是。故事里的事，说是就是不是也是，故事里的事，说不是就不是是也不是……</p>
 					<p style="text-align: right;">---出自《故事里的事》</p>
