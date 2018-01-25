@@ -1,2 +1,3 @@
-<a onclick="fetch([{url:'src/area_3/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_3/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« 个人博客改版</a>
+<a onclick="fetch([{url:'src/area_3/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_3/articles/0003/0003.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« 个人博客改版</a>
+<a onclick="fetch([{url:'src/area_3/prevtonext/2.txt',id:'prevtonext'},{url:'src/area_3/articles/0001/0001.txt',id:'contents'}]);" class="w3-text-blue w3-right prev" style="text-decoration: none; cursor: pointer;">免费背景音乐 »</a>
 <div style="clear: both;"></div>

@@ -1,2 +1,2 @@
-<a onclick="initl();fetch([{url:'src/area_3/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_3/articles/0001/0001.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">免费背景音乐 »</a>
+<a onclick="initl();fetch([{url:'src/area_3/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_3/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">免费视频短片 »</a>
 <div style="clear: both;"></div>
