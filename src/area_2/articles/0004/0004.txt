@@ -1,0 +1,91 @@
+<article>
+	<div><p><strong>如何实现一枚旋转的针？</strong></p><p class="w3-right w3-margin-0">2016-10-19</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程（标题里的针代表的是秒针，象征了博主此时此刻对时间的认知）：</p></div>
+	<div class="w3-example-circle" style="margin: 0 auto;"><hr /></div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-circle</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value">turning <span class="hljs-number">8</span>s infinite linear</span></span>; <span class="hljs-comment">/* animation:turning 60s infinite linear; */</span>
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-circle</span> <span class="hljs-tag">hr</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">74</span>px</span></span>; <span class="hljs-comment">/* (150px - 2px)/2，2px 为左、右边框的宽之和。 */</span>
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> turning </span>{
+    0% <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">rotate(<span class="hljs-number">0</span>deg)</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+    100% <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">rotate(<span class="hljs-number">360</span>deg)</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+}
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-circle"</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"margin: 0 auto;"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">hr</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤一、设置 &lt;div&gt; 元素的宽、高均等且背景色为浅绿色，再将 <strong>border-radius</strong> 属性的值设置为 50%，圆就这样自然地出现了，如下所示：</p></div>
+	<div class="w3-row w3-width">
+		<div style="margin: 0 auto; width: 300px; height: 300px; background-color: #8bc34a; border-radius: 50%;"></div>
+	</div>
+	<div><p>步骤二、用 &lt;hr&gt; 标签在圆中画出半径，关键点是将 &lt;hr&gt; 标签的 <strong>position</strong> 属性的值设置为 <strong>relative</strong>，如下所示：</p></div>
+	<div style="margin: 0 auto; width: 300px; height: 300px; background-color: #8bc34a; border-radius: 50%;"><hr style="position: relative; width: 150px; top: 150px;" /></div>
+	<div><p>代码如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+			<pre><code class="hljs"><span class="hljs-tag">div</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-tag">hr</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+<span class="hljs-rule">}</span></span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤三、使用 <strong>CSS3</strong> 的 <strong>transform</strong>、<strong>animation</strong> 属性再结合 <strong>@keyframes</strong> 规则让圆动起来，如下所示：</p></div>
+	<div class="w3-example-circle" style="margin: 0 auto;"><hr /></div>
+	<div><p>代码如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+			<pre><code class="hljs"><span class="hljs-tag">div</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> turning <span class="hljs-number">8</span>s infinite linear</span></span>; <span class="hljs-comment">/* animation:turning 60s infinite linear; */</span>
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> turning </span>{
+    0% <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">rotate(<span class="hljs-number">0</span>deg)</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+    100% <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">rotate(<span class="hljs-number">360</span>deg)</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+}</code></pre>
+		</div>
+	</div>
+</article>

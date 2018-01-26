@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/2.txt',id:'prevtonext'},{url:'src/area_2/articles/0003/0003.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">如何实现淡入淡出效果？ »</a>
+<div style="clear: both;"></div>
