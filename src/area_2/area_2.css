@@ -2,6 +2,5 @@
 .w3-example img{animation:fade 8s linear infinite}
 @keyframes fade{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
 /* 0004 */
-.w3-example-circle{display:block;background-color:#8bc34a;border-radius:50%;height:300px;width:300px;animation:turning 8s infinite linear}
-.w3-example-circle hr{position:relative;top:150px;width:150px}
+.w3-example-circle{animation:turning 8s infinite linear}
 @keyframes turning{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
