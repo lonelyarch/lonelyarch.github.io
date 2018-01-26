@@ -10,3 +10,6 @@
 .w3-custom-content{padding:10px 20px;background-color:black;position:relative;border-radius:6px;border:1px solid white}
 .w3-custom-content h4{margin:0}
 @media all and (max-width:600px) {.w3-custom-timeline::after{left:30px}.w3-custom-container{width:100%;padding-left:70px;padding-right:25px}.w3-custom-container::before{left:60px;border:medium solid white;border-width:10px 10px 10px 0;border-color:transparent white transparent transparent}.w3-custom-left::after,.w3-custom-right::after{left:20px}.w3-custom-right{left:0%}}
+/* Articles CSS */
+.w3-example img{animation:fade 8s linear infinite}
+@keyframes fade{0%{opacity:0}50%{opacity:1}100%{opacity:0}}

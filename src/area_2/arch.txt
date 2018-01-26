@@ -1,6 +1,13 @@
 <div><p><strong>文章归档</strong></p></div>
 <article class="list">
 	<hr>
+	<div class="item">
+    	<div><strong>2016-10</strong></div>
+        <ul>
+            <li><time>17日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_2/articles/0003/0003.txt',id:'contents'}]);">如何实现淡入淡出效果？</a></li>
+        </ul>
+    </div>
+    <hr style="border: none; border-top: 1px dotted white;">
     <div class="item">
     	<div><strong>2016-09</strong></div>
         <ul>

@@ -1,0 +1,48 @@
+<article>
+	<div><p><strong>如何实现淡入淡出效果？</strong></p><p class="w3-right w3-margin-0">2016-10-17</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div>
+		<div class="w3-example" style="padding: 0; border: 0; background-color: black;">
+			<img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/01/26/0033.jpg" />
+		</div>
+		<p><strong>特别说明：</strong>该图出自 <a target="_blank" href="https://unsplash.com/" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">https://unsplash.com</a>，作者为<a style="background-color:black;color:white;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@zanonluca?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Luca Zanon"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:white;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Luca Zanon</span></a>，有想知悉 <strong>license</strong> 的童鞋<a target="_blank" href="https://unsplash.com/license" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>。因现实需要，博主对原图有裁剪、压缩。</p>
+	</div>
+	<div><p>步骤一、使用 <strong>CSS3</strong> 的 <strong>opacity</strong> 属性改变图片的透明度，如下所示：</p></div>
+	<div class="w3-row-padding" style="margin:0 -16px">
+		<div class="w3-third w3-center">
+			<p>opacity 0.2</p>
+			<img src="https://www.wailian.work/images/2018/01/26/0033.jpg" style="width:100%;opacity:0.2;" />
+		</div>
+		<div class="w3-third w3-center">
+			<p>opacity 0.5</p>
+			<img src="https://www.wailian.work/images/2018/01/26/0033.jpg" style="width:100%;opacity:0.5" />
+		</div>
+		<div class="w3-third w3-center">
+			<p>opacity 1.0</p>
+			<img src="https://www.wailian.work/images/2018/01/26/0033.jpg" style="width:100%;opacity:1.0" />
+		</div>
+	</div>
+	<div><p>步骤二、使用 <strong>CSS3</strong> 的 <strong>animation</strong> 属性再结合 <strong>@keyframes</strong> 规则以达到图片自行淡入淡出的效果，如下所示：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-x: auto;">
+			<pre><code class=" hljs css"><span class="hljs-tag">img</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> fade <span class="hljs-number">8</span>s linear infinite</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> fade </span>{
+    0% <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+    50% <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+    100% <span class="hljs-rules">{
+        <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule">}</span></span>
+}</code></pre>
+		</div>
+	</div>
+	<div><p>最后总结，淡入淡出效果不仅适用于  	<strong>&lt;img&gt;</strong> 元素，对诸如 <strong>&lt;div&gt;</strong> 等元素也同样适用，只要掌握了 <strong>CSS3</strong> 的 <strong>opacity</strong> 这一属性的特点并且能够灵活运用即可。</p></div>
+</article>
