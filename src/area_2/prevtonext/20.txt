@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/4.txt',id:'prevtonext'},{url:'src/area_2/articles/0005/0005.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">如何实现立体式的按钮（3D Button）？ »</a>
+<div style="clear: both;"></div>

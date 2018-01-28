@@ -1,0 +1,140 @@
+<article>
+	<div><p><strong>Java 并发编程系列：Thread 类（01）</strong></p><p class="w3-right w3-margin-0">2017-09-23</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;身为一个以 Java 为主要开发语言的程序员，工作几年了也没有对并发编程这个知识块做过系统性地总结，略表内疚，对不常用的东西要么束之高阁、要么弃之如敝屣，这种处事待物的态度早就习惯了，也就不会过分感觉有所失。从今天起，博主会对 Java 并发编程这个知识块做个相对实用的总结，说服自己的理由是：对并发编程不欣赏的程序员不是个好程序员。</p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言归正传。虽然网上有很多优秀的同行从业者写了很多有关 Java 并发编程这个知识块的优秀博文，但是，读别人的文章总感觉对事务的认知不够深刻，还是那句话，纸上得来终觉浅，绝知此事要躬行。</P>
+	</div>
+	<div><p>一、在 Java 平台下，创建线程的方式有两种：（1）继承 Thread 类并重写 run 方法；（2）实现 Runnable 接口并实现 run 方法。</p></div>
+	<div class="w3-row w3-width">
+		<div class="w3-half">
+			<div class="w3-example">
+				<div class="w3-code" style="overflow:auto">
+					<pre><code class="hljs"><span class="hljs-comment">/* 继承 Thread 类 */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyThread</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span> {</span>
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+        System.out.println(<span class="hljs-string">"重写 run() 方法"</span>);
+    }
+}</code></pre>
+			</div>
+		</div>
+	</div>
+	<div class="w3-half">
+		<div class="w3-example">
+			<div class="w3-code" style="overflow:auto">
+				<pre><code class=" hljs java"><span class="hljs-comment">/* 实现 Runnable 接口 */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyThread</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span> {</span>
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+        System.out.println(<span class="hljs-string">"实现 run() 方法"</span>);
+    }
+}
+</code></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div><p>二、线程状态如图所示：</p></div>
+	<div style="max-width: 400px; margin:0 auto;">
+		<img style="width: 100%;" src="src/area_2/articles/0021/images/01.jpg" alt="Oops" />
+		<p>图片源自：<span style="color:red">Core Java Vol 1, 9th Edition, Horstmann, Cay S. & Cornell, Gary_2013</span> 。</p>
+	</div>
+	<div>
+		<p>三、Thread 类之常用方法：</p>
+		<ul style="list-style:decimal;padding-left:0">
+			<li>
+				<p>非静态方法 join()/join(long millis)/join(long millis, int nanos)：</p>
+				<div class="w3-example">
+					<div class="w3-code" style="height:300px;overflow-y:auto">
+						<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JoinDemo</span> {</span>
+
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyThread</span> <span class="hljs-inheritance"><span class="hljs-keyword">implements</span></span> <span class="hljs-title">Runnable</span> {</span>
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> run() {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x = <span class="hljs-number">1</span>; x &lt; <span class="hljs-number">100</span>; x++) {
+                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">"……"</span> + x);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main(String[] args) throws InterruptedException {
+        MyThread d = <span class="hljs-keyword">new</span> JoinDemo().<span class="hljs-keyword">new</span> MyThread();
+        Thread t0 = <span class="hljs-keyword">new</span> Thread(d);
+        Thread t1 = <span class="hljs-keyword">new</span> Thread(d);
+        t0.start();
+        t0.join();
+        t1.start();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x = <span class="hljs-number">1</span>; x &lt; <span class="hljs-number">100</span>; x++) {
+            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">"……"</span> + x);
+        }
+    }
+}
+</code></pre>
+					</div>
+				</div>
+				<p>根据执行结果可知，当主线程执行代码 <strong>t0.join();</strong> 之后将出让 CPU 资源并挂起，直到 <strong>t0</strong> 线程执行结束才会继续向下执行。将示例中的代码稍微修改一下，<strong>t0.join();</strong> 与 代码 <strong>t1.start();</strong> 前后互换，根据执行结果可知，<strong>t0</strong>、<strong>t1</strong> 线程交替执行，当主线程执行代码 <strong>t0.join();</strong> 之后将出让 CPU 资源并挂起，直到 <strong>t0</strong> 线程执行结束才会继续向下执行，主线程会忽略 <strong>t1</strong> 线程是否已经执行结束。简而言之，哪个线程调用了 <strong>join()</strong> 方法，主线程就会等到该线程结束再继续向下执行。</p>
+			</li>
+			<li><p>Thread.sleep(long millis)/Thread.sleep(long millis, int nanos)：设置当前线程睡眠指定时长。当线程进入睡眠状态时不会失去已拥有的锁对象，目的是出让 CPU 资源以供其它线程使用，从而避免长时间独霸 CPU 资源。</p></li>
+			<li><p>Thread.yield()：当前正在执行的线程出让 CPU 资源，给其它具有同等优先级的线程以执行的机会并且该线程依然会参与到对 CPU 资源的竞争中。</p></li>
+		</ul>
+	</div>
+	<div>
+		<p>四、Thread 类之父类（Object 类）常用方法：</p>
+		<ul style="list-style:decimal;padding-left:0">
+			<li><p>非静态方法 notify()/notifyAll()：notify() 方法为唤醒一个正在等待该对象的锁（monitor）的线程，如果有多个线程同时在等待该对象的锁（monitor），那么只有某一个线程会被唤醒。notifyAll() 方法为唤醒正在等待该对象的锁（monitor）的所有线程。</p></li>
+			<li><p>非静态方法 wait()/wait(long timeout)/wait(long timeout, int nanos)：当前线程进入等待状态直到被其它线程通过调用 notify() 方法或 notifyAll() 方法唤醒。注意：调用 wait() 方法的前提是当前线程持有该对象的锁（monitor）。</p></li>
+		</ul>
+		<div class="w3-example">
+			<div class="w3-code" style="height:300px;overflow-y:auto">
+				<pre><code class="hljs">import java.util.concurrent.TimeUnit;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> WaitNotifyDemo {
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        final Object LOCK = <span class="hljs-keyword">new</span> Object();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread A is waiting to get lock"</span>);
+                synchronized (LOCK) {
+                    <span class="hljs-keyword">try</span> {
+                        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread A get lock"</span>);
+                        TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);
+                        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread A do wait method"</span>);
+                        LOCK.wait();
+                        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"wait end"</span>);
+                    } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread B is waiting to get lock"</span>);
+                synchronized (LOCK) {
+                    System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread B get lock"</span>);
+                    <span class="hljs-keyword">try</span> {
+                        TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);
+                    } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    LOCK.notify();
+                    System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread B do notify method"</span>);
+                }
+            }
+        }).start();
+    }
+}</code></pre>
+			</div>
+			<p style="color:black"><strong>特别说明：</strong>该示例代码源自<a target="_blank" href="https://www.jianshu.com/" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">简书</a>，作者<a target="_blank" href="https://www.jianshu.com/u/90ab66c248e6" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">战小狼</a>，有想阅读博客原文的童鞋<a target="_blank" href="https://www.jianshu.com/p/f4454164c017" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>。</p>
+		</div>
+	</div>
+	<div><p>五、Thread 类之废弃方法：destroy()、resume()、stop()、suspend() 等，这些方法被废弃的原因在<a target="_blank" href="https://docs.oracle.com/javase/8/docs/api/index.html" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">Java 文档</a>里有说明，更加详尽的解释请阅读 Oracle 的<a target="_blank" href="https://docs.oracle.com/javase/8/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">官方文档</a>。</p></div>
+</article>
