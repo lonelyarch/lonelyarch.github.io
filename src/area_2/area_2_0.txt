@@ -4,7 +4,7 @@
 	<div class="w3-container w3-light-gray">
 		<p><strong>前言：</strong></p>
 		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;身为一个以 Java 为主要开发语言的程序员，工作几年了也没有对并发编程这个知识块做过系统性地总结，略表内疚，对不常用的东西要么束之高阁、要么弃之如敝屣，这种处事待物的态度早就习惯了，也就不会过分感觉有所失。从今天起，博主会对 Java 并发编程这个知识块做个相对实用的总结，说服自己的理由是：对并发编程不欣赏的程序员不是个好程序员。</p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言归正传。虽然网上有很多优秀的同行从业者写了很多有关 Java 并发编程这个知识块的优秀博文，但是，读别人的文章总感觉对事务的认知不够深刻，还是那句话，纸上得来终觉浅，绝知此事要躬行。</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言归正传。虽然网上有很多优秀的同行从业者写了很多有关 Java 并发编程这个知识块的优秀博文，但是，读别人的文章总感觉对事物的认知不够深刻，还是那句话，纸上得来终觉浅，绝知此事要躬行。</P>
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/20.txt',id:'prevtonext'},{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
