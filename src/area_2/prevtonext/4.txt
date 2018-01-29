@@ -1,3 +1,3 @@
-<a onclick="fetch([{url:'src/area_2/prevtonext/20.txt',id:'prevtonext'},{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« Java 并发编程系列：Thread 类（01）</a>
+<a onclick="fetch([{url:'src/area_2/prevtonext/5.txt',id:'prevtonext'},{url:'src/area_2/articles/0006/0006.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« 如何实现栅栏式的相册？</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/3.txt',id:'prevtonext'},{url:'src/area_2/articles/0004/0004.txt',id:'contents'}]);" class="w3-text-blue w3-right next" style="text-decoration: none; cursor: pointer;">如何实现一枚旋转的针？ »</a>
 <div style="clear: both;"></div>

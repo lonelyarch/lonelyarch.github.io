@@ -21,7 +21,7 @@
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
-	<div class="w3-custom-container w3-custom-right">
+	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
 			<h4>2017.06.04</h4>
 			<p><strong>免费视频短片</strong></p>
@@ -30,13 +30,69 @@
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_3/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
-	<div class="w3-custom-container w3-custom-right">
+	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
 			<h4>2017.06.03</h4>
 			<p><strong>免费背景音乐</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请不要被这个标题唬住，这里不提供任何背景音乐，博主只能告诉你免费的东西哪里有，之所以打出<strong class="w3-opacity">免费背景音乐</strong>这个幌子，纯粹是因为它独特的文化魅力，任何事物只要和<strong class="w3-opacity">免费</strong>两个字有瓜葛，就有可能引起大家的共鸣，是不是？</p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_3/articles/0001/0001.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
+			<h4>2017.03.18</h4>
+			<p><strong>如何实现栅栏式的相册？</strong></p>
+			<p>废话少说，直接给出示例，再逐步分解实现过程：</p>
+			<div>
+				<div class="w3-example-album">
+					<div class="w3-example-album-item">
+						<div class="w3-example-album-item-bg"></div>
+						<div class="w3-example-album-item-close-btn"></div>
+					</div>
+					<div class="w3-example-album-item">
+						<div class="w3-example-album-item-bg"></div>
+						<div class="w3-example-album-item-close-btn"></div>
+					</div>
+					<div class="w3-example-album-item">
+						<div class="w3-example-album-item-bg"></div>
+						<div class="w3-example-album-item-close-btn"></div>
+					</div>
+					<div class="w3-example-album-item">
+						<div class="w3-example-album-item-bg"></div>
+						<div class="w3-example-album-item-close-btn"></div>
+					</div>
+					<div class="w3-example-album-item">
+						<div class="w3-example-album-item-bg"></div>
+						<div class="w3-example-album-item-close-btn"></div>
+					</div>
+				</div>
+				<script>
+				var items = [].slice.call(document.querySelectorAll(".w3-example-album-item"));
+				items.forEach(function(item) {
+					item.addEventListener("click", function() {
+						if (this.classList.contains("dynamic")) return;
+						this.classList.add("dynamic");
+						for(let i=0; i<items.length; i++) {
+							if(items[i] == this) continue;
+							items[i].classList.add("forhide");
+						}
+					});
+				});
+				var butns = [].slice.call(document.querySelectorAll(".w3-example-album-item-close-btn"));
+				butns.forEach(function(butn) {
+					butn.addEventListener("click", function(e) {
+						e.stopPropagation();
+						document.querySelector(".w3-example-album-item.dynamic").classList.remove("dynamic");
+						for(let i=0; i<items.length; i++) {
+							items[i].classList.remove("forhide");
+						}
+					});
+				});
+			</script>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0006/0006.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
 	<div class="w3-custom-container w3-custom-right">
@@ -86,7 +142,7 @@
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0003/0003.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
-	<div class="w3-custom-container w3-custom-left">
+	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
 			<h4>2016.09.14</h4>
 			<p><strong>Apache Tomcat 8 之源码调试续篇</strong></p>
@@ -95,7 +151,7 @@
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
-	<div class="w3-custom-container w3-custom-left">
+	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
 			<h4>2016.09.13</h4>
 			<p><strong>Apache Tomcat 8 之源码编译、安装及调试</strong></p>

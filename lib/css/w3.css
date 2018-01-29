@@ -235,6 +235,7 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 .w3-example{box-shadow:0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important}
 .w3-width{margin:auto;max-width:60rem;width:100%}
 .w3-menu-large a,.w3-menu-small a{padding:11px 15px 11px 15px !important;height:44px}
+.w3-link{text-decoration:none;cursor:pointer;color:#2196f3!important}
 @media screen and (max-width:600px){.w3-menu-large{display:none}}
 @media screen and (min-width:601px){.w3-menu-small{display:none}}
 @media screen and (max-width:600px){.w3-menu-small a:not(:first-child){display:none}.w3-menu-small a.icon{float:right;display:block}}

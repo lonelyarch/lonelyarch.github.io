@@ -1,0 +1,314 @@
+<article>
+	<div><p><strong>如何实现栅栏式的相册？</strong></p><p class="w3-right w3-margin-0">2017-03-18</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div>
+		<div class="w3-example-album">
+			<div class="w3-example-album-item">
+				<div class="w3-example-album-item-bg"></div>
+				<div class="w3-example-album-item-close-btn"></div>
+				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" class="w3-link" href="https://unsplash.com/photos/-YHSwy6uqvk">https://unsplash.com/photos/-YHSwy6uqvk</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@lvnatikk?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Lily Lvnatikk"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Lily Lvnatikk</span></a>。</p></div>
+			</div>
+			<div class="w3-example-album-item">
+				<div class="w3-example-album-item-bg"></div>
+				<div class="w3-example-album-item-close-btn"></div>
+				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/D-vDQMTfAAU" class="w3-link">https://unsplash.com/photos/D-vDQMTfAAU</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@charlesdeluvio?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Charles Deluvio</span></a>。</p></div>
+			</div>
+			<div class="w3-example-album-item">
+				<div class="w3-example-album-item-bg"></div>
+				<div class="w3-example-album-item-close-btn"></div>
+				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/MNtag_eXMKw" class="w3-link">https://unsplash.com/photos/MNtag_eXMKw</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@through_these_eyes_photography?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Thomas Tucker</span></a>。</p></div>
+			</div>
+			<div class="w3-example-album-item">
+				<div class="w3-example-album-item-bg"></div>
+				<div class="w3-example-album-item-close-btn"></div>
+				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/qfIVXu7nxGU" class="w3-link">https://unsplash.com/photos/qfIVXu7nxGU</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@sambazon?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Sambazon</span></a>。</p></div>
+			</div>
+			<div class="w3-example-album-item">
+				<div class="w3-example-album-item-bg"></div>
+				<div class="w3-example-album-item-close-btn"></div>
+				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/Au-LzDMd_Cw" class="w3-link">https://unsplash.com/photos/Au-LzDMd_Cw</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@stephaniemccabe?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Stephanie McCabe</span></a>。</p></div>
+			</div>
+		</div>
+	</div>
+	<div><p>步骤一、给定 <strong>&lt;div&gt;</strong> 元素，使它的 <strong>position</strong> 属性的值为 <strong>relative</strong>、<strong>height</strong> 属性的值为 <strong>60vh</strong>（vh，Viewport Height，即视口高度）。对该 <strong>&lt;div&gt;</strong> 元素添加一个 <strong>&lt;div&gt;</strong> 子元素，设置子元素的 <strong>class</strong> 值为 <strong>demo-item</strong>，关键点是给该子元素的 <strong>position</strong> 属性的值为 <strong>absolute</strong>、<strong>height</strong> 属性的值为 <strong>100%</strong>，<strong>width</strong> 属性的值根据具体需求做相应设置，本示例是将相册宽度 5 等分，所以给 <strong>width</strong> 属性的值为 <strong>19.2%</strong>。</p></div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-row w3-width">
+		<div class="w3-half">
+			<div class="w3-example">
+				<div class="w3-code" style="height:250px;overflow-y:auto">
+					<pre><code class="hljs"><span class="hljs-comment">/* CSS 代码 */</span>
+<span class="hljs-class">.demo-album</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value">relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"><span class="hljs-number">60</span>vh</span></span>;
+<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value">absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">19.2</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"><span class="hljs-number">100</span>%</span></span>;
+<span class="hljs-rule">}</span></span></code></pre>
+			</div>
+		</div>
+	</div>
+	<div class="w3-half">
+		<div class="w3-example">
+			<div class="w3-code" style="height:250px;overflow-y:auto">
+				<pre><code class="hljs"><span class="hljs-comment">&lt;!-- html 代码 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-album"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></code></pre>
+			</div>
+		</div>
+	</div>
+	<div><p>步骤二、给 <strong>class</strong> 值为 <strong>demo-item</strong> 的元素添加子元素，使 <strong>class</strong> 值为 <strong>demo-item-bg</strong>，设置相应的宽、高之后再添加背景图片，关键点是使用伪元素 <strong>before</strong>（至于伪元素是什么请自行查阅相关文档，网上资料很多）。</p></div>
+	<div>
+		<div style="position:relative;height:60vh">
+		    <div class="w3-example-demo-item">
+		    	<div class="w3-example-demo-item-bg"></div>
+		    </div>
+		</div>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-tag">body</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-album</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">60</span>vh</span></span>;
+<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">19.2</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value">hidden</span></span>;
+<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-item-bg</span><span class="hljs-pseudo">:before</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">""</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> -<span class="hljs-number">5</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">110</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-image</span>:<span class="hljs-value"> <span class="hljs-function">url(<span class="hljs-number">demo</span>.jpg)</span></span></span>; <span class="hljs-comment">/* 请根据实际情况修改图片路径 */</span>
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-album"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item-bg"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤三、怎样才能在点击图片的时候让它变宽呢？关键点是在获得点击事件之后动态改变图片的宽度，对 <strong>class</strong> 值为 <strong>demo-item</strong> 的元素添加监听事件。</p></div>
+	<div>
+		<div style="position:relative;height:60vh">
+		    <div class="w3-example-demo-item">
+		    	<div class="w3-example-demo-item-bg"></div>
+		    </div>
+		</div>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-row w3-width">
+		<div class="w3-half">
+			<div class="w3-example">
+				<div class="w3-code" style="height:300px;overflow-y:auto">
+					<pre><code class="hljs"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-album"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item-bg"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+    <span class="hljs-keyword">var</span> e = document.getElementsByClassName(<span class="hljs-string">"demo-item"</span>);
+    e[<span class="hljs-number">0</span>].addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.style.width = <span class="hljs-string">"100%"</span>;
+    });
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
+			</div>
+		</div>
+	</div>
+	<div class="w3-half">
+		<div class="w3-example">
+			<div class="w3-code" style="height:300px;overflow-y:auto">
+				<pre><code class="hljs"><span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+<span class="hljs-comment">/* 为了演示示例的美观 */</span>
+<span class="hljs-tag">body</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-album</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">60</span>vh</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">max-width</span>:<span class="hljs-value"> <span class="hljs-number">1000</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">100</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span></code></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div><p>步骤四、现在，当点击图片的时候，虽然它变宽了，但是，这种变化非常突兀，怎样才能使这种变化看上去更加自然呢？是该 <strong>CSS3</strong> 的 <strong>transition</strong> 属性登场了（对 <strong>transition</strong> 属性有疑问的童鞋请自行查阅相关文档，网上资料很多）。</p></div>
+	<div>
+		<div style="position:relative;height:60vh">
+		    <div class="w3-example-demo-item">
+		    	<div class="w3-example-demo-item-bg"></div>
+		    </div>
+		</div>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height:200px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+    <span class="hljs-keyword">var</span> e = document.getElementsByClassName(<span class="hljs-string">"demo-item"</span>);
+    e[<span class="hljs-number">0</span>].addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.style.width = <span class="hljs-string">"100%"</span>;
+        <span class="hljs-keyword">this</span>.style.transition = <span class="hljs-string">"width 0.7s"</span>;
+    });
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤五、至此，在点击图片之后的变化看上去就更加自然了，但是，图片展开之后却不能恢复初始状态，这是个缺陷，为了弥补这个缺陷，于是在 <strong>class</strong> 值为 <strong>demo-item-bg</strong> 的元素之下添加同级元素并设置 <strong>class</strong> 值为 <strong>demo-item-close-btn</strong>，再给该同级元素设置相应的 <strong>CSS</strong> 属性、值以及添加监听事件。</p></div>
+	<div>
+		<div style="position:relative;height:60vh">
+		    <div class="w3-example-demo-item">
+		    	<div class="w3-example-demo-item-bg"></div>
+		    	<div class="w3-example-demo-item-close-btn"></div>
+		    </div>
+		</div>
+		<script>
+			var items = [].slice.call(document.querySelectorAll(".w3-example-album-item"));
+			items.forEach(function(item) {
+				item.addEventListener("click", function() {
+					if (this.classList.contains("dynamic")) return;
+					this.classList.add("dynamic");
+					for(let i=0; i<items.length; i++) {
+						if(items[i] == this) continue;
+						items[i].classList.add("forhide");
+					}
+				});
+			});
+			var butns = [].slice.call(document.querySelectorAll(".w3-example-album-item-close-btn"));
+			butns.forEach(function(butn) {
+				butn.addEventListener("click", function(e) {
+					e.stopPropagation();
+					document.querySelector(".w3-example-album-item.dynamic").classList.remove("dynamic");
+					for(let i=0; i<items.length; i++) {
+						items[i].classList.remove("forhide");
+					}
+				});
+			});
+			var e = document.getElementsByClassName("w3-example-demo-item");
+			e[1].addEventListener("click", function() {
+				this.style.width = "100%";
+			});
+			e[2].addEventListener("click", function() {
+				this.style.width = "100%";
+				this.style.transition = "width 0.7s";
+			});
+			e[3].addEventListener("click", function() {
+				this.style.width = "100%";
+				this.style.transition = "width 0.7s";
+				document.getElementsByClassName("w3-example-demo-item-close-btn")[0].style.zIndex = "1";
+			});
+			document.getElementsByClassName("w3-example-demo-item-close-btn")[0].addEventListener("click", function(evt) {
+				evt.stopPropagation();
+				this.style.zIndex = "-1";
+				e[3].style.width = "19.2%";
+			});
+		</script>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-tag">body</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-album</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">60</span>vh</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">max-width</span>:<span class="hljs-value"> <span class="hljs-number">1000</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">100</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">19.2</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-item-bg</span><span class="hljs-pseudo">:before</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">""</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> -<span class="hljs-number">5</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">110</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-image</span>:<span class="hljs-value"> <span class="hljs-function">url(<span class="hljs-number">demo</span>.jpg)</span></span></span>; <span class="hljs-comment">/* 请根据实际情况修改图片路径 */</span>
+<span class="hljs-rule">}</span></span>
+<span class="hljs-class">.demo-item-close-btn</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> -<span class="hljs-number">1</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">25</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">25</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer
+</span></span></span>}
+<span class="hljs-class">.demo-item-close-btn</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">"×"</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0.6</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">6</span>px
+</span></span></span>}
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-album"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item-bg"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"demo-item-close-btn"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+        <span class="hljs-keyword">var</span> e = document.getElementsByClassName(<span class="hljs-string">"demo-item"</span>);
+        e[<span class="hljs-number">0</span>].addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.style.width = <span class="hljs-string">"100%"</span>;
+            <span class="hljs-keyword">this</span>.style.transition = <span class="hljs-string">"width 0.7s"</span>;
+            document.getElementsByClassName(
+                    <span class="hljs-string">"demo-item-close-btn"</span>)[<span class="hljs-number">0</span>].style.zIndex = <span class="hljs-string">"1"</span>;
+        });
+        document.getElementsByClassName(
+                <span class="hljs-string">"demo-item-close-btn"</span>)[<span class="hljs-number">0</span>].addEventListener(
+                        <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(evt)</span> {</span>
+            <span class="hljs-comment">/* 阻止事件冒泡，使事件得以在当前节点下处理 */</span>
+            evt.stopPropagation();
+            <span class="hljs-keyword">this</span>.style.zIndex = <span class="hljs-string">"-1"</span>;
+            e[<span class="hljs-number">0</span>].style.width = <span class="hljs-string">"19.2%"</span>;
+        });
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p><strong>注意：</strong>示例代码里的<span style="color:#ea0000">图片路径</span>需根据实际路径做相应修改。有想了解<span style="color:#ea0000">事件冒泡</span>的童鞋<a target="_blank" href="history/src/subs/section_2.html" class="w3-text-blue" style="text-decoration: none;">戳这里</a>。</p></div>
+	<div><p>最后总结，通过以上步骤，实现栅栏式相册的核心代码已经基本完成，待完善的部分请各位童鞋自行实现，还是那句话，在触类旁通的基础上只有勤于动手才能丰衣足食。</p></div>
+</article>
