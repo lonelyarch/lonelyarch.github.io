@@ -1,0 +1,78 @@
+<article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之起因（02）</strong></p><p class="w3-right w3-margin-0">2017-09-25</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谈及并发编程，进程、线程是不可回避的两点，简而言之，它们是并发编程里的两个基本执行单元，都是为了提升系统的处理能力和资源使用率而存在。在 Java 并发编程里，我们主要涉及线程。有想了解进程、线程详情的童鞋<a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/tutorial/essential/concurrency/procthread.html">戳这里</a>。</P>
+	</div>
+	<div><p>一、线程之间主要是通过共享访问属性、对象引用等来实现相互通信的，这种通信方式非常高效，但是也有两个潜在问题：线程干扰和内存一致性错误（thread interference and memory consistency errors）。</p></div>
+	<div><p><strong>线程干扰（thread interference）</strong></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> Counter {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">increment</span>() {
+        c++;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">decrement</span>() {
+        c--;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">value</span>() {
+        <span class="hljs-keyword">return</span> c;
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>在理解以上代码示例之前，我们需要明确，简单的 c++ 语句在虚拟机里的执行过程实际上是分为 3 个步骤：读取 c 的值，将值加 1，然后再将计算结果写入 c，这是一个<span class="w3-light-green" style="padding:0 5px">读取-修改-写入</span>的操作序列。</p></div>
+	<div><p>现在，根据以上代码示例，假设线程 A 在调用 increment() 方法的同时线程 B 在调用 decrement() 方法，变量 c 的初始化值为 0，它们的交错执行序列可能会如下所示：</p></div>
+	<div>
+		<ul style="list-style:decimal">
+			<li>线程 A：读取 c 的值</li>
+			<li>线程 B：读取 c 的值</li>
+			<li>线程 A：将值加 1，即计算结果为<span style="padding-left:12px">1</span></li>
+			<li>线程 B：将值减 1，即计算结果为 -1</li>
+			<li>线程 A：将计算结果存入 c，c 的值为<span style="padding-left:12px">1</span></li>
+			<li>线程 B：将计算结果存入 c，c 的值为 -1</li>
+		</ul>
+	</div>
+	<div><p>根据以上的执行序列可知，线程 A 的执行结果被线程 B 覆盖了。实际上，以上的交错执行序列只是一种可能情况，我们还可以推测出线程 B 的执行结果被线程 A 覆盖或并没有产生这种覆盖等，总之，这些因线程干扰而可能发生的错误是不可预测的。</p></div>
+	<div><p><strong>内存一致性错误（thread interference and memory consistency errors）</strong></p></div>
+	<div><p>假设有这样一个 int 型变量 counter，初始化值为 0，如下所示：</p></div>
+	<div><p><span class="w3-light-gray" style="padding:0 5px">int counter = 0;</span></p></div>
+	<div><p>线程 A、B 均可访问变量 counter，即 counter 为共享变量。假设线程 A 对 counter 进行自增操作：</p></div>
+	<div><p><span class="w3-light-gray" style="padding:0 5px">counter++;</span></p></div>
+	<div><p>在此之后，线程 B 输出 counter 的值：</p></div>
+	<div><p><span class="w3-light-gray" style="padding:0 5px">System.out.println(counter);</span></p></div>
+	<div><p>如果自增语句和输出语句是在同一个线程中执行，那么可以明确输出语句的执行结果一定是 1，但是，这两条语句在 A、B 两个相互独立的线程中执行的情况下，输出结果可能会是 0，因为在没有遵守  happens-before 规则之前，虚拟机无法保证线程 A 对 counter 的变更对线程 B 来说是可见的。（对 happens-before 规则有疑问的童鞋请自行查阅相关文档，本文略过）</p></div>
+	<div><p>二、如何解决线程之间可能会引发的线程干扰（thread interference）、内存一致性错误（memory consistency errors）这类问题呢？</p></div>
+	<div><p>synchronized 关键字就此诞生，它是 Java 语言里实现同步机制的主要方式，也是用以创建 happens-before 规则的方法之一，我们将上述示例代码修改如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> {</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">increment</span>() {
+        c++;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">decrement</span>() {
+        c--;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">int</span> <span class="hljs-title">value</span>() {
+        <span class="hljs-keyword">return</span> c;
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>假设某个计数器是目前这个 Counter 类的一个实例，那么以 synchronized 关键字来修饰 Counter 类里的方法会产生两个作用：</p></div>
+	<div>
+		<ul style="list-style:decimal">
+			<li>两个调用同一对象上的 synchronized 方法的线程是不可能存在交错执行的。当某一个线程正在执行对象的 synchronized 方法的时候，调用该对象的 synchronized 方法的所有其它线程均阻塞直到第一个线程的方法调用完成。即避免了线程干扰（thread interference）问题。</li>
+			<li>当 synchronized 方法退出时，对同一对象的 synchronized 方法的后续调用，它会自行创建 happens-before 规则，这就保证了该对象的状态对所有线程而言都是可见的。即避免了内存一致性错误（memory consistency errors）问题。</li>
+		</ul>
+	</div>
+	<div><p><strong style="color:yellow">注意：</strong>构造方法是不能被 synchronized 关键字修饰的，对构造方法同步没有意义，因为只有创建当前对象的线程才能够访问该对象的构造方法。</p></div>
+	<div><p><strong style="color:red">警告：</strong>在构造一个多线程共享对象时，当心该对象的引用不要被过早<span class="w3-light-gray" style="padding:0 5px">泄露</span>。例如，假设你需要维护一个变量名为 instances 的列表，它包含了每一个类实例，你可能不恰当地在构造方法里加入了如下代码：</p></div>
+	<div><p><span class="w3-light-gray" style="padding:0 5px">instances.add(this);</span></p></div>
+	<div><p>该行代码引起的问题是，在当前对象还没有被构造完成的情况下，其它线程是可以通过 instances 变量访问该对象的。</p></div>
+	<div><p><strong>参考资料：</strong><a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html">https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html</a></p></div>
+</article>
