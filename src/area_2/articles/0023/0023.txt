@@ -22,7 +22,7 @@
 	<div><p>用 javap 工具反编译该类，得出字节码：</p></div>
 	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0023/images/01.jpg"></div>
 	<div><p>重点关注字节码里的黄色字迹 <span style="color:yellow">flags: ACC_SYNCHRONIZED</span>，通过查阅 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/specs/jvms/se8/html/">Java Virtual Machine Specification</a>（JVM 规范）可知，每一个方法，包括每一个实例的初始化方法和类或接口的初始化方法，都是由一个为 <strong>method_info</strong> 的结构体来描述的，该结构体的格式如下所示：</p></div>
-	<div class="w3-example w3-light-green" style="padding-left:32px">
+	<div class="w3-example w3-light-green" style="padding-left:32px;overflow:auto">
 		<pre><code class="hljs" style="background-color:#8bc34a">method_info <span class="hljs-list">{
     u2             access_flags;
     u2             name_index;
