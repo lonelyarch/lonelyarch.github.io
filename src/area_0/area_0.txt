@@ -10,6 +10,18 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.09.27</h4>
+			<p><strong>Java 并发编程系列：synchronized 关键字之基本应用示例（04）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 synchronized 关键字的基本原理之后再给出基本应用示例是非常必要的，没有实践应用，知识点讲得天花乱坠也只能是纸上谈兵，身为一名合格的程序员的前提就是务实的精神常在。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0024/0024.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.09.26</h4>
 			<p><strong>Java 并发编程系列：synchronized 关键字之原理（03）</strong></p>
 			<div class="w3-container w3-light-gray">

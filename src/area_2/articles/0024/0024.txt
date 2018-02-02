@@ -1,0 +1,260 @@
+<article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之基本应用示例（04）</strong></p><p class="w3-right w3-margin-0">2017-09-27</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 synchronized 关键字的基本原理之后再给出基本应用示例是非常必要的，没有实践应用，知识点讲得天花乱坠也只能是纸上谈兵，身为一名合格的程序员的前提就是务实的精神常在。</P>
+	</div>
+	<div>
+		<p>一、普通方法：</p>
+		<p>多线程环境下实现对成员变量的累加（计数器）</p>
+	</div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> SynchronizedDemo {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">increment</span>() {
+        count++;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        SynchronizedDemo sd = <span class="hljs-keyword">new</span> SynchronizedDemo();
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">10000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) { <span class="hljs-comment">// 调用 increment() 一万次</span>
+                    i++;
+                    sd.increment();
+                }
+                System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread-0: "</span> + sd.count);
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) { <span class="hljs-comment">// 调用 increment() 一万次</span>
+                    i++;
+                    sd.increment();
+                }
+                System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread-1: "</span> + sd.count);
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>简单介绍一下上述代码的大致意思，SynchronizedDemo 类里定义了成员变量 count 以及累加 count 变量的 increment() 方法，在 main 方法里创建并启动两个线程，它们的执行任务相同：调用 increment() 方法一万次，调用结束之后输出 count 值。两个线程各自调用 increment() 方法一万次，那么 count 变量的最终值应该是 20000，实际情况是不是这样呢？</p></div>
+	<div><p>执行结果-0：</p></div>
+	<div class="w3-example w3-light-gray" style="padding-left:32px;overflow:auto">
+		<pre>thread-0: 10000
+thread-1: 20000</pre>
+	</div>
+	<div><p>执行结果-1：</p></div>
+	<div class="w3-example w3-light-gray" style="padding-left:32px;overflow:auto">
+		<pre>thread-0: 14519
+thread-1: 18101</pre>
+	</div>
+	<div><p>实际上，在对示例代码进行多次执行的时候，偶尔会出现<span class="w3-light-gray" style="padding:0 5px">执行结果-1</span>中类似的情况，count 变量的最终值并不一定是 20000，究其缘由就是<span class="w3-light-gray" style="padding:0 5px">线程干扰（thread interference）</span>。现给出两个线程可能的执行序列（假定 count 变量在某个时刻的值为 10000）：</p></div>
+	<div>
+		<ul style="list-style:decimal">
+			<li>线程 Thread-0：读取 count 的值</li>
+			<li>线程 Thread-1：读取 count 的值</li>
+			<li>线程 Thread-0：将值加 1，即计算结果为 10001</li>
+			<li>线程 Thread-1：将值加 1，即计算结果为 10001</li>
+			<li>线程 Thread-0：将计算结果存入 count，count 的值为 10001</li>
+			<li>线程 Thread-1：将计算结果存入 count，count 的值为 10001</li>
+		</ul>
+	</div>
+	<div><p>即线程 Thread-1 的计算结果将 Thread-0 覆盖了。（注意：1.两个线程执行完成的先后顺序是不可预测的，创建并启动线程的先后顺序不能决定线程的执行快慢，它是由系统调度决定。2.示例代码里的 n 值越大，出现线程干扰的几率就越大。）</p></div>
+	<div><p>二、同步方法：</p></div>
+	<div><p>完善上述示例代码以支持多线程环境</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">package</span> com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SynchronizedDemo</span> {</span>
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">increment</span>() { <span class="hljs-comment">// 同步方法</span>
+        count++;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        SynchronizedDemo sd = <span class="hljs-keyword">new</span> SynchronizedDemo();
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">100000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) { <span class="hljs-comment">// 调用 increment() 十万次</span>
+                    i++;
+                    sd.increment();
+                }
+                System.out.println(<span class="hljs-string">"thread-0: "</span> + sd.count);
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) { <span class="hljs-comment">// 调用 increment() 十万次</span>
+                    i++;
+                    sd.increment();
+                }
+                System.out.println(<span class="hljs-string">"thread-1: "</span> + sd.count);
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>多次执行上述示例代码，会有如下执行结果（为了增强普通方法与同步方法的对比效果，将 n 值修改为 100000，即两个线程分别调用 increment() 十万次）：</p></div>
+	<div class="w3-example w3-light-gray" style="padding-left:32px;overflow:auto">
+		<pre>thread-1: 200000
+thread-0: 200000</pre>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example w3-light-gray" style="padding-left:32px;overflow:auto">
+		<pre>thread-0: 100000
+thread-1: 200000</pre>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example w3-light-gray" style="padding-left:32px;overflow:auto">
+		<pre>thread-0: 176830
+thread-1: 200000</pre>
+	</div>
+	<div><p>根据多次执行结果可知，在 increment() 方法修改为同步方法之后，count 变量的最终值 <span style="color:red">2*n</span> 是必然的。另外，值得注意的是，两个线程在执行的过程中持有的<span style="color:red">锁对象</span>必须是同一个，即它们竞争同一个锁。在示例代码里，线程 thread-0 和 线程 thread-1 竞争的同一个锁对象是 <span style="color:red">sd 对象</span>。</p></div>
+	<div><p>三、静态同步方法：</p></div>
+	<div><p>静态同步方法下的多线程环境计数器（主要关注<span style="color:red">锁对象</span>）</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">package</span> com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SynchronizedDemo</span> {</span>
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">increment</span>() {
+        count++;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        SynchronizedDemo sd0 = <span class="hljs-keyword">new</span> SynchronizedDemo();
+        SynchronizedDemo sd1 = <span class="hljs-keyword">new</span> SynchronizedDemo();
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">100000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) { <span class="hljs-comment">// 调用 increment() 十万次</span>
+                    i++;
+                    sd0.increment();
+                }
+                System.out.println(<span class="hljs-string">"thread-0: "</span> + sd0.count);
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) { <span class="hljs-comment">// 调用 increment() 十万次</span>
+                    i++;
+                    sd1.increment();
+                }
+                System.out.println(<span class="hljs-string">"thread-1: "</span> + sd1.count);
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>执行结果：</p></div>
+	<div class="w3-example w3-light-gray" style="padding-left:32px;overflow:auto">
+		<pre>thread-0: 196325
+thread-1: 200000</pre>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example w3-light-gray" style="padding-left:32px;overflow:auto">
+		<pre>thread-0: 100000
+thread-1: 200000</pre>
+	</div>
+	<div><p>根据多次执行结果可知，虽然在两个线程内调用 increment() 方法的是不同的对象，但是，执行过程还是实现了同步，显而易见，静态同步方法的<span style="color:red">锁对象</span>并不是某个实例，而是<span style="color:red">类对象</span>。</p></div>
+	<div><p>四、同步代码块：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> SynchronizedDemo {
+
+    <span class="hljs-keyword">private</span> Object LOCK0 = <span class="hljs-keyword">new</span> Object();
+    <span class="hljs-keyword">private</span> Object LOCK1 = <span class="hljs-keyword">new</span> Object();
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span> = <span class="hljs-number">1000</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">increment</span>() {
+        synchronized (LOCK0) {
+            count++;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">decrement</span>() {
+        synchronized (LOCK1) {
+            <span class="hljs-keyword">value</span>--;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        SynchronizedDemo sd = <span class="hljs-keyword">new</span> SynchronizedDemo();
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">1000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    sd.increment(); <span class="hljs-comment">// 获得锁对象LOCK0</span>
+                    System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread-0: count is "</span> + sd.count);
+                }
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    sd.decrement(); <span class="hljs-comment">// 获得锁对象LOCK1</span>
+                    System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread-1: value is "</span> + sd.<span class="hljs-keyword">value</span>);
+                }
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>简单介绍一下上述代码的大致意思，SynchronizedDemo 类里定义了成员变量 LOCK0、LOCK1、count、value以及成员方法 increment()、decrement()，LOCK0、LOCK1 用于锁对象，increment() 对 count 的修改、decrement() 对 value 的修改在业务上互不影响。</p></div>
+	<div><p>根据该示例代码可知，在多线程环境下，成员方法 increment()、decrement() 不存在对同一个锁对象的竞争，因而它们可以实现并发执行，相对同步方法而言，同步代码块在实现上要更加灵活。</p></div>
+</article>
