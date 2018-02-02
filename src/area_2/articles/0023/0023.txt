@@ -175,5 +175,5 @@
 	<div><p>在 Java 编程语言里，不论是同步方法（synchronized methods）还是同步代码块（synchronized statements），它们最终都是由 monitor 来实现同步。</p></div>
 	<div><p>同步方法（synchronized methods）由 <span style="color:yellow">ACC_SYNCHRONIZED 标识符</span>与非同步方法加以区分，<span style="color:yellow">ACC_SYNCHRONIZED 标识符</span>则存在于运行时常量池的 method_info 结构体内，如果方法调用指令检查出当前被调方法由 <span style="color:yellow">ACC_SYNCHRONIZED</span> 标识，那么执行线程就会进入 monitor 再调用该方法，在方法调用完成之后，执行线程则退出 monitor。</p></div>
 	<div><p>同步代码块（synchronized statements）由 JVM 提供的 monitorenter 和 monitorexit 指令来实现，相对同步方法而言，该方式是显示实现。</p>
-	<div><p><strong>参考资料：</strong><a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/specs/jvms/se8/html/index.html">https://docs.oracle.com/javase/specs/jvms/se8/html/index.html</a></p></div>
+	<div><p><strong>参考资料：</strong><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://docs.oracle.com/javase/specs/jvms/se8/html/index.html">https://docs.oracle.com/javase/specs/jvms/se8/html/index.html</a></p></div>
 </article>
