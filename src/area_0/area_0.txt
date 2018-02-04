@@ -10,6 +10,18 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.09.29</h4>
+			<p><strong>Java 并发编程系列：synchronized 关键字之死锁（05）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，使用 synchronized 关键字的目的是确保线程安全，但是，如果你的代码写得不完美，那么就有可能导致死锁。谈到死锁，博主最先想到的是经典的<span class="w3-text-red">哲学家就餐问题</span>，这个问题毕竟是在大学课本里出现过。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0025/0025.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.09.27</h4>
 			<p><strong>Java 并发编程系列：synchronized 关键字之基本应用示例（04）</strong></p>
 			<div class="w3-container w3-light-gray">

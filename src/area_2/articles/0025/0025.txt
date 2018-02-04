@@ -1,0 +1,288 @@
+<article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之死锁（05）</strong></p><p class="w3-right w3-margin-0">2017-09-29</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，使用 synchronized 关键字的目的是确保线程安全，但是，如果你的代码写得不完美，那么就有可能导致死锁。谈到死锁，博主最先想到的是经典的<span class="w3-text-red">哲学家就餐问题</span>，这个问题毕竟是在大学课本里出现过。</P>
+	</div>
+	<div><p>一、代码示例：死锁</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">package</span> com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DeadLockDemo</span> {</span>
+
+    <span class="hljs-keyword">private</span> Object LOCK0 = <span class="hljs-keyword">new</span> Object();
+    <span class="hljs-keyword">private</span> Object LOCK1 = <span class="hljs-keyword">new</span> Object();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">method0</span>() {
+        <span class="hljs-keyword">synchronized</span> (LOCK0) {
+            <span class="hljs-keyword">synchronized</span> (LOCK1) {
+                System.out.println(<span class="hljs-string">"method0 says hello..."</span>);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">method1</span>() {
+        <span class="hljs-keyword">synchronized</span> (LOCK1) {
+            <span class="hljs-keyword">synchronized</span> (LOCK0) {
+                System.out.println(<span class="hljs-string">"method1 says hello..."</span>);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        DeadLockDemo dld = <span class="hljs-keyword">new</span> DeadLockDemo();
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">10000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method0(); <span class="hljs-comment">// 先持有LOCK0，再持有LOCK1</span>
+                }
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method1(); <span class="hljs-comment">// 先持有LOCK1，再持有LOCK0</span>
+                }
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>研读示例代码可知，在两个线程启动之后，方法 method0() 得以执行完成的前提是先持有LOCK0，再持有LOCK1，方法 method1() 得以执行完成的前提与之相反，问题就此产生：如果在某个时刻，方法 method0() 只持有 LOCK0 而方法 method1() 只持有 LOCK1，那么它们各自会因为对方持有的锁而导致线程阻塞。就该示例代码而言，只要两个线程同时发生了阻塞，那么这种阻塞状态将永远持续下去。</p></div>
+	<div><p>执行示例代码的结果之一如下所示：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0025/images/01.jpg" /></div>
+	<div><p>避免上述示例代码产生死锁问题的方法之一是将方法 method0() 与 方法 method1() 持有锁的顺序保持一致。有童鞋会觉得上述示例代码的不完美是显而易见的，那么博主就再给出一个缺陷不明显且依然会产生死锁问题的示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">package</span> com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DeadLockDemo</span> {</span>
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Account</span> {</span>
+        <span class="hljs-keyword">long</span> account = <span class="hljs-number">1000000</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">method</span>(Account account0, Account account1, <span class="hljs-keyword">int</span> sum) {
+        <span class="hljs-keyword">synchronized</span> (account0) {
+            <span class="hljs-keyword">synchronized</span> (account1) {
+                <span class="hljs-keyword">if</span> (account0.account &gt; <span class="hljs-number">0</span> &amp;&amp; account1.account &gt; <span class="hljs-number">0</span>) {
+                    account0.account -= sum;
+                    account1.account += sum;
+                }
+            	System.out.println(<span class="hljs-string">"account0: "</span> + account0.account 
+            	        + <span class="hljs-string">", account1: "</span> + account1.account);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        DeadLockDemo dld = <span class="hljs-keyword">new</span> DeadLockDemo();
+        Account account0 = <span class="hljs-keyword">new</span> Account();
+        Account account1 = <span class="hljs-keyword">new</span> Account();
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">100</span>;
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">10000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method(account0, account1, sum); <span class="hljs-comment">// 先持有account0，再持有account1</span>
+                }
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method(account1, account0, sum); <span class="hljs-comment">// 先持有account1，再持有account0</span>
+                }
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>研读示例代码可知，在两个线程启动之后，因调用 method(Account <span class="w3-text-red">account0</span>, Account <span class="w3-text-red">account1</span>, int sum) 时传参顺序的不同也会导致死锁的发生。</p></div>
+	<div><p>执行示例代码的结果之一如下所示：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0025/images/02.jpg" /></div>
+	<div><p>二、避免死锁的发生</p></div>
+	<div>
+		<ul style="padding-left:0;list-style:decimal">
+			<li><p>在执行方法内需要获得多个锁对象的情况下，确保所有线程持有锁对象的顺序一致。</p></li>
+			<li><p>使用定时锁（以下分轮询、定时两步实现）：</p></li>
+		</ul>
+	</div>
+	<div class="w3-example">
+		<div><p class="w3-text-light-green">轮询</p></div>
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> DeadLockDemo {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> Account {
+        Lock <span class="hljs-keyword">lock</span> = <span class="hljs-keyword">new</span> ReentrantLock(); <span class="hljs-comment">// 重入锁</span>
+        <span class="hljs-keyword">long</span> account = <span class="hljs-number">1000000</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">method</span>(Account account0, Account account1, <span class="hljs-keyword">int</span> sum) {
+        boolean flag = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">while</span> (flag) {
+            <span class="hljs-keyword">if</span> (account0.<span class="hljs-keyword">lock</span>.tryLock()) {
+                <span class="hljs-keyword">try</span> {
+                    <span class="hljs-keyword">if</span> (account1.<span class="hljs-keyword">lock</span>.tryLock()) {
+                        <span class="hljs-keyword">try</span> {
+                            <span class="hljs-keyword">if</span> (account0.account &gt; <span class="hljs-number">0</span> &amp;&amp; account1.account &gt; <span class="hljs-number">0</span>) {
+                                account0.account -= sum;
+                                account1.account += sum;
+                            }
+                            System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"account0: "</span> + account0.account 
+                                    + <span class="hljs-string">", account1: "</span> + account1.account);
+                            flag = <span class="hljs-keyword">false</span>;
+                        } <span class="hljs-keyword">finally</span> {
+                            account1.<span class="hljs-keyword">lock</span>.unlock();
+                        }
+                    }
+                } <span class="hljs-keyword">finally</span> {
+                    account0.<span class="hljs-keyword">lock</span>.unlock();
+                }
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        DeadLockDemo dld = <span class="hljs-keyword">new</span> DeadLockDemo();
+        Account account0 = <span class="hljs-keyword">new</span> Account();
+        Account account1 = <span class="hljs-keyword">new</span> Account();
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">100</span>;
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">10000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method(account0, account1, sum); <span class="hljs-comment">// 先持有account0，再持有account1</span>
+                }
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method(account1, account0, sum); <span class="hljs-comment">// 先持有account0，再持有account1</span>
+                }
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example">
+		<div><p class="w3-text-light-green">定时</p></div>
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> DeadLockDemo {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> Account {
+        Lock <span class="hljs-keyword">lock</span> = <span class="hljs-keyword">new</span> ReentrantLock(); <span class="hljs-comment">// 重入锁</span>
+        <span class="hljs-keyword">long</span> account = <span class="hljs-number">1000000</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">method</span>(Account account0, Account account1, <span class="hljs-keyword">int</span> sum) {
+        <span class="hljs-keyword">long</span> s = System.currentTimeMillis();
+        <span class="hljs-keyword">long</span> d = <span class="hljs-number">0</span>;
+        boolean flag = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">while</span> (flag) {
+            <span class="hljs-keyword">if</span> (account0.<span class="hljs-keyword">lock</span>.tryLock()) {
+                <span class="hljs-keyword">try</span> {
+                    <span class="hljs-keyword">if</span> (account1.<span class="hljs-keyword">lock</span>.tryLock()) {
+                        <span class="hljs-keyword">try</span> {
+                            <span class="hljs-keyword">if</span> (account0.account &gt; <span class="hljs-number">0</span> &amp;&amp; account1.account &gt; <span class="hljs-number">0</span>) {
+                                account0.account -= sum;
+                                account1.account += sum;
+                            }
+                            System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"account0: "</span> + account0.account 
+                                    + <span class="hljs-string">", account1: "</span> + account1.account);
+                            flag = <span class="hljs-keyword">false</span>;
+                        } <span class="hljs-keyword">finally</span> {
+                            account1.<span class="hljs-keyword">lock</span>.unlock();
+                        }
+                    }
+                } <span class="hljs-keyword">finally</span> {
+                    account0.<span class="hljs-keyword">lock</span>.unlock();
+                }
+            }
+            d = System.currentTimeMillis();
+            <span class="hljs-keyword">if</span> ((d - s) &gt; <span class="hljs-number">1000</span>) { <span class="hljs-comment">// 在1000毫秒内获得锁对象失败则退出轮询</span>
+                flag = <span class="hljs-keyword">false</span>;
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        DeadLockDemo dld = <span class="hljs-keyword">new</span> DeadLockDemo();
+        Account account0 = <span class="hljs-keyword">new</span> Account();
+        Account account1 = <span class="hljs-keyword">new</span> Account();
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">100</span>;
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">10000</span>;
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method(account0, account1, sum); <span class="hljs-comment">// 先持有account0，再持有account1</span>
+                }
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (i &lt; n) {
+                    i++;
+                    dld.method(account1, account0, sum); <span class="hljs-comment">// 先持有account0，再持有account1</span>
+                }
+            }
+        }).start();
+    }
+}</code></pre>
+		</div>
+	</div>
+</article>
