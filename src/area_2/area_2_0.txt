@@ -167,12 +167,3 @@
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_2/articles/0002/0002.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Apache Tomcat 8 之源码编译、安装及调试</strong></p><p class="w3-right">2016-09-13</p></div>
-	<div style="clear: both;"></div>
-	<div><p>步骤一、JDK、Ant 的安装请参考其他教程。本次 Tomcat 8.0.37 源码编译使用的 JDK、Ant 版本如下所示：</p></div>
-	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0001.jpg" alt="Oops" /></div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_2/articles/0001/0001.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
