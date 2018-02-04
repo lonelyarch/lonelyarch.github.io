@@ -1,2 +1,2 @@
-<a onclick="fetch([{url:'src/area_2/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_2/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue w3-left prev" style="text-decoration: none; cursor: pointer;">« Apache Tomcat 8 之源码调试续篇</a>
+<a onclick="fetch([{url:'src/area_2/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_2/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« Apache Tomcat 8 之源码调试续篇</a>
 <div style="clear: both;"></div>
