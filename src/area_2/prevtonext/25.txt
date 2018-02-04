@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/24.txt',id:'prevtonext'},{url:'src/area_2/articles/0025/0025.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：synchronized 关键字之死锁（05） »</a>
+<div style="clear: both;"></div>

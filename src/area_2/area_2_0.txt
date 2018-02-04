@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之重入锁的实现（06）</strong></p><p class="w3-right">2017-10-02</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是重入锁？简而言之，当前线程持有了一个锁对象并且需要再次持有该锁对象，即重复加锁。<span style="color:#8bc34a">ReentrantLock</span> 类是 JDK 实现的重入锁，更加确切地说，该类是实现了公平或非公平策略的可重复加锁机制。对 <span style="color:#8bc34a">ReentrantLock</span> 类的深究不在该篇文章的撰写之内，为学习之目的，自造一个简易的轮子。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/25.txt',id:'prevtonext'},{url:'src/area_2/articles/0026/0026.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：synchronized 关键字之死锁（05）</strong></p><p class="w3-right">2017-09-29</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -158,12 +169,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/2.txt',id:'prevtonext'},{url:'src/area_2/articles/0003/0003.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Apache Tomcat 8 之源码调试续篇</strong></p><p class="w3-right">2016-09-14</p></div>
-	<div style="clear: both;"></div>
-	<div><p>步骤一、新建一个 Web 工程（Dynamic Web Project），在 src 目录下新建 HelloWorld.java 文件：</p></div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_2/articles/0002/0002.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

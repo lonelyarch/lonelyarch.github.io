@@ -1,0 +1,123 @@
+<article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之重入锁的实现（06）</strong></p><p class="w3-right w3-margin-0">2017-10-02</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是重入锁？简而言之，当前线程持有了一个锁对象并且需要再次持有该锁对象，即重复加锁。<span style="color:#8bc34a">ReentrantLock</span> 类是 JDK 实现的重入锁，更加确切地说，该类是实现了公平或非公平策略的可重复加锁机制。对 <span style="color:#8bc34a">ReentrantLock</span> 类的深究不在该篇文章的撰写之内，为学习之目的，自造一个简易的轮子。</P>
+	</div>
+	<div><p>一、示例代码之普通锁：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> LockDemo {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> Lock {
+
+        <span class="hljs-keyword">private</span> boolean isLocked = <span class="hljs-keyword">false</span>;
+
+        <span class="hljs-keyword">public</span> synchronized <span class="hljs-keyword">void</span> <span class="hljs-title">lock</span>() {
+            <span class="hljs-keyword">try</span> {
+                <span class="hljs-keyword">while</span> (isLocked) {
+                    wait();
+                }
+            } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+            }
+            isLocked = <span class="hljs-keyword">true</span>;
+        }
+
+        <span class="hljs-keyword">public</span> synchronized <span class="hljs-keyword">void</span> <span class="hljs-title">unlock</span>() {
+            isLocked = <span class="hljs-keyword">false</span>;
+            notify(); <span class="hljs-comment">// notifyAll();</span>
+        }
+    }
+
+    <span class="hljs-keyword">private</span> Lock <span class="hljs-keyword">lock</span> = <span class="hljs-keyword">new</span> Lock();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">method</span>() {
+        <span class="hljs-keyword">lock</span>.<span class="hljs-keyword">lock</span>();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"method() say hello..."</span>);
+        <span class="hljs-keyword">lock</span>.unlock();
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">invoke</span>() {
+        <span class="hljs-keyword">lock</span>.<span class="hljs-keyword">lock</span>();
+        method();
+        <span class="hljs-keyword">lock</span>.unlock();
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        LockDemo ld = <span class="hljs-keyword">new</span> LockDemo();
+        ld.invoke();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"invoke() say hello..."</span>);
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>执行结果：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0026/images/01.jpg" /></div>
+	<div><p>研读示例代码可知，主线程阻塞，控制台啥都不会输出。如何将主线程唤醒呢？有兴趣的童鞋可以尝试修改一下示例代码，give it a try...</p></div>
+	<div><p>二、示例代码之重入锁：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> ReentrantLockDemo {
+
+    <span class="hljs-keyword">static</span> class ReentrantLock {
+
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">private</span> boolean isLocked = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">private</span> Thread lockedByThread = <span class="hljs-keyword">null</span>;
+
+        <span class="hljs-keyword">public</span> synchronized <span class="hljs-keyword">void</span> <span class="hljs-title">lock</span>() {
+            <span class="hljs-keyword">try</span> {
+                <span class="hljs-keyword">while</span> (isLocked &amp;&amp; Thread.currentThread() != lockedByThread) {
+                    <span class="hljs-keyword">this</span>.wait();
+                }
+            } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+            }
+            isLocked = <span class="hljs-keyword">true</span>;
+            lockedByThread = Thread.currentThread();
+            count++;
+        }
+
+        <span class="hljs-keyword">public</span> synchronized <span class="hljs-keyword">void</span> <span class="hljs-title">unlock</span>() {
+            <span class="hljs-keyword">if</span> (!isLocked || lockedByThread != Thread.currentThread()) {
+                <span class="hljs-keyword">return</span>;
+            }
+            count--;
+            <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
+                isLocked = <span class="hljs-keyword">false</span>;
+                <span class="hljs-keyword">this</span>.notify(); <span class="hljs-comment">// this.notifyAll();</span>
+            }
+        }
+    }
+
+    <span class="hljs-keyword">private</span> ReentrantLock <span class="hljs-keyword">lock</span> = <span class="hljs-keyword">new</span> ReentrantLock();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">method</span>() {
+        <span class="hljs-keyword">lock</span>.<span class="hljs-keyword">lock</span>();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"method() say hello..."</span>);
+        <span class="hljs-keyword">lock</span>.unlock();
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">invoke</span>() {
+        <span class="hljs-keyword">lock</span>.<span class="hljs-keyword">lock</span>();
+        method();
+        <span class="hljs-keyword">lock</span>.unlock();
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        ReentrantLockDemo rld = <span class="hljs-keyword">new</span> ReentrantLockDemo();
+        rld.invoke();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"invoke() say hello..."</span>);
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>执行结果：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0026/images/02.jpg" /></div>
+	<div><p>根据执行结果可见，换了一把锁之后，效果很明显，两相比较也更加容易看出差距。对<span style="color:#8bc34a">普通锁之示例代码</span>进行简单修改，使之能够唤醒主线程，这会加深你对 wait()、notify()/notifyAll() 方法的理解。</p></div>
+</article>

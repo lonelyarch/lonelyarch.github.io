@@ -2,6 +2,13 @@
 <article class="list">
 	<hr>
 	<div class="item">
+    	<div><strong>2017-10</strong></div>
+        <ul>
+        	<li><time>02日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/25.txt',id:'prevtonext'},{url:'src/area_2/articles/0026/0026.txt',id:'contents'}]);">Java 并发编程系列：synchronized 关键字之重入锁的实现（06）</a></li>
+        </ul>
+    </div>
+    <hr style="border: none; border-top: 1px dotted white;">
+	<div class="item">
     	<div><strong>2017-09</strong></div>
         <ul>
         	<li><time>29日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/24.txt',id:'prevtonext'},{url:'src/area_2/articles/0025/0025.txt',id:'contents'}]);">Java 并发编程系列：synchronized 关键字之死锁（05）</a></li>
