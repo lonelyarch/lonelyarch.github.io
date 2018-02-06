@@ -1,0 +1,53 @@
+<article>
+	<div><p><strong>Java 并发编程系列：为什么总是在 while 循环之内调用 wait() 方法？（07）</strong></p><p class="w3-right w3-margin-0">2017-10-03</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java API 文档里对 Object 类中的 wait() 方法有如下文字描述：</P>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As in the one argument version, interrupts and spurious wakeups are possible, and <span style="color:#8bc34a">this method should always be used in a loop</span>:</p>
+		<pre><code class="hljs w3-light-gray" style="padding:0">&nbsp;&nbsp;synchronized (obj) {
+    &nbsp;&nbsp;while (&lt;condition does not hold&gt;)
+        &nbsp;&nbsp;<apan style="color:#8bc34a">obj.wait();</apan>
+    &nbsp;&nbsp;... // Perform action appropriate to condition
+&nbsp;&nbsp;}</code></pre>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这就是说，在调用 Object 类中的 wait() 方法的时候，因为中断和伪唤醒（spurious wakeup）可能会发生，所以应该将 wait() 方法置于 while 循环内执行。</p>
+	</div>
+	<div><p></p></div>
+	<div class="w3-container w3-white"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在回答题目抛出的疑问之前，先简述一下什么是伪唤醒（spurious wakeup）。以 linux 系统之线程源码实现为例：系统调用基于<span style="color:#8bc34a">条件变量</span>的 pthread_cond_wait() 方法使线程进入等待状态，在此之后的某个时刻，系统调用 pthread_cond_signal() 方法或 pthread_cond_broadcast() 方法致使<span style="color:#8bc34a">条件变量</span>变更进而唤醒该线程，但是，在个别情况下，该线程可能会因为意外信号的干扰而被唤醒，这个时候<span style="color:#8bc34a">条件变量</span>却没有变更，即伪唤醒（spurious wakeup）。</p></div>
+	<div><p>一、查看 Object 类的源码：</p></div>
+	<div class="w3-example" style="padding-left:32px;overflow:auto;background-color:white">
+		<pre><code class="hljs w3-white">public final <span style="color:#8bc34a">native</span> void wait(long timeout) throws InterruptedException;</code></pre>
+	</div>
+	<div><p>研读 Object 类的源码不难发现，wait() 方法最终是通过调用 <span style="color:#8bc34a">wait(long timeout) 即 native 方法</span>实现当前线程进入等待状态。对本地方法有疑问的童鞋可以参阅一下 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/jniTOC.html">JNI 规范</a>或 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html">JVMTI</a> 。</p></div>
+	<div><p>二、查看 C/C++ standard library 手册即 C/C++ 语言标准库手册：</p></div>
+	<div class="w3-container w3-white">
+		<p>C standard library</p>
+		<p>...</p>
+		<p>Some implementations, particularly on a multi-processor, may sometimes cause multiple threads to wake up when the condition variable is signaled simultaneously on different processors.</p>
+		<p>In general, whenever a condition wait returns, the thread has to re-evaluate the predicate associated with the condition wait to determine whether it can safely proceed, should wait again, or should declare a timeout. <span style="color:#8bc34a">A return from the wait does not imply that the associated predicate is either true or false</span>.</p>
+		<p>It is thus recommended that a condition wait be enclosed in the equivalent of a ''while loop'' that checks the predicate. <a target="_blank" class="w3-link" href="http://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html">原文链接</a></p>
+	</div>
+	<div><p></p></div>
+	<div class="w3-container w3-white">
+		<p>C++ standard library</p>
+		<p>...</p>
+		<p>To wait for an event, first lock the mutex, and then call one of the wait methods on the condition variable. The wait call blocks until another thread signals the condition variable.</p>
+		<p>Spurious wakeups occur when threads that are waiting for condition variables become unblocked without appropriate notifications. To recognize such spurious wakeups, code that waits for a condition to become true should explicitly check that condition when the code returns from a wait function. This is usually done by using a loop; you can use wait(unique_lock&lt;mutex&gt;& lock, Predicate pred) to perform this loop for you. <a target="_blank" class="w3-link" href="https://msdn.microsoft.com/en-us/library/hh874761.aspx">原文链接</a></p>
+		<pre><span style="color:#8bc34a">while</span> (condition is <span style="color:#8bc34a">false</span>)
+    wait <span style="color:#8bc34a">for</span> condition variable;</pre>
+		<p>...</p>
+	</div>
+	<div><p>三、查看 Oracle Solaris 操作系统相关文档：</p></div>
+	<div class="w3-container w3-white">
+		<p>...</p>
+		<p>In typical use, a condition expression is evaluated under the protection of a mutex lock. When the condition expression is false, the thread blocks on the condition variable. The condition variable is then signaled by another thread when the thread changes the condition value. The change causes at least one thread that is waiting on the condition variable to unblock and to reacquire the mutex.</p>
+		<p>The condition that caused the wait must be retested before continuing execution from the point of the pthread_cond_wait(). The condition could change before an awakened thread reacquires the mutes and returns from pthread_cond_wait(). A waiting thread could be awakened spuriously. The recommended test method is to write the condition check as a while() loop that calls pthread_cond_wait(). <a target="_blank" class="w3-link" href="https://docs.oracle.com/cd/E53394_01/html/E54803/sync-21067.html">原文链接</a></p>
+		<pre>pthread_mutex_lock();
+    <span style="color:#8bc34a">while(condition_is_false)</span>
+        pthread_cond_wait();
+pthread_mutex_unlock();</pre>
+		<p>...</p>
+	</div>
+	<div><p>最后总结，通过阅读各种文档，在 Java 语言里，对总是在 while 循环之内调用 wait() 方法这个疑问也有了答案。博主还想说，因个人水平有限、时间有限，给出的文档内容也没有翻译，略表歉疚，对多线程这方面有浓厚兴趣的童鞋请自行阅读原文文档。</p></div>
+</article>

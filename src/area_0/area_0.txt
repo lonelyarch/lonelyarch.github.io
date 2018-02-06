@@ -10,6 +10,25 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.10.03</h4>
+			<p><strong>Java 并发编程系列：为什么总是在 while 循环之内调用 wait() 方法？（07）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java API 文档里对 Object 类中的 wait() 方法有如下文字描述：</P>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As in the one argument version, interrupts and spurious wakeups are possible, and <span style="color:#8bc34a">this method should always be used in a loop</span>:</p>
+				<pre><code class="hljs w3-light-gray" style="padding:0;overflow:hidden;text-overflow:ellipsis">&nbsp;&nbsp;synchronized (obj) {
+    &nbsp;&nbsp;while (&lt;condition does not hold&gt;)
+        &nbsp;&nbsp;<apan style="color:#8bc34a">obj.wait();</apan>
+    &nbsp;&nbsp;... // Perform action appropriate to condition
+&nbsp;&nbsp;}</code></pre>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这就是说，在调用 Object 类中的 wait() 方法的时候，因为中断和伪唤醒（spurious wakeup）可能会发生，所以应该将 wait() 方法置于 while 循环内执行。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0027/0027.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.10.02</h4>
 			<p><strong>Java 并发编程系列：synchronized 关键字之重入锁的实现（06）</strong></p>
 			<div class="w3-container w3-light-gray">
