@@ -6,7 +6,7 @@
 		<p><strong>前言：</strong></p>
 		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java API 文档里对 Object 类中的 wait() 方法有如下文字描述：</P>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As in the one argument version, interrupts and spurious wakeups are possible, and <span style="color:#8bc34a">this method should always be used in a loop</span>:</p>
-		<pre><code class="hljs w3-light-gray" style="padding:0">&nbsp;&nbsp;synchronized (obj) {
+		<pre><code class="hljs w3-light-gray" style="padding:0;overflow:hidden;text-overflow:ellipsis">&nbsp;&nbsp;synchronized (obj) {
     &nbsp;&nbsp;while (&lt;condition does not hold&gt;)
         &nbsp;&nbsp;<apan style="color:#8bc34a">obj.wait();</apan>
     &nbsp;&nbsp;... // Perform action appropriate to condition
