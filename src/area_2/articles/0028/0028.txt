@@ -1,0 +1,46 @@
+<article>
+	<div><p><strong>Java 并发编程系列：图文并茂之 hsdis 编译（08）</strong></p><p class="w3-right w3-margin-0">2017-10-07</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是 <span style="color:#8bc34a">hsdis(HotSpot Disassembler)</span>？顾名思义，它是个反汇编神器，有想目睹 Java 代码编译之后的汇编模样，那么这款神器是你不可错过的。博主原本是打算从 CSDN 上下载一个 <span style="color:#8bc34a">hsdis-amd64.dll</span>，无奈币值不够，只能自力更生。网上有很多文章也介绍了编译 <span style="color:#8bc34a">hsdis</span> 的所需步骤，但基本都是文字描述，看起来比较费劲。</P>
+	</div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/00.jpg" /></div>
+	<div><P>一、安装 <a target="_blank" class="w3-link" href="https://cygwin.com/install.html">Cygwin</a>：</P></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/01.jpg" /></div>
+	<div><p>……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/02.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/03.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/04.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/05.jpg" /></div>
+	<div><p>……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/06.jpg" /></div>
+	<div><P>二、下载 <a target="_blank" class="w3-link" href="https://mirrors.tuna.tsinghua.edu.cn/gnu/binutils/">GNU binutils 源码包</a>，用 <span style="color:#8bc34a">7-Zip</span> 解压之后放入 <span style="color:#8bc34a">C:\cygwin64\home\GW</span> 目录下（解压工具自选，<span style="color:#8bc34a">C:\cygwin64\home\username</span> 为安装 Cygwin 时创建的默认目录）：</P></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/07.jpg" /></div>
+	<div><P>三、下载 <a target="_blank" class="w3-link" href="http://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/tags">OpenJDK 源码</a>（JDK 版本自选），解压并将 <span style="color:#8bc34a">hsdis 目录</span>拷贝至 <span style="color:#8bc34a">C:\cygwin64\home\GW</span> 目录下：</P></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/08.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/09.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/10.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/11.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/12.jpg" /></div>
+	<div><p>四、打开 Cygwin 终端，执行以下命令：</p></div>
+	<div class="w3-container w3-white">
+		<p>1. <span style="background-color:black;color:white;padding:0 5px">cd hsdis</span></p>
+		<p>2. <span style="background-color:black;color:white;padding:0 5px">make OS=Linux MINGW=x86_64-w64-mingw32 'AR=$(MINGW)-ar' BINUTILS=~/binutils-2.24</span></p>
+	</div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/13.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/14.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0028/images/15.jpg" /></div>
+	<div><p><strong>参考资料：</strong><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://dropzone.nfshost.com/hsdis.htm">https://dropzone.nfshost.com/hsdis.htm</a></p></div>
+</article>

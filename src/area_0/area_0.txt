@@ -10,6 +10,18 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.10.07</h4>
+			<p><strong>Java 并发编程系列：图文并茂之 hsdis 编译（08）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是 <span style="color:#8bc34a">hsdis(HotSpot Disassembler)</span>？顾名思义，它是个反汇编神器，有想目睹 Java 代码编译之后的汇编模样，那么这款神器是你不可错过的。博主原本是打算从 CSDN 上下载一个 <span style="color:#8bc34a">hsdis-amd64.dll</span>，无奈币值不够，只能自力更生。网上有很多文章也介绍了编译 <span style="color:#8bc34a">hsdis</span> 的所需步骤，但基本都是文字描述，看起来比较费劲。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0028/0028.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.10.03</h4>
 			<p><strong>Java 并发编程系列：为什么总是在 while 循环之内调用 wait() 方法？（07）</strong></p>
 			<div class="w3-container w3-light-gray">

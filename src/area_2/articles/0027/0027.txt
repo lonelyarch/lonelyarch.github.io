@@ -19,7 +19,7 @@
 	<div class="w3-example" style="padding-left:32px;overflow:auto;background-color:white">
 		<pre><code class="hljs w3-white">public final <span style="color:#8bc34a">native</span> void wait(long timeout) throws InterruptedException;</code></pre>
 	</div>
-	<div><p>研读 Object 类的源码不难发现，wait() 方法最终是通过调用 <span style="color:#8bc34a">wait(long timeout) 即 native 方法</span>实现当前线程进入等待状态。对本地方法有疑问的童鞋可以参阅一下 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/jniTOC.html">JNI 规范</a>或 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html">JVMTI</a> 。</p></div>
+	<div><p>研读 Object 类的源码不难发现，wait() 方法最终是通过调用 <span style="color:#8bc34a">wait(long timeout) 即 native 方法</span>实现当前线程进入等待状态。对本地方法有疑问的童鞋可以参阅一下 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/jniTOC.html">JNI 规范</a>或 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html">JVM TI</a> 。</p></div>
 	<div><p>二、查看 C/C++ standard library 手册即 C/C++ 语言标准库手册：</p></div>
 	<div class="w3-container w3-white">
 		<p>C standard library</p>

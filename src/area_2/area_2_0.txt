@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：图文并茂之 hsdis 编译（08）</strong></p><p class="w3-right">2017-10-07</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是 <span style="color:#8bc34a">hsdis(HotSpot Disassembler)</span>？顾名思义，它是个反汇编神器，有想目睹 Java 代码编译之后的汇编模样，那么这款神器是你不可错过的。博主原本是打算从 CSDN 上下载一个 <span style="color:#8bc34a">hsdis-amd64.dll</span>，无奈币值不够，只能自力更生。网上有很多文章也介绍了编译 <span style="color:#8bc34a">hsdis</span> 的所需步骤，但基本都是文字描述，看起来比较费劲。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/27.txt',id:'prevtonext'},{url:'src/area_2/articles/0028/0028.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：为什么总是在 while 循环之内调用 wait() 方法？（07）</strong></p><p class="w3-right">2017-10-03</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -160,17 +171,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/4.txt',id:'prevtonext'},{url:'src/area_2/articles/0005/0005.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>如何实现一枚旋转的针？</strong></p><p class="w3-right">2016-10-19</p></div>
-	<div style="clear: both;"></div>
-	<div><p>废话少说，直接给出示例，再逐步分解实现过程（标题里的针代表的是秒针，象征了博主此时此刻对时间的认知）：</p></div>
-	<div class="w3-example-circle" style="margin:0 auto;position:relative;max-width:300px;width:100%">
-		<img style="border-radius:50%;max-width:60rem;width:100%" alt="Oops" src="src/area_2/articles/0004/images/01.jpg" />
-		<span style="position:absolute;top:0;left:0;width:100%;height:100%;background-color:#8bc34a;border-radius:50%"></span>
-		<hr style="position:absolute;top:50%;width:50%;margin:0" />
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/3.txt',id:'prevtonext'},{url:'src/area_2/articles/0004/0004.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
