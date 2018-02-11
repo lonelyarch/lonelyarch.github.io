@@ -6,6 +6,7 @@
 		<p><strong>前言：</strong></p>
 		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，以 volatile 关键字修饰的变量具有两种特性：1.变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）。2.禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）。</P>
 	</div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/00.jpg"></div>
 	<div><p>一、变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）：</p></div>
 	<div class="w3-example">
 		<div><p style="color:black"><span style="color:#8bc34a">示例代码 0：</span>线程 thread-0 的任务是执行 while 空循环体，线程 thread-1 的任务是设置 flag = false，即终止 while 循环。在 volatile 关键字没有修饰 flag 变量的情况下，线程 thread-1 中设置的 flag = false 对线程 thread-0 有可能是<span style="color:#8bc34a">不可见</span>的。</p></div>
