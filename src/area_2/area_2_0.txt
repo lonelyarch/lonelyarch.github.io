@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：volatile 关键字（09）</strong></p><p class="w3-right">2017-10-13</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，以 volatile 关键字修饰的变量具有两种特性：1.变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）。2.禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/28.txt',id:'prevtonext'},{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：图文并茂之 hsdis 编译（08）</strong></p><p class="w3-right">2017-10-07</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -152,23 +163,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/5.txt',id:'prevtonext'},{url:'src/area_2/articles/0006/0006.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>如何实现立体式的按钮（3D Button）？</strong></p><p class="w3-right">2017-03-11</p></div>
-	<div style="clear: both;"></div>
-	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-	<div class="w3-panel w3-white w3-width" style="padding:0;text-align:center">
-		<div class="w3-row">
-			<button class="w3-example-button-x" title="w3-example-button"></button>
-		</div>
-		<div class="w3-row">
-			<button class="w3-example-button-y" title="w3-example-button"></button>
-		</div>
-		<div class="w3-row">
-			<button class="w3-example-button-z" title="w3-example-button"></button>
-		</div>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/4.txt',id:'prevtonext'},{url:'src/area_2/articles/0005/0005.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

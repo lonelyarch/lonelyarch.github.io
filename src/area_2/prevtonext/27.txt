@@ -1,2 +1,3 @@
+<a onclick="fetch([{url:'src/area_2/prevtonext/28.txt',id:'prevtonext'},{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« Java 并发编程系列：volatile 关键字（09）</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/26.txt',id:'prevtonext'},{url:'src/area_2/articles/0027/0027.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：为什么总是在 while 循环之内调用 wait() 方法？（07） »</a>
 <div style="clear: both;"></div>

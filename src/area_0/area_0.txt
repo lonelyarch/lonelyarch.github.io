@@ -10,6 +10,18 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.10.13</h4>
+			<p><strong>Java 并发编程系列：volatile 关键字（09）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，以 volatile 关键字修饰的变量具有两种特性：1.变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）。2.禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.10.07</h4>
 			<p><strong>Java 并发编程系列：图文并茂之 hsdis 编译（08）</strong></p>
 			<div class="w3-container w3-light-gray">

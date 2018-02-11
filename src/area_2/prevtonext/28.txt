@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/27.txt',id:'prevtonext'},{url:'src/area_2/articles/0028/0028.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：图文并茂之 hsdis 编译（08） »</a>
+<div style="clear: both;"></div>

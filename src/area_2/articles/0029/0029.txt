@@ -1,0 +1,311 @@
+<article>
+	<div><p><strong>Java 并发编程系列：volatile 关键字（09）</strong></p><p class="w3-right w3-margin-0">2017-10-13</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，以 volatile 关键字修饰的变量具有两种特性：1.变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）。2.禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）。</P>
+	</div>
+	<div><p>一、变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）：</p></div>
+	<div class="w3-example">
+		<div><p style="color:black"><span style="color:#8bc34a">示例代码 0：</span>线程 thread-0 的任务是执行 while 空循环体，线程 thread-1 的任务是设置 flag = false，即终止 while 循环。在 volatile 关键字没有修饰 flag 变量的情况下，线程 thread-1 中设置的 flag = false 对线程 thread-0 有可能是<span style="color:#8bc34a">不可见</span>的。</p></div>
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">package</span> com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VolatileDemo</span> {</span>
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">boolean</span> flag = <span class="hljs-keyword">true</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setValue</span>(<span class="hljs-keyword">boolean</span> value) {
+        flag = value;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">while</span> (flag) {
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-0</span>
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">try</span> {
+                    Thread.sleep(<span class="hljs-number">3</span>); <span class="hljs-comment">// 使<span style="color:#8bc34a">可能</span>变成<span style="color:#8bc34a">必然</span></span>
+                    setValue(<span class="hljs-keyword">false</span>);
+                } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-1</span>
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>执行上述示例代码可知，即使在线程 thread-1 中对 flag 变量设置为 false，但 while 还是会陷入死循环。问题随之而来，为什么会出现这种情况？在回答该问题之前，先给出简要的处理器、缓存、主存之间的交互关系图，再引出 JMM：</p></div>
+	<div style="border:1px solid rgba(255,255,255,0.6)">
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/01.jpg" />
+		<p style="text-align:center">处理器、缓存、主存之间的交互关系</p>
+	</div>
+	<div>
+		<ul style="padding-left:0;list-style:decimal">
+			<li><p>高速缓存：CPU 的任务是执行存放在存储器里的指令序列。为此，除了要完成算术逻辑操作外，还需担负 CPU 和存储器以及 I/O 之间的数据传送任务。早期的 CPU 芯片只包括运算器和控制器两大部分，从 80386 开始，为了使存储器速度能更好地与运算器的速度相匹配，于是在芯片中引入了高速缓冲存储器，即高速缓存。</p></li>
+			<li><p>缓存一致性协议：在多处理器系统中，每个处理器在拥有自己的缓存的同时也共享一个主存，当它们的运算任务涉及到同一块主存区域时，这有可能导致各自的缓存数据不一致，那么将数据同步回主存时以哪个处理器的缓存数据为准呢？<span style="color:#8bc34a">缓存一致性协议</span>应运而生。</p></li>
+		</ul>
+	</div>
+	<div><p>为了屏蔽各种硬件和操作系统的内存访问差异，以实现 Java 程序在各种平台下能够达到一致的内存访问效果，<a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4">Java 内存模型</a>的定义就此产生并在逐步成熟和完善：</p></div>
+	<div style="border:1px solid rgba(255,255,255,0.6)">
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/02.jpg" />
+		<p style="text-align:center">Java 线程、工作内存、主存之间的交互关系</p>
+	</div>
+	<div><p>现给出问题分析图如下所示：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/03.jpg" /></div>
+	<div><p>据图可知，线程 thread-0、thread-1 分别从主存中读取并拷贝 flag = true 的副本到工作内存，当线程 thread-1 修改并写回 flag = false 到主存时，由于变量 flag 缺乏类似缓存一致性保障且 while 恰是空循环体，flag = false 对线程 thread-0 而言是<span style="color:#8bc34a">不可见</span>的，这就最终导致 while 陷入死循环。将<span style="color:#8bc34a">示例代码 0</span> 稍加修改如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">package</span> com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VolatileDemo</span> {</span>
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span style="color:red">volatile</span> <span class="hljs-keyword">boolean</span> flag = <span class="hljs-keyword">true</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setValue</span>(<span class="hljs-keyword">boolean</span> value) {
+        flag = value;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">while</span> (flag) {
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-0</span>
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-annotation">@Override</span>
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">try</span> {
+                    Thread.sleep(<span class="hljs-number">3</span>); <span class="hljs-comment">// 使<span style="color:#8bc34a">可能</span>变成<span style="color:#8bc34a">必然</span></span>
+                    setValue(<span class="hljs-keyword">false</span>);
+                } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-1</span>
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>执行修改示例代码可知，while 死循环的情况不再发生。问题随之而来，volatile 关键字是如何使得线程 thread-1 对变量 flag 的修改在线程 thread-0 看来是<span style="color:#8bc34a">可见</span>的，即这种<span style="color:#8bc34a">可见性</span>是如何保障的？</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/04.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/05.jpg" /></div>
+	<div><p>通过对比使用 volatile 关键字修饰变量 flag <span style="color:red">前后</span>所生成的汇编代码可知，经过 volatile 关键字修饰之后所生成的汇编代码多出了 <span style="color:#8bc34a">lock 指令前缀</span>：</p></div>
+	<div class="w3-container w3-white">
+		<p>...</p>
+		<p>The LOCK # signal is asserted during execution of the instruction following the lock prefix. <span style="color:#8bc34a">This signal can be used in a multiprocessor system to ensure exclusive use of shared memory while LOCK # is asserted</span>. The bts instruction is the read-modify-write sequence used to implement test-and-run. <a target="_blank" class="w3-link" href="https://docs.oracle.com/cd/E19620-01/805-4693/instructionset-128/index.html">原文链接</a></p>
+		<p>...</p>
+	</div>
+	<div><p></p></div>
+	<div class="w3-container w3-white">
+		<p>The Intel 64 and IA-32 architectures provide mechanisms for managing and improving the performance of multiple processors connected to the same system bus. These include:</p>
+		<ul style="padding-left:16px">
+			<li><p>Bus locking and/or cache coherency management for performing atomic operations on system memory.</p></li>
+			<li><p>Serializing instructions.</p></li>
+			<li><p>An advance programmable interrupt controller (APIC) located on the processor chip. This feature was introduced by the Pentium processor.</p></li>
+			<li><p>A second-level cache (level 2, L2). For the Pentium 4, Intel Xeon, and P6 family processors, the L2 cache is included in the processor package and is tightly coupled to the processor. For the Pentium and Intel486 processors, pins are provided to support an external L2 cache.</p></li>
+			<li><p>A third-level cache (level 3, L3). For Intel Xeon processors, the L3 cache is included in the processor package and is tightly coupled to the processor.</p></li>
+			<li><p>Intel Hyper-Threading Technology. This extension to the Intel 64 and IA-32 architectures enables a single processor core to execute two or more threads concurrently.</p></li>
+		</ul>
+		<p>These mechanisms are particularly useful in symmetric-multiprocessing (SMP) systems. However, they can also be used when an Intel 64 or IA-32 processor and a special-purpose processor (such as a communications, graphics, or video processor) share the system bus.</p>
+		<p>These multiprocessing mechanisms have the following characteristics:</p>
+		<ul style="padding-left:16px">
+			<li><p>To maintain system <span style="color:#8bc34a">memory coherency</span> — When two or more processors are attempting simultaneously to access the same address in system memory, <span style="color:#8bc34a">some communication mechanism</span> or <span style="color:#8bc34a">memory access protocol</span> must be available to promote data coherency and, in some instances, to allow one processor to temporarily lock a memory location.</p></li>
+			<li><p>To maintain <span style="color:#8bc34a">cache consistency</span> — When one processor accesses data cached on another processor, it must not receive incorrect data. If it modifies data, all other processors that access that data must receive the modified data.</p></li>
+			<li><p>To allow predictable ordering of writes to memory — In some circumstances, it is important that memory writes be observed externally in precisely the same order as programmed.</p></li>
+			<li><p>To distribute interrupt handling among a group of processors — When several processors are operating in a system in parallel, it is useful to have a centralized mechanism for receiving interrupts and distributing them to available processors for servicing.</p></li>
+			<li><p>To increase system performance by exploiting the multi-threaded and multi-process nature of contemporary operating systems and applications.</p></li>
+		</ul>
+		<p>...</p>
+		<p>For the Intel486 and Pentium processors, the LOCK# signal is always asserted on <span style="color:#8bc34a">the bus</span> during a LOCK operation, even if the area of memory being locked is cached in the processor.</p>
+		<p>For the P6 and more recent processor families, if the area of memory being locked during a LOCK operation is cached in the processor that is performing the LOCK operation as write-back memory and is completely contained in a cache line, the processor may not assert the LOCK# signal on the bus. Instead, it will modify <span style="color:#8bc34a">the memory location</span> internally and allow it’s <span style="color:#8bc34a">cache coherency mechanism</span> to ensure that the operation is carried out atomically. This operation is called “<span style="color:#8bc34a">cache locking</span>”. The <span style="color:#8bc34a">cache coherency mechanism</span> automatically prevents two or more processors that have cached the same area of memory from simultaneously modifying data in that area. <a target="_blank" class="w3-link" href="https://software.intel.com/sites/default/files/managed/a4/60/325384-sdm-vol-3abcd.pdf">原文链接</a></p>
+		<p>...</p>
+	</div>
+	<div><p>通过查阅<a target="_blank" class="w3-link" href="https://software.intel.com/en-us/articles/intel-sdm">《Intel® 64 和 IA-32 架构软件开发人员手册》</a>可知，以 <span style="color:#8bc34a">lock</span> 前缀修饰的指令在多核处理器系统内的执行有如下两个特点：</p></div>
+	<div>
+		<ul style="padding-left:16px">
+			<li><p><span style="color:#8bc34a">以 lock 前缀修饰的指令会引起处理器缓存回写到内存</span>。</p></li>
+			<li><p><span style="color:#8bc34a">单个处理器的缓存回写到内存会导致其它处理器的缓存无效</span>。</p></li>
+		</ul>
+	</div>
+	<div><p><span style="color:#8bc34a">缓存一致性协议</span>也是至关重要的一点，在多核处理器系统内，为了保障各个处理器的缓存是一致的，就会实现<span style="color:#8bc34a">缓存一致性协议</span>，每个处理器通过<span style="color:#8bc34a">嗅探</span>在总线上传送的数据来检查自己缓存的值是否过期，当处理器发现自己缓存行对应的内存地址被修改，就会将当前处理器的缓存行设置成无效状态，当处理器要对这个数据进行<span style="color:#8bc34a">读写</span>操作时，会强制重新从系统内存里把数据读到处理器缓存。<a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/ftf-java-volatile">原文链接</a></p></div>
+	<div><p>二、禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）：</p></div>
+	<div class="w3-example">
+		<div><p style="color:black"><span style="color:#8bc34a">示例代码 1：</span>易于理解这段代码的运行结果可能为 (1,0)、(0,1) 或 (1,1)，因为线程 one 可以在线程 two 开始之前就执行完成或反之，还有可能是两者的指令交替执行。</p></div>
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> PossibleReordering {
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>, b = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) throws InterruptedException {
+
+        Thread one = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                a = <span class="hljs-number">1</span>;
+                x = b;
+            }
+        });
+
+        Thread two = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                b = <span class="hljs-number">1</span>;
+                y = a;
+            }
+        });
+
+        one.start();
+        two.start();
+        one.<span class="hljs-keyword">join</span>();
+        two.<span class="hljs-keyword">join</span>();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"("</span> + x + <span class="hljs-string">","</span> + y + <span class="hljs-string">")"</span>);
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>然而，<span style="color:#8bc34a">示例代码 1</span> 的执行结果也可能是 (0,0)，这是由于线程 one 和线程 two 中的各操作之间<span style="color:#8bc34a">不存在数据流依赖性</span>，因此处理器或 JIT 编译器便可以对线程 one 和线程 two 中的各操作进行<span style="color:#8bc34a">指令重排序</span>：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/06.jpg" /></div>
+	<div><p>大多数现代微处理器都会采用将指令乱序执行（Out-Of-Order Execution，简称 OoOE 或 OOE）的技术，在条件允许的情况下，直接运行当前有能力立即执行的后续指令，避开获取下一条指令所需数据时造成的等待。通过乱序执行的技术，处理器可以大大提高执行效率。<a target="_blank" class="w3-link" href="https://tech.meituan.com/java-memory-reordering.html">原文链接</a></p></div>
+	<div><p><strong style="color:yellow">注意：</strong><span>（1）内存可见性问题也会导致 (0,0) 结果的出现。</span><span>（2）指令重排序的前提是必须保证指令重排序之后的结果和程序代码本身的应有结果是一致的，这也是为什么对有数据依赖的操作无法进行指令重排序的原因。</span></p>
+	</div>
+	<div><p>修改<span style="color:#8bc34a">示例代码 1 </span>以验证<span style="color:#8bc34a">指令重排序的现象</span>：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> PossibleReordering {
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>, b = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) throws InterruptedException {
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (;;) {
+            i++;
+            x = <span class="hljs-number">0</span>;
+            y = <span class="hljs-number">0</span>;
+            a = <span class="hljs-number">0</span>;
+            b = <span class="hljs-number">0</span>;
+            Thread one = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+                <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                    delay(<span class="hljs-number">100000</span>);
+                    a = <span class="hljs-number">1</span>;
+                    x = b;
+                }
+            });
+
+            Thread two = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+                <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                    b = <span class="hljs-number">1</span>;
+                    y = a;
+                }
+            });
+
+            one.start();
+            two.start();
+            one.<span class="hljs-keyword">join</span>();
+            two.<span class="hljs-keyword">join</span>();
+
+            String result = <span class="hljs-string">"第"</span> + i + <span class="hljs-string">"次 ("</span> + x + <span class="hljs-string">","</span> + y + <span class="hljs-string">")"</span>;
+            <span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span> &amp;&amp; y == <span class="hljs-number">0</span>) {
+                System.err.println(result);
+                <span class="hljs-keyword">break</span>;
+            } <span class="hljs-keyword">else</span> {
+                System.<span class="hljs-keyword">out</span>.println(result);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delay</span>(<span class="hljs-keyword">long</span> interval) {
+        <span class="hljs-keyword">long</span> start = System.nanoTime();
+        <span class="hljs-keyword">long</span> end;
+        <span class="hljs-keyword">do</span> {
+            end = System.nanoTime();
+        } <span class="hljs-keyword">while</span> (start + interval &gt;= end);
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/07.jpg" /></div>
+	<div><p>在理解 volatile 关键字具有<span style="color:#8bc34a">可见性</span>语义时，通过对汇编代码的分析可知，这与<span style="color:#8bc34a">以 lock 前缀修饰的指令</span>是密切相关的，实际上，也恰是因为多出的<span style="color:#8bc34a"> lock addl $0x0,(%rsp) </span>操作使得处理器在运算时对以 volatile 关键字修饰的变量形成了内存屏障（Memory Barrier 或 Memory Fence，即指令重排序时不能把后面的指令重排序到内存屏障之前的位置），<span style="color:#8bc34a">lock addl $0x0,(%rsp) </span>操作的作用是将当前变量的修改同步到主存，这表示所有之前的操作都已经执行完成，从而达到<span style="padding:0 5px" class="w3-light-gray">指令重排序无法越过内存屏障</span>的效果，即呈现了 volatile 关键字禁止指令重排序的语义。（<span style="color:#8bc34a">addl S,D</span>，即 D = D + S。<span style="color:#8bc34a">%rsp</span> 为 x64 栈指针寄存器）</p></div>
+	<div><p>三、因<span style="color:#8bc34a">可见性</span>引起的误解（<span style="color:#8bc34a">原子性</span>）：</p></div>
+	<div class="w3-example">
+		<div><p style="color:black"><span style="color:#8bc34a">示例代码 2：</span>创建并启动 10 个线程，每个线程对变量 race 累加 1000000 次，预想结果是变量 race 的最终值为 10000000，但该示例代码在实际运行下，变量 race 的最终值总小于 10000000。</p></div>
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs">package com.hsdis.demo;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> VolatileDemo {
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">int</span> race = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">increase</span>() {
+        race++;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> final <span class="hljs-keyword">int</span> THREADS_COUNT = <span class="hljs-number">10</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        Thread[] threads = <span class="hljs-keyword">new</span> Thread[THREADS_COUNT];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; THREADS_COUNT; i++) {
+            threads[i] = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+
+                @Override
+                <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">1000000</span>; j++) {
+                        increase();
+                    }
+                }
+            });
+            threads[i].start();
+        }
+
+        <span class="hljs-keyword">while</span> (Thread.activeCount() &gt; <span class="hljs-number">1</span>)
+            Thread.<span class="hljs-keyword">yield</span>();
+        System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"race: "</span> + race);
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0029/images/08.jpg" /></div>
+	<div><p>根据原代码、字节码以及汇编代码的比照可知，race++ 并非原子操作，它实际上是<span class="w3-light-green" style="padding:0 5px">读取-修改-写入</span>多操作实现，即以 volatile 关键字修饰的变量在多线程场景下<span class="w3-text-light-green">不具有线程安全性</span>。</p></div>
+	<div><p>四、当且仅当满足以下所有条件时，才能够使用 volatile 变量：</p></div>
+	<div>
+		<ul style="padding-left:16px">
+			<li><p>对变量的写入操作不依赖变量的当前值，或可以确保只有单个线程才会更新变量的值。</p></li>
+			<li><p>该变量不会与其它状态变量一起纳入不变性条件之内。</p></li>
+			<li><p>在访问变量时不需要加锁。</p></li>
+		</ul>
+	</div>
+	<div><p>最后总结，在 Java 编程语言里，看起来十分简单的 volatile 关键字却涉及了诸多的知识面，这也印证了一个道理：<span class="w3-text-light-green">越是简单的东西理解起来越是复杂</span>。博主在试图理解 volatile 关键字时给予自身的感受就好像是捅了个蚂蜂窝。</p></div>
+	<div>
+		<strong>参考资料：</strong>
+		<ul style="padding-left:0;list-style:decimal">
+			<li><span style="display:block">参见《深入理解 Java 虚拟机》</span></li>
+			<li><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://15418.courses.cs.cmu.edu/spring2013/article/21">http://15418.courses.cs.cmu.edu/spring2013/article/21</a></li>
+			<li><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/ftf-java-volatile">http://www.infoq.com/cn/articles/ftf-java-volatile</a></li>
+			<li><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://software.intel.com/en-us/articles/intel-sdm">https://software.intel.com/en-us/articles/intel-sdm</a></li>
+			<li><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://docs.oracle.com/cd/E19620-01/805-4693/index.html">https://docs.oracle.com/cd/E19620-01/805-4693/index.html</a></li>
+			<li><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://tech.meituan.com/java-memory-reordering.html">https://tech.meituan.com/java-memory-reordering.html</a></li>
+			<li><span style="display:block">参见《Java 并发编程实战》</span></li>
+		</ul>
+	</div>
+</article>
