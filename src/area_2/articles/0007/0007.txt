@@ -1,0 +1,370 @@
+<article>
+	<div><p><strong>如何实现旋转式太极图？</strong></p><p class="w3-right w3-margin-0">2017-03-19</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div class="w3-example-taichi">
+		<img style="border-radius:50%;max-width:60rem;width:100%" alt="Oops" src="src/area_2/articles/0007/images/01.jpg" />
+		<div class="w3-example-taichi-l">
+			<div class="w3-example-taichi-l-dot"></div>
+		</div>
+		<div class="w3-example-taichi-r">
+			<div class="w3-example-taichi-r-dot"></div>
+		</div>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-taichi</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">10</span>% auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> rotate infinite linear <span class="hljs-number">8</span>s</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-u</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px <span class="hljs-number">0</span> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-d</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-circle</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">37.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">37.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-l</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">25</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-r</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">25</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">151</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-l-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-r-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> rotate </span>{<span class="hljs-tag">from</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">rotate(<span class="hljs-number">0</span>deg)</span></span></span></span>}<span class="hljs-tag">to</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">rotate(<span class="hljs-number">360</span>deg)</span></span></span></span>}}
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-u"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle w3-example-taichi-inner-l"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div
+</span>                <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle-dot w3-example-taichi-inner-l-circle-dot"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-d"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle w3-example-taichi-inner-r"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div
+</span>                <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle-dot w3-example-taichi-inner-r-circle-dot"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤一、设置 &lt;div&gt; 元素的宽、高均为 <strong class="w3-text-light-green">300px</strong>，再给该 &lt;div&gt; 元素添加两个 &lt;div&gt; 子元素，关键点是给两个 &lt;div&gt; 子元素的 <strong>border-radius</strong> 属性值分别设置为 <strong class="w3-text-light-green">150px 150px 0 0</strong>、<strong class="w3-text-light-green">0 0 150px 150px</strong>，结果如下所示：</p></div>
+	<div class="w3-example-taichi-demo">
+		<img style="border-radius:50%;max-width:60rem;width:100%" alt="Oops" src="src/area_2/articles/0007/images/01.jpg" />
+	</div>
+	<div><p>代码如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-taichi</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">10</span>% auto</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-u</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px <span class="hljs-number">0</span> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-d</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-u"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-d"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤二、在<strong class="w3-text-light-green">步骤一的基础上</strong>给左右两侧添加实心圆、实心点，关键点是将最外层 &lt;div&gt; 元素的 <strong>position</strong> 属性值设置为 <strong class="w3-text-light-green">relative</strong>，呈现实心圆的 &lt;div&gt; 元素以及呈现实心点的 &lt;div&gt; 元素的 <strong>position</strong> 属性值均设置为 <strong class="w3-text-light-green">absolute</strong>，结果如下所示：</p></div>
+	<div class="w3-example-taichi-demo">
+		<img style="border-radius:50%;max-width:60rem;width:100%" alt="Oops" src="src/area_2/articles/0007/images/01.jpg" />
+		<div class="w3-example-taichi-l">
+			<div class="w3-example-taichi-l-dot"></div>
+		</div>
+		<div class="w3-example-taichi-r">
+			<div class="w3-example-taichi-r-dot"></div>
+		</div>
+	</div>
+	<div><p>代码如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-taichi</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">10</span>% auto</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-u</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px <span class="hljs-number">0</span> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-d</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-circle</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">37.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">37.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-l</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">25</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-r</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">25</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">151</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-l-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-r-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-u"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle w3-example-taichi-inner-l"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div
+</span>                <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle-dot w3-example-taichi-inner-l-circle-dot"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-d"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle w3-example-taichi-inner-r"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div
+</span>                <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle-dot w3-example-taichi-inner-r-circle-dot"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤三、以 <strong>CSS3</strong> 的 animation 属性控制最外层 &lt;div&gt; 元素使太极图自旋转，结果如下所示：</p></div>
+	<div class="w3-example-taichi">
+		<img style="border-radius:50%;max-width:60rem;width:100%" alt="Oops" src="src/area_2/articles/0007/images/01.jpg" />
+		<div class="w3-example-taichi-l">
+			<div class="w3-example-taichi-l-dot"></div>
+		</div>
+		<div class="w3-example-taichi-r">
+			<div class="w3-example-taichi-r-dot"></div>
+		</div>
+	</div>
+	<div><p>代码如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-taichi</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">10</span>% auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> rotate infinite linear <span class="hljs-number">8</span>s</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-u</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px <span class="hljs-number">0</span> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-d</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px <span class="hljs-hexcolor">#d2d2d2</span> solid</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">150</span>px <span class="hljs-number">150</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-circle</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">37.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">37.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-l</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">25</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">1</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-r</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">25</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">151</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-l-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> white</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-taichi-inner-r-circle-dot</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> rotate </span>{<span class="hljs-tag">from</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">rotate(<span class="hljs-number">0</span>deg)</span></span></span></span>}<span class="hljs-tag">to</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">rotate(<span class="hljs-number">360</span>deg)</span></span></span></span>}}
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-u"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle w3-example-taichi-inner-l"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div
+</span>                <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle-dot w3-example-taichi-inner-l-circle-dot"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-d"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle w3-example-taichi-inner-r"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div
+</span>                <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-taichi-inner-circle-dot w3-example-taichi-inner-r-circle-dot"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+</article>
