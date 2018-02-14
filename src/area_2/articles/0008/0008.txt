@@ -1,0 +1,217 @@
+<article>
+	<div><p><strong>纯手工制作：法式马卡龙</strong></p><p class="w3-right w3-margin-0">2017-03-20</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div class="w3-example-macarons"><div></div></div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">min-height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">75</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-image</span>:<span class="hljs-value"> <span class="hljs-function">linear-gradient(transparent <span class="hljs-number">0</span>px, 
+        #<span class="hljs-number">750000</span> <span class="hljs-number">0</span>px, #<span class="hljs-number">750000</span> <span class="hljs-number">10</span>px, transparent <span class="hljs-number">10</span>px, 
+        transparent <span class="hljs-number">125</span>px, #<span class="hljs-number">07526</span>e <span class="hljs-number">125</span>px, #<span class="hljs-number">07526</span>e <span class="hljs-number">135</span>px, 
+        transparent <span class="hljs-number">135</span>px, transparent <span class="hljs-number">250</span>px, #<span class="hljs-number">006000</span> <span class="hljs-number">250</span>px, 
+        #<span class="hljs-number">006000</span> <span class="hljs-number">260</span>px, transparent <span class="hljs-number">260</span>px)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span><span class="hljs-pseudo">:before</span>,<span class="hljs-tag">div</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">""</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span><span class="hljs-pseudo">:before</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">50</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">380</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top-left-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top-right-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#ea0000</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">box-shadow</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">125</span>px <span class="hljs-number">0</span> <span class="hljs-hexcolor">#109bce</span>, <span class="hljs-number">0</span> <span class="hljs-number">250</span>px <span class="hljs-number">0</span> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">50</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">310</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom-left-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom-right-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#ea0000</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">box-shadow</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">125</span>px <span class="hljs-number">0</span> <span class="hljs-hexcolor">#109bce</span>, <span class="hljs-number">0</span> <span class="hljs-number">250</span>px <span class="hljs-number">0</span> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-macarons"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤一、使用 <strong>linear-gradient()</strong> 函数制作出<strong>夹心</strong>（对该函数有疑问的童鞋<a target="_blank" class="w3-link" href="https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient">戳这里</a>）：</p></div>
+	<div class="w3-example-macarons-demo-0"><div></div></div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">min-height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">75</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-image</span>:<span class="hljs-value"> <span class="hljs-function">linear-gradient(transparent <span class="hljs-number">0</span>px, 
+        #<span class="hljs-number">006000</span> <span class="hljs-number">0</span>px, #<span class="hljs-number">006000</span> <span class="hljs-number">10</span>px, transparent
+        <span class="hljs-number">10</span>px)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-macarons"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤二、利用 <strong>before</strong> 选择器制作出马卡龙的上层面：</p></div>
+	<div class="w3-example-macarons-demo-1"><div></div></div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">min-height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">75</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-image</span>:<span class="hljs-value"> <span class="hljs-function">linear-gradient(transparent <span class="hljs-number">0</span>px, 
+        #<span class="hljs-number">006000</span> <span class="hljs-number">0</span>px, #<span class="hljs-number">006000</span> <span class="hljs-number">10</span>px, transparent
+        <span class="hljs-number">10</span>px)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span><span class="hljs-pseudo">:before</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">""</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">50</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">380</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top-left-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top-right-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-macarons"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤三、利用 <strong>after</strong> 选择器制作出马卡龙的下层面：</p></div>
+	<div class="w3-example-macarons-demo-2"><div></div></div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">min-height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">150</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">75</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">375</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-image</span>:<span class="hljs-value"> <span class="hljs-function">linear-gradient(transparent <span class="hljs-number">0</span>px, 
+        #<span class="hljs-number">006000</span> <span class="hljs-number">0</span>px, #<span class="hljs-number">006000</span> <span class="hljs-number">10</span>px, transparent
+        <span class="hljs-number">10</span>px)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span><span class="hljs-pseudo">:before</span>,<span class="hljs-tag">div</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">""</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span><span class="hljs-pseudo">:before</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">50</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">380</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top-left-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-top-right-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-macarons</span> <span class="hljs-tag">div</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">50</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">310</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom-left-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-bottom-right-radius</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px <span class="hljs-number">45</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-macarons"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+</article>

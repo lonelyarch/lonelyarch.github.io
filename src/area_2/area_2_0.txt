@@ -106,18 +106,10 @@
 </article>
 <hr style="border: none; border-top: 1px dotted white;">
 <article>
-	<div><p><strong>如何实现旋转式太极图？</strong></p><p class="w3-right">2017-03-19</p></div>
+	<div><p><strong>纯手工制作：法式马卡龙</strong></p><p class="w3-right">2017-03-20</p></div>
 	<div style="clear: both;"></div>
 	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-	<div class="w3-example-taichi">
-		<img style="border-radius:50%;max-width:60rem;width:100%" alt="Oops" src="src/area_2/articles/0007/images/01.jpg" />
-		<div class="w3-example-taichi-l">
-			<div class="w3-example-taichi-l-dot"></div>
-		</div>
-		<div class="w3-example-taichi-r">
-			<div class="w3-example-taichi-r-dot"></div>
-		</div>
-	</div>
+	<div class="w3-example-macarons"><div></div></div>
 	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/6.txt',id:'prevtonext'},{url:'src/area_2/articles/0007/0007.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/7.txt',id:'prevtonext'},{url:'src/area_2/articles/0008/0008.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
