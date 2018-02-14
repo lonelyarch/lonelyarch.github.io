@@ -147,7 +147,7 @@
 			<h4>2017.03.20</h4>
 			<p><strong>纯手工制作：法式马卡龙</strong></p>
 			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-			<div class="w3-example-macarons"><div style="margin:0 auto;left:4.5%;margin-top:-125px"></div></div>
+			<div class="w3-example-macarons"><div></div></div>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0008/0008.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
