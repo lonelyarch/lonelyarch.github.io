@@ -79,4 +79,8 @@
 .w3-example-macarons-demo-2 div:before,div:after{display:block;content:"";position: absolute}
 .w3-example-macarons-demo-2 div:before{max-width:300px;width:100%;height:50px;bottom:380px;border-top-left-radius:150px 45px;border-top-right-radius:150px 45px;background-color:#8bc34a}
 .w3-example-macarons-demo-2 div:after{max-width:300px;width:100%;height:50px;bottom:310px;border-bottom-left-radius:150px 45px;border-bottom-right-radius:150px 45px;background-color:#8bc34a}
-@media (max-width:600px){.w3-example-macarons-small{margin-left:-50%}}
+.w3-example-macarons-small{position:relative;min-height:315px;text-align:center}
+.w3-example-macarons-small div{margin:0 auto;position:relative;margin-top:75px;height:315px;max-width:300px;width:100%;background-image:linear-gradient(transparent 0px,#750000 0px,#750000 10px,transparent 10px,transparent 125px,#07526e 125px,#07526e 135px,transparent 135px,transparent 250px,#006000 250px,#006000 260px,transparent 260px)}
+.w3-example-macarons-small div:before,div:after{display:block;content:"";position:absolute}
+.w3-example-macarons-small div:before{max-width:300px;width:100%;height:50px;bottom:320px;border-top-left-radius:150px 45px;border-top-right-radius:150px 45px;background-color:#ea0000;box-shadow:0 125px 0 #109bce,0 250px 0 #8bc34a}
+.w3-example-macarons-small div:after{max-width:300px;width:100%;height:50px;bottom:250px;border-bottom-left-radius:150px 45px;border-bottom-right-radius:150px 45px;background-color:#ea0000;box-shadow: 0 125px 0 #109bce,0 250px 0 #8bc34a}
