@@ -144,6 +144,45 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.03.26</h4>
+			<p><strong>多种效果下拉式菜单实现</strong></p>
+			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+			<div class="w3-example-dropdown-menu-small">
+				<nav>
+					<ul class="main">
+						<li>
+							<a>首页</a>
+							<ul class="drop menu-1">
+								<li><a>首页</a></li>
+								<li><a>影视</a></li>
+								<li><a>随笔</a></li>
+							</ul>
+						</li>
+						<li>
+							<a>影视</a>
+							<ul class="drop menu-2">
+								<li><a>首页</a></li>
+								<li><a>影视</a></li>
+								<li><a>随笔</a></li>
+							</ul>
+						</li>
+						<li>
+							<a>美丽人生</a>
+							<ul class="drop menu-3">
+								<li><a>国家宝藏</a></li>
+								<li><a>霸王别姬</a></li>
+								<li><a>阿甘正传</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0009/0009.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.03.20</h4>
 			<p><strong>纯手工制作：法式马卡龙</strong></p>
 			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>

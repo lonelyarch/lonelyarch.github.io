@@ -1,0 +1,450 @@
+<article>
+	<div><p><strong>多种效果下拉式菜单实现</strong></p><p class="w3-right w3-margin-0">2017-03-26</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div class="w3-example-dropdown-menu">
+		<nav>
+			<ul class="main">
+				<li>
+					<a href="#">首页</a>
+					<ul class="drop menu-1">
+						<li><a href="#">首页</a></li>
+						<li><a href="#">影视</a></li>
+						<li><a href="#">随笔</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">影视</a>
+					<ul class="drop menu-2">
+						<li><a href="#">首页</a></li>
+						<li><a href="#">影视</a></li>
+						<li><a href="#">随笔</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">美丽人生</a>
+					<ul class="drop menu-3">
+						<li><a href="#">国家宝藏</a></li>
+						<li><a href="#">霸王别姬</a></li>
+						<li><a href="#">阿甘正传</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">nav</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">23</span>, <span class="hljs-number">23</span>, <span class="hljs-number">50</span>, <span class="hljs-number">0.6</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">justify-content</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span>&gt;<span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">10</span>%
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">11</span>px <span class="hljs-number">15</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.drop</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform-origin</span>:<span class="hljs-value"> top center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">a</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#631818</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.drop</span> <span class="hljs-tag">li</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">23</span>, <span class="hljs-number">23</span>, <span class="hljs-number">50</span>, <span class="hljs-number">0.6</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">11</span>px <span class="hljs-number">15</span>px
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.drop</span> <span class="hljs-tag">li</span> <span class="hljs-tag">a</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#631818</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-1</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(1)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">1</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.3</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-1</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(2)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">1</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.6</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-1</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(3)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">1</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.9</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-1</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(4)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">1</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">1.2</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-2</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(1)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">2</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.3</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-2</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(2)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">2</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.6</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-2</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(3)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">2</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.9</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-2</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(4)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">2</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">1.2</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-3</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(1)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">3</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.3</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-3</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(2)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">3</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.6</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-3</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(3)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">3</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.9</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu-3</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(4)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu-<span class="hljs-number">3</span> <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">1.2</span>s
+</span></span></span>}
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> menu-<span class="hljs-number">1</span> </span>{
+    <span class="hljs-tag">from</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">translateX(<span class="hljs-number">30</span>px)</span> <span class="hljs-function">rotateY(<span class="hljs-number">90</span>deg)</span></span></span></span>}
+    <span class="hljs-tag">to</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">1</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">translateX(<span class="hljs-number">0</span>)</span> <span class="hljs-function">rotateY(<span class="hljs-number">0</span>)</span></span></span></span>}}
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> menu-<span class="hljs-number">2</span> </span>{
+    <span class="hljs-tag">from</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">translateX(<span class="hljs-number">50</span>px)</span> <span class="hljs-function">rotate(-<span class="hljs-number">90</span>deg)</span></span></span></span>}
+    <span class="hljs-tag">to</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">1</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">translateX(<span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(<span class="hljs-number">0</span>)</span></span></span></span>}}
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> menu-<span class="hljs-number">3</span> </span>{
+    <span class="hljs-tag">from</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">scale(<span class="hljs-number">2</span>)</span></span></span></span>}
+    <span class="hljs-tag">to</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">1</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">scale(<span class="hljs-number">1</span>)</span></span></span></span>}}
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-dropdown-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"drop menu-1"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>影视<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>随笔<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>影视<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"drop menu-2"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>影视<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>随笔<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>美丽人生<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"drop menu-3"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>国家宝藏<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>霸王别姬<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>阿甘正传<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤一、实现垂直菜单栏，<span class="w3-text-light-green">注意 <strong>&lt;nav&gt;</strong>、<strong>&lt;ul&gt;</strong>、<strong>&lt;li&gt;</strong>、<strong>&lt;a&gt;</strong> 各元素的嵌套层次</span>，关键点是将 <strong>&lt;a&gt;</strong> 元素的 <strong>display</strong> 属性值设置为 <strong>block</strong>，如下所示：</p></div>
+	<div class="w3-example-dropdown-menu-demo-0">
+		<nav>
+			<ul class="main">
+				<li>
+					<a href="#">美丽人生</a>
+					<ul class="drop menu-3">
+						<li><a href="#">国家宝藏</a></li>
+						<li><a href="#">霸王别姬</a></li>
+						<li><a href="#">阿甘正传</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">nav</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">23</span>, <span class="hljs-number">23</span>, <span class="hljs-number">50</span>, <span class="hljs-number">0.6</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">justify-content</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">11</span>px <span class="hljs-number">15</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-dropdown-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>美丽人生<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"drop menu"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>国家宝藏<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>霸王别姬<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>阿甘正传<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤二、隐藏菜单栏的相应部分，添加悬停效果，如下所示：</p></div>
+	<div class="w3-example-dropdown-menu-demo-1">
+		<nav>
+			<ul class="main">
+				<li>
+					<a href="#">美丽人生</a>
+					<ul class="drop menu-3">
+						<li><a href="#">国家宝藏</a></li>
+						<li><a href="#">霸王别姬</a></li>
+						<li><a href="#">阿甘正传</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">nav</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">23</span>, <span class="hljs-number">23</span>, <span class="hljs-number">50</span>, <span class="hljs-number">0.6</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">justify-content</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">11</span>px <span class="hljs-number">15</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.drop</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform-origin</span>:<span class="hljs-value"> top center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">a</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#631818</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-dropdown-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>美丽人生<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"drop menu"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>国家宝藏<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>霸王别姬<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>阿甘正传<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤三、以渐变效果显示已隐藏的菜单，关键点是使用 <strong>@<span class="w3-text-light-green">keyframes</span></strong> 规则以及 <strong>CSS3</strong> 的 <strong>animation</strong> 属性设置菜单显示时的效果，再结合 <strong>CSS3</strong> 的 <strong>animation-delay</strong> 属性设置相应菜单的延迟显示时间，如下所示：</p></div>
+	<div class="w3-example-dropdown-menu-demo-2">
+		<nav>
+			<ul class="main">
+				<li>
+					<a href="#">美丽人生</a>
+					<ul class="drop menu-3">
+						<li><a href="#">国家宝藏</a></li>
+						<li><a href="#">霸王别姬</a></li>
+						<li><a href="#">阿甘正传</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">nav</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">23</span>, <span class="hljs-number">23</span>, <span class="hljs-number">50</span>, <span class="hljs-number">0.6</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">justify-content</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">11</span>px <span class="hljs-number">15</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.drop</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform-origin</span>:<span class="hljs-value"> top center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-tag">a</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#631818</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.drop</span> <span class="hljs-tag">li</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">23</span>, <span class="hljs-number">23</span>, <span class="hljs-number">50</span>, <span class="hljs-number">0.6</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">11</span>px <span class="hljs-number">15</span>px
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.drop</span> <span class="hljs-tag">li</span> <span class="hljs-tag">a</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#631818</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(1)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.3</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(2)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.6</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(3)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">0.9</span>s
+</span></span></span>}
+
+<span class="hljs-class">.w3-example-dropdown-menu</span> <span class="hljs-class">.main</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-class">.menu</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:nth-of-type(4)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">animation</span>:<span class="hljs-value"> menu <span class="hljs-number">0.3</span>s ease-in-out forwards</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">animation-delay</span>:<span class="hljs-value"> <span class="hljs-number">1.2</span>s
+</span></span></span>}
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> menu</span>{<span class="hljs-tag">from</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">scale(<span class="hljs-number">2</span>)</span></span></span></span>}<span class="hljs-tag">to</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"><span class="hljs-number">1</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"><span class="hljs-function">scale(<span class="hljs-number">1</span>)</span></span></span></span>}}
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-dropdown-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>美丽人生<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"drop menu"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>国家宝藏<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>霸王别姬<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>阿甘正传<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+</article>

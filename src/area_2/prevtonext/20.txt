@@ -1,3 +1,3 @@
 <a onclick="fetch([{url:'src/area_2/prevtonext/21.txt',id:'prevtonext'},{url:'src/area_2/articles/0022/0022.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« Java 并发编程系列：synchronized 关键字之起因（02）</a>
-<a onclick="initl();fetch([{url:'src/area_2/prevtonext/7.txt',id:'prevtonext'},{url:'src/area_2/articles/0008/0008.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">纯手工制作：法式马卡龙 »</a>
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/8.txt',id:'prevtonext'},{url:'src/area_2/articles/0009/0009.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">多种效果下拉式菜单实现 »</a>
 <div style="clear: both;"></div>

@@ -84,3 +84,77 @@
 .w3-example-macarons-small div:before,div:after{display:block;content:"";position:absolute}
 .w3-example-macarons-small div:before{max-width:300px;width:100%;height:50px;bottom:320px;border-top-left-radius:150px 45px;border-top-right-radius:150px 45px;background-color:#ea0000;box-shadow:0 125px 0 #109bce,0 250px 0 #8bc34a}
 .w3-example-macarons-small div:after{max-width:300px;width:100%;height:50px;bottom:250px;border-bottom-left-radius:150px 45px;border-bottom-right-radius:150px 45px;background-color:#ea0000;box-shadow: 0 125px 0 #109bce,0 250px 0 #8bc34a}
+/* 2_0009 */
+.w3-example-dropdown-menu{min-height:200px}
+.w3-example-dropdown-menu nav{height:44px;margin:44px auto;background-color:rgba(23,23,50,0.6)}
+.w3-example-dropdown-menu ul{padding:0;list-style:none}
+.w3-example-dropdown-menu .main{display:flex;justify-content:center}
+.w3-example-dropdown-menu .main>li{margin:0 10%}
+.w3-example-dropdown-menu a{text-decoration:none;color:#8bc34a;display:block;padding:11px 15px;line-height:22px;transition:background-color 0.5s ease-in-out}
+.w3-example-dropdown-menu a:hover{background-color:#631818}
+.w3-example-dropdown-menu .drop li{opacity:0;transform-origin:top center}
+.w3-example-dropdown-menu .drop li a{background-color:rgba(23,23,50,0.6);padding:11px 15px}
+.w3-example-dropdown-menu .drop li a:hover{background-color:#631818}
+.w3-example-dropdown-menu .main li:hover .menu-1 li:nth-of-type(1){animation:menu-1 0.3s ease-in-out forwards;animation-delay:0.3s}
+.w3-example-dropdown-menu .main li:hover .menu-1 li:nth-of-type(2){animation:menu-1 0.3s ease-in-out forwards;animation-delay:0.6s}
+.w3-example-dropdown-menu .main li:hover .menu-1 li:nth-of-type(3){animation:menu-1 0.3s ease-in-out forwards;animation-delay:0.9s}
+.w3-example-dropdown-menu .main li:hover .menu-1 li:nth-of-type(4){animation:menu-1 0.3s ease-in-out forwards;animation-delay:1.2s}
+.w3-example-dropdown-menu .main li:hover .menu-2 li:nth-of-type(1){animation:menu-2 0.3s ease-in-out forwards;animation-delay:0.3s}
+.w3-example-dropdown-menu .main li:hover .menu-2 li:nth-of-type(2){animation:menu-2 0.3s ease-in-out forwards;animation-delay:0.6s}
+.w3-example-dropdown-menu .main li:hover .menu-2 li:nth-of-type(3){animation:menu-2 0.3s ease-in-out forwards;animation-delay:0.9s}
+.w3-example-dropdown-menu .main li:hover .menu-2 li:nth-of-type(4){animation:menu-2 0.3s ease-in-out forwards;animation-delay:1.2s}
+.w3-example-dropdown-menu .main li:hover .menu-3 li:nth-of-type(1){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.3s}
+.w3-example-dropdown-menu .main li:hover .menu-3 li:nth-of-type(2){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.6s}
+.w3-example-dropdown-menu .main li:hover .menu-3 li:nth-of-type(3){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.9s}
+.w3-example-dropdown-menu .main li:hover .menu-3 li:nth-of-type(4){animation:menu-3 0.3s ease-in-out forwards;animation-delay:1.2s}
+@keyframes menu-1{from{opacity:0;transform:translateX(30px) rotateY(90deg)}to{opacity:1;transform:translateX(0) rotateY(0)}}
+@keyframes menu-2{from{opacity:0;transform:translateX(50px) rotate(-90deg)}to{opacity:1;transform:translateX(0) rotate(0)}}
+@keyframes menu-3{from{opacity:0;transform:scale(2)}to{opacity:1;transform:scale(1)}}
+@media (max-width:600px){.w3-example-dropdown-menu .main>li{margin:0 3.5%}}
+.w3-example-dropdown-menu-demo-0{min-height:200px}
+.w3-example-dropdown-menu-demo-0 nav{height:44px;margin:44px auto;background-color:rgba(23,23,50,0.6)}
+.w3-example-dropdown-menu-demo-0 ul{padding:0;list-style:none}
+.w3-example-dropdown-menu-demo-0 .main{display:flex;justify-content:center}
+.w3-example-dropdown-menu-demo-0 a{text-decoration:none;color:#8bc34a;display:block;padding:11px 15px;line-height:22px;transition:background-color 0.5s ease-in-out}
+.w3-example-dropdown-menu-demo-1{min-height:200px}
+.w3-example-dropdown-menu-demo-1 nav{height:44px;margin:44px auto;background-color:rgba(23,23,50,0.6)}
+.w3-example-dropdown-menu-demo-1 ul{padding:0;list-style:none}
+.w3-example-dropdown-menu-demo-1 .main{display:flex;justify-content:center}
+.w3-example-dropdown-menu-demo-1 a{text-decoration:none;color:#8bc34a;display:block;padding:11px 15px;line-height:22px;transition:background-color 0.5s ease-in-out}
+.w3-example-dropdown-menu-demo-1 a:hover{background-color:#631818}
+.w3-example-dropdown-menu-demo-1 .drop li{opacity:0;transform-origin:top center}
+.w3-example-dropdown-menu-demo-2{min-height:200px}
+.w3-example-dropdown-menu-demo-2 nav{height:44px;margin:44px auto;background-color:rgba(23,23,50,0.6)}
+.w3-example-dropdown-menu-demo-2 ul{padding:0;list-style:none}
+.w3-example-dropdown-menu-demo-2 .main{display:flex;justify-content:center}
+.w3-example-dropdown-menu-demo-2 a{text-decoration:none;color:#8bc34a;display:block;padding:11px 15px;line-height:22px;transition:background-color 0.5s ease-in-out}
+.w3-example-dropdown-menu-demo-2 a:hover{background-color:#631818}
+.w3-example-dropdown-menu-demo-2 .drop li{opacity:0;transform-origin:top center}
+.w3-example-dropdown-menu-demo-2 .drop li a{background-color:rgba(23,23,50,0.6);padding:11px 15px}
+.w3-example-dropdown-menu-demo-2 .drop li a:hover{background-color:#631818}
+.w3-example-dropdown-menu-demo-2 .main li:hover .menu-3 li:nth-of-type(1){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.3s}
+.w3-example-dropdown-menu-demo-2 .main li:hover .menu-3 li:nth-of-type(2){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.6s}
+.w3-example-dropdown-menu-demo-2 .main li:hover .menu-3 li:nth-of-type(3){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.9s}
+.w3-example-dropdown-menu-demo-2 .main li:hover .menu-3 li:nth-of-type(4){animation:menu-3 0.3s ease-in-out forwards;animation-delay:1.2s}
+.w3-example-dropdown-menu-small{min-height:200px}
+.w3-example-dropdown-menu-small nav{height:44px;margin:44px auto;background-color:rgba(23,23,50,0.6)}
+.w3-example-dropdown-menu-small ul{padding:0;list-style:none}
+.w3-example-dropdown-menu-small .main{display:flex;justify-content:center}
+.w3-example-dropdown-menu-small .main>li{margin:0 auto}
+.w3-example-dropdown-menu-small a{text-decoration:none;color:#8bc34a;display:block;padding:11px 15px;line-height:22px;transition:background-color 0.5s ease-in-out}
+.w3-example-dropdown-menu-small a:hover{background-color:#631818}
+.w3-example-dropdown-menu-small .drop li{opacity:0;transform-origin:top center}
+.w3-example-dropdown-menu-small .drop li a{background-color:rgba(23,23,50,0.6);padding:11px 15px}
+.w3-example-dropdown-menu-small .drop li a:hover{background-color:#631818}
+.w3-example-dropdown-menu-small .main li:hover .menu-1 li:nth-of-type(1){animation:menu-1 0.3s ease-in-out forwards;animation-delay:0.3s}
+.w3-example-dropdown-menu-small .main li:hover .menu-1 li:nth-of-type(2){animation:menu-1 0.3s ease-in-out forwards;animation-delay:0.6s}
+.w3-example-dropdown-menu-small .main li:hover .menu-1 li:nth-of-type(3){animation:menu-1 0.3s ease-in-out forwards;animation-delay:0.9s}
+.w3-example-dropdown-menu-small .main li:hover .menu-1 li:nth-of-type(4){animation:menu-1 0.3s ease-in-out forwards;animation-delay:1.2s}
+.w3-example-dropdown-menu-small .main li:hover .menu-2 li:nth-of-type(1){animation:menu-2 0.3s ease-in-out forwards;animation-delay:0.3s}
+.w3-example-dropdown-menu-small .main li:hover .menu-2 li:nth-of-type(2){animation:menu-2 0.3s ease-in-out forwards;animation-delay:0.6s}
+.w3-example-dropdown-menu-small .main li:hover .menu-2 li:nth-of-type(3){animation:menu-2 0.3s ease-in-out forwards;animation-delay:0.9s}
+.w3-example-dropdown-menu-small .main li:hover .menu-2 li:nth-of-type(4){animation:menu-2 0.3s ease-in-out forwards;animation-delay:1.2s}
+.w3-example-dropdown-menu-small .main li:hover .menu-3 li:nth-of-type(1){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.3s}
+.w3-example-dropdown-menu-small .main li:hover .menu-3 li:nth-of-type(2){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.6s}
+.w3-example-dropdown-menu-small .main li:hover .menu-3 li:nth-of-type(3){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.9s}
+.w3-example-dropdown-menu-small .main li:hover .menu-3 li:nth-of-type(4){animation:menu-3 0.3s ease-in-out forwards;animation-delay:1.2s}
