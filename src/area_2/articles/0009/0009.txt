@@ -7,27 +7,27 @@
 		<nav>
 			<ul class="main">
 				<li>
-					<a href="#">首页</a>
+					<a>首页</a>
 					<ul class="drop menu-1">
-						<li><a href="#">首页</a></li>
-						<li><a href="#">影视</a></li>
-						<li><a href="#">随笔</a></li>
+						<li><a>首页</a></li>
+						<li><a>影视</a></li>
+						<li><a>随笔</a></li>
 					</ul>
 				</li>
 				<li>
-					<a href="#">影视</a>
+					<a>影视</a>
 					<ul class="drop menu-2">
-						<li><a href="#">首页</a></li>
-						<li><a href="#">影视</a></li>
-						<li><a href="#">随笔</a></li>
+						<li><a>首页</a></li>
+						<li><a>影视</a></li>
+						<li><a>随笔</a></li>
 					</ul>
 				</li>
 				<li>
-					<a href="#">美丽人生</a>
+					<a>美丽人生</a>
 					<ul class="drop menu-3">
-						<li><a href="#">国家宝藏</a></li>
-						<li><a href="#">霸王别姬</a></li>
-						<li><a href="#">阿甘正传</a></li>
+						<li><a>国家宝藏</a></li>
+						<li><a>霸王别姬</a></li>
+						<li><a>阿甘正传</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -199,11 +199,11 @@
 		<nav>
 			<ul class="main">
 				<li>
-					<a href="#">美丽人生</a>
+					<a>美丽人生</a>
 					<ul class="drop menu-3">
-						<li><a href="#">国家宝藏</a></li>
-						<li><a href="#">霸王别姬</a></li>
-						<li><a href="#">阿甘正传</a></li>
+						<li><a>国家宝藏</a></li>
+						<li><a>霸王别姬</a></li>
+						<li><a>阿甘正传</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -267,11 +267,11 @@
 		<nav>
 			<ul class="main">
 				<li>
-					<a href="#">美丽人生</a>
+					<a>美丽人生</a>
 					<ul class="drop menu-3">
-						<li><a href="#">国家宝藏</a></li>
-						<li><a href="#">霸王别姬</a></li>
-						<li><a href="#">阿甘正传</a></li>
+						<li><a>国家宝藏</a></li>
+						<li><a>霸王别姬</a></li>
+						<li><a>阿甘正传</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -344,11 +344,11 @@
 		<nav>
 			<ul class="main">
 				<li>
-					<a href="#">美丽人生</a>
+					<a>美丽人生</a>
 					<ul class="drop menu-3">
-						<li><a href="#">国家宝藏</a></li>
-						<li><a href="#">霸王别姬</a></li>
-						<li><a href="#">阿甘正传</a></li>
+						<li><a>国家宝藏</a></li>
+						<li><a>霸王别姬</a></li>
+						<li><a>阿甘正传</a></li>
 					</ul>
 				</li>
 			</ul>
