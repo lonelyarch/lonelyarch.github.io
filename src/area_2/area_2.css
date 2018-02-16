@@ -118,3 +118,16 @@
 .w3-example-dropdown-menu-demo-2 .main li:hover .menu-3 li:nth-of-type(2){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.6s}
 .w3-example-dropdown-menu-demo-2 .main li:hover .menu-3 li:nth-of-type(3){animation:menu-3 0.3s ease-in-out forwards;animation-delay:0.9s}
 .w3-example-dropdown-menu-demo-2 .main li:hover .menu-3 li:nth-of-type(4){animation:menu-3 0.3s ease-in-out forwards;animation-delay:1.2s}
+/* 0010 */
+.w3-example-3d-rotate-menu{text-align:center;color:rgba(23,23,50,1.0)}
+.w3-example-3d-rotate-menu .main>ul{list-style:none;padding:0;position:relative}
+.w3-example-3d-rotate-menu .main a{display:block;margin-left:auto;margin-right:auto;background-color:#8bc34a;height:44px;line-height:44px;width:300px;cursor:pointer;background-image:linear-gradient(hsla(0,0%,100%,0.05),hsla(0,0%,0%,0.05));box-shadow:inset 0 0 22px hsla(0,0%,0%,0.25),inset 0 0 44px hsla(0,0%,0%,0.25);transition:0.5s;transform-style:preserve-3d}
+.w3-example-3d-rotate-menu .main a:after{position:absolute;background-color:#8bc34a;background-image:linear-gradient(hsla(0,0%,100%,0.25),hsla(0,0%,0%,0.25));box-shadow:inset 0 0 22px hsla(0,0%,0%,0.15),inset 0 0 44px hsla(0,0%,0%,0.65);content:attr(data-title);color:white;left:300px;width:300px;transform:rotateY(90deg);transform-origin:0 0}
+.w3-example-3d-rotate-menu .main a:hover{transform:rotateY(-90deg) translateX(-150px) translateZ(150px)}
+.w3-example-3d-rotate-menu-demo-0 {text-align:center;color:rgba(23,23,50,1.0)}
+.w3-example-3d-rotate-menu-demo-0 .main>ul{list-style:none;padding:0;position:relative}
+.w3-example-3d-rotate-menu-demo-0 .main a{display:block;margin-left:auto;margin-right:auto;background-color:#8bc34a;height:44px;line-height:44px;width:300px;cursor:pointer;background-image:linear-gradient(hsla(0,0%,100%,0.05),hsla(0,0%,0%,0.05));box-shadow:inset 0 0 22px hsla(0,0%,0%,0.25),inset 0 0 44px hsla(0,0%,0%,0.25);transition:0.5s;transform-style:preserve-3d}
+.w3-example-3d-rotate-menu-demo-1 {text-align:center;color:rgba(23,23,50,1.0)}
+.w3-example-3d-rotate-menu-demo-1 .main>ul{list-style:none;padding:0;position:relative}
+.w3-example-3d-rotate-menu-demo-1 .main a{display:block;margin-left:auto;margin-right:auto;background-color:#8bc34a;height:44px;line-height:44px;width:300px;cursor:pointer;background-image:linear-gradient(hsla(0,0%,100%,0.05),hsla(0,0%,0%,0.05));box-shadow:inset 0 0 22px hsla(0,0%,0%,0.25),inset 0 0 44px hsla(0,0%,0%,0.25);transition:0.5s;transform-style:preserve-3d}
+.w3-example-3d-rotate-menu-demo-1 .main a:after{position:absolute;background-color:#8bc34a;background-image:linear-gradient(hsla(0,0%,100%,0.25),hsla(0,0%,0%,0.25));box-shadow:inset 0 0 22px hsla(0,0%,0%,0.15),inset 0 0 44px hsla(0,0%,0%,0.65);content:attr(data-title);color:white;top:44px;left:0;width:300px}

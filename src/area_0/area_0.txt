@@ -144,6 +144,40 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.03.29</h4>
+			<p><strong>立体式可旋转的菜单实现</strong></p>
+			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+			<div class="w3-example-3d-rotate-menu-small">
+				<nav class="main">
+					<ul>
+						<li><a class="w3-example-3d-rotate-menu-small-a" data-title="漫川古镇">漫川古镇</a></li>
+						<li><a class="w3-example-3d-rotate-menu-small-a" data-title="山水相依">山水相依</a></li>
+						<li><a class="w3-example-3d-rotate-menu-small-a" data-title="风景独好">风景独好</a></li>
+					</ul>
+				</nav>
+				<script>
+					var arr = document
+							.getElementsByClassName("w3-example-3d-rotate-menu-small-a");
+					for (var i = 0; i < arr.length; i++) {
+						(function(i) {
+							arr[i].onmouseover = function() {
+								arr[i].style.transform = "rotateY(-90deg) translate3d(-50%,0,"
+										+ (arr[i].offsetWidth / 2)
+										+ "px)";
+							};
+							arr[i].onmouseout = function() {
+								arr[i].style.transform = "";
+							};
+						})(i);
+					}
+				</script>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0010/0010.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.03.26</h4>
 			<p><strong>多种效果下拉式菜单实现</strong></p>
 			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
