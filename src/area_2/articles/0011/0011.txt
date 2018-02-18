@@ -5,8 +5,8 @@
 	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
 	<div class="w3-example-3d-circle-menu">
 		<nav class="main">
-			<input type="checkbox" class="menu-open" id="menu-open" />
-			<label class="menu-open-button" for="menu-open">
+			<input type="checkbox" class="menu-open" id="menu-open-x" />
+			<label class="menu-open-button" for="menu-open-x">
 				<span class="lines line-0"></span>
 				<span class="lines line-1"></span>
 				<span class="lines line-2"></span>
