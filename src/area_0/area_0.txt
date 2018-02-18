@@ -144,6 +144,31 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.03.30</h4>
+			<p><strong>如何实现圆儿圈式菜单？</strong></p>
+			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+			<div class="w3-example-3d-circle-menu">
+				<nav class="main">
+					<input type="checkbox" class="menu-open" id="menu-open" />
+					<label class="menu-open-button" for="menu-open">
+						<span class="lines line-0"></span>
+						<span class="lines line-1"></span>
+						<span class="lines line-2"></span>
+					</label>
+					<a class="menu-item">风景</a>
+					<a class="menu-item">文化</a>
+					<a class="menu-item">美食</a>
+					<a class="menu-item">摄影</a>
+					<a class="menu-item">工作</a>
+					<a class="menu-item">热情</a>
+				</nav>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0011/0011.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.03.29</h4>
 			<p><strong>立体式可旋转的菜单实现</strong></p>
 			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>

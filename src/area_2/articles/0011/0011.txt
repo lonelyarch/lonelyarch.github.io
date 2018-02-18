@@ -1,0 +1,704 @@
+<article>
+	<div><p><strong>如何实现圆儿圈式菜单？</strong></p><p class="w3-right w3-margin-0">2017-03-30</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div class="w3-example-3d-circle-menu">
+		<nav class="main">
+			<input type="checkbox" class="menu-open" id="menu-open" />
+			<label class="menu-open-button" for="menu-open">
+				<span class="lines line-0"></span>
+				<span class="lines line-1"></span>
+				<span class="lines line-2"></span>
+			</label>
+			<a class="menu-item">风景</a>
+			<a class="menu-item">文化</a>
+			<a class="menu-item">美食</a>
+			<a class="menu-item">摄影</a>
+			<a class="menu-item">工作</a>
+			<a class="menu-item">热情</a>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span>,
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">40</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#ffffff</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> transform ease-out <span class="hljs-number">200</span>ms</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#109bce</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.lines</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">25</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">3</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#596778</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">12.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">1.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> transform <span class="hljs-number">200</span>ms</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, -<span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">scale(<span class="hljs-number">0.1</span>, <span class="hljs-number">1</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(-<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#3290b1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">2</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">400</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">1.1</span>, <span class="hljs-number">1.1</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">1.2</span>, <span class="hljs-number">1.2</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-timing-function</span>:<span class="hljs-value"> linear</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">200</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">0.8</span>, <span class="hljs-number">0.8</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(3)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">180</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0.08361</span>px, -<span class="hljs-number">104.99997</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(4)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">280</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">90.9466</span>px, -<span class="hljs-number">52.47586</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(5)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">380</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">90.9466</span>px, <span class="hljs-number">52.47586</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(6)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">480</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0.08361</span>px, <span class="hljs-number">104.99997</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(7)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">580</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(-<span class="hljs-number">90.86291</span>px, <span class="hljs-number">52.62064</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(8)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">680</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(-<span class="hljs-number">91.03006</span>px, -<span class="hljs-number">52.33095</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-3d-circle-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"menu-open"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open-button"</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"menu-open"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-2"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤一、实现菜单的切换按钮，使各菜单选项隐藏于切换按钮之下，<span class="w3-text-light-green">注意各元素之间的嵌套层次</span>，关键点是将 &lt;label&gt; 标签与 &lt;input&gt; 表单元素进行绑定（&lt;input&gt; 表单元素的 type 属性值设置为 <span class="w3-text-light-green">checkbox</span>），如下所示：</p></div>
+	<div class="w3-example-3d-circle-menu-demo-0">
+		<nav class="main">
+			<input type="checkbox" class="menu-open" id="menu-open-demo-0" checked="checked" />
+			<label class="menu-open-button" for="menu-open-demo-0">
+				<span class="lines line-0"></span>
+				<span class="lines line-1"></span>
+				<span class="lines line-2"></span>
+			</label>
+			<a class="menu-item"></a>
+			<a class="menu-item"></a>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span>,
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">40</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#ffffff</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#109bce</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.lines</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">25</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">3</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#596778</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">12.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">1.5</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, -<span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">scale(<span class="hljs-number">0.1</span>, <span class="hljs-number">1</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(-<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-3d-circle-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">"checked"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open-button"</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"menu-open"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-2"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤二、给菜单的切换按钮添加缩放效果，使切换显得更加自然，关键点是对切换按钮使用 <strong>CSS3</strong> 的 <strong>transform</strong> 属性加以修饰，将该属性值设置为 <span class="w3-text-light-green">scale(0.8, 0.8)</span>，即缩小至原宽高的 <strong>80%</strong>，如下所示：</p></div>
+	<div class="w3-example-3d-circle-menu-demo-1">
+		<nav class="main">
+			<input type="checkbox" class="menu-open" id="menu-open-demo-1" checked="checked" />
+			<label class="menu-open-button" for="menu-open-demo-1">
+				<span class="lines line-0"></span>
+				<span class="lines line-1"></span>
+				<span class="lines line-2"></span>
+			</label>
+			<a class="menu-item"></a>
+			<a class="menu-item"></a>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span>,
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">40</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#ffffff</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#109bce</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.lines</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">25</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">3</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#596778</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">12.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">1.5</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, -<span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">scale(<span class="hljs-number">0.1</span>, <span class="hljs-number">1</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(-<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">0.8</span>, <span class="hljs-number">0.8</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-3d-circle-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">"checked"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open-button"</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"menu-open"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-2"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤三、将各菜单选项展开至适当位置，关键点是对呈现菜单选项的各元素使用 <strong>CSS3</strong> 的 <strong>transform</strong> 属性加以修饰，将该属性值设置为 <span class="w3-text-light-green">translate3d(-104.99997px, 0.08361px, 0)、translate3d(104.99997px, 0.08361px, 0)</span>，即对 x 轴、y 轴做相应调整，如下所示：</p></div>
+	<div class="w3-example-3d-circle-menu-demo-2">
+		<nav class="main">
+			<input type="checkbox" class="menu-open" id="menu-open-demo-2" checked="checked" />
+			<label class="menu-open-button" for="menu-open-demo-2">
+				<span class="lines line-0"></span>
+				<span class="lines line-1"></span>
+				<span class="lines line-2"></span>
+			</label>
+			<a class="menu-item"></a>
+			<a class="menu-item"></a>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span>,
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">40</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#ffffff</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#109bce</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.lines</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">25</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">3</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#596778</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">12.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">1.5</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, -<span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">scale(<span class="hljs-number">0.1</span>, <span class="hljs-number">1</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(-<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#3290b1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">0.8</span>, <span class="hljs-number">0.8</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(3)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(-<span class="hljs-number">104.99997</span>px, <span class="hljs-number">0.08361</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(4)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">104.99997</span>px, <span class="hljs-number">0.08361</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-3d-circle-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">"checked"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open-button"</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"menu-open"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-2"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤四、点击菜单的切换按钮使各菜单选项<span class="w3-light-green" style="padding:0 5px">动</span>起来，实现思路是，当 <strong>input</strong> 表单元素被勾选的时候使各菜单选项展开、去勾选则使之收缩，如下所示：</p></div>
+	<div class="w3-example-3d-circle-menu-demo-3">
+		<nav class="main">
+			<input type="checkbox" class="menu-open" id="menu-open-demo-3" />
+			<label class="menu-open-button" for="menu-open-demo-3">
+				<span class="lines line-0"></span>
+				<span class="lines line-1"></span>
+				<span class="lines line-2"></span>
+			</label>
+			<a class="menu-item"></a>
+			<a class="menu-item"></a>
+		</nav>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span>,
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">40</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#ffffff</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> transform ease-out <span class="hljs-number">200</span>ms</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#109bce</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.lines</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">25</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">3</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#596778</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">12.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin-top</span>:<span class="hljs-value"> -<span class="hljs-number">1.5</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> transform <span class="hljs-number">200</span>ms</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, -<span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">8</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-0</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-1</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">scale(<span class="hljs-number">0.1</span>, <span class="hljs-number">1</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-class">.line-2</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span> <span class="hljs-function">rotate(-<span class="hljs-number">45</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.main</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> auto</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">80</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eeeeee</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#3290b1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">400</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">1.1</span>, <span class="hljs-number">1.1</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> <span class="hljs-class">.menu-open-button</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">1.2</span>, <span class="hljs-number">1.2</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked+</span><span class="hljs-class">.menu-open-button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-timing-function</span>:<span class="hljs-value"> linear</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">200</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">scale(<span class="hljs-number">0.8</span>, <span class="hljs-number">0.8</span>)</span> <span class="hljs-function">translate3d(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(3)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">180</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(-<span class="hljs-number">104.99997</span>px, <span class="hljs-number">0.08361</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-3d-circle-menu</span> 
+<span class="hljs-class">.menu-open</span><span class="hljs-pseudo">:checked</span> ~ <span class="hljs-class">.menu-item</span><span class="hljs-pseudo">:nth-child(4)</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transition-duration</span>:<span class="hljs-value"> <span class="hljs-number">180</span>ms</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">translate3d(<span class="hljs-number">104.99997</span>px, <span class="hljs-number">0.08361</span>px, <span class="hljs-number">0</span>)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-3d-circle-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">nav</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"menu-open"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-open-button"</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"menu-open"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lines line-2"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"menu-item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+</article>

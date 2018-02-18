@@ -175,3 +175,88 @@
 .w3-example-3d-rotate-menu-small .main>ul{list-style:none;padding:0;position:relative}
 .w3-example-3d-rotate-menu-small .main a{display:block;margin-left:auto;margin-right:auto;background-color:#8bc34a;height:44px;line-height:44px;max-width:300px;width:100%;cursor:pointer;background-image:linear-gradient(hsla(0,0%,100%,0.05),hsla(0,0%,0%,0.05));box-shadow:inset 0 0 22px hsla(0,0%,0%,0.25),inset 0 0 44px hsla(0,0%,0%,0.25);transition:0.5s;transform-style:preserve-3d}
 .w3-example-3d-rotate-menu-small .main a:after{position:absolute;background-color:#8bc34a;background-image:linear-gradient(hsla(0,0%,100%,0.25),hsla(0,0%,0%,0.25));box-shadow:inset 0 0 22px hsla(0,0%,0%,0.15),inset 0 0 44px hsla(0,0%,0%,0.65);content:attr(data-title);color:white;left:100%;max-width:300px;width:100%;transform:rotateY(90deg);transform-origin:0 0}
+/* 2_0011 */
+.w3-example-3d-circle-menu{position:relative;max-width:300px;min-height:300px;margin:0 auto}
+.w3-example-3d-circle-menu .menu-item,.w3-example-3d-circle-menu .menu-open-button{background:#eeeeee;border-radius:100%;width:100%;height:100%;margin-left:-50%;position:absolute;color:#ffffff;text-align:center;line-height:80px;transform:translate3d(0,0,0);transition:transform ease-out 200ms}
+.w3-example-3d-circle-menu .menu-item{background-color:#109bce;cursor:pointer}
+.w3-example-3d-circle-menu .menu-open{display:none}
+.w3-example-3d-circle-menu .lines{width:31.25%;height:3.75%;background:#596778;display:block;position:absolute;top:50%;left:50%;margin-left:-15.625%;margin-top:-1.875%;transition:transform 200ms}
+.w3-example-3d-circle-menu .line-0{transform:translate3d(0,-8px,0)}
+.w3-example-3d-circle-menu .line-1{transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu .line-2{transform:translate3d(0,8px,0)}
+.w3-example-3d-circle-menu .menu-open:checked+.menu-open-button .line-0{transform:translate3d(0,0,0) rotate(45deg)}
+.w3-example-3d-circle-menu .menu-open:checked+.menu-open-button .line-1{transform:translate3d(0,0,0) scale(0.1,1)}
+.w3-example-3d-circle-menu .menu-open:checked+.menu-open-button .line-2{transform:translate3d(0,0,0) rotate(-45deg)}
+.w3-example-3d-circle-menu .main{margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;max-width:80px;width:100%;max-height:80px;height:100%;text-align:center}
+.w3-example-3d-circle-menu .menu-item:hover{background:#eeeeee;color:#3290b1}
+.w3-example-3d-circle-menu .menu-open-button{z-index:1;transition-duration:400ms;transform:scale(1.1,1.1) translate3d(0,0,0);cursor:pointer}
+.w3-example-3d-circle-menu .menu-open-button:hover{transform:scale(1.2,1.2) translate3d(0,0,0)}
+.w3-example-3d-circle-menu .menu-open:checked+.menu-open-button{transition-timing-function:linear;transition-duration:200ms;transform:scale(0.8,0.8) translate3d(0,0,0)}
+.w3-example-3d-circle-menu .menu-open:checked~.menu-item:nth-child(3){transition-duration:180ms;transform:translate3d(0.1045125%,-131.2499625%,0)}
+.w3-example-3d-circle-menu .menu-open:checked~.menu-item:nth-child(4){transition-duration:280ms;transform:translate3d(113.68325%,-65.594825%,0)}
+.w3-example-3d-circle-menu .menu-open:checked~.menu-item:nth-child(5){transition-duration:380ms;transform:translate3d(113.68325%,65.594825%,0)}
+.w3-example-3d-circle-menu .menu-open:checked~.menu-item:nth-child(6){transition-duration:480ms;transform:translate3d(0.1045125%,131.2499625%,0)}
+.w3-example-3d-circle-menu .menu-open:checked~.menu-item:nth-child(7){transition-duration:580ms;transform:translate3d(-113.5786375%,65.7758%,0)}
+.w3-example-3d-circle-menu .menu-open:checked~.menu-item:nth-child(8){transition-duration:680ms;transform:translate3d(-113.787575%,-65.4136875%,0)}
+.w3-example-3d-circle-menu-demo-0{position:relative;max-width:300px;min-height:100px;margin:0 auto}
+.w3-example-3d-circle-menu-demo-0 .menu-item,.w3-example-3d-circle-menu-demo-0 .menu-open-button{background:#eeeeee;border-radius:100%;width:100%;height:100%;margin-left:-50%;position:absolute;color:#ffffff;text-align:center;line-height:80px;transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-0 .menu-item{background-color:#109bce;cursor:pointer}
+.w3-example-3d-circle-menu-demo-0 .menu-open{display:none}
+.w3-example-3d-circle-menu-demo-0 .lines{width:31.25%;height:3.75%;background:#596778;display:block;position:absolute;top:50%;left:50%;margin-left:-15.625%;margin-top:-1.875%}
+.w3-example-3d-circle-menu-demo-0 .line-0{transform:translate3d(0,-8px,0)}
+.w3-example-3d-circle-menu-demo-0 .line-1{transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-0 .line-2{transform:translate3d(0,8px,0)}
+.w3-example-3d-circle-menu-demo-0 .menu-open:checked+.menu-open-button .line-0{transform:translate3d(0,0,0) rotate(45deg)}
+.w3-example-3d-circle-menu-demo-0 .menu-open:checked+.menu-open-button .line-1{transform:translate3d(0,0,0) scale(0.1,1)}
+.w3-example-3d-circle-menu-demo-0 .menu-open:checked+.menu-open-button .line-2{transform:translate3d(0,0,0) rotate(-45deg)}
+.w3-example-3d-circle-menu-demo-0 .main{margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;max-width:80px;width:100%;max-height:80px;height:100%;text-align:center}
+.w3-example-3d-circle-menu-demo-0 .menu-open-button{z-index:1;cursor:pointer}
+.w3-example-3d-circle-menu-demo-1{position:relative;max-width:300px;min-height:100px;margin:0 auto}
+.w3-example-3d-circle-menu-demo-1 .menu-item,.w3-example-3d-circle-menu-demo-1 .menu-open-button{background:#eeeeee;border-radius:100%;width:100%;height:100%;margin-left:-50%;position:absolute;color:#ffffff;text-align:center;line-height:80px;transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-1 .menu-item{background-color:#109bce;cursor:pointer}
+.w3-example-3d-circle-menu-demo-1 .menu-open{display:none}
+.w3-example-3d-circle-menu-demo-1 .lines{width:31.25%;height:3.75%;background:#596778;display:block;position:absolute;top:50%;left:50%;margin-left:-15.625%;margin-top:-1.875%}
+.w3-example-3d-circle-menu-demo-1 .line-0{transform:translate3d(0,-8px,0)}
+.w3-example-3d-circle-menu-demo-1 .line-1{transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-1 .line-2{transform:translate3d(0,8px,0)}
+.w3-example-3d-circle-menu-demo-1 .menu-open:checked+.menu-open-button .line-0{transform:translate3d(0,0,0) rotate(45deg)}
+.w3-example-3d-circle-menu-demo-1 .menu-open:checked+.menu-open-button .line-1{transform:translate3d(0,0,0) scale(0.1,1)}
+.w3-example-3d-circle-menu-demo-1 .menu-open:checked+.menu-open-button .line-2{transform:translate3d(0,0,0) rotate(-45deg)}
+.w3-example-3d-circle-menu-demo-1 .main{margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;max-width:80px;width:100%;max-height:80px;height:100%;text-align:center}
+.w3-example-3d-circle-menu-demo-1 .menu-open-button{z-index:1;cursor:pointer}
+.w3-example-3d-circle-menu-demo-1 .menu-open:checked+.menu-open-button{transform:scale(0.8,0.8) translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-2{position:relative;max-width:300px;min-height:100px;margin:0 auto}
+.w3-example-3d-circle-menu-demo-2 .menu-item,.w3-example-3d-circle-menu-demo-2 .menu-open-button{background:#eeeeee;border-radius:100%;width:100%;height:100%;margin-left:-50%;position:absolute;color:#ffffff;text-align:center;line-height:80px;transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-2 .menu-item{background-color:#109bce;cursor:pointer}
+.w3-example-3d-circle-menu-demo-2 .menu-open{display:none}
+.w3-example-3d-circle-menu-demo-2 .lines{width:31.25%;height:3.75%;background:#596778;display:block;position:absolute;top:50%;left:50%;margin-left:-15.625%;margin-top:-1.875%}
+.w3-example-3d-circle-menu-demo-2 .line-0{transform:translate3d(0,-8px,0)}
+.w3-example-3d-circle-menu-demo-2 .line-1{transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-2 .line-2{transform:translate3d(0,8px,0)}
+.w3-example-3d-circle-menu-demo-2 .menu-open:checked+.menu-open-button .line-0{transform:translate3d(0,0,0) rotate(45deg)}
+.w3-example-3d-circle-menu-demo-2 .menu-open:checked+.menu-open-button .line-1{transform:translate3d(0,0,0) scale(0.1,1)}
+.w3-example-3d-circle-menu-demo-2 .menu-open:checked+.menu-open-button .line-2{transform:translate3d(0,0,0) rotate(-45deg)}
+.w3-example-3d-circle-menu-demo-2 .main{margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;max-width:80px;width:100%;max-height:80px;height:100%;text-align:center}
+.w3-example-3d-circle-menu-demo-2 .menu-item:hover{background:#eeeeee;color:#3290b1}
+.w3-example-3d-circle-menu-demo-2 .menu-open-button{z-index:1;cursor:pointer}
+.w3-example-3d-circle-menu-demo-2 .menu-open:checked+.menu-open-button{transform:scale(0.8,0.8) translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-2 .menu-item:nth-child(3){transform:translate3d(-131.2499625%,0.1045125%,0)}
+.w3-example-3d-circle-menu-demo-2 .menu-item:nth-child(4){transform:translate3d(131.2499625%,0.1045125%,0)}
+.w3-example-3d-circle-menu-demo-3{position:relative;max-width:300px;min-height:100px;margin:0 auto}
+.w3-example-3d-circle-menu-demo-3 .menu-item,.w3-example-3d-circle-menu-demo-3 .menu-open-button{background:#eeeeee;border-radius:100%;width:100%;height:100%;margin-left:-50%;position:absolute;color:#ffffff;text-align:center;line-height:80px;transform:translate3d(0,0,0);transition:transform ease-out 200ms}
+.w3-example-3d-circle-menu-demo-3 .menu-item{background-color:#109bce;cursor:pointer}
+.w3-example-3d-circle-menu-demo-3 .menu-open{display:none}
+.w3-example-3d-circle-menu-demo-3 .lines{width:31.25%;height:3.75%;background:#596778;display:block;position:absolute;top:50%;left:50%;margin-left:-15.625%;margin-top:-1.875%;transition:transform 200ms}
+.w3-example-3d-circle-menu-demo-3 .line-0{transform:translate3d(0,-8px,0)}
+.w3-example-3d-circle-menu-demo-3 .line-1{transform:translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-3 .line-2{transform:translate3d(0,8px,0)}
+.w3-example-3d-circle-menu-demo-3 .menu-open:checked+.menu-open-button .line-0{transform:translate3d(0,0,0) rotate(45deg)}
+.w3-example-3d-circle-menu-demo-3 .menu-open:checked+.menu-open-button .line-1{transform:translate3d(0,0,0) scale(0.1,1)}
+.w3-example-3d-circle-menu-demo-3 .menu-open:checked+.menu-open-button .line-2{transform:translate3d(0,0,0) rotate(-45deg)}
+.w3-example-3d-circle-menu-demo-3 .main{margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;max-width:80px;width:100%;max-height:80px;height:100%;text-align:center}
+.w3-example-3d-circle-menu-demo-3 .menu-item:hover{background:#eeeeee;color:#3290b1}
+.w3-example-3d-circle-menu-demo-3 .menu-open-button{z-index:1;transition-duration:400ms;transform:scale(1.1,1.1) translate3d(0,0,0);cursor:pointer}
+.w3-example-3d-circle-menu-demo-3 .menu-open-button:hover{transform:scale(1.2,1.2) translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-3 .menu-open:checked+.menu-open-button{transition-timing-function:linear;transition-duration:200ms;transform:scale(0.8,0.8) translate3d(0,0,0)}
+.w3-example-3d-circle-menu-demo-3 .menu-open:checked~.menu-item:nth-child(3){transition-duration:180ms;transform:translate3d(-131.2499625%,0.1045125%,0)}
+.w3-example-3d-circle-menu-demo-3 .menu-open:checked~.menu-item:nth-child(4){transition-duration:180ms;transform:translate3d(131.2499625%,0.1045125%,0)}
