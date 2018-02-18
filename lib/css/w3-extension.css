@@ -18,6 +18,7 @@
 #archives .list .item time{color:#999;margin-right:5px}
 #archives .list .item a{cursor:pointer}
 #archives .list .item a:hover{color:#2196f3}
+@media screen and (max-width:600px){#archives .list .item{padding:0 0 0 60px}#archives .list .item div{margin: 0 0 0 -60px}
 /* Global stylesheet */
 hr{opacity:0.60}
 pre{margin:0}
