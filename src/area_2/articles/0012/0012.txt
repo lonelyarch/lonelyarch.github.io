@@ -1,0 +1,572 @@
+<article>
+	<div><p><strong>多级下拉式菜单的实现？</strong></p><p class="w3-right w3-margin-0">2017-04-03</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div class="w3-example-multilevel-menu">
+		<div class="navigation">
+			<ul>
+				<li class="has-sub">
+					<a>Menu 1</a>
+					<ul>
+						<li class="has-sub">
+							<a>Submenu 1.1</a>
+							<ul>
+								<li><a>Submenu 1.1.1</a></li>
+								<li class="has-sub">
+									<a>Submenu 1.1.2</a>
+									<ul>
+										<li><a>Submenu 1.1.2.1</a></li>
+										<li><a>Submenu 1.1.2.2</a></li>
+									</ul>
+								</li>
+								<li><a>Submenu 1.1.3</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li class="has-sub">
+					<a>Menu 2</a>
+					<ul>
+						<li class="has-sub">
+							<a>Submenu 2.1</a>
+							<ul>
+								<li><a>Submenu 2.1.1</a></li>
+							</ul>
+						</li>
+						<li><a>Submenu 2.2</a></li>
+					</ul>
+				</li>
+				<li class="has-sub">
+					<a>Menu 3</a>
+					<ul>
+						<li><a>Submenu 3.1</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">2</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span>&gt;<span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">24.99999</span>%</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">box-shadow</span>:<span class="hljs-value"> inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">22</span>px <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span>, inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">44</span>px
+        <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-overflow</span>:<span class="hljs-value"> ellipsis</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span>&gt;<span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span><span class="hljs-class">.has-sub</span>&gt;<span class="hljs-tag">a</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">'»'</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">10</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333333</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">font-size</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span>&gt;<span class="hljs-tag">ul</span>&gt;<span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#109bce</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-multilevel-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"navigation"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Menu 1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.3<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Menu 2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 2.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 2.1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 2.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Menu 3<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 3.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>步骤一、实现主、子各菜单选项的平铺，<span class="w3-text-light-green">注意各元素的嵌套层次</span>，关键点是对各元素 <strong>position</strong>、<strong>float</strong> 以及 <strong>left</strong> 属性值的设置，再使用 <strong>box-shadow</strong> 属性给各菜单选项添加明暗效果，如下所示：</p></div>
+	<div class="w3-example-multilevel-menu-demo-0">
+		<div class="navigation">
+			<ul>
+				<li class="has-sub">
+					<a>Menu 1</a>
+					<ul>
+						<li class="has-sub">
+							<a>Submenu 1.1</a>
+							<ul>
+								<li><a>Submenu 1.1.1</a></li>
+								<li class="has-sub">
+									<a>Submenu 1.1.2</a>
+									<ul>
+										<li><a>Submenu 1.1.2.1</a></li>
+										<li><a>Submenu 1.1.2.2</a></li>
+									</ul>
+								</li>
+								<li><a>Submenu 1.1.3</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">2</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">24.99999</span>%</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">box-shadow</span>:<span class="hljs-value"> inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">22</span>px <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span>, inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">44</span>px
+        <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-overflow</span>:<span class="hljs-value"> ellipsis</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span>&gt;<span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span><span class="hljs-class">.has-sub</span>&gt;<span class="hljs-tag">a</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">'»'</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">10</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333333</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">font-size</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-multilevel-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"navigation"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Menu 1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.3<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+	</div>
+</div>
+<div><p>步骤二、使用 <strong>visibility</strong> 属性隐藏各子菜单选项（<span class="w3-text-light-green">visibility: hidden</span>），如下所示：</p></div>
+<div class="w3-example-multilevel-menu-demo-1">
+	<div class="navigation">
+		<ul>
+			<li class="has-sub">
+				<a>Menu 1</a>
+				<ul>
+					<li class="has-sub">
+						<a>Submenu 1.1</a>
+						<ul>
+							<li><a>Submenu 1.1.1</a></li>
+							<li class="has-sub">
+								<a>Submenu 1.1.2</a>
+								<ul>
+									<li><a>Submenu 1.1.2.1</a></li>
+									<li><a>Submenu 1.1.2.2</a></li>
+								</ul>
+							</li>
+							<li><a>Submenu 1.1.3</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+<div><p>示例代码：</p></div>
+<div class="w3-example">
+	<div class="w3-code" style="max-height:300px;overflow-y:auto">
+		<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">2</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">24.99999</span>%</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">box-shadow</span>:<span class="hljs-value"> inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">22</span>px <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span>, inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">44</span>px
+        <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-overflow</span>:<span class="hljs-value"> ellipsis</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span>&gt;<span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span><span class="hljs-class">.has-sub</span>&gt;<span class="hljs-tag">a</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">'»'</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">10</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333333</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">font-size</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-multilevel-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"navigation"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Menu 1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.3<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+	</div>
+</div>
+<div><p>步骤三、光标悬停于主菜单之上，呈现子菜单且变换各菜单选项的背景色，关键点是<span class="w3-text-light-green">选择器</span>的设置（<span class="w3-text-light-green">··· &gt;ul&gt;li:hover a</span>），如下所示：</p></div>
+<div class="w3-example-multilevel-menu">
+	<div class="navigation">
+		<ul>
+			<li class="has-sub">
+				<a>Menu 1</a>
+				<ul>
+					<li class="has-sub">
+						<a>Submenu 1.1</a>
+						<ul>
+							<li><a>Submenu 1.1.1</a></li>
+							<li class="has-sub">
+								<a>Submenu 1.1.2</a>
+								<ul>
+									<li><a>Submenu 1.1.2.1</a></li>
+									<li><a>Submenu 1.1.2.2</a></li>
+								</ul>
+							</li>
+							<li><a>Submenu 1.1.3</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+<div><p>示例代码：</p></div>
+<div class="w3-example">
+	<div class="w3-code" style="max-height:300px;overflow-y:auto">
+		<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span>,
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">2</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span>&gt;<span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">visibility</span>:<span class="hljs-value"> visible</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">24.99999</span>%</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">line-height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">box-shadow</span>:<span class="hljs-value"> inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">22</span>px <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span>, inset <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">44</span>px
+        <span class="hljs-function">hsla(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>%, <span class="hljs-number">0</span>%, <span class="hljs-number">0.25</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-overflow</span>:<span class="hljs-value"> ellipsis</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span>&gt;<span class="hljs-tag">ul</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#8bc34a</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span> <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span><span class="hljs-class">.has-sub</span>&gt;<span class="hljs-tag">a</span><span class="hljs-pseudo">:after</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">content</span>:<span class="hljs-value"> <span class="hljs-string">'»'</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">10</span>%</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333333</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">font-size</span>:<span class="hljs-value"> <span class="hljs-number">22</span>px</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-multilevel-menu</span> <span class="hljs-class">.navigation</span>&gt;<span class="hljs-tag">ul</span>&gt;<span class="hljs-tag">li</span><span class="hljs-pseudo">:hover</span> <span class="hljs-tag">a</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#109bce</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color: black;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-multilevel-menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"navigation"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Menu 1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"has-sub"</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.1<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.2.2<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span>&gt;</span>Submenu 1.1.3<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+</article>

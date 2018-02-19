@@ -216,3 +216,36 @@
 .w3-example-3d-circle-menu-demo-3 .menu-open:checked+.menu-open-button{transition-timing-function:linear;transition-duration:200ms;transform:scale(0.8,0.8) translate3d(0,0,0)}
 .w3-example-3d-circle-menu-demo-3 .menu-open:checked~.menu-item:nth-child(3){transition-duration:180ms;transform:translate3d(-131.2499625%,0.1045125%,0)}
 .w3-example-3d-circle-menu-demo-3 .menu-open:checked~.menu-item:nth-child(4){transition-duration:180ms;transform:translate3d(131.2499625%,0.1045125%,0)}
+/* 0012 */
+.w3-example-multilevel-menu{min-height:150px}
+.w3-example-multilevel-menu .navigation ul,.w3-example-multilevel-menu .navigation ul ul,.w3-example-multilevel-menu .navigation ul li{list-style:none;margin:0;padding:0}
+.w3-example-multilevel-menu .navigation ul{position:relative;float:left;z-index:1}
+.w3-example-multilevel-menu .navigation ul li{float:left;position:relative}
+.w3-example-multilevel-menu .navigation ul ul{visibility:hidden;position:absolute;width:100%;top:0;left:100%;z-index:2}
+.w3-example-multilevel-menu .navigation ul li:hover>ul{visibility:visible}
+.w3-example-multilevel-menu .navigation ul li{float:none}
+.w3-example-multilevel-menu .navigation{width:24.99999%}
+.w3-example-multilevel-menu .navigation a{display:block;padding:0;padding-left:10px;height:44px;line-height:44px;box-shadow:inset 0 0 22px hsla(0,0%,0%,0.25),inset 0 0 44px hsla(0,0%,0%,0.25);overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.w3-example-multilevel-menu .navigation>ul{width:100%;background-color:#8bc34a}
+.w3-example-multilevel-menu .navigation ul li.has-sub>a:after{content:'»';position:absolute;right:0;width:10%;color:#333333;font-size:22px}
+.w3-example-multilevel-menu .navigation>ul>li:hover a{background:#109bce}
+.w3-example-multilevel-menu-demo-0{min-height:150px;background-color:white;padding:9px 0}
+.w3-example-multilevel-menu-demo-0 .navigation ul,.w3-example-multilevel-menu-demo-0 .navigation ul ul,.w3-example-multilevel-menu-demo-0 .navigation ul li{list-style:none;margin:0;padding:0}
+.w3-example-multilevel-menu-demo-0 .navigation ul{position:relative;float:left;z-index:1}
+.w3-example-multilevel-menu-demo-0 .navigation ul li{float:left;position:relative}
+.w3-example-multilevel-menu-demo-0 .navigation ul ul{position:absolute;width:100%;top:0;left:100%;z-index:2}
+.w3-example-multilevel-menu-demo-0 .navigation ul li{float:none}
+.w3-example-multilevel-menu-demo-0 .navigation{width:24.99999%}
+.w3-example-multilevel-menu-demo-0 .navigation a{display:block;padding:0;padding-left:10px;height:44px;line-height:44px;box-shadow:inset 0 0 22px hsla(0,0%,0%,0.25),inset 0 0 44px hsla(0,0%,0%,0.25);overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.w3-example-multilevel-menu-demo-0 .navigation>ul{width:100%;background-color:#8bc34a}
+.w3-example-multilevel-menu-demo-0 .navigation ul li.has-sub>a:after{content:'»';position:absolute;right:0;width:10%;color:#333333;font-size:22px}
+.w3-example-multilevel-menu-demo-1{min-height:44px}
+.w3-example-multilevel-menu-demo-1 .navigation ul,.w3-example-multilevel-menu-demo-1 .navigation ul ul,.w3-example-multilevel-menu-demo-1 .navigation ul li{list-style:none;margin:0;padding:0}
+.w3-example-multilevel-menu-demo-1 .navigation ul{position:relative;float:left;z-index:1}
+.w3-example-multilevel-menu-demo-1 .navigation ul li{float:left;position:relative}
+.w3-example-multilevel-menu-demo-1 .navigation ul ul{visibility:hidden;position:absolute;width:100%;top:0;left:100%;z-index:2}
+.w3-example-multilevel-menu-demo-1 .navigation ul li{float:none}
+.w3-example-multilevel-menu-demo-1 .navigation{width:24.99999%}
+.w3-example-multilevel-menu-demo-1 .navigation a{display:block;padding:0;padding-left:10px;height:44px;line-height:44px;box-shadow:inset 0 0 22px hsla(0,0%,0%,0.25),inset 0 0 44px hsla(0,0%,0%,0.25);overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.w3-example-multilevel-menu-demo-1 .navigation>ul{width:100%;background-color:#8bc34a}
+.w3-example-multilevel-menu-demo-1 .navigation ul li.has-sub>a:after{content:'»';position:absolute;right:0;width:10%;color:#333333;font-size:22px}
