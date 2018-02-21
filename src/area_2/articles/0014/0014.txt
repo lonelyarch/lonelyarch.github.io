@@ -1,0 +1,149 @@
+<article>
+	<div><p><strong><span class="w3-text-light-green">转载</span> ---《CSS3 动画卡顿性能优化解决方案》</strong></p><p class="w3-right w3-margin-0">2017-04-15</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-example-02_0014 w3-width">
+		<div class="stage">
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+			<div class="layer"></div>
+		</div>
+	</div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信经常使用 CSS3 的 <span class="w3-text-light-green">transform</span>、<span class="w3-text-light-green">transition</span> 以及 <span class="w3-text-light-green">animation</span> 属性实现各种动画效果的童鞋一定遇到过动画卡顿现象，博主曾在《如何实现栅栏式的相册？》一文中给予的示例就遭遇了又卡又顿的情况，现偶然读到一篇诠释这种卡顿现象的好文，受益之后推而广之。</P>
+	</div>
+	<div><p><strong>转载文章：</strong>《<a target="_blank" class="w3-link" href="http://web.jobbole.com/93965/">CSS3 动画卡顿性能优化解决方案</a>》</p></div>
+	<div><p>……</p></div>
+	<div><p>回过头来总结下，CSS3 动画卡顿的解决方案：在使用 CSS3 transtion 做动画效果时，优先选择 <span class="w3-text-light-green">transform</span>，尽量不要使用 height，width，margin 和 padding 。</p></div>
+	<div><p><span class="w3-text-light-green">transform</span> 为我们提供了丰富的 api，例如 scale，translate，rotate 等等，但是在使用时需要考虑兼容性。事实上，对于大多数的 CSS3 属性而言，mobile 端支持性较好，desktop 端支持性需要格外注意。（对 <span class="w3-text-light-green">transform</span> 有疑问的童鞋<a target="_blank" class="w3-link" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform">戳这里</a>）</p></div>
+	<div><p>……</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-class">.m-transition</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>, <span class="hljs-number">0.3</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> margin-left <span class="hljs-number">1</span>s</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.t-transition</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-function">rgba(<span class="hljs-number">0</span>, <span class="hljs-number">255</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.3</span>)</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> transform <span class="hljs-number">1</span>s</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.common</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150</span>px</span></span>; <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;<span class="hljs-rule">}</span></span>
+
+<span class="hljs-tag">button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">300</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> white</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> none</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">16</span>px <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"m-transition common"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"m_transition"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>transition: margin-left 1s<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"t-transition common"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"t_transition"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>transition: transform 1s<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"control"</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">""</span>&gt;</span>执行代码<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+        <span class="hljs-keyword">var</span> btn = document.getElementById(<span class="hljs-string">"control"</span>);
+        <span class="hljs-keyword">var</span> m_transition = document.getElementById(<span class="hljs-string">"m_transition"</span>);
+        <span class="hljs-keyword">var</span> t_transition = document.getElementById(<span class="hljs-string">"t_transition"</span>);
+        btn.addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            m_transition.style.marginLeft = <span class="hljs-string">"500px"</span>;
+            t_transition.style.transform = <span class="hljs-string">"translate(500px,0)"</span>;
+        });
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+	<div><p>以下主要借助 Chrome Devtools 的 Performance 工具对比两者的性能差异：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0014/images/01.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="src/area_2/articles/0014/images/02.jpg" alt="Oops" /></div>			
+	<div><p>……</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0014/images/03.jpg" alt="Oops" /></div>
+	<div><img class="w3-width" src="src/area_2/articles/0014/images/04.jpg" alt="Oops" /></div>
+	<div><p>列出耗时对照表：</p></div>
+	<table class="w3-table w3-bordered w3-white">
+		<tr class="w3-light-green">
+	      <th>耗时</th>
+	      <th>margin</th>
+	      <th>transform</th>
+	    </tr>
+	    <tr>
+	      <td>Summery</td>
+	      <td>6232ms</td>
+	      <td>6069ms</td>
+	    </tr>
+	    <tr>
+	      <td>Scripting</td>
+	      <td>0.8ms</td>
+	      <td>0.8ms</td>
+	    </tr>
+	    <tr>
+	      <td>Rendering</td>
+	      <td>27.1ms</td>
+	      <td>13.6ms</td>
+	    </tr>
+	    <tr>
+	      <td>Painting</td>
+	      <td>9.7ms</td>
+	      <td>7.5ms</td>
+	    </tr>
+	    <tr>
+	      <td>Otder</td>
+	      <td>71.0ms</td>
+	      <td>66.3ms</td>
+	    </tr>
+	    <tr>
+	      <td>Idle(Browser is waiting on the CPU or GPU to do some processing)</td>
+	      <td>6123.5ms</td>
+	      <td>5980.7ms</td>
+	    </tr>
+	</table>
+	<div><p></p></div>
+	<table class="w3-table w3-bordered w3-white">
+		<tr class="w3-light-green">
+	      <th>关键性能参数</th>
+	      <th>margin</th>
+	      <th>transform</th>
+	    </tr>
+	    <tr>
+	      <td>实际动画耗时（总时间 - 空闲时间）</td>
+	      <td>108.5ms</td>
+	      <td>88.3ms</td>
+	    </tr>
+	</table>
+	<div><p>根据耗时对照可知，总体而言，<span class="w3-text-light-green">transform</span> 在性能上要优于 margin，但即便如此，在性能对比时也要考虑硬件差异，硬件好的情况下可能不会有卡顿或其它一些性能问题。例如，在开发应用于移动端的程序时，往往是在 PC 模拟器上运行良好的程序在真实 mobile 端却可能会出现性能问题。</p></div>
+	<div><p>总而言之，性能问题是一直存在的，只是因硬件差异而导致性能影响的程度有不同。</p></div>
+	<div><p>最后，有想深入理解浏览器性能问题的童鞋可参阅：<a target="_blank" class="w3-link" href="http://sy-tang.github.io/2014/05/14/CSS%20animations%20and%20transitions%20performance-%20looking%20inside%20the%20browser/">《深入浏览器理解 CSS animations 和 transitions 的性能问题》</a>、<a target="_blank" class="w3-link" href="https://dev.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome">GPU Accelerated Compositing in Chrome</a> 。</p></div>
+</article>

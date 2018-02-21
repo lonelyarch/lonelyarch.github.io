@@ -144,6 +144,42 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.04.15</h4>
+			<p><strong><span class="w3-text-light-green">转载</span> ---《CSS3 动画卡顿性能优化解决方案》</strong></p>
+			<div class="w3-example-02_0014 w3-width">
+				<div class="stage">
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+					<div class="layer"></div>
+				</div>
+			</div>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信经常使用 CSS3 的 <span class="w3-text-light-green">transform</span>、<span class="w3-text-light-green">transition</span> 以及 <span class="w3-text-light-green">animation</span> 属性实现各种动画效果的童鞋一定遇到过动画卡顿现象，博主曾在《如何实现栅栏式的相册？》一文中给予的示例就遭遇了又卡又顿的情况，现偶然读到一篇诠释这种卡顿现象的好文，受益之后推而广之。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0014/0014.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.04.13</h4>
 			<p><strong><span class="w3-text-light-green">转载</span> ---《浏览器的工作原理：新式网络浏览器幕后揭秘》</strong></p>
 			<div class="w3-container w3-light-gray">
