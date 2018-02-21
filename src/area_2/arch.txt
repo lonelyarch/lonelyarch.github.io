@@ -25,6 +25,7 @@
 	<div class="item">
     	<div><strong>2017-04</strong></div>
         <ul>
+        	<li><time>13日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/12.txt',id:'prevtonext'},{url:'src/area_2/articles/0013/0013.txt',id:'contents'}]);"><span class="w3-text-light-green">转载</span> ---《浏览器的工作原理：新式网络浏览器幕后揭秘》</a></li>
         	<li><time>03日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/11.txt',id:'prevtonext'},{url:'src/area_2/articles/0012/0012.txt',id:'contents'}]);">多级下拉式菜单的实现？</a></li>
         </ul>
     </div>

@@ -1,3 +1,3 @@
-<a onclick="fetch([{url:'src/area_2/prevtonext/7.txt',id:'prevtonext'},{url:'src/area_2/articles/0008/0008.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« 纯手工制作：法式马卡龙</a>
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/7.txt',id:'prevtonext'},{url:'src/area_2/articles/0008/0008.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« 纯手工制作：法式马卡龙</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/5.txt',id:'prevtonext'},{url:'src/area_2/articles/0006/0006.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">如何实现栅栏式的相册？ »</a>
 <div style="clear: both;"></div>
