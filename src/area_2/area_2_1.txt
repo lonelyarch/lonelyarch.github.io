@@ -1,4 +1,14 @@
 <article>
+	<div><p><strong>flex 使用之 CSS 布局</strong></p><p class="w3-right">2017-04-27</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
+		<p><strong>注意：</strong>以下所有示例基于 <strong>display: flex</strong> 实现</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/14.txt',id:'prevtonext'},{url:'src/area_2/articles/0015/0015.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong><span class="w3-text-light-green">转载</span> ---《CSS3 动画卡顿性能优化解决方案》</strong></p><p class="w3-right">2017-04-15</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-example-02_0014 w3-width">
@@ -260,23 +270,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/5.txt',id:'prevtonext'},{url:'src/area_2/articles/0006/0006.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>如何实现立体式的按钮（3D Button）？</strong></p><p class="w3-right">2017-03-11</p></div>
-	<div style="clear: both;"></div>
-	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-	<div class="w3-panel w3-white w3-width" style="padding:0;text-align:center">
-		<div class="w3-row">
-			<button class="w3-example-button-x" title="w3-example-button"></button>
-		</div>
-		<div class="w3-row">
-			<button class="w3-example-button-y" title="w3-example-button"></button>
-		</div>
-		<div class="w3-row">
-			<button class="w3-example-button-z" title="w3-example-button"></button>
-		</div>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/4.txt',id:'prevtonext'},{url:'src/area_2/articles/0005/0005.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

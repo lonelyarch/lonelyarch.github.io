@@ -144,6 +144,17 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.04.28</h4>
+			<p><strong>grid 使用之 CSS 布局</strong></p>
+			<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
+				<p><strong>注意：</strong>以下所有示例基于 <strong>display: grid</strong> 实现</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0016/0016.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.04.27</h4>
 			<p><strong>flex 使用之 CSS 布局</strong></p>
 			<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">

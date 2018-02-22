@@ -106,11 +106,11 @@
 </article>
 <hr style="border: none; border-top: 1px dotted white;">
 <article>
-	<div><p><strong>flex 使用之 CSS 布局</strong></p><p class="w3-right">2017-04-27</p></div>
+	<div><p><strong>grid 使用之 CSS 布局</strong></p><p class="w3-right">2017-04-28</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
-		<p><strong>注意：</strong>以下所有示例基于 <strong>display: flex</strong> 实现</p>
+		<p><strong>注意：</strong>以下所有示例基于 <strong>display: grid</strong> 实现</p>
 	</div>
 	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/14.txt',id:'prevtonext'},{url:'src/area_2/articles/0015/0015.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/15.txt',id:'prevtonext'},{url:'src/area_2/articles/0016/0016.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
