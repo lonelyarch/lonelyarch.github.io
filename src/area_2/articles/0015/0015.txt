@@ -100,7 +100,7 @@
 		<div style="flex-grow:8">3</div>
 	</div>
 	<div><p>示例 10：使用 <span class="w3-text-light-green">flex-shrink</span> 属性</p></div>
-	<div class="w3-example-flex-01-02_0015">
+	<div class="w3-example-flex-01-02_0015 w3-hide-small w3-hide-medium">
 		<div>1</div>
 		<div>2</div>
 		<div style="flex-shrink:0" class="w3-light-green">3</div>
@@ -110,6 +110,12 @@
 		<div>7</div>
 		<div>8</div>
 		<div>9</div>
+	</div>
+	<div class="w3-example-flex-01-02_0015 w3-hide-large">
+		<div>1</div>
+		<div>2</div>
+		<div style="flex-shrink:0" class="w3-light-green">3</div>
+		<div>4</div>
 	</div>
 	<div><p>示例 10：使用 <span class="w3-text-light-green">flex-basis</span> 属性</p></div>
 	<div class="w3-example-flex-01-02_0015">
