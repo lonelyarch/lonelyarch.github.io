@@ -333,3 +333,22 @@
 .w3-example-02_0014 .layer:nth-child(n+11):after{text-shadow:6px 0 6px #842b00,5px 5px 5px #642100,0 6px 6px #842b00}
 .w3-example-02_0014 .layer:first-child:after{color:#fff;text-shadow:none}
 @keyframes rotate_02_0014{100%{transform:rotateY(-40deg) rotateX(-43deg)}}
+/* 02_0015 */
+.w3-example-flex-01-02_0015{display:flex;min-height:115px;background-color:#fff}
+.w3-example-flex-01-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px}
+.w3-example-flex-02-02_0015{display:flex;flex-direction:column;min-height:115px;background-color:#fff}
+.w3-example-flex-02-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px}
+.w3-example-flex-03-02_0015{display:flex;flex-wrap:wrap;min-height:115px;background-color:#fff}
+.w3-example-flex-03-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px}
+.w3-example-flex-04-02_0015{display:flex;justify-content:center;min-height:115px;background-color:#fff}
+.w3-example-flex-04-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px}
+.w3-example-flex-05-02_0015{display:flex;align-items:center;min-height:230px;background-color:#fff}
+.w3-example-flex-05-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px;height:115px}
+.w3-example-flex-06-02_0015{display:flex;flex-wrap:wrap;align-content:space-between;min-height:460px;background-color:#fff}
+.w3-example-flex-06-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px;height:115px}
+.w3-example-flex-07-02_0015{display:flex;justify-content:center;align-items:center;min-height:345px;background-color:#fff}
+.w3-example-flex-07-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px;height:115px}
+.w3-example-flex-08-02_0015{display:flex;min-height:115px;background-color:#fff}
+.w3-example-flex-08-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px;height:115px}
+.w3-example-flex-11-02_0015{display:flex;min-height:345px;background-color:#fff}
+.w3-example-flex-11-02_0015 div{background-color:#444;margin:10px;padding:20px;font-size:20px;line-height:75px;text-align:center;width:100px}

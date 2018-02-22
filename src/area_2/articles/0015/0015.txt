@@ -1,0 +1,129 @@
+<article>
+	<div><p><strong>flex 使用之 CSS 布局</strong></p><p class="w3-right w3-margin-0">2017-04-27</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
+		<p><strong>注意：</strong>以下所有示例基于 <strong>display: flex</strong> 实现</p>
+	</div>
+	<div><p>示例 01：</p></div>
+	<div class="w3-example-flex-01-02_0015">
+		<div>A</div>
+		<div>B</div>
+		<div>C</div>
+	</div>
+	<div><p>示例 02：使用 <span class="w3-text-light-green">flex-direction</span> 属性</p></div>
+	<div class="w3-example-flex-02-02_0015">
+		<div>A</div>
+		<div>B</div>
+		<div>C</div>
+	</div>
+	<div><p>示例 03：使用 <span class="w3-text-light-green">flex-wrap</span> 属性</p></div>
+	<div class="w3-example-flex-03-02_0015">
+		<div>A</div>
+		<div>B</div>
+		<div>C</div>
+		<div>D</div>
+		<div>E</div>
+		<div>F</div>
+		<div>G</div>
+		<div>H</div>
+		<div>I</div>
+		<div>J</div>
+	</div>
+	<div><p><strong>注意：</strong><span class="w3-text-light-green">flex-direction</span> 与 <span class="w3-text-light-green">flex-wrap</span> 的简写属性为 <span class="w3-text-light-green">flex-flow</span>，例如 flex-flow: row wrap 。</p></div>
+	<div><p>示例 04：使用 <span class="w3-text-light-green">justify-content</span> 属性</p></div>
+	<div class="w3-example-flex-04-02_0015">
+		<div>A</div>
+		<div>B</div>
+		<div>C</div>
+	</div>
+	<div><p>示例 05：使用 <span class="w3-text-light-green">align-items</span> 属性</p></div>
+	<div class="w3-example-flex-05-02_0015">
+		<div>A</div>
+		<div>B</div>
+		<div>C</div>
+	</div>
+	<div><p>示例 06：使用 <span class="w3-text-light-green">​align-content</span> 属性</p></div>
+	<div class="w3-example-flex-06-02_0015">
+		<div>A</div>
+		<div>B</div>
+		<div>C</div>
+		<div>D</div>
+		<div>E</div>
+		<div>F</div>
+		<div>G</div>
+		<div>H</div>
+		<div>I</div>
+		<div>J</div>
+	</div>
+	<div><p>示例 07：使用 <span class="w3-text-light-green">justify-content</span> 和 <span class="w3-text-light-green">align-items</span> 实现<span class="w3-text-light-green">完美居中</span></p></div>
+	<div class="w3-example-flex-07-02_0015">
+		<div>A</div>
+	</div>
+	<div><p>示例 08：使用 <span class="w3-text-light-green">order</span> 属性</p></div>
+	<div class="w3-example-flex-08-02_0015">
+		<div class="w3-light-blue">1</div>
+		<div class="w3-pale-red">2</div>
+		<div class="w3-light-green">3</div>
+		<div class="w3-pale-yellow">4</div>
+	</div>
+	<div>
+		<button id="sorts_btn" class="w3-button w3-block w3-green w3-hover-cyan" style="border-bottom:1px solid rgba(255,255,255,0.6)">Sort</button>
+		<button id="reset_btn" class="w3-button w3-block w3-green w3-hover-cyan">Reset</button>
+		<script>
+			var sorts_btn = document.getElementById("sorts_btn");
+			var reset_btn = document.getElementById("reset_btn");
+			var e = document.getElementsByClassName("w3-example-flex-08-02_0015")[0];
+			sorts_btn.addEventListener("click", function() {
+				var arr = random();
+				for(var i=0; i<e.children.length; i++) {
+					(function(i) {
+						e.children[i].style.order = arr[i];
+					})(i);
+				}
+			});
+			reset_btn.addEventListener("click", function() {
+				for(var i=0; i<e.children.length; i++) {
+					(function(i) {
+						e.children[i].style = "";
+					})(i);
+				}
+			});
+			function random(){var arr=[];for(var i=0;i<e.children.length;i++){var num;do{num=Math.ceil(Math.random()*10);}while(exists(arr,num));arr.push(num);}return arr;}
+			function exists(arr,num){for(var j=0;j<arr.length;j++){if(arr[j]==num)return true;}return false;}
+		</script>
+	</div>
+	<div><p>示例 09：使用 <span class="w3-text-light-green">flex-grow</span> 属性</p></div>
+	<div class="w3-example-flex-01-02_0015">
+		<div style="flex-grow:1">1</div>
+		<div style="flex-grow:1">2</div>
+		<div style="flex-grow:8">3</div>
+	</div>
+	<div><p>示例 10：使用 <span class="w3-text-light-green">flex-shrink</span> 属性</p></div>
+	<div class="w3-example-flex-01-02_0015">
+		<div>1</div>
+		<div>2</div>
+		<div style="flex-shrink:0" class="w3-light-green">3</div>
+		<div>4</div>
+		<div>5</div>
+		<div>6</div>
+		<div>7</div>
+		<div>8</div>
+		<div>9</div>
+	</div>
+	<div><p>示例 10：使用 <span class="w3-text-light-green">flex-basis</span> 属性</p></div>
+	<div class="w3-example-flex-01-02_0015">
+		<div>1</div>
+		<div>2</div>
+		<div style="flex-basis:300px">3</div>
+		<div>4</div>
+	</div>
+	<div><p><strong>注意：</strong><span class="w3-text-light-green">flex</span> 是 <span class="w3-text-light-green">flex-grow</span>、<span class="w3-text-light-green">flex-shrink</span> 以及 <span class="w3-text-light-green">flex-basis</span> 的简写属性，例如 flex: 0 0 300px 。</p></div>
+	<div><p>示例 11：使用 <span class="w3-text-light-green">align-self</span> 属性</p></div>
+	<div class="w3-example-flex-11-02_0015">
+		<div>1</div>
+		<div>2</div>
+		<div style="align-self:center">3</div>
+		<div>4</div>
+	</div>
+</article>

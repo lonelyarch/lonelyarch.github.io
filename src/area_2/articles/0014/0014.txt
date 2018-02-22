@@ -120,7 +120,7 @@
 	      <td>7.5ms</td>
 	    </tr>
 	    <tr>
-	      <td>Otder</td>
+	      <td>Other</td>
 	      <td>71.0ms</td>
 	      <td>66.3ms</td>
 	    </tr>

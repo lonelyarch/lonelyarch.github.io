@@ -106,36 +106,11 @@
 </article>
 <hr style="border: none; border-top: 1px dotted white;">
 <article>
-	<div><p><strong><span class="w3-text-light-green">转载</span> ---《CSS3 动画卡顿性能优化解决方案》</strong></p><p class="w3-right">2017-04-15</p></div>
+	<div><p><strong>flex 使用之 CSS 布局</strong></p><p class="w3-right">2017-04-27</p></div>
 	<div style="clear: both;"></div>
-	<div class="w3-example-02_0014 w3-width">
-		<div class="stage">
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-		</div>
-	</div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信经常使用 CSS3 的 <span class="w3-text-light-green">transform</span>、<span class="w3-text-light-green">transition</span> 以及 <span class="w3-text-light-green">animation</span> 属性实现各种动画效果的童鞋一定遇到过动画卡顿现象，博主曾在《如何实现栅栏式的相册？》一文中给予的示例就遭遇了又卡又顿的情况，现偶然读到一篇诠释这种卡顿现象的好文，受益之后推而广之。</P>
+	<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
+		<p><strong>注意：</strong>以下所有示例基于 <strong>display: flex</strong> 实现</p>
 	</div>
 	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/13.txt',id:'prevtonext'},{url:'src/area_2/articles/0014/0014.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/14.txt',id:'prevtonext'},{url:'src/area_2/articles/0015/0015.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
