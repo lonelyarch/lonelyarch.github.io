@@ -23,6 +23,13 @@
     </div>
     <hr style="border: none; border-top: 1px dotted white;">
 	<div class="item">
+    	<div><strong>2017-05</strong></div>
+        <ul>
+        	<li><time>02日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/16.txt',id:'prevtonext'},{url:'src/area_2/articles/0017/0017.txt',id:'contents'}]);">Java 集合类：HashMap 初探</a></li>
+        </ul>
+    </div>
+    <hr style="border: none; border-top: 1px dotted white;">
+	<div class="item">
     	<div><strong>2017-04</strong></div>
         <ul>
         	<li><time>28日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/15.txt',id:'prevtonext'},{url:'src/area_2/articles/0016/0016.txt',id:'contents'}]);">grid 使用之 CSS 布局</a></li>
