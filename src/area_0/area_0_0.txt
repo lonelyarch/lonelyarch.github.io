@@ -144,6 +144,19 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.05.19</h4>
+			<p><strong>Java 集合类：HashMap 续篇</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table and linked list implementation of the Map interface, with predictable iteration order. This implementation differs from HashMap in that it maintains a doubly-linked list running through all of its entries...</P>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于 Map 接口的哈希表和链表实现，具有可预测的迭代顺序，与 HashMap 的不同之处在于，它对所有的 entry 操作都是基于双向链表完成的（LinkedHashMap&lt;K,V&gt; extends <span class="w3-text-light-green">HashMap&lt;K,V&gt;</span> implements Map&lt;K,V&gt;）……</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0019/0019.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.05.05</h4>
 			<p><strong>Java 集合类：HashMap 续篇</strong></p>
 			<div class="w3-container w3-light-gray">

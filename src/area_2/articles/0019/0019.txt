@@ -1,0 +1,118 @@
+<article>
+	<section>
+		<div><p><strong>Java 集合类：LinkedHashMap</strong></p><p class="w3-right w3-margin-0">2017-05-19</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table and linked list implementation of the Map interface, with predictable iteration order. This implementation differs from HashMap in that it maintains a doubly-linked list running through all of its entries...</P>
+			<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于 Map 接口的哈希表和链表实现，具有可预测的迭代顺序，与 HashMap 的不同之处在于，它对所有的 entry 操作都是基于双向链表完成的（LinkedHashMap&lt;K,V&gt; extends <span class="w3-text-light-green">HashMap&lt;K,V&gt;</span> implements Map&lt;K,V&gt;）……</P>
+		</div>
+		<div><p></p></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>问题：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="w3-link" onclick="document.getElementById('sec1').scrollIntoView();">1. LinkedHashMap 之实现原理？</a></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="w3-link" onclick="document.getElementById('sec2').scrollIntoView();">2. LinkedHashMap 之应用举例（实现 LRU Cache）？</a></p>
+		</div>
+	</section>
+	<div id="sec1"><p style="height:44px;border:1px solid rgba(255,255,255,0.6);line-height:44px;text-align:center">实现原理</p></div>
+	<section>
+		<div><p class="w3-text-light-green">一、LinkedHashMap 之实现原理：</p></div>
+		<div><p>示例代码：</p></div>
+		<div class="w3-example">
+			<div class="w3-code" style="max-height:300px;overflow-y:auto">
+				<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> LinkedHashMapAnalyseDemo {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        LinkedHashMap&lt;String, Integer&gt; lhm = <span class="hljs-keyword">new</span> LinkedHashMap&lt;String, Integer&gt;();
+        lhm.put(<span class="hljs-string">"北京"</span>, <span class="hljs-number">1</span>);
+        lhm.put(<span class="hljs-string">"上海"</span>, <span class="hljs-number">2</span>);
+        lhm.put(<span class="hljs-string">"广州"</span>, <span class="hljs-number">3</span>);
+        lhm.put(<span class="hljs-string">"深圳"</span>, <span class="hljs-number">4</span>);
+        lhm.put(<span class="hljs-string">"西安"</span>, <span class="hljs-number">5</span>);
+        lhm.put(<span class="hljs-string">"成都"</span>, <span class="hljs-number">6</span>);
+        lhm.put(<span class="hljs-string">"武汉"</span>, <span class="hljs-number">7</span>);
+        lhm.put(<span class="hljs-string">"重庆"</span>, <span class="hljs-number">8</span>);
+        <span class="hljs-keyword">for</span> (Entry&lt;String, Integer&gt; entry : lhm.entrySet()) {
+            System.<span class="hljs-keyword">out</span>.println(entry.getKey() + <span class="hljs-string">": "</span> + entry.getValue());
+        }
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs">北京: 1
+上海: 2
+广州: 3
+深圳: 4
+西安: 5
+成都: 6
+武汉: 7
+重庆: 8</code></pre>
+		</div>
+	</div>
+	<div><p>原因分析：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0019/images/01.jpg" alt="Oops" /></div>
+	<div>
+	<div><p></p></div>
+	<pre class="w3-white" style="padding:16px;overflow:hidden;text-overflow:ellipsis">static class Entry&lt;K,V&gt; extends <span class="w3-text-light-green">HashMap.Node&lt;K,V&gt;</span> {
+    Entry&lt;K,V&gt; <span class="w3-text-light-green">before</span>, <span class="w3-text-light-green">after</span>;
+    Entry(int hash, K key, V value, Node&lt;K,V&gt; next) {
+        super(hash, key, value, next);
+    }
+}</pre>
+		</div>
+		<div><p></p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0019/images/04.jpg" alt="Oops" /></div>
+		<div><p>据图可知，LinkedHashMap 能够确保迭代顺序是存储顺序的重要属性是 <span class="w3-text-light-green">before</span> 和 <span class="w3-text-light-green">after</span>，这也是相比 HashMap 多出的两个属性，双向链表更是基于这两个属性实现，画出当前 LinkedHashMap 实例的双向链表指向图，如下所示：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0019/images/02.jpg" alt="Oops" /></div>
+		<div><p>忽略存储结构的双向链表指向图：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0019/images/03.jpg" alt="Oops" /></div>
+		<div><p>结论就是，LinkedHashMap 基于双向链表实现了对数据的顺序迭代（访问）。</p></div>
+	</section>
+	<div id="sec2"><p style="height:44px;border:1px solid rgba(255,255,255,0.6);line-height:44px;text-align:center">应用举例</p></div>
+	<section>
+		<div><p class="w3-text-light-green">二、LinkedHashMap 之应用举例（实现 <a target="_blank" class="w3-link" href="https://leetcode.com/problems/lru-cache/description/">LRU Cache</a>）：</p></div>
+		<div><p></p></div>
+		<div><p>示例代码：</p></div>
+		<div class="w3-example">
+			<div class="w3-code" style="max-height:300px;overflow-y:auto">
+				<pre><code class="hljs">public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LRUCache</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">LinkedHashMap</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; {</span>
+
+    <span class="hljs-keyword">private</span> int cacheSize;
+
+    public LRUCache(int cacheSize) {
+        <span class="hljs-javadoc">/**
+         * <span class="hljs-javadoctag">@param</span> initialCapacity
+         *            the initial capacity
+         * <span class="hljs-javadoctag">@param</span> loadFactor
+         *            the load factor
+         * <span class="hljs-javadoctag">@param</span> accessOrder
+         *            the ordering mode - &lt;tt&gt;true&lt;/tt&gt; for access-order,
+         *            &lt;tt&gt;false&lt;/tt&gt; for insertion-order
+         */</span>
+        <span class="hljs-keyword">super</span>(<span class="hljs-number">16</span>, <span class="hljs-number">0.75</span>F, <span class="hljs-keyword">true</span>);
+        <span class="hljs-keyword">this</span>.cacheSize = cacheSize;
+    }
+
+    <span class="hljs-keyword">protected</span> boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest) {
+        <span class="hljs-keyword">return</span> size() &gt;= cacheSize;
+    }
+}</code></pre>
+			</div>
+		</div>
+		<div><p></p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0019/images/05.jpg" alt="Oops" /></div>
+		<div><p>根据上图概述实现原理，当调用 put 方法时是把新对象添加至链表尾部，在调用 get 方法访问对象 B 之后<span class="w3-text-light-green">再把该对象存储至链表尾部</span>，即实现 LRU 功能，若 Cache 容量超过限定值则<span class="w3-text-light-green">删除链表头节点</span>即删除最老的对象。想了解详情的童鞋<a target="_blank" class="w3-link" href="https://my.oschina.net/biezhi/blog/485728">戳这里</a>。</p></div>					
+	</section>
+	<section>
+		<div><p>
+			<strong>参考资料：</strong>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/api/index.html">https://docs.oracle.com/javase/8/docs/api/index.html</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://geekrai.blogspot.jp/2013/06/linkedhashmap-implementation-in-java.html">https://geekrai.blogspot.jp/2013/06/linkedhashmap-implementation-in-java.html</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://chriswu.me/blog/a-lru-cache-in-10-lines-of-java/">http://chriswu.me/blog/a-lru-cache-in-10-lines-of-java/</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://my.oschina.net/biezhi/blog/485728">https://my.oschina.net/biezhi/blog/485728</a>
+		</p></div>
+	</section>
+</article>

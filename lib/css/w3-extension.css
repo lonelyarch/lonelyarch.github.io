@@ -10,6 +10,8 @@
 .hljs-doctype,.hljs-params{color:#000}
 .hljs-preprocessor{color:#444}
 .hljs-class{color:#9b703f}
+.hljs-javadoc{color:#800}
+.hljs-javadoctag{color:#606}
 /* Archives */
 #archives .list .item{overflow:hidden;padding:0 0 0 120px}
 #archives .list .item div{float:left;margin: 0 0 0 -120px}
