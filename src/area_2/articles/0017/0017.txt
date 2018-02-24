@@ -205,12 +205,12 @@ final Node&lt;K,V&gt; getNode(<span class="hljs-keyword">int</span> hash, Object
 	<div><img class="w3-width" src="src/area_2/articles/0017/images/06.jpg" alt="Oops" /></div>
 	<div><p>那么，<span class="w3-text-light-green">hash 方法</span>的内部实现 <span class="w3-text-light-green">(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</span> 是什么意思呢？给出表格如下所示：</p></div>
 	<div class="w3-responsive">
-		<table class="w3-table w3-bordered w3-white">
+		<table class="w3-custom-table w3-custom-bordered">
 			<tbody>
 				<tr class="w3-light-green">
-			      <th></th>
-			      <th>二进制</th>
-			      <th>十进制</th>
+			      <th style="width:45%"></th>
+			      <th style="width:30%">二进制</th>
+			      <th style="width:25%">十进制</th>
 			    </tr>
 			    <tr>
 			      <td>key.hashCode()</td>
@@ -278,12 +278,12 @@ static final int hash(Object key) {
 		<div><p>这段方法注释究竟是啥意思呢？为答疑解惑，给出表格如下所示：</p></div>
 		<div class="w3-responsive">
 			<div><p>HashMap 大小为 16：</p></div>
-			<table class="w3-table w3-bordered w3-white">
+			<table class="w3-custom-table w3-custom-bordered">
 				<tbody>
 					<tr class="w3-light-green">
-				      <th>(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</th>
-				      <th>二进制</th>
-				      <th>十进制</th>
+				      <th style="width:40%">(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</th>
+				      <th style="width:30%">二进制</th>
+				      <th style="width:30%">十进制</th>
 				    </tr>
 				    <tr>
 				      <td><span class="w3-text-light-green">"北京"</span>之 hash 值</td>
@@ -300,28 +300,28 @@ static final int hash(Object key) {
 		</div>
 		<div class="w3-responsive">
 			<div><p>HashMap 大小为 32：</p></div>
-			<table class="w3-table w3-bordered w3-white">
+			<table class="w3-custom-table w3-custom-bordered">
 				<tbody>
 					<tr class="w3-light-green">
-				      <th>(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</th>
-				      <th>二进制</th>
-				      <th>十进制</th>
+				      <th style="width:40%">(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</th>
+				      <th style="width:30%">二进制</th>
+				      <th style="width:30%">十进制</th>
 				    </tr>
 				    <tr>
 				      <td><span class="w3-text-light-green">"北京"</span>之 hash 值</td>
 				      <td>
-				      	  <table>
-				      	  	<tr><td style="padding:0">101001011110011<span class="w3-text-red">1</span><span class="w3-text-light-green">1111</span></td></tr>
-				      	  	<tr><td style="padding:0"><span class="w3-text-red">16</span> + <span class="w3-text-light-green">8</span> + <span class="w3-text-light-green">4</span> + <span class="w3-text-light-green">2</span> + <span class="w3-text-light-green">1</span></td></tr>
+				      	  <table class="w3-custom-table">
+				      	  	<tr style="border-bottom:0"><td style="padding:0">101001011110011<span class="w3-text-red">1</span><span class="w3-text-light-green">1111</span></td></tr>
+				      	  	<tr style="border-bottom:0"><td style="padding:0"><span class="w3-text-red">16</span> + <span class="w3-text-light-green">8</span> + <span class="w3-text-light-green">4</span> + <span class="w3-text-light-green">2</span> + <span class="w3-text-light-green">1</span></td></tr>
 				      	  </table>
 				      </td>
 				      <td>679551</td>
 				    </tr>
 				    <tr>
 				      <td><span class="w3-text-light-green">"上海"</span>之 hash 值</td>
-				      <td><table>
-				      	  	<tr><td style="padding:0">100111100000101<span class="w3-text-red">0</span><span class="w3-text-light-green">0100</span></td></tr>
-				      	  	<tr><td style="padding:0"><span class="w3-text-red">&nbsp;&nbsp;0</span> + <span class="w3-text-light-green">0</span> + <span class="w3-text-light-green">4</span> + <span class="w3-text-light-green">0</span> + <span class="w3-text-light-green">0</span></td></tr>
+				      <td><table class="w3-custom-table">
+				      	  	<tr style="border-bottom:0"><td style="padding:0">100111100000101<span class="w3-text-red">0</span><span class="w3-text-light-green">0100</span></td></tr>
+				      	  	<tr style="border-bottom:0"><td style="padding:0"><span class="w3-text-red">0</span> + <span class="w3-text-light-green">0</span> + <span class="w3-text-light-green">4</span> + <span class="w3-text-light-green">0</span> + <span class="w3-text-light-green">0</span></td></tr>
 				      	  </table>
 				      </td>
 				      <td>647332</td>
