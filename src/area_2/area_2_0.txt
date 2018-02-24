@@ -106,13 +106,13 @@
 </article>
 <hr style="border: none; border-top: 1px dotted white;">
 <article>
-	<div><p><strong>Java 集合类：HashMap 初探</strong></p><p class="w3-right">2017-05-02</p></div>
+	<div><p><strong>Java 集合类：HashMap 续篇</strong></p><p class="w3-right">2017-05-05</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
 		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table based implementation of the Map interface. This implementation provides all of the optional map operations, and permits null values and the null key. (The HashMap class is roughly equivalent to Hashtable, except that it is unsynchronized and permits nulls.)...</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于哈希表的 Map 接口的实现，该实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了<span class="w3-text-light-green">不支持同步</span>和<span class="w3-text-light-green">允许使用 null 值</span>之外，HashMap 与 Hashtable 大致上是相同的。）……</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在初探 HashMap 之后尚有很多遗留问题，例如，HashMap 大小为什么是 2 的 n 次方？HashMap 为什么会使用红黑树存储数据？HashMap 死循环是怎样造成的……</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因时间所限，博主挑了一个易于理解的问题简单回答一下，棘手的问题将在适当的时间再次整理。</P>
 	</div>
 	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/16.txt',id:'prevtonext'},{url:'src/area_2/articles/0017/0017.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/17.txt',id:'prevtonext'},{url:'src/area_2/articles/0018/0018.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

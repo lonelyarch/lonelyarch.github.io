@@ -25,6 +25,7 @@
 	<div class="item">
     	<div><strong>2017-05</strong></div>
         <ul>
+        	<li><time>05日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/17.txt',id:'prevtonext'},{url:'src/area_2/articles/0018/0018.txt',id:'contents'}]);">Java 集合类：HashMap 续篇</a></li>
         	<li><time>02日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/16.txt',id:'prevtonext'},{url:'src/area_2/articles/0017/0017.txt',id:'contents'}]);">Java 集合类：HashMap 初探</a></li>
         </ul>
     </div>

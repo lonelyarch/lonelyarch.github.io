@@ -1,0 +1,82 @@
+<article>
+	<section>
+		<div><p><strong>Java 集合类：HashMap 续篇</strong></p><p class="w3-right w3-margin-0">2017-05-05</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在初探 HashMap 之后尚有很多遗留问题，例如，HashMap 大小为什么是 2 的 n 次方？HashMap 为什么会使用红黑树存储数据？HashMap 死循环是怎样造成的……</P>
+			<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因时间所限，博主挑了一个易于理解的问题简单回答一下，棘手的问题将在适当的时间再次整理。</P>
+		</div>
+	</section>
+	<section>
+		<div><p class="w3-text-light-green">HashMap 大小为什么是 2 的 n 次方（初始化或扩容）？</p></div>
+		<div><p>虽然 HashMap 拥有可以指定容量大小的构造函数，但是，在实际工作中，博主经常是这样创建 HashMap 实例的：</p></div>
+		<div style="background-color:white;color:black;text-align:center;min-height:44px;line-height:44px"><p>Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;<span class="w3-text-light-green">()</span>;</p></div>
+		<div><p>通过阅读 api 文档（或源码）可知，HashMap 默认容量大小（default initial capacity）为 16，即 <span class="w3-text-light-green">table 数组</span>长度为 16，HashMap 在扩容的时候也是以 <span class="w3-text-light-green">16 * 2 的 n 次方</span>实现的，为什么会这样？假设它的大小为 17 即 <span class="w3-text-light-green">table.length - 1 的二进制为 10000</span>，再给出如下表格：</p></div>
+		<div class="w3-responsive">
+			<table class="w3-table w3-bordered w3-white">
+				<tbody>
+					<tr class="w3-light-green">
+				      <th>key</th>
+				      <th>再哈希码（rehash）：hash(key)</th>
+				      <th>索引位置：(table.length - 1) &amp; hash(key)</th>
+				    </tr>
+				    <tr>
+				      <td>key1：北京</td>
+				      <td>101001011110011<span class="w3-text-light-green">11111</span></td>
+				      <td>16（10000）</td>
+				    </tr>
+				    <tr>
+				      <td>key2：上海</td>
+				      <td>100111100000101<span class="w3-text-light-green">00100</span></td>
+				      <td>&nbsp;&nbsp;0（00000）</td>
+				    </tr>
+				    <tr>
+				      <td>key3：广州</td>
+				      <td>101111001111001<span class="w3-text-light-green">10100</span></td>
+				      <td>16（10000）</td>
+				    </tr>
+				    <tr>
+				      <td>key4：深圳</td>
+				      <td>110110100111011<span class="w3-text-light-green">01111</span></td>
+				      <td>&nbsp;&nbsp;0（00000）</td>
+				    </tr>
+				    <tr>
+				      <td>key5：西安</td>
+				      <td>1000100000001111<span class="w3-text-light-green">11011</span></td>
+				      <td>16（10000）</td>
+				    </tr>
+				    <tr>
+				      <td>key6：成都</td>
+				      <td>110001110000111<span class="w3-text-light-green">00001</span></td>
+				      <td>&nbsp;&nbsp;0（00000）</td>
+				    </tr>
+				    <tr>
+				      <td>key7：武汉</td>
+				      <td>110101101101101<span class="w3-text-light-green">01110</span></td>
+				      <td>&nbsp;&nbsp;0（00000）</td>
+				    </tr>
+				    <tr>
+				      <td>key8：重庆</td>
+				      <td>1001000000110010<span class="w3-text-light-green">01011</span></td>
+				      <td>&nbsp;&nbsp;0（00000）</td>
+				    </tr>
+				    <tr>
+				      <td>……</td>
+				      <td>……</td>
+				      <td>……</td>
+				    </tr>
+				 </tbody>
+			</table>
+		</div>
+		<div><p></p></div>
+		<div>根据图表可知，当 HashMap 大小为 17 的时候，得出 <span class="w3-text-light-green">table.length - 1 的二进制为 10000</span>，不难计算，任何 hash 值和<span class="w3-text-light-green">10000</span> 进行<span class="w3-text-light-green">与运算</span>的最终结果只能是 0 或 16 即只有第 5 位在起作用。当 table 数组只有[0]和[16]得以利用的时候，不论是从存储空间还是查询效率上讲，这都是非常糟糕的情况。</div>
+	</section>
+	<section>
+		<div><p>
+			<strong>参考资料：</strong>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://coding-geek.com/how-does-a-hashmap-work-in-java/">http://coding-geek.com/how-does-a-hashmap-work-in-java/</a>
+		</p></div>
+	</section>
+</article>

@@ -144,6 +144,19 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.05.05</h4>
+			<p><strong>Java 集合类：HashMap 续篇</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在初探 HashMap 之后尚有很多遗留问题，例如，HashMap 大小为什么是 2 的 n 次方？HashMap 为什么会使用红黑树存储数据？HashMap 死循环是怎样造成的……</P>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因时间所限，博主挑了一个易于理解的问题简单回答一下，棘手的问题将在适当的时间再次整理。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0018/0018.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.05.02</h4>
 			<p><strong>Java 集合类：HashMap 初探</strong></p>
 			<div class="w3-container w3-light-gray">
