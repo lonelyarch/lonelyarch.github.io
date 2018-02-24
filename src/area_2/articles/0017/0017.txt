@@ -61,7 +61,7 @@
 	<div><img class="w3-width" src="src/area_2/articles/0017/images/02.jpg" alt="Oops" /></div>
 	<div>
 		<div><p></p></div>
-		<pre class="w3-white" style="padding:16px">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+		<pre class="w3-white" style="padding:16px;overflow:hidden;text-overflow:ellipsis">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
     final int <span class="w3-text-light-green">hash</span>;
     final K <span class="w3-text-light-green">key</span>;
     V <span class="w3-text-light-green">value</span>;
@@ -205,7 +205,40 @@ final Node&lt;K,V&gt; getNode(<span class="hljs-keyword">int</span> hash, Object
 	<div><img class="w3-width" src="src/area_2/articles/0017/images/06.jpg" alt="Oops" /></div>
 	<div><p>那么，<span class="w3-text-light-green">hash 方法</span>的内部实现 <span class="w3-text-light-green">(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</span> 是什么意思呢？给出表格如下所示：</p></div>
 	<div class="w3-responsive">
-		
+		<table class="w3-table w3-bordered w3-white">
+			<tbody>
+				<tr class="w3-light-green">
+			      <th></th>
+			      <th>二进制</th>
+			      <th>十进制</th>
+			    </tr>
+			    <tr>
+			      <td>key.hashCode()</td>
+			      <td><span class="w3-text-light-green">1010</span>010111100111<span class="w3-text-light-green">0101</span></td>
+			      <td>679541</td>
+			    </tr>
+			    <tr>
+			      <td>h = key.hashCode()</td>
+			      <td><span class="w3-text-light-green">1010</span>010111100111<span class="w3-text-light-green">0101</span></td>
+			      <td>679541</td>
+			    </tr>
+			    <tr>
+			      <td>移位操作：h &gt;&gt;&gt; 16</td>
+			      <td>0000000000000000<span class="w3-text-light-green">1010</span></td>
+			      <td>10</td>
+			    </tr>
+			    <tr>
+			      <td>异或操作：(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</td>
+			      <td>1010010111100111<span class="w3-text-light-green">1111</span></td>
+			      <td>679551</td>
+			    </tr>
+			    <tr class="w3-light-gray">
+			      <td>索引位置：(table.length - 1) &amp; hash</td>
+			      <td>0000000000000000<span class="w3-text-light-green">1111</span></td>
+			      <td>15</td>
+			    </tr>
+			</tbody>
+		</table>
 	</div>
 	<div><p>根据上述表格，易于理解 <span class="w3-text-light-green">hash 方法</span>的内部实现，至于它为什么这么实现，博主还是贴出方法源码以及方法注释，仁者见仁，智者见智：</p></div>
 	<div class="w3-example">
@@ -245,11 +278,56 @@ static final int hash(Object key) {
 		<div><p>这段方法注释究竟是啥意思呢？为答疑解惑，给出表格如下所示：</p></div>
 		<div class="w3-responsive">
 			<div><p>HashMap 大小为 16：</p></div>
-			
+			<table class="w3-table w3-bordered w3-white">
+				<tbody>
+					<tr class="w3-light-green">
+				      <th>(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</th>
+				      <th>二进制</th>
+				      <th>十进制</th>
+				    </tr>
+				    <tr>
+				      <td><span class="w3-text-light-green">"北京"</span>之 hash 值</td>
+				      <td>1010010111100111<span class="w3-text-light-green">1111</span></td>
+				      <td>679551</td>
+				    </tr>
+				    <tr>
+				      <td><span class="w3-text-light-green">"上海"</span>之 hash 值</td>
+				      <td>1001111000001010<span class="w3-text-light-green">0100</span></td>
+				      <td>647332</td>
+				    </tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="w3-responsive">
 			<div><p>HashMap 大小为 32：</p></div>
-			
+			<table class="w3-table w3-bordered w3-white">
+				<tbody>
+					<tr class="w3-light-green">
+				      <th>(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</th>
+				      <th>二进制</th>
+				      <th>十进制</th>
+				    </tr>
+				    <tr>
+				      <td><span class="w3-text-light-green">"北京"</span>之 hash 值</td>
+				      <td>
+				      	  <table>
+				      	  	<tr><td style="padding:0">101001011110011<span class="w3-text-red">1</span><span class="w3-text-light-green">1111</span></td></tr>
+				      	  	<tr><td style="padding:0"><span class="w3-text-red">16</span> + <span class="w3-text-light-green">8</span> + <span class="w3-text-light-green">4</span> + <span class="w3-text-light-green">2</span> + <span class="w3-text-light-green">1</span></td></tr>
+				      	  </table>
+				      </td>
+				      <td>679551</td>
+				    </tr>
+				    <tr>
+				      <td><span class="w3-text-light-green">"上海"</span>之 hash 值</td>
+				      <td><table>
+				      	  	<tr><td style="padding:0">100111100000101<span class="w3-text-red">0</span><span class="w3-text-light-green">0100</span></td></tr>
+				      	  	<tr><td style="padding:0"><span class="w3-text-red">&nbsp;&nbsp;0</span> + <span class="w3-text-light-green">0</span> + <span class="w3-text-light-green">4</span> + <span class="w3-text-light-green">0</span> + <span class="w3-text-light-green">0</span></td></tr>
+				      	  </table>
+				      </td>
+				      <td>647332</td>
+				    </tr>
+				</tbody>
+			</table>
 		</div>
 		<div><p>根据表格所示，不难得出，当 HashMap 大小由 16 扩容至 32 时，<span class="w3-text-light-green">"北京"</span>在新 bucket 的索引位置为 15 + 16 即 <span style="padding:0 5px" class="w3-light-green">move with a power of two offset</span>，<span class="w3-text-light-green">"上海"</span>在新 bucket 的索引位置为 4 + 0 即 <span style="padding:0 5px" class="w3-light-green">stay at same index</span>，扩容之后索引位置不变。</p></div>
 	</section>

@@ -22,9 +22,6 @@
 /* Global stylesheet */
 hr{opacity:0.60}
 pre{margin:0}
-.w3-custom-table{table-layout:fixed;border-collapse:collapse;border-spacing:0;width:100%;background-color:white;color:black}
-.w3-custom-table td,th{overflow:hidden;text-overflow:ellipsis;padding:8px 8px;display:table-cell;text-align:left;vertical-align:top}
-.w3-custom-bordered tr{border-bottom:1px solid #ddd}
 img:before{content:"";max-width:60rem;width:100%;height:200px;line-height:200px;display:block;text-align:center;border:1px solid white;opacity:0.60}
 @media screen and (max-width:600px){img:before{height:100px;line-height:100px}video{border:1px solid white;opacity:0.60}}
 /* Music Player */
