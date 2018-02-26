@@ -296,7 +296,8 @@ function modal_open(event, idx0, idx1) {
 		request("src/articles/initial/" + idx0 + ".txt", "main");
 	}
 	w3_close_all_nav();
-	document.getElementsByTagName("html")[0].style.overflowY = "hidden";
+	// 因点击【知识积累：CSS、JAVASCRIPT、HTML、JAVA、SQL、LINUX、英语语法 杂项记述】之后无法显示页面底部信息而注释
+	// document.getElementsByTagName("html")[0].style.overflowY = "hidden";
 }
 
 function modal_close() {
