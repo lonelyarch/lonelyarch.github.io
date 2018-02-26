@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>个人博客</title>
+<base href="/history/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="lib/css/w3.css">
+<link rel="stylesheet" href="lib/css/font-awesome.min.css">
+<link rel="stylesheet" href="lib/css/ext/standalone.css">
+</head>
+<body class="w3-black w3-width">
+	<div style="margin: 0 15px">
+		<div><p></p></div>
+		<section>
+			<div class="w3-container" style="background-color:rgba(23,23,50,1.0);height:60px;line-height:30px">
+				<p class="w3-wide w3-center">THAT IS A GOOD IDEA!</p>
+			</div>
+		</section>
+		<div><p></p></div>
+		<section>
+			<div id="navigate"></div>
+			<div id="wrongway">
+				<div style="text-align:center;min-height:300px;border:1px solid white;opacity:0.6">
+					<p style="line-height:270px">正在施工，敬请期待……</p>
+				</div>
+			</div>
+			<div id="usemodal" class="w3-modal" style="padding-top:90px">
+				<div class="w3-modal-content" style="background-color:#272822;min-height:300px">
+					<div class="w3-container">
+						<span onclick="document.getElementById('usemodal').style.display='none'" class="w3-button w3-display-topright" style="padding:10px 15px 0 0;font-size:20px;cursor:pointer">×</span>
+						<div id="contents"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script src="lib/js/base.js"></script>
+		<script>
+			(function(){document.getElementById("navigate").style.display="none";document.getElementById("wrongway").style.display="none";var arg=window.location.search.substring(1);if("secrets"===arg){document.getElementById("navigate").style.display="block";request('src/subs/4/articles/0000.txt','navigate')}else{document.getElementById("wrongway").style.display="block"}})();
+			function usemodal(url,id) {document.getElementById('usemodal').style.display='block';clear(id);request(url,id)}
+		</script>
+	</div>
+</body>
+</html>

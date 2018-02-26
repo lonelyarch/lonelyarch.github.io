@@ -1,0 +1,4 @@
+<article>
+	<div><header class="w3-header"><p>如何减少上下文切换？</p></header></div>
+	<div><p>答疑解惑：上下文切换分为 2 种：让步式上下文切换和抢占式上下文切换。让步式上下文切换是指执行线程主动释放 CPU，与锁竞争严重程度成正比，<span class="w3-text-light-green">可通过减少锁竞争来避免</span>；抢占式上下文切换是指线程因分配的时间片用尽而被迫放弃 CPU 或被其它优先级更高的线程所抢占，该情况一般是由于线程数大于 CPU 可用核心数引起，<span class="w3-text-light-green">可通过调整线程数，适当减少线程数来避免</span>。</p></div>
+</article>

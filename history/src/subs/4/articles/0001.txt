@@ -1,0 +1,4 @@
+<article>
+	<div><header class="w3-header"><p>使用 Java 现有的数据结构实现一个 LRU 缓存？</p></header></div>
+	<div><p>答疑解惑：LinkedHashMap，accessOrder 属性设置为 true，按照访问顺序排序。</p></div>
+</article>

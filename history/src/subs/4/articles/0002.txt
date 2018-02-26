@@ -1,0 +1,4 @@
+<article>
+	<div><header class="w3-header"><p>BIO、AIO 以及 NIO 有什么区别？</p></header></div>
+	<div><p>答疑解惑：BIO 为同步阻塞；NIO 为同步非阻塞；AIO 为异步非阻塞。</p></div>
+</article>
