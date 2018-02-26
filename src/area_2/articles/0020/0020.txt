@@ -1,0 +1,389 @@
+<article>
+	<section>
+		<div><p><strong>深入理解红黑树（red-black tree）</strong></p><p class="w3-right w3-margin-0">2017-05-27</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在整理 HashMap 相关知识点的时候，博主就曾碰到过<span class="w3-text-light-green">红黑树</span>，当时浮现在大脑里的树不仅有它，还有哈夫曼树、二叉查找树、B_树，甚至是苹果树，然而，在职场上几经摸爬滚打之后，博主已忘记了这些树原本的模样，真是岁月不饶人。</P>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现打算重温学生时代的记忆和印象，找回过去的那个懂得许多树的我，这么说还是比较浮夸的，从现实出发就是，在将要整理出 TreeMap 知识点的时候，博主又遭遇了 <span class="w3-text-light-green">A Red-Black tree</span>，实属缘分之不易。</p>
+		</div>
+		<div><p></p></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>问题：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="w3-link" onclick="document.getElementById('sec1').scrollIntoView();">1. 什么是二叉查找树？</a></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="w3-link" onclick="document.getElementById('sec2').scrollIntoView();">2. 二叉查找树的缺陷？</a></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="w3-link" onclick="document.getElementById('sec3').scrollIntoView();">3. 改进版本之红黑树？</a></p>
+		</div>
+	</section>
+	<div id="sec1"><p style="height:44px;border:1px solid rgba(255,255,255,0.6);line-height:44px;text-align:center">什么是二叉查找树</p></div>
+	<section>
+		<div><p class="w3-text-light-green">一、什么是二叉查找树：</p></div>
+		<div><p>基本定义为，二叉查找树或是一棵空树，或是具有如下性质的二叉树（这也是一个<span class="w3-text-light-green">递归定义</span>）：</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）若它的左子树非空，则左子树上所有结点的值均小于它的根结点的值；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）若它的右子树非空，则右子树上所有结点的值均大于或等于它的根结点的值；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）它的左、右子树也分别为二叉查找树。</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/01.jpg" alt="Oops" /><div style="background-color:white;color:black;text-align:center;padding-bottom:15px">二叉查找树示例图</div></div>
+		<div><p>示例代码：</p></div>
+		<div class="w3-example">
+			<div class="w3-code" style="max-height:300px;overflow-y:auto">
+				<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> BinarySearchTree {
+
+    TreeNode root;
+
+    BinarySearchTree() {
+        <span class="hljs-keyword">this</span>.root = <span class="hljs-keyword">null</span>;
+    }
+
+    class TreeNode {
+        <span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>;
+        TreeNode ltn; <span class="hljs-comment">// 左结点</span>
+        TreeNode rtn; <span class="hljs-comment">// 右结点</span>
+
+        <span class="hljs-keyword">public</span> <span class="hljs-title">TreeNode</span>(<span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>) {
+            <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>;
+            <span class="hljs-keyword">this</span>.ltn = <span class="hljs-keyword">null</span>;
+            <span class="hljs-keyword">this</span>.rtn = <span class="hljs-keyword">null</span>;
+        }
+    }
+
+    <span class="hljs-keyword">void</span> create(<span class="hljs-keyword">int</span>[] arr) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+            insert(arr[i]);
+        }
+    }
+
+    <span class="hljs-keyword">void</span> insert(<span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>) {
+
+        <span class="hljs-comment">// 新增结点</span>
+        TreeNode tn = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-keyword">value</span>);
+        <span class="hljs-comment">// 当前结点</span>
+        TreeNode current = root;
+        <span class="hljs-comment">// 双亲结点</span>
+        TreeNode parent = <span class="hljs-keyword">null</span>;
+
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            root = tn;
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) {
+            parent = current;
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">value</span> &lt; current.<span class="hljs-keyword">value</span>) {
+                current = current.ltn;
+                <span class="hljs-keyword">if</span> (current == <span class="hljs-keyword">null</span>) {
+                    parent.ltn = tn;
+                    <span class="hljs-keyword">break</span>;
+                }
+            } <span class="hljs-keyword">else</span> {
+                current = current.rtn;
+                <span class="hljs-keyword">if</span> (current == <span class="hljs-keyword">null</span>) {
+                    parent.rtn = tn;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        BinarySearchTree bst = <span class="hljs-keyword">new</span> BinarySearchTree();
+
+        <span class="hljs-comment">// 注意数组值的顺序，二叉查找树的形成与结点值顺序有关</span>
+        <span class="hljs-keyword">int</span>[] arr = { <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, -<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">18</span>, <span class="hljs-number">21</span>, <span class="hljs-number">19</span>, <span class="hljs-number">25</span> };
+        bst.create(arr);
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>示例代码中 main 方法的意思是，创建 BinarySearchTree 实例，以数组的形式给出二叉查找树各结点值，调用 create 方法创建二叉查找树以实现<span class="w3-text-light-green">二叉查找树示例图</span>的存储结构：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/02.jpg" alt="Oops" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/03.jpg" alt="Oops" /></div>
+	<div><p>由于二叉查找树的遍历、单结点检索相对容易理解和实现，在此就不赘述，以下重点关注<span class="w3-text-light-green">二叉查找树的结点删除</span>操作，分 3 种情况讨论之：</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）若 TreeNode 为叶子结点，则可直接将它删除；</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）若 TreeNode 结点<span class="w3-text-light-green">只有</span>左子树或右子树，则使用左子树的根结点或右子树的根结点替代其位置，如下所示：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/04.jpg" alt="Oops" /></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）若 TreeNode 结点既有左子树又有右子树，则从<span class="w3-text-light-green">左子树的所有结点</span>中找出<span class="w3-text-light-green">最大值</span>结点（或从<span class="w3-text-light-green">右子树的所有结点</span>中找出<span class="w3-text-light-green">最小值</span>结点）并替代其位置。</p></div>
+	<div><p>对既有左子树又有右子树的结点进行删除比较复杂，现详细讨论一下：</p></div>
+	<div><p>回顾一下二叉查找树的<span class="w3-text-light-green">基本性质</span>，可知<span class="w3-text-light-green">相同数值集合</span>以<span class="w3-text-light-green">不同插入顺序</span>将产生不同的表现形式，如下所示：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/05.jpg" alt="Oops" /></div>
+	<div><p>现有数值集合<span class="w3-text-light-green">{5,19,21,25}</span>，<span class="w3-text-light-green">图 1</span>、<span class="w3-text-light-green">图 2</span>为该数值集合下二叉查找树的不同表现形式，我们可将<span class="w3-text-light-green">图 2</span>视为对<span class="w3-text-light-green">图 1</span>所做的转换，转换步骤如下所示：</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）从<span class="w3-text-light-green">图 1</span> 所示的根结点 5 的右子树中选择最小值结点（例如 19，由二叉查找树的<span class="w3-text-light-green">基本性质</span>可知该结点必无<span class="w3-text-light-green">左子树</span>，即最小值意味着必无<span class="w3-text-light-green">左子树</span>）；</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）用结点 19 替换结点 5；</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）将结点 5 作为结点 19 的左子树。</p></div>
+	<div><p>我们可以用同样的方式对拥有左、右子树的结点进行删除操作（注意<span class="w3-text-light-green">最小值意味着必无左子树</span>这句话）：</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）从待删除结点的右子树中找到最小值结点；</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）用最小值结点替代将待删除的结点，然后，右子树多出了一个副本；</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）删除该副本（副本<span class="w3-text-light-green">无左子树</span>）。</p></div>
+	<div><p>图示如下：</p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/06.jpg" alt="Oops" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/07.jpg" alt="Oops" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/08.jpg" alt="Oops" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" src="src/area_2/articles/0020/images/09.jpg" alt="Oops" /></div>
+	<div><p>示例代码：</p></div>
+	<div class="w3-example">
+		<div><p class="w3-text-black"><strong><span class="w3-text-light-green">注意：</span></strong>minTreeNodeFromRSubtree 方法与 maxTreeNodeFromLSubtree 方法二选其一，即从<span class="w3-text-light-green">右子树的所有结点</span>中找出<span class="w3-text-light-green">最小值</span>结点（或从<span class="w3-text-light-green">左子树的所有结点</span>中找出<span class="w3-text-light-green">最大值</span>结点）。</p></div>
+		<div class="w3-code" style="max-height:300px;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> BinarySearchTree {
+
+    TreeNode root;
+
+    BinarySearchTree() {
+        <span class="hljs-keyword">this</span>.root = <span class="hljs-keyword">null</span>;
+    }
+
+    class TreeNode {
+        <span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>;
+        TreeNode ltn; <span class="hljs-comment">// 左结点</span>
+        TreeNode rtn; <span class="hljs-comment">// 右结点</span>
+
+        <span class="hljs-keyword">public</span> <span class="hljs-title">TreeNode</span>(<span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>) {
+            <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>;
+            <span class="hljs-keyword">this</span>.ltn = <span class="hljs-keyword">null</span>;
+            <span class="hljs-keyword">this</span>.rtn = <span class="hljs-keyword">null</span>;
+        }
+    }
+
+    <span class="hljs-keyword">void</span> create(<span class="hljs-keyword">int</span>[] arr) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+            insert(arr[i]);
+        }
+    }
+
+    <span class="hljs-keyword">void</span> insert(<span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>) {
+
+        <span class="hljs-comment">// 新增结点</span>
+        TreeNode tn = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-keyword">value</span>);
+        <span class="hljs-comment">// 当前结点</span>
+        TreeNode current = root;
+        <span class="hljs-comment">// 双亲结点</span>
+        TreeNode parent = <span class="hljs-keyword">null</span>;
+
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            root = tn;
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) {
+            parent = current;
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">value</span> &lt; current.<span class="hljs-keyword">value</span>) {
+                current = current.ltn;
+                <span class="hljs-keyword">if</span> (current == <span class="hljs-keyword">null</span>) {
+                    parent.ltn = tn;
+                    <span class="hljs-keyword">break</span>;
+                }
+            } <span class="hljs-keyword">else</span> {
+                current = current.rtn;
+                <span class="hljs-keyword">if</span> (current == <span class="hljs-keyword">null</span>) {
+                    parent.rtn = tn;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+    }
+
+    <span class="hljs-keyword">void</span> delete(<span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>) {
+
+        <span class="hljs-comment">// 当前结点</span>
+        TreeNode current = root;
+        <span class="hljs-comment">// 双亲结点</span>
+        TreeNode parent = root;
+
+        boolean isLeftChild = <span class="hljs-keyword">false</span>;
+
+        <span class="hljs-comment">// 查找待删除结点并记录该结点的双亲结点以及该结点是位于左子树还是右子树</span>
+        <span class="hljs-keyword">while</span> (current.<span class="hljs-keyword">value</span> != <span class="hljs-keyword">value</span>) {
+            parent = current;
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">value</span> &lt; current.<span class="hljs-keyword">value</span>) {
+                isLeftChild = <span class="hljs-keyword">true</span>;
+                current = current.ltn;
+            } <span class="hljs-keyword">else</span> {
+                isLeftChild = <span class="hljs-keyword">false</span>;
+                current = current.rtn;
+            }
+            <span class="hljs-keyword">if</span> (current == <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+
+        <span class="hljs-comment">// （1）待删除结点为叶子结点的情况</span>
+        <span class="hljs-keyword">if</span> (current.ltn == <span class="hljs-keyword">null</span> &amp;&amp; current.rtn == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">if</span> (current == root) {
+                root = <span class="hljs-keyword">null</span>;
+            }
+            <span class="hljs-keyword">if</span> (isLeftChild == <span class="hljs-keyword">true</span>) {
+                parent.ltn = <span class="hljs-keyword">null</span>;
+            } <span class="hljs-keyword">else</span> {
+                parent.rtn = <span class="hljs-keyword">null</span>;
+            }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (current.rtn == <span class="hljs-keyword">null</span>) { <span class="hljs-comment">// （2）待删除结点只有左子树的情况</span>
+            <span class="hljs-keyword">if</span> (current == root) {
+                root = current.ltn;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isLeftChild) {
+                parent.ltn = current.ltn;
+            } <span class="hljs-keyword">else</span> {
+                parent.rtn = current.ltn;
+            }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (current.ltn == <span class="hljs-keyword">null</span>) { <span class="hljs-comment">// （2）待删除结点只有右子树的情况</span>
+            <span class="hljs-keyword">if</span> (current == root) {
+                root = current.rtn;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isLeftChild) {
+                parent.ltn = current.rtn;
+            } <span class="hljs-keyword">else</span> {
+                parent.rtn = current.ltn;
+            }
+
+        }
+        <span class="hljs-comment">// （3）待删除结点既有左子树又有右子树的情况</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (current.ltn != <span class="hljs-keyword">null</span> &amp;&amp; current.ltn != <span class="hljs-keyword">null</span>) {
+            TreeNode mtn = minTreeNodeFromRSubtree(current);
+            current.<span class="hljs-keyword">value</span> = mtn.<span class="hljs-keyword">value</span>;
+            mtn = <span class="hljs-keyword">null</span>; <span class="hljs-comment">// 删除副本，待 GC 回收</span>
+        }
+    }
+
+    TreeNode maxTreeNodeFromLSubtree(TreeNode current) {
+
+        TreeNode parent = current;
+        TreeNode mtn = parent.ltn;
+
+        <span class="hljs-keyword">if</span> (mtn.rtn == <span class="hljs-keyword">null</span>) { <span class="hljs-comment">// 最大值结点就是待删除结点的左子树头结点</span>
+            parent.ltn = mtn.ltn;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">while</span> (mtn.rtn != <span class="hljs-keyword">null</span>) {
+                parent = mtn;
+                mtn = mtn.rtn;
+            }
+            parent.rtn = mtn.ltn; <span class="hljs-comment">// 将最大值结点的左子树移动到副本位置</span>
+        }
+        <span class="hljs-keyword">return</span> mtn;
+    }
+
+    TreeNode minTreeNodeFromRSubtree(TreeNode current) {
+
+        TreeNode parent = current;
+        TreeNode mtn = parent.rtn;
+
+        <span class="hljs-keyword">if</span> (mtn.ltn == <span class="hljs-keyword">null</span>) { <span class="hljs-comment">// 最小值结点就是待删除结点的右子树头结点</span>
+            parent.rtn = mtn.rtn;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">while</span> (mtn.ltn != <span class="hljs-keyword">null</span>) {
+                parent = mtn;
+                mtn = mtn.ltn;
+            }
+            parent.ltn = mtn.rtn; <span class="hljs-comment">// 将最小值结点的右子树移动到副本位置</span>
+        }
+        <span class="hljs-keyword">return</span> mtn;
+    }
+
+    TreeNode search(<span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span>) {
+        TreeNode current = root;
+        <span class="hljs-keyword">while</span> (current != <span class="hljs-keyword">null</span> &amp;&amp; <span class="hljs-keyword">value</span> != current.<span class="hljs-keyword">value</span>) {
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">value</span> &lt; current.<span class="hljs-keyword">value</span>) {
+                current = current.ltn;
+            } <span class="hljs-keyword">else</span> {
+                current = current.rtn;
+            }
+        }
+        <span class="hljs-keyword">return</span> current;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        BinarySearchTree bst = <span class="hljs-keyword">new</span> BinarySearchTree();
+
+        <span class="hljs-comment">// 注意数组值的顺序，二叉查找树的形成与结点值顺序有关</span>
+        <span class="hljs-keyword">int</span>[] arr = { <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, -<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">12</span>, <span class="hljs-number">21</span>, <span class="hljs-number">9</span>, <span class="hljs-number">25</span>, <span class="hljs-number">19</span> };
+        bst.create(arr);
+
+        bst.delete(<span class="hljs-number">12</span>);
+    }
+}</code></pre>
+			</div>
+		</div>
+	</section>
+	<div id="sec2"><p style="height:44px;border:1px solid rgba(255,255,255,0.6);line-height:44px;text-align:center">二叉查找树的缺陷</p></div>
+	<section>
+		<div><p class="w3-text-light-green">二、二叉查找树的缺陷：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/10.jpg" alt="Oops" /></div>
+		<div><p>显而易见，二叉查找树的缺陷在于，如果创建二叉查找树所使用的数值集合自身已经排好顺序（从小到大或从大到小），那么使用该数值集合生成的最终二叉查找树就会是<span class="w3-text-light-green">跛脚鸭</span>结构（虽然上图给出的示例是比较极端，但缺陷总是存在的）。这种缺陷如何修复呢？<span class="w3-text-light-green">红黑树</span>则呼之欲出。</p></div>
+	</section>
+	<div id="sec3"><p style="height:44px;border:1px solid rgba(255,255,255,0.6);line-height:44px;text-align:center">改进版本之红黑树</p></div>
+		<div><p class="w3-text-light-green">三、改进版本之红黑树：</p></div>
+		<div><p>红黑树是二叉查找树的一种变体，它的每个结点颜色是非红即黑，以下列出红黑树的性质：</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）红黑树必须是一棵二叉查找树，即满足所有二叉查找树具有的性质；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）根结点必须是黑色；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）红色结点的子结点必须是黑色（不能有两个连续的红色结点）；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（4）当前结点至叶子结点的所有路径里，黑色结点的个数必须相同；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（5）新插入的结点必须以红色标识。</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/11.jpg" alt="Oops" /><div style="background-color:white;color:black;text-align:center;padding-bottom:15px">红黑树示例图</div></div>
+		<div><p class="w3-text-red">红黑树的插入：</p></div>
+		<div><p>由红黑树的性质可知，每一个新插入的结点必须以红色标识，它的插入操作与二叉查找树的插入操作相似，区别在于插入红黑树的结点具有颜色属性。每当红黑树的插入操作完成之后，我们需要检查它是否还满足红黑树的所有性质，如果不满足的话，我们需要执行以下操作直至它重新成为一棵红黑树：</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">1. </span>再着色</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">2. </span>旋转再着色</p></div>
+		<div><p>红黑树的插入操作执行步骤如下所示：</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">（1）</span>检查树是否为空；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">（2）</span>如果树为空，则将新插入的结点作为根结点并以黑色标识，退出操作；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">（3）</span>如果树不为空，则将新插入的结点作为叶子结点并以红色标识；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">（4）</span>如果新结点的双亲结点为黑色，则退出操作；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">（5）</span>如果新结点的双亲结点为红色，则检查其双亲结点之兄弟结点的颜色；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">（6）</span>如果它是黑色或空，则进行适当旋转再着色；</p></div>
+		<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="w3-text-red">（7）</span>如果它是红色结点，则执行再着色和再检查，重复执行相同操作直至该树成为一棵红黑树。</p></div>
+		<div><p>现通过插入以下数值序列创建一棵红黑树进行相应的示例演示：</p></div>
+		<div><p class="w3-text-red" style="text-align:center">8,18,5,15,17,25,40,80</p></div>
+		<div><p>由于示例演示的过程中会用到旋转，因此，先给出旋转示意图：</p></div>
+		<div>
+			<p><strong><span class="w3-text-light-green">左旋（L Rotate）：</span></strong>左旋的过程是将 X 的右子树绕 X 逆时针旋转，使 X 右子树的根结点成为 X 的双亲结点，同时修改相关结点的引用，旋转之后的树依然满足二叉查找树的性质。</p>
+			<img class="w3-width" src="src/area_2/articles/0020/images/20.jpg" alt="Oops" />
+		</div>
+		<div>
+			<p><strong><span class="w3-text-light-green">右旋（R Rotate）：</span></strong>右旋的过程是将 X 的左子树绕 X 顺时针旋转，使 X 左子树的根结点成为 X 的双亲结点，同时修改相关结点的引用，旋转之后的树依然满足二叉查找树的性质。</p>
+			<img class="w3-width" src="src/area_2/articles/0020/images/21.jpg" alt="Oops" />
+		</div>
+		<div><p class="w3-text-red">插入（8）</p></div>
+		<div><p>树为空，因此将新插入的结点作为根结点并以黑色标识：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/12.jpg" alt="Oops" /></div>
+		<div><p class="w3-text-red">插入（18）</p></div>
+		<div><p>树非空，则将新插入的结点作为叶子结点并以红色标识：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/13.jpg" alt="Oops" /></div>
+		<div><p class="w3-text-red">插入（5）</p></div>
+		<div><p>树非空，则将新插入的结点作为叶子结点并以红色标识：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/14.jpg" alt="Oops" /></div>
+		<div><p class="w3-text-red">插入（15）</p></div>
+		<div><p>树非空，则将新插入的结点作为叶子结点并以红色标识：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/15.jpg" alt="Oops" /></div>
+		<div><p class="w3-text-red">插入（17）</p></div>
+		<div><p>树非空，则将新插入的结点作为叶子结点并以红色标识：</p></div>
+		<div>
+			<img class="w3-width" src="src/area_2/articles/0020/images/16.jpg" alt="Oops" />
+			<p style="text-align:center"><strong>注意：</strong>LR 旋转理解为先<span class="w3-text-light-green">以结点 15 为中心</span>进行左旋转再<span class="w3-text-light-green">以结点 18 为中心</span>进行右旋转</p>	
+		</div>
+		<div><p class="w3-text-red">插入（25）</p></div>
+		<div><p>树非空，则将新插入的结点作为叶子结点并以红色标识：</p></div>
+		<div><img class="w3-width" src="src/area_2/articles/0020/images/17.jpg" alt="Oops" /></div>
+		<div><p class="w3-text-red">插入（40）</p></div>
+		<div><p>树非空，则将新插入的结点作为叶子结点并以红色标识：</p></div>
+		<div>
+			<div><img class="w3-width" src="src/area_2/articles/0020/images/18.jpg" alt="Oops" /></div>
+			<p style="text-align:center"><strong>注意：</strong>LL 旋转理解为<span class="w3-text-light-green">以结点 18 为中心</span>进行左旋转</p>
+		</div>
+		<div><p class="w3-text-red">插入（80）</p></div>
+		<div><p>树非空，则将新插入的结点作为叶子结点并以红色标识：</p></div>
+		<div>
+			<img class="w3-width" src="src/area_2/articles/0020/images/19.jpg" alt="Oops" />
+			<p style="text-align:center"><strong>注意：</strong>左旋转理解为<span class="w3-text-light-green">以结点 8 为中心</span>进行左旋转</p>
+		</div>
+		<div><p>最后总结，在整理该篇文章的时候，博主才意识到红黑树这种经典的数据结构诞生于 1972 年，像这种古董式的东西理解起来自然是相当花时间，至于红黑树之 Java 语言的实现就不贴出来了，有时间还是阅读一下 <span class="w3-text-light-green">TreeMap 的实现</span>，以理解为主，避免重复造轮子。</p></div>
+	<section>
+		<div><p>
+			<strong>参考资料：</strong>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.algolist.net/Data_structures/Binary_search_tree/Removal">http://www.algolist.net/Data_structures/Binary_search_tree/Removal</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://btechsmartclass.com/DS/U5_T4.html">http://btechsmartclass.com/DS/U5_T4.html</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://www.cnblogs.com/CarpenterLee/p/5503882.html">https://www.cnblogs.com/CarpenterLee/p/5503882.html</a>
+		</p></div>
+	</section>
+</article>

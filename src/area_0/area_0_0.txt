@@ -144,8 +144,21 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017.05.27</h4>
+			<p><strong>深入理解红黑树（red-black tree）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在整理 HashMap 相关知识点的时候，博主就曾碰到过<span class="w3-text-light-green">红黑树</span>，当时浮现在大脑里的树不仅有它，还有哈夫曼树、二叉查找树、B_树，甚至是苹果树，然而，在职场上几经摸爬滚打之后，博主已忘记了这些树原本的模样，真是岁月不饶人。</P>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现打算重温学生时代的记忆和印象，找回过去的那个懂得许多树的我，这么说还是比较浮夸的，从现实出发就是，在将要整理出 TreeMap 知识点的时候，博主又遭遇了 <span class="w3-text-light-green">A Red-Black tree</span>，实属缘分之不易。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0020/0020.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017.05.19</h4>
-			<p><strong>Java 集合类：HashMap 续篇</strong></p>
+			<p><strong>Java 集合类：LinkedHashMap</strong></p>
 			<div class="w3-container w3-light-gray">
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table and linked list implementation of the Map interface, with predictable iteration order. This implementation differs from HashMap in that it maintains a doubly-linked list running through all of its entries...</P>

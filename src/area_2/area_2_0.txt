@@ -106,13 +106,13 @@
 </article>
 <hr style="border: none; border-top: 1px dotted white;">
 <article>
-	<div><p><strong>Java 集合类：LinkedHashMap</strong></p><p class="w3-right">2017-05-19</p></div>
+	<div><p><strong>深入理解红黑树（red-black tree）</strong></p><p class="w3-right">2017-05-27</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
 		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table and linked list implementation of the Map interface, with predictable iteration order. This implementation differs from HashMap in that it maintains a doubly-linked list running through all of its entries...</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于 Map 接口的哈希表和链表实现，具有可预测的迭代顺序，与 HashMap 的不同之处在于，它对所有的 entry 操作都是基于双向链表完成的（LinkedHashMap&lt;K,V&gt; extends <span class="w3-text-light-green">HashMap&lt;K,V&gt;</span> implements Map&lt;K,V&gt;）……</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在整理 HashMap 相关知识点的时候，博主就曾碰到过<span class="w3-text-light-green">红黑树</span>，当时浮现在大脑里的树不仅有它，还有哈夫曼树、二叉查找树、B_树，甚至是苹果树，然而，在职场上几经摸爬滚打之后，博主已忘记了这些树原本的模样，真是岁月不饶人。</P>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现打算重温学生时代的记忆和印象，找回过去的那个懂得许多树的我，这么说还是比较浮夸的，从现实出发就是，在将要整理出 TreeMap 知识点的时候，博主又遭遇了 <span class="w3-text-light-green">A Red-Black tree</span>，实属缘分之不易。</p>
 	</div>
 	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/18.txt',id:'prevtonext'},{url:'src/area_2/articles/0019/0019.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/19.txt',id:'prevtonext'},{url:'src/area_2/articles/0020/0020.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
