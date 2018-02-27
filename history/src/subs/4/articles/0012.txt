@@ -2,7 +2,6 @@
 	<div><header class="w3-header"><p>HTTP 和 HTTPS 的区别？</p></header></div>
 	<div>
 		<p>答疑解惑：HTTPS 是一种基于 SSL/TLS 的 HTTP 协议，所有的 HTTP 数据都是在 SSL/TLS 协议封装之上传输的。HTTPS 协议在 HTTP 协议的基础上，添加了 SSL/TLS 握手以及数据加密传输，也属于应用层协议。</p>
-		<p>外部跳转实际上是第一次请求后，服务器端向客户端发送了一条指令，让客户端再次请求了一次服务器端，这个时候服务器第二次拿到的 Request 对象已经不是第一次请求的 Request 对象了，所以外部跳转无法获取到第一次请求里的参数和属性。</p>
 		<div class="w3-responsive">
 			<table class="w3-table w3-bordered w3-white">
 				<tbody>
