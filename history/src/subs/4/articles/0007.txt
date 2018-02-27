@@ -1,0 +1,10 @@
+<article>
+	<div><header class="w3-header"><p>遇到 OOM（内存溢出）问题该如何处理？</p></header></div>
+	<div>
+		<p>首先，要搞清 OOM（内存溢出）的分类：</p>
+		<p>OOM 主要分为 3 类，即 <span class="w3-text-light-green">PermGen OOM</span>、<span class="w3-text-light-green">Heap OOM</span> 以及 <span class="w3-text-light-green">Stack Overflow</span> 。</p>
+		<p>PermGen OOM：这个主要是由于加载的类太多或反射的类太多，还有调用 String.intend（jdk7 之前）也会造成这个问题；</p>
+		<p>Heap OOM：主要是因为一些无用对象没有及时释放造成的，检查代码，抓取 heap dump 进行分析，推荐使用 <span class="w3-text-light-green">Eclipse Memory Analyzer 内存分析工具</span>；</p>
+		<p>Stack Overflow：这个主要是由于调用层数或递归深度太大造成的，看异常信息基本上就能定位得出来。</p>
+	</div>
+</article>

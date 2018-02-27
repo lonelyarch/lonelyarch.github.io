@@ -1,0 +1,6 @@
+<article>
+	<div><header class="w3-header"><p>分布式系统之事务一致性解决方案？</p></header></div>
+	<div>
+		<p>答疑解惑：<a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/solution-of-distributed-system-transaction-consistency">分布式系统之事务一致性解决方案</a>。</p>
+	</div>
+</article>

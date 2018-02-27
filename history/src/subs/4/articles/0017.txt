@@ -1,0 +1,6 @@
+<article>
+	<div><header class="w3-header"><p>有 3 个线程 A、B、C，按照 A、B、C 运行（A 线程输出 A，B 线程输出 B，C 线程输出 C，以此类推，循环输出）？</p></header></div>
+	<div>
+		<p>用 Reentrantlock，用它的 newCondition() 方法创建 3 个 condition，按顺序调用 condition 的 await 和 signal 方法即可实现，具体看 <a target="_blank" class="w3-link" href="http://www.cnblogs.com/xiaoxi/p/7651360.html">Reentrantlock 和 Condition 讲解</a>。</p>
+	</div>
+</article>

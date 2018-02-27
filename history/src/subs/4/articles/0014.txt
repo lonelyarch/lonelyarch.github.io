@@ -1,0 +1,6 @@
+<article>
+	<div><header class="w3-header"><p>如何处理日志问题？有那些可行的方案？</p></header></div>
+	<div>
+		<p>答疑解惑：<a target="_blank" class="w3-link" href="http://www.infoq.com/cn/news/2015/09/BookKeeper-Twitter">Twitter 是如何构建高性能分布式日志的</a>、<a target="_blank" class="w3-link" href="http://blog.jobbole.com/96823/">Logstash 实践：分布式系统的日志监控</a>。</p>
+	</div>
+</article>

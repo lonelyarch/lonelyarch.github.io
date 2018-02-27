@@ -1,0 +1,7 @@
+<article>
+	<div><header class="w3-header"><p>Linux 下如何查看/监控 JVM 内存？</p></header></div>
+	<div>
+		<p>本地（带图形环境）：JVisualVM；</p>
+		<p>线上（无图形环境）：看总内存用 top，看详细信息使用 jmap dump 进行分析。</p>
+	</div>
+</article>

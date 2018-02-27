@@ -1,0 +1,21 @@
+<article>
+	<div><header class="w3-header"><p>负载均衡的原理？</p></header></div>
+	<div>
+		<p>负载均衡分为硬件和软件两种（负载均衡的原理牵扯到操作系统底层，简单了解）：</p>
+		<div class="w3-responsive">
+			<table class="w3-table w3-bordered w3-white">
+				<tbody>
+					<tr>
+				      <th style="width:30%">硬件层</th>
+				      <th style="width:70%">软件层</th>
+				    </tr>
+				    <tr>
+				      <td>硬件层的比较牛逼，将 4-7 层负载均衡功能做到一个硬件里面，例如 F5 。</td>
+				      <td>目前主流的软件负载均衡分为四层和七层：<br />LVS 属于四层负载均衡，工作在 TCP/IP 协议栈上，通过修改网络包的 IP 地址和端口来转发，由于效率比七层高，一般放在架构的前端；<br />七层的负载均衡有 Nginx、Haproxy、Apache 等，工作在应用层，因此可以将 HTTP 请求等应用数据发送到具体的应用服务器，例如将图片请求转发到特定的服务器上，总之可以做到更智能的负载均衡，这些功能在四层负载均衡上不好实现，一般放在架构的后面位置，布置在应用服务器之前。</td>
+				    </tr>
+				</tbody>
+			</table>
+		</div>
+		<p></p>
+	</div>
+</article>

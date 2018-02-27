@@ -1,0 +1,16 @@
+<article>
+	<div><header class="w3-header"><p>如何解决浏览器兼容性问题？</p></header></div>
+	<div>
+		<p>答疑解惑：</p>
+		<p>（1）使用 <span class="w3-text-light-green">normalize.css</span> 抹平不同浏览器的默认样式差异，当然，也可定制属于自己业务的 <span class="w3-text-light-green">reset.css</span> 。</p>
+		<p>（2）使用 <span class="w3-text-light-green">html5shiv.js</span> 解决 <span class="w3-text-light-green">ie9</span> 以下浏览器对 html5 新增标签不识别问题。</p>
+		<p>（3）使用 <span class="w3-text-light-green">respond.js</span> 解决 <span class="w3-text-light-green">ie9</span> 以下浏览器对 <span class="w3-text-light-green">CSS3 Media Query</span> 新增标签不识别问题。（4）使用 <span class="w3-text-light-green">picturefill.js</span> 解决 <span class="w3-text-light-green">ie9、ie10、ie11</span> 等浏览器不支持 <span class="w3-text-light-green">&lt;picture&gt;</span> 问题。</p>
+		<p>（4）<span class="w3-text-light-green">a 标签</span>的几种 CSS 状态之顺序：love hate，即 link、visited、hover、active。</p>
+		<p>（5）BFC（Block Formatting Context，块级格式上下文）解决边距重叠问题：当相邻元素都设置了 margin 边距时，margin 将取最值而舍弃小值，即<span class="w3-text-light-green">产生塌陷</span>。为了不让边距重叠，可以给子元素加一个父元素，并设置该父元素为 <span class="w3-text-light-green">overflow: hidden;</span> 。</p>
+		<div>
+			<p>（6）解决 ie9 以下浏览器不能使用 opacity 问题：</p>
+			<ul style="list-style:none"><li><p>opacity: 0.5;</p></li><li><p>filter: alpha(opacity = 50);</p></li><li><p>filter: progid:DXImageTransform.Microsoft.Alpha(style = 0, opacity = 50);</p></li></ul>
+		</div>
+		<p>（7）<a target="_blank" class="w3-link" href="http://www.lovebxm.com/2017/08/28/compatibility/">……</a></p>
+	</div>
+</article>

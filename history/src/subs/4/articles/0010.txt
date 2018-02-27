@@ -1,0 +1,7 @@
+<article>
+	<div><header class="w3-header"><p>AJAX 是否能够进行跨域请求，解决办法是什么？</p></header></div>
+	<div>
+		<p>可以。JSONP（JSON with Padding）是一个非官方协议，它允许在服务器端集成 Script tags 返回至客户端，通过 JavaScript Callback 的形式实现跨域访问（这仅仅是 JSONP 简单的实现形式）。</p>
+		<p>由于受同源策略的限制，XmlHttpRequest 只允许请求当前源（<span class="w3-text-light-green">协议、域名、端口</span>）的资源，为了实现跨域请求，可以通过 script 标签实现跨域请求，然后在服务端输出 JSON 数据并执行回调函数，从而解决跨域的数据请求。</p>
+	</div>
+</article>

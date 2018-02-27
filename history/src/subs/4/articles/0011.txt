@@ -1,0 +1,34 @@
+<article>
+	<div><header class="w3-header"><p>内、外部跳转的区别以及底层之实现原理？</p></header></div>
+	<div>
+		<p>内部跳转实际上是通过服务器端将请求转发到另外的页面或 Servlet 中，这个时候跳转到的目标页面或 Servlet 可以获取到请求对象，也可以获取到请求中的属性和参数。</p>
+		<p>外部跳转实际上是第一次请求后，服务器端向客户端发送了一条指令，让客户端再次请求了一次服务器端，这个时候服务器第二次拿到的 Request 对象已经不是第一次请求的 Request 对象了，所以外部跳转无法获取到第一次请求里的参数和属性。</p>
+		<div class="w3-responsive">
+			<table class="w3-table w3-bordered w3-white">
+				<tbody>
+					<tr>
+				      <th>NO.</th>
+				      <th>内部跳转</th>
+				      <th>外部跳转</th>
+				    </tr>
+				    <tr>
+				      <td>1.</td>
+				      <td>内部跳转时 URL 地址栏不会发生变化</td>
+				      <td>外部跳转时 URL 地址栏则会发生变化</td>
+				    </tr>
+				    <tr>
+				      <td>2.</td>
+				      <td>内部跳转时无法跳转到工程以外的 JSP 或 Servlet</td>
+				      <td>外部跳转则可以</td>
+				    </tr>
+				    <tr>
+				      <td>3.</td>
+				      <td>内部跳转实现的方法：<br />request.getRequestDispatcher(...).forward(request, response)</td>
+				      <td>外部跳转实现的方法：<br />response.sendRedirect(...)</td>
+				    </tr>
+				</tbody>
+			</table>
+		</div>
+		<p></p>
+	</div>
+</article>

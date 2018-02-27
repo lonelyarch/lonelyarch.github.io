@@ -1,0 +1,11 @@
+<article>
+	<div><header class="w3-header"><p>简述大表数据的优化思路？</p></header></div>
+	<div>
+		<p>1. 优化 SQL 查询和索引；</p>
+		<p>2. 配置缓存，memcached，redis；</p>
+		<p>3. 主从复制做读写分离；</p>
+		<p>4. 使用 MySQL 自带分区表；</p>
+		<p>5. 数据库切分，包括垂直切分和水平切分。</p>
+		<p>总而言之，分区、分表成本较高，应该是最后才考虑的措施。更多详情<a target="_blank" class="w3-link" href="https://www.zhihu.com/question/19719997">戳这里</a>。</p>
+	</div>
+</article>
