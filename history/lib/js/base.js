@@ -31,8 +31,8 @@ function w3_close_all_nav() {
 (function() {
     var x, i, m;
     m = document.getElementById("sidenav");
+    if(m == null) return;
     x = m.getElementsByTagName("a");
-    i;
     for (i = 0; i < x.length; i++) {
         if (document.location.href.indexOf(x[i].href) >= 0) {
             x[i].className = "active";
