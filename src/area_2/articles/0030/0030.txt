@@ -1,0 +1,363 @@
+<article>
+	<div><p><strong>Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</strong></p><p class="w3-right w3-margin-0">2017-10-22</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在整理 ConcurrentHashMap 相关知识点时的基本思路是，先列出 HashMap 在并发环境里存在的问题，再引出 ConcurrentHashMap，以不失文章的完整性。原本打算抛出 HashMap 死循环（infinite loop）这个经典问题，但几经折腾之后才意识到，该问题多存在于 JDK1.7 环境，在 JDK1.8 环境下却难以产生，这是为什么？现给出 JDK1.7、JDK1.8 里 HashMap 相关源码的分析过程。</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：为了维持 <span class="w3-text-gray">Java 并发编程系列</span>的连续性，于是才把该篇文章归在了 <span class="w3-text-gray">Java 并发编程系列</span>。</P>
+	</div>
+	<div><p><strong>预备知识：</strong>什么是单链表的头插法、尾插法？</p></div>
+	<div>
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0030/images/01.jpg" />
+		<p style="text-align:center"><span class="w3-text-light-green">头插法</span>建立<span class="w3-text-light-green">单链表</span>图示</p>
+	</div>
+	<div>
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0030/images/02.jpg" />
+		<p style="text-align:center"><span class="w3-text-light-green">尾插法</span>建立<span class="w3-text-light-green">单链表</span>图示</p>
+	</div>
+	<div><P>一、JDK1.7 环境下的无限循环之根因分析：</P></div>
+	<div><p>在众多介绍 JDK1.7 环境下 HashMap 死循环的文章里，基本都列出了多线程中形成<span class="w3-text-light-green">闭环链表</span>的过程，却少有提及 HashMap 的插入方式是导致死循环现象的罪魁祸首，现简要分析之：</p></div>
+	<div class="w3-example">
+		<div><p style="color:black"><span style="color:#8bc34a">源码分析：</span>重点关注 HashMap 是以何种插入方式创建单链表的</p></div>
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> V <span class="hljs-title">put</span>(K key, V <span class="hljs-keyword">value</span>) {
+    <span class="hljs-keyword">if</span> (table == EMPTY_TABLE) {
+        inflateTable(threshold);
+    }
+    <span class="hljs-keyword">if</span> (key == <span class="hljs-keyword">null</span>)
+        <span class="hljs-keyword">return</span> putForNullKey(<span class="hljs-keyword">value</span>);
+    <span class="hljs-keyword">int</span> hash = hash(key);
+    <span class="hljs-comment">// 计算新添元素在 table 数组里的索引位置，进而存入对应的 bucket 中</span>
+    <span class="hljs-keyword">int</span> i = indexFor(hash, table.length);
+    <span class="hljs-comment">// 该 for 循环的意思是对重复 key 键的处理，众所周知，HashMap 不允许存入相同 key 键</span>
+    <span class="hljs-keyword">for</span> (Entry&lt;K,V&gt; e = table[i]; e != <span class="hljs-keyword">null</span>; e = e.next) {
+        Object k;
+        <span class="hljs-keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) {
+            V oldValue = e.<span class="hljs-keyword">value</span>;
+            e.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>;
+            e.recordAccess(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">return</span> oldValue;
+        }
+    }
+
+    modCount++;
+    addEntry(hash, key, <span class="hljs-keyword">value</span>, i); <span class="hljs-comment">// 调用新增元素方法</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+}
+---------------------------------------------------------------
+<span class="hljs-keyword">void</span> addEntry(<span class="hljs-keyword">int</span> hash, K key, V <span class="hljs-keyword">value</span>, <span class="hljs-keyword">int</span> bucketIndex) {
+    <span class="hljs-comment">// 判断是否需要扩容</span>
+    <span class="hljs-keyword">if</span> ((size &gt;= threshold) &amp;&amp; (<span class="hljs-keyword">null</span> != table[bucketIndex])) {
+        resize(<span class="hljs-number">2</span> * table.length);
+        hash = (<span class="hljs-keyword">null</span> != key) ? hash(key) : <span class="hljs-number">0</span>;
+        bucketIndex = indexFor(hash, table.length);
+    }
+    <span class="hljs-comment">// 创建元素，重点关注该方法以明确插入方式</span>
+    createEntry(hash, key, <span class="hljs-keyword">value</span>, bucketIndex);
+}
+---------------------------------------------------------------
+<span class="hljs-keyword">void</span> createEntry(<span class="hljs-keyword">int</span> hash, K key, V <span class="hljs-keyword">value</span>, <span class="hljs-keyword">int</span> bucketIndex) {
+    Entry&lt;K,V&gt; e = table[bucketIndex]; <span class="hljs-comment">// e 为 bucket 头结点元素</span>
+    <span class="hljs-comment">// 将新增元素放入 bucket 头结点位置，新增元素的 next 属性指向原头结点元素，即显而易见为头插法</span>
+    table[bucketIndex] = <span class="hljs-keyword">new</span> Entry&lt;&gt;(hash, key, <span class="hljs-keyword">value</span>, e);
+    size++;
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Entry</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-inheritance"><span class="hljs-keyword">implements</span></span> <span class="hljs-title">Map</span>.<span class="hljs-title">Entry</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; {</span>
+    <span class="hljs-keyword">final</span> K key;
+    V value;
+    Entry&lt;K,V&gt; next;
+    <span class="hljs-keyword">int</span> hash;
+
+    <span class="hljs-comment">/**
+     * Creates new entry.
+     */</span>
+    Entry(<span class="hljs-keyword">int</span> h, K k, V v, Entry&lt;K,V&gt; n) {
+        value = v;
+        next = n;
+        key = k;
+        hash = h;
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>根据 JDK1.7 环境下的 HashMap 源码分析可知，它是以<span class="w3-text-light-green">头插法</span>创建单链表的，为了验证该结论，给出如下图示：</p></div>
+	<div>
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0030/images/03.jpg" />
+		<p style="text-align:center">注意：put 顺序为<span class="w3-text-light-green">北京、上海、广州</span>，链表顺序为<span class="w3-text-light-green">广州、上海、北京</span>（为了增加索引位置冲突，指定 HashMap 的大小为 2）</p>
+	</div>
+	<div><p>沿用上述分析过程，再重点关注一下调用 resize 方法时 HashMap 创建单链表所使用的插入方式，源码分析如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">void</span> resize(<span class="hljs-keyword">int</span> newCapacity) {
+    Entry[] oldTable = table;
+    <span class="hljs-keyword">int</span> oldCapacity = oldTable.length;
+    <span class="hljs-comment">// 已达到容量上线，则不扩容，只修改阈值</span>
+    <span class="hljs-keyword">if</span> (oldCapacity == MAXIMUM_CAPACITY) {
+        threshold = Integer.MAX_VALUE;
+        <span class="hljs-keyword">return</span>;
+    }
+
+    Entry[] newTable = <span class="hljs-keyword">new</span> Entry[newCapacity];
+    <span class="hljs-comment">// 重点关注该方法</span>
+    transfer(newTable, initHashSeedAsNeeded(newCapacity));
+    table = newTable;
+    threshold = (<span class="hljs-keyword">int</span>)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + <span class="hljs-number">1</span>);
+}
+
+<span class="hljs-keyword">void</span> transfer(Entry[] newTable, <span class="hljs-keyword">boolean</span> rehash) {
+    <span class="hljs-keyword">int</span> newCapacity = newTable.length;
+    <span class="hljs-keyword">for</span> (Entry&lt;K,V&gt; e : table) {
+        <span class="hljs-keyword">while</span>(<span class="hljs-keyword">null</span> != e) {
+            Entry&lt;K,V&gt; next = e.next;
+            <span class="hljs-keyword">if</span> (rehash) {
+                e.hash = <span class="hljs-keyword">null</span> == e.key ? <span class="hljs-number">0</span> : hash(e.key);
+            }
+            <span class="hljs-keyword">int</span> i = indexFor(e.hash, newCapacity);
+            e.next = newTable[i]; <span class="hljs-comment">// e.next 指向原 bucket 头结点，即原单链表头结点</span>
+            newTable[i] = e; <span class="hljs-comment">// 原 bucket 头结点的位置指向 e，即显而易见为头插法</span>
+            e = next;
+        }
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div>
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0030/images/04.jpg" />
+		<p style="text-align:center"><span class="w3-text-light-green">JDK1.7 环境下</span>调用 resize 方法的结果示意图（注意扩容前后 <span class="w3-text-light-green">Node A、Node B、Node D</span> 的顺序）</p>
+	</div>
+	<div><P>由上述示意图可知，扩容前后 <span class="w3-text-light-green">Node A、Node B、Node C</span> 的顺序是相反的，这恰是<span class="w3-text-light-green">头插法</span>导致的结果，在多线程环境下，这种以<span class="w3-text-light-green">头插法</span>方式创建单链表容易造成<span class="w3-text-light-green">链表闭环</span>，进而导致在调用 get 方法时会出现死循环现象。</P></div>
+	<div><P>二、JDK1.8 环境下的源码分析之规避方法：</P></div>
+	<div class="w3-example">
+		<div><p style="color:black"><span style="color:#8bc34a">源码分析：</span>重点关注 HashMap 是以何种插入方式创建单链表的</p></div>
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> V <span class="hljs-title">put</span>(K key, V <span class="hljs-keyword">value</span>) {
+    <span class="hljs-keyword">return</span> putVal(hash(key), key, <span class="hljs-keyword">value</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>);
+}
+
+final V putVal(<span class="hljs-keyword">int</span> hash, K key, V <span class="hljs-keyword">value</span>, boolean onlyIfAbsent,
+               boolean evict) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="hljs-keyword">int</span> n, i;
+    <span class="hljs-keyword">if</span> ((tab = table) == <span class="hljs-keyword">null</span> || (n = tab.length) == <span class="hljs-number">0</span>)
+        n = (tab = resize()).length;
+    <span class="hljs-comment">// 判断相应的 bucket 头结点是否为空，若为空，则直接添加新结点</span>
+    <span class="hljs-comment">// (p = tab[i = (n - 1) &amp; hash])，即相应索引位置下的 bucket 头结点</span>
+    <span class="hljs-keyword">if</span> ((p = tab[i = (n - <span class="hljs-number">1</span>) &amp; hash]) == <span class="hljs-keyword">null</span>)
+        tab[i] = newNode(hash, key, <span class="hljs-keyword">value</span>, <span class="hljs-keyword">null</span>);
+    <span class="hljs-comment">// 新结点将存储在单链表中或红黑树中（如果 key 值不重复）</span>
+    <span class="hljs-keyword">else</span> {
+        Node&lt;K,V&gt; e; K k;
+        <span class="hljs-comment">// key 值重复时的处理</span>
+        <span class="hljs-keyword">if</span> (p.hash == hash &amp;&amp;
+            ((k = p.key) == key || (key != <span class="hljs-keyword">null</span> &amp;&amp; key.equals(k))))
+            e = p;
+        <span class="hljs-comment">// key 值不重复，则判断 bucket 头结点是否为红黑树中的元素</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (p instanceof TreeNode)
+            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(<span class="hljs-keyword">this</span>, tab, hash, key, <span class="hljs-keyword">value</span>);
+        <span class="hljs-comment">// key 值不重复，则判断 bucket 头结点必定是单链表中的元素</span>
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> binCount = <span class="hljs-number">0</span>; ; ++binCount) {
+                <span class="hljs-keyword">if</span> ((e = p.next) == <span class="hljs-keyword">null</span>) { <span class="hljs-comment">// 重点关注该语句判断，易于得出采用尾插法创建单链表</span>
+                    p.next = newNode(hash, key, <span class="hljs-keyword">value</span>, <span class="hljs-keyword">null</span>);
+                    <span class="hljs-comment">// 若 binCount &gt;= TREEIFY_THRESHOLD - 1 为 true，则将单链表转换为红黑树</span>
+                    <span class="hljs-comment">// 以 TREEIFY_THRESHOLD 默认值为例，即新添加元素之后，单链表长度大于等于 8</span>
+                    <span class="hljs-comment">// binCount 为 7，再加上头结点</span>
+                    <span class="hljs-keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD - <span class="hljs-number">1</span>) <span class="hljs-comment">// -1 for 1st</span>
+                        treeifyBin(tab, hash); <span class="hljs-comment">// 将单链表转换为红黑树</span>
+                    <span class="hljs-keyword">break</span>;
+                }
+                <span class="hljs-comment">// key 重复时的处理</span>
+                <span class="hljs-keyword">if</span> (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != <span class="hljs-keyword">null</span> &amp;&amp; key.equals(k))))
+                    <span class="hljs-keyword">break</span>;
+                p = e;
+            }
+        }
+        <span class="hljs-keyword">if</span> (e != <span class="hljs-keyword">null</span>) { <span class="hljs-comment">// existing mapping for key</span>
+            V oldValue = e.<span class="hljs-keyword">value</span>;
+            <span class="hljs-keyword">if</span> (!onlyIfAbsent || oldValue == <span class="hljs-keyword">null</span>)
+                e.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>;
+            afterNodeAccess(e);
+            <span class="hljs-keyword">return</span> oldValue;
+        }
+    }
+    ++modCount;
+    <span class="hljs-keyword">if</span> (++size &gt; threshold)
+        resize();
+    afterNodeInsertion(evict);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">final</span> Node&lt;K,V&gt;[] resize() {
+    Node&lt;K,V&gt;[] oldTab = table;
+    <span class="hljs-keyword">int</span> oldCap = (oldTab == <span class="hljs-keyword">null</span>) ? <span class="hljs-number">0</span> : oldTab.length;
+    <span class="hljs-keyword">int</span> oldThr = threshold;
+    <span class="hljs-keyword">int</span> newCap, newThr = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// oldCap 为原 table 数组大小，即该 if 语句为容量判断</span>
+    <span class="hljs-keyword">if</span> (oldCap &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (oldCap &gt;= MAXIMUM_CAPACITY) {
+            threshold = Integer.MAX_VALUE;
+            <span class="hljs-keyword">return</span> oldTab; <span class="hljs-comment">// 返回原 table，不扩容</span>
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((newCap = oldCap &lt;&lt; <span class="hljs-number">1</span>) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+            newThr = oldThr &lt;&lt; <span class="hljs-number">1</span>; <span class="hljs-comment">// double threshold</span>
+    }
+    <span class="hljs-comment">// 原阈值判断</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (oldThr &gt; <span class="hljs-number">0</span>) <span class="hljs-comment">// initial capacity was placed in threshold</span>
+        newCap = oldThr;
+    <span class="hljs-keyword">else</span> {               <span class="hljs-comment">// zero initial threshold signifies using defaults</span>
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (<span class="hljs-keyword">int</span>)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    <span class="hljs-comment">// 新阈值判断</span>
+    <span class="hljs-keyword">if</span> (newThr == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">float</span> ft = (<span class="hljs-keyword">float</span>)newCap * loadFactor;
+        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (<span class="hljs-keyword">float</span>)MAXIMUM_CAPACITY ?
+                  (<span class="hljs-keyword">int</span>)ft : Integer.MAX_VALUE);
+    }
+    threshold = newThr;
+    <span class="hljs-annotation">@SuppressWarnings</span>({<span class="hljs-string">"rawtypes"</span>,<span class="hljs-string">"unchecked"</span>})
+        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])<span class="hljs-keyword">new</span> Node[newCap];
+    table = newTab;
+    <span class="hljs-keyword">if</span> (oldTab != <span class="hljs-keyword">null</span>) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; oldCap; ++j) {
+            Node&lt;K,V&gt; e;
+            <span class="hljs-keyword">if</span> ((e = oldTab[j]) != <span class="hljs-keyword">null</span>) {
+                oldTab[j] = <span class="hljs-keyword">null</span>;
+                <span class="hljs-keyword">if</span> (e.next == <span class="hljs-keyword">null</span>)
+                    newTab[e.hash &amp; (newCap - <span class="hljs-number">1</span>)] = e; <span class="hljs-comment">// 将原 table 中的元素移入新 table 中</span>
+                <span class="hljs-comment">// 判断 e 是否为红黑树中的元素</span>
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> TreeNode)
+                <span class="hljs-comment">// split 方法是对原 bins 中的红黑树先拆分再对各元素做相应存储</span>
+                    ((TreeNode&lt;K,V&gt;)e).split(<span class="hljs-keyword">this</span>, newTab, j, oldCap);
+                <span class="hljs-comment">// e 为单链表中的元素</span>
+                <span class="hljs-keyword">else</span> { <span class="hljs-comment">// preserve order</span>
+                	<span class="hljs-comment">// 以 HashMap 的默认存储容量 16 为例，扩容之后大小为 32</span>
+                	<span class="hljs-comment">// 容量大小为 32 可看作 0-15 低段，16-31 高段，再将原 table 中的元素做分段存储处理</span>
+                	<span class="hljs-comment">// 分段方法为对 (e.hash &amp; oldCap) == 0 做判断</span>
+                    Node&lt;K,V&gt; loHead = <span class="hljs-keyword">null</span>, loTail = <span class="hljs-keyword">null</span>;
+                    Node&lt;K,V&gt; hiHead = <span class="hljs-keyword">null</span>, hiTail = <span class="hljs-keyword">null</span>;
+                    Node&lt;K,V&gt; next;
+                    do {
+                        next = e.next;
+                        <span class="hljs-comment">// 根据 e.hash &amp; oldCap 对单链表进行拆分</span>
+                        <span class="hljs-comment">// 特别注意，e.hash &amp; oldCap 非 e.hash &amp; oldCap - 1</span>
+                        <span class="hljs-keyword">if</span> ((e.hash &amp; oldCap) == <span class="hljs-number">0</span>) {
+                        	<span class="hljs-comment">// 以尾插法创建单链表并将元素存储于低段</span>
+                            <span class="hljs-keyword">if</span> (loTail == <span class="hljs-keyword">null</span>)
+                                loHead = e;
+                            <span class="hljs-keyword">else</span>
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        <span class="hljs-keyword">else</span> {
+                        	<span class="hljs-comment">// 以尾插法创建单链表并将元素存储于高段</span>
+                            <span class="hljs-keyword">if</span> (hiTail == <span class="hljs-keyword">null</span>)
+                                hiHead = e;
+                            <span class="hljs-keyword">else</span>
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } <span class="hljs-keyword">while</span> ((e = next) != <span class="hljs-keyword">null</span>);
+                    <span class="hljs-keyword">if</span> (loTail != <span class="hljs-keyword">null</span>) {
+                        loTail.next = <span class="hljs-keyword">null</span>;
+                        <span class="hljs-comment">// 将新 table 相应索引位置的 bucket 头结点指向低段中已创建完成的单链表的头结点</span>
+                        newTab[j] = loHead;
+                    }
+                    <span class="hljs-keyword">if</span> (hiTail != <span class="hljs-keyword">null</span>) {
+                    	<span class="hljs-comment">// 将新 table 相应索引位置的 bucket 头结点指向高段中已创建完成的单链表的头结点</span>
+                        hiTail.next = <span class="hljs-keyword">null</span>;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> newTab;
+}</code></pre>
+		</div>
+	</div>
+	<div><p>对 JDK1.8 版本 HashMap 源码中的 put、resize 方法的分析可知，不论是 put 过程还是 resize 过程，创建单链表时均是采用<span class="w3-text-light-green">尾插法方式</span>，那红黑树呢？再分析扩容时对原红黑树进行拆分的 split 方法，如下所示：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> split(HashMap&lt;K,V&gt; map, Node&lt;K,V&gt;[] tab, <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span>, <span class="hljs-keyword">int</span> bit) {
+    TreeNode&lt;K,V&gt; b = <span class="hljs-keyword">this</span>;
+    <span class="hljs-comment">// Relink into lo and hi lists, preserving order</span>
+    TreeNode&lt;K,V&gt; loHead = <span class="hljs-keyword">null</span>, loTail = <span class="hljs-keyword">null</span>;
+    TreeNode&lt;K,V&gt; hiHead = <span class="hljs-keyword">null</span>, hiTail = <span class="hljs-keyword">null</span>;
+    <span class="hljs-comment">// 以 HashMap 默认容量 16 为例，扩容至 32，低段为 0-15，高段为 16-31</span>
+    <span class="hljs-comment">// lc 记录原红黑树拆分之后位于低段元素个数，hc 记录原红黑树拆分之后位于高段元素个数</span>
+    <span class="hljs-keyword">int</span> lc = <span class="hljs-number">0</span>, hc = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (TreeNode&lt;K,V&gt; e = b, next; e != <span class="hljs-keyword">null</span>; e = next) {
+        next = (TreeNode&lt;K,V&gt;)e.next;
+        e.next = <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">if</span> ((e.hash &amp; bit) == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> ((e.prev = loTail) == <span class="hljs-keyword">null</span>)
+                loHead = e; <span class="hljs-comment">// 低段链表头结点，注意此时的结点对象为 TreeNode</span>
+            <span class="hljs-keyword">else</span>
+                loTail.next = e; <span class="hljs-comment">// 显而易见，尾插法</span>
+            loTail = e;
+            ++lc;
+        }
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> ((e.prev = hiTail) == <span class="hljs-keyword">null</span>)
+                hiHead = e; <span class="hljs-comment">// 高段链表头结点，注意此时的结点对象为 TreeNode</span>
+            <span class="hljs-keyword">else</span>
+                hiTail.next = e; <span class="hljs-comment">// 显而易见，尾插法</span>
+            hiTail = e;
+            ++hc;
+        }
+    }
+
+    <span class="hljs-keyword">if</span> (loHead != <span class="hljs-keyword">null</span>) {
+    <span class="hljs-comment">// UNTREEIFY_THRESHOLD 默认值为 6</span>
+    <span class="hljs-comment">// 若位于低段元素个数小于等于 6，则为单链表</span>
+        <span class="hljs-keyword">if</span> (lc &lt;= UNTREEIFY_THRESHOLD)
+        <span class="hljs-comment">// untreeify 方法的作用是将单链表中的 TreeNode 对象转换为 Node 对象并返回单链表头结点</span>
+            tab[<span class="hljs-keyword">index</span>] = loHead.untreeify(map);
+        <span class="hljs-comment">// lc &gt; UNTREEIFY_THRESHOLD，即拆分之后仍为红黑树</span>
+        <span class="hljs-keyword">else</span> {
+            tab[<span class="hljs-keyword">index</span>] = loHead;
+            <span class="hljs-keyword">if</span> (hiHead != <span class="hljs-keyword">null</span>) <span class="hljs-comment">// (else is already treeified)</span>
+                loHead.treeify(tab);
+        }
+    }
+    <span class="hljs-keyword">if</span> (hiHead != <span class="hljs-keyword">null</span>) {
+    <span class="hljs-comment">// UNTREEIFY_THRESHOLD 默认值为 6</span>
+    <span class="hljs-comment">// 若位于高段元素个数小于等于 6，则为单链表</span>
+        <span class="hljs-keyword">if</span> (hc &lt;= UNTREEIFY_THRESHOLD)
+            tab[<span class="hljs-keyword">index</span> + bit] = hiHead.untreeify(map);
+        <span class="hljs-comment">// hc &gt; UNTREEIFY_THRESHOLD，即拆分之后仍为红黑树</span>
+        <span class="hljs-keyword">else</span> {
+            tab[<span class="hljs-keyword">index</span> + bit] = hiHead;
+            <span class="hljs-keyword">if</span> (loHead != <span class="hljs-keyword">null</span>)
+                hiHead.treeify(tab);
+        }
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>通过对 <span class="w3-text-light-green">split 方法</span>的分析可知，在扩容的过程中，<span class="w3-text-light-green">原红黑树</span>在拆分之后，它的元素先是以单链表形式存储，之后，再把满足相应条件的单链表转换为<span class="w3-text-light-green">新红黑树</span>，而单链表的形成是以<span class="w3-text-light-green">尾插法</span>创建的（重点关注 Node 对象或 TreeNode 对象的 next 属性）。那么，以<span class="w3-text-light-green">尾插法</span>方式创建单链表究竟有什么优势呢？</p></div>
+	<div>
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0030/images/05.jpg" />
+		<p style="text-align:center"><span class="w3-text-light-green">JDK1.8 环境下</span>调用 resize 方法的结果示意图（注意扩容前后 <span class="w3-text-light-green">Node A、Node B、Node D</span> 的顺序）</p>
+	</div>
+	<div><p>据图可知，扩容前后各元素在单链表中的存储顺序不变，即在多线程环境下，虽然 HashMap 会引起元素丢失问题，但这种在扩容前后均以<span class="w3-text-light-green">尾插法</span>方式创建单链表使得它可以有效规避<span class="w3-text-light-green">链表闭环</span>的产生，从而降低了 HashMap 死循环现象的发生。</p></div>
+	<div><p>为了验证 JDK1.8 环境下，HashMap 是以<span class="w3-text-light-green">尾插法</span>创建单链表，再给出如下图示：</p></div>
+	<div>
+		<img class="w3-width" alt="Oops" src="src/area_2/articles/0030/images/06.jpg" />
+		<p style="text-align:center">注意：put 顺序为<span class="w3-text-light-green">上海、广州</span>，链表顺序为<span class="w3-text-light-green">上海、广州</span>（为了增加索引位置冲突，指定 HashMap 的大小为 2）</p>
+	</div>
+	<div><p>最后总结，在分析单链表是以何种方式创建时，<span class="w3-text-light-green">结点属性 next 的指向</span>是至关重要的线索，分析问题时，抓住关键点，很多疑惑就会迎刃而解。</p></div>
+</article>

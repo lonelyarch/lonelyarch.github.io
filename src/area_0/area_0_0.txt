@@ -10,6 +10,19 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.10.22</h4>
+			<p><strong>Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在整理 ConcurrentHashMap 相关知识点时的基本思路是，先列出 HashMap 在并发环境里存在的问题，再引出 ConcurrentHashMap，以不失文章的完整性。原本打算抛出 HashMap 死循环（infinite loop）这个经典问题，但几经折腾之后才意识到，该问题多存在于 JDK1.7 环境，在 JDK1.8 环境下却难以产生，这是为什么？现给出 JDK1.7、JDK1.8 里 HashMap 相关源码的分析过程。</P>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：为了维持 <span class="w3-text-gray">Java 并发编程系列</span>的连续性，于是才把该篇文章归在了 <span class="w3-text-gray">Java 并发编程系列</span>。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0030/0030.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.10.13</h4>
 			<p><strong>Java 并发编程系列：volatile 关键字（09）</strong></p>
 			<div class="w3-container w3-light-gray">
