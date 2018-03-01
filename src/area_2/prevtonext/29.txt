@@ -1,2 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/30.txt',id:'prevtonext'},{url:'src/area_2/articles/0031/0031.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« Java 并发编程系列：ConcurrentHashMap 初探（11）</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/28.txt',id:'prevtonext'},{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：volatile 关键字（09） »</a>
 <div style="clear: both;"></div>

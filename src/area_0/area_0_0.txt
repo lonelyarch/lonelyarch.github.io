@@ -10,6 +10,20 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.10.28</h4>
+			<p><strong>Java 并发编程系列：ConcurrentHashMap 初探（11）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记得之前在整理 HashMap 相关知识点的时候，顺带查看了官方文档里对 Hashtable 的描述，于是就看到了以下内容：</P>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... If a thread-safe highly-concurrent implementation is desired, then it is recommended to <span class="w3-text-light-green">use ConcurrentHashMap in place of Hashtable</span>.</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实话实说，虽然 HashMap 已烂熟于心，但到目前为止，个人对 <span class="w3-text-light-green">ConcurrentHashMap</span> 这个在 Java 并发编程的世界里早就声名远播的类还是感到十分陌生，这是很难为情的事，为了不偏科，现亡羊补牢。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0031/0031.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.10.22</h4>
 			<p><strong>Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</strong></p>
 			<div class="w3-container w3-light-gray">

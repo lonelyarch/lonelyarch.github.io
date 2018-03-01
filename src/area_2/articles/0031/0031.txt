@@ -1,0 +1,296 @@
+<article>
+	<div><p><strong>Java 并发编程系列：ConcurrentHashMap 初探（11）</strong></p><p class="w3-right w3-margin-0">2017-10-28</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记得之前在整理 HashMap 相关知识点的时候，顺带查看了官方文档里对 Hashtable 的描述，于是就看到了以下内容：</P>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... If a thread-safe highly-concurrent implementation is desired, then it is recommended to <span class="w3-text-light-green">use ConcurrentHashMap in place of Hashtable</span>.</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实话实说，虽然 HashMap 已烂熟于心，但到目前为止，个人对 <span class="w3-text-light-green">ConcurrentHashMap</span> 这个在 Java 并发编程的世界里早就声名远播的类还是感到十分陌生，这是很难为情的事，为了不偏科，现亡羊补牢。</p>
+	</div>
+	<div><p>一、HashMap 数据丢失问题（先了解一下 HashMap 在并发环境里会出现什么问题，这有助于对 ConcurrentHashMap 的认识）：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> HashMapAnalyseDemo {
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> i;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> j;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        
+        HashMap&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;String, Integer&gt;();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000000</span>; i++) {
+                    map.put(<span class="hljs-string">"key"</span> + i, i);
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-0</span>
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">1000000</span>; j++) {
+                    <span class="hljs-keyword">if</span> (map.<span class="hljs-keyword">get</span>(<span class="hljs-string">"key"</span> + j) == <span class="hljs-keyword">null</span>) {
+                        System.err.println(map.<span class="hljs-keyword">get</span>(<span class="hljs-string">"key"</span> + j) + <span class="hljs-string">","</span> + i + <span class="hljs-string">","</span>
+                                + j);
+                        <span class="hljs-keyword">break</span>;
+                    } <span class="hljs-keyword">else</span> {
+                        System.<span class="hljs-keyword">out</span>.println(map.<span class="hljs-keyword">get</span>(<span class="hljs-string">"key"</span> + j) + <span class="hljs-string">","</span> + i + <span class="hljs-string">","</span>
+                                + j);
+                    }
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-1</span>
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>上述代码的大致意思是，在<span class="w3-text-light-green">线程 thread-0</span> 中，使用不断累加的静态变量 i 向 map 里持续 put 值，在<span class="w3-text-light-green">线程 thread-1</span> 中，使用不断累加的静态变量 j 从 map 里持续 get 值，当 get 出 null 值时，停止<span class="w3-text-light-green">线程 thread-1</span> 中的 for 循环，观察红色打印结果，若 <span class="w3-text-light-green">i 大于 j</span>，则验证了 HashMap 在多线程环境下的数据丢失问题，现给出一种可能的执行结果图示：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0031/images/01.jpg" /></div>
+	<div><p>如上图所示，红色打印结果即为数据丢失现象，研读代码可知，在调用 <span class="w3-text-light-green">get("key285")</span> 时得到的结果是 null（因为 <span class="w3-text-light-green">i 大于 j</span>，所以，在 get 之前，<span class="w3-text-light-green">key285</span> 必然已被 put 到 map 里），这是为什么呢？简要分析 resize 方法和 get 方法如下：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> V <span class="hljs-title">get</span>(Object key) {
+    Node&lt;K,V&gt; e;
+    <span class="hljs-keyword">return</span> (e = getNode(hash(key), key)) == <span class="hljs-keyword">null</span> ? <span class="hljs-keyword">null</span> : e.<span class="hljs-keyword">value</span>;
+}
+
+final Node&lt;K,V&gt; getNode(<span class="hljs-keyword">int</span> hash, Object key) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; <span class="hljs-keyword">int</span> n; K k;
+    <span class="hljs-keyword">if</span> ((tab = table) != <span class="hljs-keyword">null</span> &amp;&amp; (n = tab.length) &gt; <span class="hljs-number">0</span> &amp;&amp;
+        (first = tab[(n - <span class="hljs-number">1</span>) &amp; hash]) != <span class="hljs-keyword">null</span>) {
+        <span class="hljs-keyword">if</span> (first.hash == hash &amp;&amp; <span class="hljs-comment">// always check first node</span>
+            ((k = first.key) == key || (key != <span class="hljs-keyword">null</span> &amp;&amp; key.equals(k))))
+            <span class="hljs-keyword">return</span> first; <span class="hljs-comment">// 返回 bucket 头结点</span>
+        <span class="hljs-keyword">if</span> ((e = first.next) != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">if</span> (first instanceof TreeNode)
+                <span class="hljs-keyword">return</span> ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key); <span class="hljs-comment">// 返回红黑树中的结点</span>
+            <span class="hljs-keyword">do</span> {
+                <span class="hljs-keyword">if</span> (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != <span class="hljs-keyword">null</span> &amp;&amp; key.equals(k))))
+                    <span class="hljs-keyword">return</span> e; <span class="hljs-comment">// 返回单链表中的结点</span>
+            } <span class="hljs-keyword">while</span> ((e = e.next) != <span class="hljs-keyword">null</span>);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">final</span> Node&lt;K,V&gt;[] resize() {
+    Node&lt;K,V&gt;[] oldTab = table;
+    <span class="hljs-keyword">int</span> oldCap = (oldTab == <span class="hljs-keyword">null</span>) ? <span class="hljs-number">0</span> : oldTab.length;
+    <span class="hljs-keyword">int</span> oldThr = threshold;
+    <span class="hljs-keyword">int</span> newCap, newThr = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span> (oldCap &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (oldCap &gt;= MAXIMUM_CAPACITY) {
+            threshold = Integer.MAX_VALUE;
+            <span class="hljs-keyword">return</span> oldTab;
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((newCap = oldCap &lt;&lt; <span class="hljs-number">1</span>) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+            newThr = oldThr &lt;&lt; <span class="hljs-number">1</span>; <span class="hljs-comment">// double threshold</span>
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (oldThr &gt; <span class="hljs-number">0</span>) <span class="hljs-comment">// initial capacity was placed in threshold</span>
+        newCap = oldThr;
+    <span class="hljs-keyword">else</span> {               <span class="hljs-comment">// zero initial threshold signifies using defaults</span>
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (<span class="hljs-keyword">int</span>)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    <span class="hljs-keyword">if</span> (newThr == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">float</span> ft = (<span class="hljs-keyword">float</span>)newCap * loadFactor;
+        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (<span class="hljs-keyword">float</span>)MAXIMUM_CAPACITY ?
+                  (<span class="hljs-keyword">int</span>)ft : Integer.MAX_VALUE);
+    }
+    threshold = newThr;
+    <span class="hljs-annotation">@SuppressWarnings</span>({<span class="hljs-string">"rawtypes"</span>,<span class="hljs-string">"unchecked"</span>})
+    Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])<span class="hljs-keyword">new</span> Node[newCap];
+    <span class="hljs-comment">// 此时，table 指向了各索引位置的值均为 null 的新数组</span>
+    <span class="hljs-comment">// 若恰在此时，另一个线程调用了 get 方法，则从 table 里拿到的值必然为 null，即数据短暂性丢失</span>
+    table = newTab;
+    <span class="hljs-keyword">if</span> (oldTab != <span class="hljs-keyword">null</span>) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; oldCap; ++j) {
+            Node&lt;K,V&gt; e;
+            <span class="hljs-keyword">if</span> ((e = oldTab[j]) != <span class="hljs-keyword">null</span>) {
+                oldTab[j] = <span class="hljs-keyword">null</span>;
+                <span class="hljs-keyword">if</span> (e.next == <span class="hljs-keyword">null</span>)
+                    newTab[e.hash &amp; (newCap - <span class="hljs-number">1</span>)] = e;
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> TreeNode)
+                    ((TreeNode&lt;K,V&gt;)e).split(<span class="hljs-keyword">this</span>, newTab, j, oldCap);
+                <span class="hljs-keyword">else</span> { <span class="hljs-comment">// preserve order</span>
+                    Node&lt;K,V&gt; loHead = <span class="hljs-keyword">null</span>, loTail = <span class="hljs-keyword">null</span>;
+                    Node&lt;K,V&gt; hiHead = <span class="hljs-keyword">null</span>, hiTail = <span class="hljs-keyword">null</span>;
+                    Node&lt;K,V&gt; next;
+                    do {
+                        next = e.next;
+                        <span class="hljs-keyword">if</span> ((e.hash &amp; oldCap) == <span class="hljs-number">0</span>) {
+                            <span class="hljs-keyword">if</span> (loTail == <span class="hljs-keyword">null</span>)
+                                loHead = e;
+                            <span class="hljs-keyword">else</span>
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">if</span> (hiTail == <span class="hljs-keyword">null</span>)
+                                hiHead = e;
+                            <span class="hljs-keyword">else</span>
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } <span class="hljs-keyword">while</span> ((e = next) != <span class="hljs-keyword">null</span>);
+                    <span class="hljs-keyword">if</span> (loTail != <span class="hljs-keyword">null</span>) {
+                        loTail.next = <span class="hljs-keyword">null</span>;
+                        newTab[j] = loHead;
+                    }
+                    <span class="hljs-keyword">if</span> (hiTail != <span class="hljs-keyword">null</span>) {
+                        hiTail.next = <span class="hljs-keyword">null</span>;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> newTab;
+}</code></pre>
+		</div>
+	</div>
+	<div><p>简要分析源码可知，当某个线程正在执行扩容时，在没有完成从 oldTab 到 newTab 的数据迁移时，另一个线程调用了 get 方法试图获取数据，不难推测，它很有可能得到的是 null，即<span class="w3-text-light-green">数据暂时性丢失</span>现象，现给出这一现象的示意图：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0031/images/02.jpg" /><p style="text-align:center">注意：虽然图中省去了单链表和红黑树，但不影响对数据丢失问题的分析</p></div>
+	<div><p>既然 HashMap 在多线程环境下存在这样或那样的问题，那么是该 ConcurrentHashMap 这一主角闪亮登场了。</p></div>
+	<div><p>二、初识 ConcurrentHashMap：</p></div>
+	<div><p>简要描述 JDK1.7 中 ConcurrentHashMap 的实现方式：采用分段锁技术，在并发环境下，<span class="w3-text-light-green">单独对某个 Segment 对象加锁</span>，加锁方式为调用 tryLock() 方法（<span class="w3-text-light-green">Segment&lt;K,V&gt; extends ReentrantLock</span>）。</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0031/images/03.jpg" /><p style="text-align:center">JDK1.7 之 ConcurrentHashMap 数据结构图</p></div>
+	<div><p>简要描述 JDK1.8 中 ConcurrentHashMap 的实现方式：采用 CAS 和 synchronized 实现线程安全，在并发环境下，使用 synchronized <span class="w3-text-light-green">单独对当前单链表或红黑树的头结点加锁</span>。</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0031/images/04.jpg" /><p style="text-align:center">JDK1.8 之 ConcurrentHashMap 数据结构图</p></div>
+	<div><p>以下主要对 JDK1.8 中 ConcurrentHashMap 的 put 方法进行简要解读，以探究它的并发控制实现方式：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-javadoc">/**
+ * Table initialization and resizing control.  When negative, the
+ * table is being initialized or resized: -1 for initialization,
+ * else -(1 + the number of active resizing threads).  Otherwise,
+ * when table is null, holds the initial table size to use upon
+ * creation, or 0 for default. After initialization, holds the
+ * next element count value upon which to resize the table.
+ */</span>
+<span class="hljs-comment">// sizeCtl 用于控制 table 初始化以及扩容时的变量</span>
+<span class="hljs-comment">// sizeCtl 为负值时，</span>
+<span class="hljs-comment">// table 正在初始化（sizeCtl = -1）或扩容（sizeCtl = -n，有 n-1 个线程正在做扩容操作）</span>
+<span class="hljs-comment">// 否则，table 为空时，sizeCtl 值为 0 或 table 将要初始化的大小</span>
+<span class="hljs-comment">// table 已初始化完成，sizeCtl 值为下一次扩容时的大小</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">int</span> sizeCtl;</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">static</span> final <span class="hljs-keyword">int</span> spread(<span class="hljs-keyword">int</span> h) {
+    <span class="hljs-comment">// HASH_BITS 的二进制值为 1111111111111111111111111111111，31位</span>
+    <span class="hljs-comment">// 高、低 16 位异或运算，再与运算，确保最终计算为正值（第 32 位是符号位，0 表示正值）</span>
+    <span class="hljs-keyword">return</span> (h ^ (h &gt;&gt;&gt; <span class="hljs-number">16</span>)) &amp; HASH_BITS;
+}
+---------------------------------------------------------------
+@SuppressWarnings(<span class="hljs-string">"unchecked"</span>)
+<span class="hljs-keyword">static</span> final &lt;K,V&gt; Node&lt;K,V&gt; tabAt(Node&lt;K,V&gt;[] tab, <span class="hljs-keyword">int</span> i) {
+    <span class="hljs-comment">// U = sun.misc.Unsafe.getUnsafe();</span>
+    <span class="hljs-comment">// 使用 Unsafe 对象的 getObjectVolatile() 提供的原子读语义</span>
+    <span class="hljs-keyword">return</span> (Node&lt;K,V&gt;)U.getObjectVolatile(tab, ((<span class="hljs-keyword">long</span>)i &lt;&lt; ASHIFT) + ABASE);
+}
+---------------------------------------------------------------
+<span class="hljs-keyword">static</span> final &lt;K,V&gt; boolean casTabAt(Node&lt;K,V&gt;[] tab, <span class="hljs-keyword">int</span> i,
+                                    Node&lt;K,V&gt; c, Node&lt;K,V&gt; v) {
+    <span class="hljs-comment">// CAS 操作</span>
+    <span class="hljs-keyword">return</span> U.compareAndSwapObject(tab, ((<span class="hljs-keyword">long</span>)i &lt;&lt; ASHIFT) + ABASE, c, v);
+}
+---------------------------------------------------------------
+<span class="hljs-keyword">public</span> V <span class="hljs-title">put</span>(K key, V <span class="hljs-keyword">value</span>) {
+    <span class="hljs-keyword">return</span> putVal(key, <span class="hljs-keyword">value</span>, <span class="hljs-keyword">false</span>);
+}
+
+final V putVal(K key, V <span class="hljs-keyword">value</span>, boolean onlyIfAbsent) {
+    <span class="hljs-comment">// key 为空则抛异常，即有别于 HashMap，ConcurrentHashMap 不允许 put 值为 null 的 key</span>
+    <span class="hljs-keyword">if</span> (key == <span class="hljs-keyword">null</span> || <span class="hljs-keyword">value</span> == <span class="hljs-keyword">null</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NullPointerException();
+    <span class="hljs-keyword">int</span> hash = spread(key.hashCode());
+    <span class="hljs-keyword">int</span> binCount = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// for 循环的作用：因为更新元素是使用 CAS 机制实现，因此需要不断地进行失败重试，直至成功为止</span>
+    <span class="hljs-keyword">for</span> (Node&lt;K,V&gt;[] tab = table;;) {
+        Node&lt;K,V&gt; f; <span class="hljs-keyword">int</span> n, i, fh;
+        <span class="hljs-keyword">if</span> (tab == <span class="hljs-keyword">null</span> || (n = tab.length) == <span class="hljs-number">0</span>)
+            tab = initTable();
+        <span class="hljs-comment">// f = tabAt(tab, i = (n - 1) &amp; hash)，即 f 指向单链表或红黑树头结点</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((f = tabAt(tab, i = (n - <span class="hljs-number">1</span>) &amp; hash)) == <span class="hljs-keyword">null</span>) {
+        <span class="hljs-comment">// 利用 CAS 进行无锁操作</span>
+            <span class="hljs-keyword">if</span> (casTabAt(tab, i, <span class="hljs-keyword">null</span>,
+                         <span class="hljs-keyword">new</span> Node&lt;K,V&gt;(hash, key, <span class="hljs-keyword">value</span>, <span class="hljs-keyword">null</span>)))
+                <span class="hljs-keyword">break</span>;                   <span class="hljs-comment">// no lock when adding to empty bin</span>
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((fh = f.hash) == MOVED)
+        <span class="hljs-comment">// Helps transfer if a resize is in progress，即协助扩容</span>
+            tab = helpTransfer(tab, f);
+        <span class="hljs-keyword">else</span> {
+            V oldVal = <span class="hljs-keyword">null</span>;
+            synchronized (f) { <span class="hljs-comment">// 即锁住数组相应索引位置上的单链表或红黑树头结点</span>
+                <span class="hljs-keyword">if</span> (tabAt(tab, i) == f) { <span class="hljs-comment">// 锁住 f 之后再次确认它是否指向单链表或红黑树头结点</span>
+                    <span class="hljs-keyword">if</span> (fh &gt;= <span class="hljs-number">0</span>) { <span class="hljs-comment">// f 为单链表头结点</span>
+                        binCount = <span class="hljs-number">1</span>;
+                        <span class="hljs-keyword">for</span> (Node&lt;K,V&gt; e = f;; ++binCount) {
+                            K ek;
+                            <span class="hljs-comment">// key 重复处理</span>
+                            <span class="hljs-keyword">if</span> (e.hash == hash &amp;&amp;
+                                ((ek = e.key) == key ||
+                                 (ek != <span class="hljs-keyword">null</span> &amp;&amp; key.equals(ek)))) {
+                                oldVal = e.val;
+                                <span class="hljs-keyword">if</span> (!onlyIfAbsent)
+                                    e.val = <span class="hljs-keyword">value</span>;
+                                <span class="hljs-keyword">break</span>;
+                            }
+                            Node&lt;K,V&gt; pred = e;
+                            <span class="hljs-comment">// 新增 Node 结点，尾插法</span>
+                            <span class="hljs-keyword">if</span> ((e = e.next) == <span class="hljs-keyword">null</span>) {
+                                pred.next = <span class="hljs-keyword">new</span> Node&lt;K,V&gt;(hash, key,
+                                                          <span class="hljs-keyword">value</span>, <span class="hljs-keyword">null</span>);
+                                <span class="hljs-keyword">break</span>;
+                            }
+                        }
+                    }
+                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (f instanceof TreeBin) { <span class="hljs-comment">// f 为红黑树头结点</span>
+                        Node&lt;K,V&gt; p;
+                        binCount = <span class="hljs-number">2</span>;
+                        <span class="hljs-comment">// 若 p 为空，则向红黑树新增 TreeNode 结点，否则，对 p 做相应处理</span>
+                        <span class="hljs-keyword">if</span> ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,
+                                                       <span class="hljs-keyword">value</span>)) != <span class="hljs-keyword">null</span>) {
+                            oldVal = p.val;
+                            <span class="hljs-keyword">if</span> (!onlyIfAbsent)
+                                p.val = <span class="hljs-keyword">value</span>;
+                        }
+                    }
+                }
+            }
+            <span class="hljs-keyword">if</span> (binCount != <span class="hljs-number">0</span>) {
+                <span class="hljs-comment">// 若大于阈值 TREEIFY_THRESHOLD，则将单链表转换为红黑树</span>
+                <span class="hljs-keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD)
+                    treeifyBin(tab, i);
+                <span class="hljs-comment">// 在 key 重复的情况下，将旧值返回（旧值已被新 value 取代）</span>
+                <span class="hljs-keyword">if</span> (oldVal != <span class="hljs-keyword">null</span>)
+                    <span class="hljs-keyword">return</span> oldVal;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+    }
+    addCount(<span class="hljs-number">1</span>L, binCount);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+}</code></pre>
+		</div>
+	</div>
+	<div><p>最后总结，比较于 JDK1.7 中 ConcurrentHashMap 的分段锁技术，JDK1.8 中使用 <span class="w3-text-light-green">CAS 机制与 synchronized 相结合的方式</span>实现对并发访问的控制则更为精细，即加锁粒度更细，但实现却也更为复杂。</p></div>
+	<div><p><strong>参考资料：</strong>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://ifeve.com/java-concurrent-hashmap-2/">http://ifeve.com/java-concurrent-hashmap-2/</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.importnew.com/22007.html">http://www.importnew.com/22007.html</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://www.jianshu.com/p/d10256f0ebea">https://www.jianshu.com/p/d10256f0ebea</a>
+	</p></div>
+</article>

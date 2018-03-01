@@ -4,6 +4,7 @@
 	<div class="item">
     	<div><strong>2017-10</strong></div>
         <ul>
+        	<li><time>28日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/30.txt',id:'prevtonext'},{url:'src/area_2/articles/0031/0031.txt',id:'contents'}]);">Java 并发编程系列：ConcurrentHashMap 初探（11）</a></li>
         	<li><time>22日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/29.txt',id:'prevtonext'},{url:'src/area_2/articles/0030/0030.txt',id:'contents'}]);">Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</a></li>
         	<li><time>13日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/28.txt',id:'prevtonext'},{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);">Java 并发编程系列：volatile 关键字（09）</a></li>
         	<li><time>07日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/27.txt',id:'prevtonext'},{url:'src/area_2/articles/0028/0028.txt',id:'contents'}]);">Java 并发编程系列：图文并茂之 hsdis 编译（08）</a></li>
