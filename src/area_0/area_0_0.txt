@@ -1,11 +1,23 @@
 <div class="w3-custom-timeline">
-	<div class="w3-custom-container w3-custom-right">
+	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
 			<h4>2018.01.01</h4>
 			<p><strong>个人博客改版</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当新年的钟声敲响的时候，屋外的世界是一片欢腾，大街上张灯结彩，人头攒动，快乐的氛围也应该是四处洋溢的，可是，博主却依然坚持了老习惯，深居简出，守在家里写代码，这大概就是程序员的宿命。</p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_3/articles/0003/0003.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
+			<h4>2017-11-09</h4>
+			<p><strong>Java 并发编程系列：ConcurrentHashMap 续篇（12）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ConcurrentHashMap 初探之后遗留了很多问题，深感 JDK1.8 版本的 ConcurrentHashMap 实现之复杂性，现简要整理一下 CAS（Compare And Swap，即比较并交换）的相关知识点。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0032/0032.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
 	<div class="w3-custom-container w3-custom-left">

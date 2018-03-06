@@ -1,0 +1,170 @@
+<article>
+	<div><p><strong>Java 并发编程系列：ConcurrentHashMap 续篇（12）</strong></p><p class="w3-right w3-margin-0">2017-11-09</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ConcurrentHashMap 初探之后遗留了很多问题，深感 JDK1.8 版本的 ConcurrentHashMap 实现之复杂性，现简要整理一下 CAS（Compare And Swap，即比较并交换）的相关知识点。</P>
+	</div>
+	<div><p><span class="w3-text-light-green">一、CAS 究竟是什么：</span></p></div>
+	<div><p>CAS 是多数处理器架构中实现的一种指令，旨在满足硬件对并发的支持，该指令包含 3 个操作数：内存值 V、旧的期望值 A、新的修改值 B，当且仅当内存值 V 与旧的期望值 A 相等时，CAS 才会通过原子方式用新值 B 变更 V 的值。</p></div>
+	<div><p>那么，Java 语言是如何实现 CAS 操作的呢？实际上，在 JDK1.8 版本的 ConcurrentHashMap 源码中会有 compareAndSwapInt、compareAndSwapLong 以及 compareAndSwapObject 方法的调用：</p></div>
+	<div class="w3-custom-code">
+		<pre>static final &lt;K,V&gt; boolean casTabAt(Node&lt;K,V&gt;[] tab, int i,
+                                        Node&lt;K,V&gt; c, Node&lt;K,V&gt; v) {
+    return U.<span class="w3-text-light-green">compareAndSwapObject</span>(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, c, v);
+}</pre>
+	</div>
+	<div><p></p></div>
+	<div class="w3-custom-code">
+		<pre>private final void lockRoot() {
+    if (!U.<span class="w3-text-light-green">compareAndSwapInt</span>(this, LOCKSTATE, 0, WRITER))
+        contendedLock(); // offload to separate method
+}</pre>
+	</div>
+	<div><p>根据源码可知，compareAndSwapInt、compareAndSwapObject 等方法均是通过 U 实例调用的，于是再贴出创建 U 实例的源码：</p></div>
+	<div class="w3-custom-code">
+		<pre>private static final sun.misc.Unsafe U;
+...
+static {
+    try {
+        <span class="w3-text-light-green">U = sun.misc.Unsafe.getUnsafe();</span>
+        ...
+    } catch (Exception e) {
+        throw new Error(e);
+    }
+}</pre>
+	</div>
+	<div><p>除了 JDK 源码之外，<span class="w3-text-light-green">sun.misc.Unsafe.getUnsafe()</span> 在通常的 Java 开发中是不多见的，为了看清 <span class="w3-text-light-green">Unsafe 类</span>的真面目，再从 OpenJDK 的源码仓库中获取一份 <a target="_blank" class="w3-link" href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/misc/Unsafe.java">Unsafe.java 文件</a>并贴出相关代码（JDK 与 OpenJDK 之间的联系不再赘述）：</p></div>
+	<div class="w3-custom-code">
+		<pre>public final class Unsafe {
+...
+<span class="w3-text-light-green">private static final Unsafe theUnsafe = new Unsafe();</span>
+
+@CallerSensitive
+public static Unsafe <span class="w3-text-light-green">getUnsafe()</span> {
+    Class&lt;?&gt; caller = Reflection.getCallerClass();
+    if (!VM.isSystemDomainLoader(caller.getClassLoader()))
+        throw new SecurityException("Unsafe");
+    return theUnsafe;
+}
+...
+public final <span class="w3-text-light-green">native</span> boolean <span class="w3-text-light-green">compareAndSwapObject</span>(Object o, long offset,
+                                                     Object expected,
+                                                     Object x);
+
+public final <span class="w3-text-light-green">native</span> boolean <span class="w3-text-light-green">compareAndSwapInt</span>(Object o, long offset,
+                                                  int expected,
+                                                  int x);
+</pre>
+	</div>
+	<div><p>根据 Unsafe 类的源码可知，Java 语言最终还是通过调用本地方法实现了 CAS 操作，本地方法相关的 C++ 代码文件有：<a target="_blank" class="w3-link" href="http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/share/vm/prims/unsafe.cpp">unsafe.cpp</a>、<a target="_blank" class="w3-link" href="http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/os_cpu/windows_x86/vm/atomic_windows_x86.inline.hpp">atomic_windows_x86.inline.hpp</a>、<a target="_blank" class="w3-link" href="http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/os_cpu/windows_x86/vm/os_windows_x86.hpp">os_windows_x86.hpp</a> ……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0032/images/01.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0032/images/02.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0032/images/03.jpg" /></div>
+	<div><p>以下简要整理出在 Visual Studio 2010 中的调试过程，以 AtomicInteger 类实现一段示例代码，主要关注 HotSpot 内 C++ 语言实现 CAS 操作的大致模样（对 HotSpot 的调试是基于 JDK1.7 版本，至于为什么不用 1.8 版本，原因不解释）：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> CASAnalyseDemo {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        AtomicInteger ai = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+            ai.getAndIncrement();
+        }
+        System.<span class="hljs-keyword">out</span>.println(ai.<span class="hljs-keyword">get</span>());
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getAndIncrement</span>() {
+    <span class="hljs-keyword">for</span> (;;) {
+        <span class="hljs-keyword">int</span> current = get();
+        <span class="hljs-keyword">int</span> next = current + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (compareAndSet(current, next))
+            <span class="hljs-keyword">return</span> current;
+    }
+}
+...
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">compareAndSet</span>(<span class="hljs-keyword">int</span> expect, <span class="hljs-keyword">int</span> update) {
+    <span class="hljs-keyword">return</span> unsafe.<span class="w3-light-green">compareAndSwapInt</span>(<span class="hljs-keyword">this</span>, valueOffset, expect, update);
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0032/images/04.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0032/images/05.jpg" /></div>
+	<div><p style="text-align:center">……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0032/images/06.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0032/images/07.jpg" /></div>
+	<div><p><span class="w3-text-light-green">二、CAS 与锁的区别：</span></p></div>
+	<div><p>在 Java 语言的并发编程里，提及锁机制必然会想到 synchronized 关键字，在 JDK1.5 版本之前，它是保证同步机制得以实现的基础，这种通过使用一致的锁定协议来协调对共享状态的访问，可以确保无论哪个线程持有共享变量的锁，都能采用独占的方式来访问这些变量（独占锁），可以说这种使用 synchronized 关键字来确保共享变量的独占访问方式就是悲观锁的一种实现。然而，悲观锁却存在着以下问题：</p></div>
+	<div>
+		<ul style="padding-left:16px">
+			<li><p><strong>在多线程环境下，加锁、释放锁将导致较多的上下文切换和调度延迟，这会引起性能问题。</strong></p></li>
+			<li><p><strong>单个线程持有锁将导致其它所有需要该锁的线程挂起。</strong></p></li>
+			<li><p><strong>优先级较高的线程在等待优先级较低的线程释放锁时有可能会导致优先级倒置。</strong></p></li>
+		</ul>
+	</div>
+	<div><p>为了克服悲观锁自身的缺陷，乐观锁的思想也就此形成：</p></div>
+	<div><p>相对悲观锁而言，乐观锁则认为数据在一般情况下不会造成冲突，只有当数据进行提交更新时，它才会正式对数据的冲突与否进行检测，如果发生了冲突，则返回错误信息，让用户决定如何处理。由此可知，CAS 操作是乐观锁的一种实现，即<span style="color:#8bc34a">检测冲突</span>和<span style="color:#8bc34a">数据更新</span>。</p></div>
+	<div><p><span class="w3-text-light-green">三、CAS 之应用举例：</span></p></div>
+	<div><p></p></div>
+	<div class="w3-example">
+		<p style="color:black"><span class="w3-text-light-green">注意：</span>AtomicInteger 的实现原理为 volatile + CAS 操作。</p>
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class=" hljs cs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> CASAnalyseDemo {
+
+    <span class="hljs-keyword">static</span> AtomicInteger ai = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100000</span>; i++) {
+                    ai.getAndIncrement();
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-0</span>
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100000</span>; i++) {
+                    ai.getAndIncrement();
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-1</span>
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100000</span>; i++) {
+                    ai.getAndIncrement();
+                }
+            }
+        }).start(); <span class="hljs-comment">// thread-2</span>
+
+        <span class="hljs-keyword">while</span> (Thread.activeCount() &gt; <span class="hljs-number">1</span>) {
+            Thread.<span class="hljs-keyword">yield</span>();
+        }
+
+        System.<span class="hljs-keyword">out</span>.println(ai.<span class="hljs-keyword">get</span>());
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div>
+		<p><strong>参考资料：</strong>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://zl198751.iteye.com/blog/1848575">http://zl198751.iteye.com/blog/1848575</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.importnew.com/20472.html">http://www.importnew.com/20472.html</a>
+		</p>
+	</div>
+</article>
