@@ -17,4 +17,5 @@
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0016.txt','contents')">如何实现微信功能之附近的人？</a></div>
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0017.txt','contents')">有 3 个线程 A、B、C，按照 A、B、C 运行？</a></div>
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0018.txt','contents')">分布式系统之事务一致性解决方案？</a></div>
+	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0019.txt','contents')">Java 并发编程系列：自旋锁（Spin Lock）？</a></div>
 </div>

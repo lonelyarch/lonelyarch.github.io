@@ -1,0 +1,57 @@
+<article>
+	<div><header class="w3-header"><p>Java 并发编程系列：自旋锁（Spin Lock）？</p></header></div>
+	<div>
+		<p>自旋锁（Spin Lock）：当一个线程在获取<span class="w3-text-light-green">锁</span>的时候，如果<span class="w3-text-light-green">锁</span>已经被其它线程获取，那么该线程将进入循环等待，然后，它会不停地判断<span class="w3-text-light-green">锁</span>是否能够被成功获取，直到该线程获取到<span class="w3-text-light-green">锁</span>才会退出循环。获取锁的线程一直处于活跃状态，但是并没有执行任何有效的任务，使用这种锁会造成忙等待（busy-waiting）。</p>
+		<div class="w3-custom-code">
+			<pre>public class SpinLock {
+	private AtomicReference<Thread> ar = new AtomicReference<Thread>();
+	public void lock() {
+		Thread current = Thread.currentThread();
+		// 利用 CAS 操作
+		while (!ar.<span class="w3-text-light-green">compareAndSet</span>(null, current)) {
+		}
+	}
+	public void unlock() {
+		Thread current = Thread.currentThread();
+		// 利用 CAS 操作
+		ar.<span class="w3-text-light-green">compareAndSet</span>(current, null);
+	}
+}</pre>
+		</div>
+		<p class="w3-text-blue">自旋锁存在的问题：</p>
+		<p>1. 如果某个线程持有锁的时间过长，就会导致其它等待获取锁的线程进入循环等待，消耗 CPU 资源；</p>
+		<p>2. 上述 Java 代码实现的自旋锁不是公平锁，即无法满足等待时间最长的线程优先获取锁，非公平锁存在<span class="w3-light-gray" style="padding:0 5px">线程饥饿</span>问题。</p>
+		<p class="w3-text-blue">自旋锁自身的优点：</p>
+		<p>1. 自旋锁不会使线程状态发生切换，该线程将一直处于用户态，即线程状态一直是 active，因此，自旋锁不会使线程进入阻塞状态，它减少了不必要的上下文切换，执行速度更快；</p>
+		<p>2. 非自旋锁在获取不到锁的时候会进入阻塞状态，从而进入内核态，当获取到锁的时候会从内核态恢复，这个过程需要线程进行上下文切换。（线程被阻塞后会进入内核（Linux）调度状态，这将导致系统在用户态与内核态之间来回切换，严重影响锁的性能）。</p>
+		<p class="w3-text-blue">可重入自旋锁实现：</p>
+		<div class="w3-custom-code">
+			<pre>public class ReentrantSpinLock {
+	private AtomicReference<Thread> ar = new AtomicReference<Thread>();
+	private int <span class="w3-text-light-green">count</span>;
+	public void lock() {
+		Thread current = Thread.currentThread();
+		if (current == ar.get()) { // 如果当前线程已经获取到了锁，线程数加 1，然后返回
+			<span class="w3-text-light-green">count</span>++;
+			return;
+		}
+		// 如果当前线程没有获取到锁，则通过 CAS 操作自旋
+		while (!ar.compareAndSet(null, current)) {
+		}
+	}
+	public void unlock() {
+		Thread current = Thread.currentThread();
+		if (current == ar.get()) {
+			// 如果 count 大于 0，表示当前线程多次获取了该锁，释放锁通过 count 减一来模拟
+			if (<span class="w3-text-light-green">count</span> > 0) {
+				<span class="w3-text-light-green">count</span>--;
+			} else { // 如果count == 0，则释放锁，以确保获取锁的次数与释放锁的次数一致
+				ar.compareAndSet(current, null);
+			}
+		}
+	}
+}</pre>
+		</div>
+		<p><span class="w3-text-blue">自旋锁的使用场景：</span>各线程竞争不激烈且持锁时间较短。</p>
+	</div>
+</article>
