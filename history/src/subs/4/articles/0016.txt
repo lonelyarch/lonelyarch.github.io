@@ -1,5 +1,5 @@
 <article>
-	<div><header class="w3-header"><p>负载均衡的原理？</p></header></div>
+	<div><header class="w3-header"><p>如何实现微信功能之附近的人？</p></header></div>
 	<div>
 		<p>客户端周期性发送经纬度（x,y）到服务器 S，服务器存储每个已登录用户的经纬度到表 T 中，表 T 按照经纬度分表，将地图分成一个个的小格子，当用户点击<span class="w3-text-gray">附近的人</span>时，对用户（x,y）进行计算，最多一次查询其中的 4 个格子（子表），计算两点间距离获取结果（有点像桶排序）。</p>
 		<p>性能上可以将表 T 替换为内存结构，容灾即可。</p>
