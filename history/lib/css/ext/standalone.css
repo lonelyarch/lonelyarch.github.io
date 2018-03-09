@@ -5,3 +5,26 @@
 .w3-header{color:#2196f3}
 .w3-custom-code pre{overflow:hidden;text-overflow:ellipsis}
 .w3-text-blue{color:#2196f3}
+/* 0020 */
+.w3-example-square-01-04_0020 .square{position:relative;max-width:300px;width:50%;border:1px solid rgba(255,255,255,0.6);margin:0 auto}
+.w3-example-square-01-04_0020 .square:after{content:"";display:block;padding-bottom:100%}
+.w3-example-square-01-04_0020 .content{position:absolute;top:25%;width:100%;height:100%;text-align:center}
+.w3-example-square-02-04_0020 .square{max-width:300px;max-height:300px;width:50vw;height:50vw;border:1px solid rgba(255,255,255,0.6);margin:0 auto}
+.w3-example-square-02-04_0020 .content{text-align:center;padding-top:25%}
+/* 0021 */
+.w3-example-square-04_0021{position:relative;min-height:60vh}
+.w3-example-square-04_0021 .grid-12{width:100%}
+.w3-example-square-04_0021 .grid-11{width:91.53%}
+.w3-example-square-04_0021 .grid-10{width:83.06%}
+.w3-example-square-04_0021 .grid-9{width:74.6%}
+.w3-example-square-04_0021 .grid-8{width:66.13%}
+.w3-example-square-04_0021 .grid-7{width:57.66%}
+.w3-example-square-04_0021 .grid-6{width:49.2%}
+.w3-example-square-04_0021 .grid-5{width:40.73%}
+.w3-example-square-04_0021 .grid-4{width:32.26%}
+.w3-example-square-04_0021 .grid-3{width:23.8%}
+.w3-example-square-04_0021 .grid-2{width:15.33%}
+.w3-example-square-04_0021 .grid-1{width:6.866%}
+.w3-example-square-04_0021 .position{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.w3-example-square-04_0021 .square{height:0;padding-bottom:100%;position:relative;background:#8bc34a;text-align:center;overflow:hidden}
+.w3-example-square-04_0021 .square-inner{position:absolute;top:50%;transform:translateY(-50%);width:100%;font-size:1.5vw}

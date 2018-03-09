@@ -1,0 +1,49 @@
+<article>
+	<div><header class="w3-header"><p>解决公平性问题之自旋锁的变种：TicketLock ？</p></header></div>
+	<div><p>TicketLock 主要用以解决公平性问题。</p></div>
+	<div><p>思路：每当有线程获取锁的时候，就给该线程分配一个递增值，称之为排队号，同时，当前锁会对应一个服务号，每当有线程释放锁时，服务号就会递增，此时，如果服务号与某个线程排队号一致，那么该线程就获得锁，由于排队号是递增的，所以就保证了最先请求获取锁的线程可以最先获取到锁，就实现了公平性。</p></div>
+	<div class="w3-custom-code">
+		<pre>public class TicketLock {
+	// 服务号
+	private AtomicInteger snum = new AtomicInteger(0);
+	// 排队号
+	private AtomicInteger tnum = new AtomicInteger(0);
+	// lock：获取锁，如果获取成功，返回当前线程的排队号以用于释放锁
+	public int lock() {
+		int <span class="w3-text-light-green">cnum</span> = tnum.<span class="w3-text-light-green">getAndIncrement</span>();
+		while (cnum != snum.get()) {
+		}
+		return cnum;
+	}
+	// unlock：释放锁，传入当前持有锁的线程的排队号
+	public void unlock(int <span class="w3-text-light-green">cnum</span>) {
+		snum.compareAndSet(<span class="w3-text-light-green">cnum</span>, <span class="w3-text-light-green">cnum</span> + 1);
+	}
+}</pre>
+	</div>
+	<div><p>上述实现方式为，当前线程获取锁之后，将它的排队号返回，等到该线程释放锁的时候，需要将该排队号传入，但是，这样是有风险的，因为这个排队号是可以被修改的，如果排队号被不小心修改，那么锁将不能被正确释放。改进实现，如下所示：</p></div>
+	<div class="w3-custom-code">
+		<pre>public class TicketLock {
+	// 服务号
+	private AtomicInteger snum = new AtomicInteger(0);
+	// 排队号
+	private AtomicInteger tnum = new AtomicInteger(0);
+	// 新增一个 ThreadLocal，用于存储线程的排队号
+	private ThreadLocal&lt;Integer&gt; <span class="w3-text-light-green">tnumHolder</span> = new ThreadLocal&lt;Integer&gt;();
+	// lock：如果获取锁成功，则使用 tnumHolder 保存当前线程的排队号
+	public void lock() {
+		int cnum = tnum.getAndIncrement();
+		while (cnum != snum.get()) {
+		}
+		// 获取锁成功，将当前线程的排队号保存起来
+		<span class="w3-text-light-green">tnumHolder</span>.set(cnum);
+	}
+	// 释放锁，从 ThreadLocal 中获取当前线程的排队号
+	public void unlock() {
+		int cnum = <span class="w3-text-light-green">tnumHolder</span>.get();
+		snum.compareAndSet(cnum, cnum + 1);
+	}
+}</pre>
+	</div>
+	<div><p>TicketLock 存在的问题：多处理器平台下，每个进程/线程占用的处理器都在读写同一个变量 snum，每次读写操作都必须在多个处理器缓存之间进行缓存同步，这会导致繁重的系统总线和内存流量，大大降低系统整体的性能。</p></div>
+</article>

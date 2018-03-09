@@ -1,0 +1,16 @@
+<article>
+	<div><header class="w3-header"><p>CSS 如何实现自适应的正方形？</p></header></div>
+	<div><p>使用 <span class="w3-text-light-green">:after</span> 伪元素（pseudo-element）+ <span class="w3-text-light-green">padding-bottom</span> 实现：</p></div>
+	<div class="w3-example-square-01-04_0020">
+		<div class="square">
+			<div class="content">square!</div>
+		</div>
+	</div>
+	<div><p>使用 <span class="w3-text-light-green">vw</span> 单位实现：</p></div>
+	<div class="w3-example-square-02-04_0020">
+		<div class="square">
+			<div class="content">square!</div>
+		</div>
+	</div>
+	<div><p></p></div>
+</article>

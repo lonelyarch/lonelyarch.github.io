@@ -1,0 +1,11 @@
+<article>
+	<div><header class="w3-header"><p>CSS 实现完美自适应的正方形？</p></header></div>
+	<div class="w3-example-square-04_0021">
+		<div class="position grid-4">
+			<div class="square">
+				<div class="square-inner">A perfectly responsive 1:1 square!</div>
+			</div>
+		</div>
+	</div>
+	<div><p></p></div>
+</article>
