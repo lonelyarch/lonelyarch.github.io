@@ -4,6 +4,8 @@
 	<div class="item">
     	<div><strong>2017-11</strong></div>
         <ul>
+        	<li><time>13日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/33.txt',id:'prevtonext'},{url:'src/area_2/articles/0034/0034.txt',id:'contents'}]);">Java 并发编程系列：ThreadLocal（13）</a></li>
+        	<li><time>12日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/32.txt',id:'prevtonext'},{url:'src/area_2/articles/0033/0033.txt',id:'contents'}]);">Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- 克雷格.兰丁&amp;hagersten (CLH Lock)</a></li>
         	<li><time>09日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/31.txt',id:'prevtonext'},{url:'src/area_2/articles/0032/0032.txt',id:'contents'}]);">Java 并发编程系列：ConcurrentHashMap 续篇（12）</a></li>
         </ul>
     </div>

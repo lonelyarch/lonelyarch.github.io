@@ -1,0 +1,325 @@
+<article>
+	<div><p><strong>Java 并发编程系列：ThreadLocal（13）</strong></p><p class="w3-right w3-margin-0">2017-11-13</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This class provides thread-local variables. These variables differ from their normal counterparts in that each thread that accesses one has its own, independently initialized copy of the variable.</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上述英文源自 JDK1.8 官方文档里对 ThreadLocal 的介绍，博主试图这样翻译：</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadLocal 类用以提供<span class="w3-text-light-green">线程-本地</span>变量，这些<span class="w3-text-light-green">线程-本地</span>变量与它们的常规副本的区别是，每一个线程都只能访问它自身拥有的<span class="w3-text-light-green">线程-本地</span>变量，且该<span class="w3-text-light-green">线程-本地</span>变量独立于变量的初始化拷贝。</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然勉强翻译出了字面意思，但个人对英文源句还是不知所云，没关系，直接给出一个代码示例，通过观察执行结果，疑问将豁然开朗。</P>
+	</div>
+	<div><p>为了理解 JDK1.8 文档里英文源句的意思，直接给出使用 ThreadLocal 的代码示例，研读代码且注意观察执行结果：</p></div>
+	<div class="w3-example">
+		<div><P class="w3-text-black">示例代码：实例化一个 ThreadLocal 对象，指定该对象提供字符串类型的<span class="w3-text-light-green">线程-本地</span>变量，初始化<span class="w3-text-light-green">线程-本地</span>变量为当前线程名，在主线程内创建两个子线程且两个子线程分别调用 ThreadLocal 对象的 set 方法，然后，子线程、主线程分别调用 ThreadLocal 对象的 get 方法以访问它们各自拥有的<span class="w3-text-light-green">线程-本地</span>变量值。</P></div>
+		<div class="w3-code">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> ThreadLocalAnalyseDemo {
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ThreadLocal&lt;String&gt; tl = <span class="hljs-keyword">new</span> ThreadLocal&lt;String&gt;() {
+        @Override
+        <span class="hljs-keyword">protected</span> String <span class="hljs-title">initialValue</span>() {
+            <span class="hljs-comment">// 初始化线程-本地变量的值为当前线程名</span>
+            <span class="hljs-keyword">return</span> Thread.currentThread().getName();
+        }
+    };
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-comment">// thread-1 设置字符串值为 one</span>
+                tl.<span class="hljs-keyword">set</span>(<span class="hljs-string">"one"</span>);
+                <span class="hljs-comment">// thread-1 睡眠 3 秒，以测试字符串值 one 是否会被 thread-2 设置的字符串值覆盖</span>
+                <span class="hljs-keyword">try</span> {
+                    Thread.sleep(<span class="hljs-number">3000</span>);
+                } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+                }
+                System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread-1: "</span> + tl.<span class="hljs-keyword">get</span>());
+            }
+        }).start();
+
+        <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+            @Override
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                <span class="hljs-comment">// thread-2 设置字符串值为 two</span>
+                tl.<span class="hljs-keyword">set</span>(<span class="hljs-string">"two"</span>);
+                System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"thread-2: "</span> + tl.<span class="hljs-keyword">get</span>());
+            }
+        }).start();
+
+        <span class="hljs-keyword">try</span> {
+            Thread.sleep(<span class="hljs-number">6000</span>); <span class="hljs-comment">// 主线程睡眠 6 秒</span>
+        } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+        }
+        System.<span class="hljs-keyword">out</span>.println(tl.<span class="hljs-keyword">get</span>());
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p></p></div>
+	<div class="w3-custom-code">
+		<pre>thread-2: two
+thread-1: one
+main</pre>
+	</div>
+	<div><p>根据示例代码的执行结果可知，虽然所有的线程均能访问到同一个 ThreadLocal 实例对象，但是，每个线程却只能访问到自身通过调用 ThreadLocal 实例对象的 set 方法设置的值（主线程访问的是初始化值，原因显而易见，不赘述）。为什么会这样呢？</p></div>
+	<div><p>一、<span class="w3-text-light-green">ThreadLocal 之实现原理：</span></p></div>
+	<div class="w3-custom-code">
+		<pre>public void set(T value) {
+	Thread t = Thread.currentThread();
+	<span class="w3-text-light-green">ThreadLocalMap</span> map = getMap(t); // 重点关注 map 对象
+	if (map != null)
+		map.<span class="w3-text-light-green">set(this, value)</span>; // this 为 ThreadLocal 实例对象
+	else
+		createMap(t, value);
+}</pre>
+	</div>
+	<div><p></p></div>
+	<div class="w3-custom-code">
+		<pre>ThreadLocalMap getMap(Thread t) {
+	return t.<span class="w3-text-light-green">threadLocals</span>; // Thread 类里有 <span class="w3-text-light-green">threadLocals</span> 属性吗？我怎么没有<span class="w3-text-light-green">点</span>出来呢？
+}</pre>
+	</div>
+	<div><p></p></div>
+	<div class="w3-custom-code">
+		<pre>public class Thread implements Runnable {
+	...
+	/* ThreadLocal values pertaining to this thread. This map is maintained
+	 * by the ThreadLocal class. */
+	// ThreadLocal 值从属于当前线程，该 map（即 <span class="w3-text-light-green">threadLocals</span> 属性）由 ThreadLocal 维护
+	ThreadLocal.ThreadLocalMap <span class="w3-text-light-green">threadLocals</span> = null; // 默认以 protected 修饰，因此，通常我们是<span class="w3-text-light-green">点</span>不出来的
+	...
+}</pre>
+						</div>
+						<div><p></p></div>
+						<div class="w3-custom-code">
+							<pre>void createMap(Thread t, T firstValue) {
+	// this 为 ThreadLocal 实例对象，firstValue 就是调用 ThreadLocal 实例对象的 set 方法时所传的值
+	t.<span class="w3-text-light-green">threadLocals</span> = new ThreadLocalMap(this, firstValue);
+}
+...
+static class ThreadLocalMap {
+	...
+	// 适当的时候会另起一篇文章探究 WeakReference 是干啥的
+	static class Entry extends <span class="w3-text-light-green">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; {
+		/** The value associated with this ThreadLocal. */
+		Object value;
+		Entry(ThreadLocal&lt;?&gt; k, Object v) {
+			super(k);
+			value = v;
+		}
+	}
+	// <span class="w3-text-light-blue">分析过 HashMap 的童鞋想必对以下代码十分熟悉，定有似曾相识的感觉</span>
+	...
+	private Entry[] table;
+	...
+	ThreadLocalMap(ThreadLocal&lt;?&gt; firstKey, Object firstValue) {
+		table = new Entry[INITIAL_CAPACITY];
+		int i = firstKey.threadLocalHashCode &amp; (INITIAL_CAPACITY - 1);
+		table[i] = new Entry(firstKey, firstValue);
+		size = 1;
+		setThreshold(INITIAL_CAPACITY);
+	}
+	...
+}</pre>
+	</div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0034/images/01.jpg" /></div>
+	<div><p>原理总结：沿读源码可知，Thread 自身就有 ThreadLocalMap 类型的属性，当前线程调用 ThreadLocal 实例对象的 set 方法时，实际上是将值放入了自身的 ThreadLocalMap 类型的属性内，因此，每一个线程只能 get 到自身 set 进去的值。</p></div>
+	<div><p>二、<span class="w3-text-light-green">ThreadLocal 之内存泄露：</span></p></div>
+	<div><p>通过分析 ThreadLocal 原理可知，Thread 内部的 ThreadLocalMap 类型属性所存储的 Entry 中，key 为<span class="w3-text-light-green">弱引用</span>，即如果一个 ThreadLocal 示例对象在没有外部强引用来指向它的情况下，那么系统 GC 的时候，这个 ThreadLocal 示例对象势必会被回收。问题随之而来，为什么要使用<span class="w3-text-light-green">弱引用</span>？当 ThreadLocal 被回收之后，<span class="w3-text-light-green">key 为 null 的 Entry</span> 该怎么处理？</p></div>
+	<div><p>1. 在 ThreadLocal 源码注释中，简要描述了使用<span class="w3-text-light-green">弱引用</span>的原因：</p></div>
+	<div class="w3-custom-code">
+		<pre>/**
+ * ThreadLocalMap is a customized hash map suitable only for
+ * maintaining thread local values. No operations are exported
+ * outside of the ThreadLocal class. The class is package private to
+ * allow declaration of fields in class Thread. <span class="w3-text-light-green">To help deal with</span>
+ * <span class="w3-text-light-green">very large and long-lived usages, the hash table entries use</span>
+ * <span class="w3-text-light-green">WeakReferences for keys</span>. However, since reference queues are not
+ * used, stale entries are guaranteed to be removed only when
+ * the table starts running out of space.
+ */
+static class ThreadLocalMap {
+...
+}</pre>
+	</div>
+	<div><p>2. 清理 <span class="w3-text-light-green">key 为 null 的 Entry</span> 时，有两种方式，即主动调用 remove 方法或依赖 ThreadLocal 自身的清理机制，以下主要理解 ThreadLocal 自身是如何实现清理工作的：</p></div>
+	<div><p>调用 <span class="w3-text-light-green">set 方法</span>的时候自身实现的清理工作：</p></div>
+	<div class="w3-custom-code">
+		<pre>public void set(T value) {
+	Thread t = Thread.currentThread();
+	ThreadLocalMap map = getMap(t);
+	if (map != null)
+		map.<span class="w3-text-light-green">set(this, value)</span>;
+	else
+		createMap(t, value);
+}
+...
+private void set(ThreadLocal&lt;?&gt; key, Object value) {
+
+	Entry[] tab = table;
+	int len = tab.length;
+	int i = key.threadLocalHashCode &amp; (len-1);
+
+	for (Entry e = tab[i];
+		 e != null;
+		 e = tab[i = nextIndex(i, len)]) {
+		ThreadLocal&lt;?&gt; k = e.get();
+
+		if (k == key) {
+			e.value = value;
+			return;
+		}
+
+		if (k == null) {
+			<span class="w3-text-light-green">replaceStaleEntry(key, value, i)</span>;
+			return;
+		}
+	}
+
+	tab[i] = new Entry(key, value);
+	int sz = ++size;
+	if (!<span class="w3-text-light-green">cleanSomeSlots(i, sz)</span> &amp;&amp; sz &gt;= threshold)
+		rehash();
+}
+...
+/**
+ * Replace a stale entry encountered during a set operation
+ * with an entry for the specified key. The value passed in
+ * the value parameter is stored in the entry, whether or not
+ * an entry already exists for the specified key.
+ *
+ * As a side effect, <span class="w3-text-light-green">this method expunges all stale entries in the</span>
+ * <span class="w3-text-light-green">"run" containing the stale entry</span>. (A run is a sequence of entries
+ * between two null slots.)
+ *
+ * @param  key the key
+ * @param  value the value to be associated with key
+ * @param  staleSlot index of the first stale entry encountered while
+ *         searching for key.
+ */
+private void replaceStaleEntry(ThreadLocal&lt;?&gt; key, Object value,
+							   int staleSlot) {
+...
+}
+
+/**
+ * Heuristically scan some cells looking for stale entries.
+ * This is invoked when either a new element is added, or
+ * another stale one has been expunged. It performs a
+ * logarithmic number of scans, as a balance between no
+ * scanning (fast but retains garbage) and a number of scans
+ * proportional to number of elements, that would find all
+ * garbage but would cause some insertions to take O(n) time.
+ *
+ * @param i a position known NOT to hold a stale entry. The
+ * scan starts at the element after i.
+ *
+ * @param n scan control: {@code log2(n)} cells are scanned,
+ * unless a stale entry is found, in which case
+ * {@code log2(table.length)-1} additional cells are scanned.
+ * When called from insertions, this parameter is the number
+ * of elements, but when from replaceStaleEntry, it is the
+ * table length. (Note: all this could be changed to be either
+ * more or less aggressive by weighting n instead of just
+ * using straight log n. But this version is simple, fast, and
+ * seems to work well.)
+ *
+ * @return true if any stale entries have been removed.
+ */
+private boolean cleanSomeSlots(int i, int n) {
+	boolean removed = false;
+	Entry[] tab = table;
+	int len = tab.length;
+	do {
+		i = nextIndex(i, len);
+		Entry e = tab[i];
+		if (e != null &amp;&amp; e.get() == null) {
+			n = len;
+			removed = true;
+			i = <span class="w3-text-light-green">expungeStaleEntry(i)</span>;
+		}
+	} while ( (n &gt;&gt;&gt;= 1) != 0);
+	return removed;
+}
+
+/**
+ * <span class="w3-text-light-green">Expunge a stale entry by rehashing any possibly colliding entries</span>
+ * <span class="w3-text-light-green">lying between staleSlot and the next null slot. This also expunges</span>
+ * <span class="w3-text-light-green">any other stale entries encountered before the trailing null</span>. See
+ * Knuth, Section 6.4
+ *
+ * @param staleSlot index of slot known to have null key
+ * @return the index of the next null slot after staleSlot
+ * (all between staleSlot and this slot will have been checked
+ * for expunging).
+ */
+private int <span class="w3-text-light-green">expungeStaleEntry</span>(int staleSlot) {
+...
+}</pre>
+	</div>
+	<div><p>调用 <span class="w3-text-light-green">get 方法</span>的时候自身实现的清理工作：</p></div>
+	<div class="w3-custom-code">
+		<pre>public T get() {
+	Thread t = Thread.currentThread();
+	ThreadLocalMap map = getMap(t);
+	if (map != null) {
+		ThreadLocalMap.Entry e = map.<span class="w3-text-light-green">getEntry(this)</span>;
+		if (e != null) {
+			@SuppressWarnings("unchecked")
+			T result = (T)e.value;
+			return result;
+		}
+	}
+	return setInitialValue();
+}
+
+private Entry getEntry(ThreadLocal&lt;?&gt; key) {
+	int i = key.threadLocalHashCode &amp; (table.length - 1);
+	Entry e = table[i];
+	if (e != null &amp;&amp; e.get() == key)
+		return e;
+	else
+		return <span class="w3-text-light-green">getEntryAfterMiss(key, i, e)</span>;
+}
+
+/**
+ * Version of getEntry method for use when key is not found in
+ * its direct hash slot.
+ *
+ * @param  key the thread local object
+ * @param  i the table index for key's hash code
+ * @param  e the entry at table[i]
+ * @return the entry associated with key, or null if no such
+ */
+private Entry getEntryAfterMiss(ThreadLocal&lt;?&gt; key, int i, Entry e) {
+	Entry[] tab = table;
+	int len = tab.length;
+
+	while (e != null) {
+		ThreadLocal&lt;?&gt; k = e.get();
+		if (k == key)
+			return e;
+		if (k == null)
+			<span class="w3-text-light-green">expungeStaleEntry(i)</span>;
+		else
+			i = nextIndex(i, len);
+		e = tab[i];
+	}
+	return null;
+}</pre>
+	</div>
+	<div><p>研读源码可知，ThreadLocal 自身的清理机制的实现为，通过在每次调用 set、get 方法时对 ThreadLocalMap 中存储的 Entry 进行筛选，从而处理掉那些 stale entry，然而，在 GC 回收 ThreadLocal 之后，线程内不再调用 set、get 方法时，value 就会永久驻留内存，再给出 value 的强引用链：</p></div>
+	<div class="w3-custom-code">
+		<pre>Thread -&gt; ThreadLocal.ThreadLocalMap -&gt; ThreadLocal.ThreadLocalMap.Entry -&gt; value</pre>
+	</div>
+	<div><p>最后总结，单纯依赖 ThreadLocal 自身的清理机制是有可能导致内存泄露的，因此，在使用 ThreadLocal 创建<span class="w3-text-light-green">线程-本地</span>变量时，每次使用完 ThreadLocal，都调用它的 remove 方法主动清除数据，以免产生内存泄露问题。</p></div>
+	<div>
+		<p><strong>参考资料：</strong>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://blog.xiaohansong.com/2016/08/06/ThreadLocal-memory-leak/">http://blog.xiaohansong.com/2016/08/06/ThreadLocal-memory-leak/</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://my.oschina.net/xpbug/blog/113444">https://my.oschina.net/xpbug/blog/113444</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://help.eclipse.org/juno/topic/org.eclipse.mat.ui.help/concepts/gcroots.html">http://help.eclipse.org/juno/topic/org.eclipse.mat.ui.help/concepts/gcroots.html</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/jvm-memory-collection">http://www.infoq.com/cn/articles/jvm-memory-collection</a>
+	</div>
+</article>

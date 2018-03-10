@@ -10,6 +10,34 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2017-11-13</h4>
+			<p><strong>Java 并发编程系列：ThreadLocal（13）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This class provides thread-local variables. These variables differ from their normal counterparts in that each thread that accesses one has its own, independently initialized copy of the variable.</P>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上述英文源自 JDK1.8 官方文档里对 ThreadLocal 的介绍，博主试图这样翻译：</P>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadLocal 类用以提供<span class="w3-text-light-green">线程-本地</span>变量，这些<span class="w3-text-light-green">线程-本地</span>变量与它们的常规副本的区别是，每一个线程都只能访问它自身拥有的<span class="w3-text-light-green">线程-本地</span>变量，且该<span class="w3-text-light-green">线程-本地</span>变量独立于变量的初始化拷贝。</P>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然勉强翻译出了字面意思，但个人对英文源句还是不知所云，没关系，直接给出一个代码示例，通过观察执行结果，疑问将豁然开朗。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0034/0034.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
+			<h4>2017-11-12</h4>
+			<p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- 克雷格.兰丁&amp;hagersten (CLH Lock)</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLH lock is Craig, Landin, and Hagersten (CLH) locks, CLH lock is <span class="w3-text-light-green">a spin lock</span>, can ensure no hunger, provide fairness <span class="w3-text-light-green">first come first service</span>.</P>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The CLH lock is a scalable, high performance, fairness and spin lock <span class="w3-text-light-green">based on the list</span>, the application thread spin only on a local variable, it constantly polling the precursor state, if it is found that the pre release lock end spin.</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0033/0033.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2017-11-09</h4>
 			<p><strong>Java 并发编程系列：ConcurrentHashMap 续篇（12）</strong></p>
 			<div class="w3-container w3-light-gray">

@@ -1,0 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/33.txt',id:'prevtonext'},{url:'src/area_2/articles/0034/0034.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« Java 并发编程系列：ThreadLocal（13）</a>
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/31.txt',id:'prevtonext'},{url:'src/area_2/articles/0032/0032.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：ConcurrentHashMap 续篇（12） »</a>
+<div style="clear: both;"></div>

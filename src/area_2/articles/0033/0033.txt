@@ -1,0 +1,170 @@
+<article>
+	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- 克雷格.兰丁&amp;hagersten (CLH Lock)</strong></p><p class="w3-right w3-margin-0">2017-11-12</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLH lock is Craig, Landin, and Hagersten (CLH) locks, CLH lock is <span class="w3-text-light-green">a spin lock</span>, can ensure no hunger, provide fairness <span class="w3-text-light-green">first come first service</span>.</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The CLH lock is a scalable, high performance, fairness and spin lock <span class="w3-text-light-green">based on the list</span>, the application thread spin only on a local variable, it constantly polling the precursor state, if it is found that the pre release lock end spin.</P>
+	</div>
+	<div><p><strong>转载文章：</strong><a target="_blank" class="w3-link" href="https://segmentfault.com/a/1190000007094429">克雷格.兰丁&amp;hagersten (CLH Lock)</a></p></div>
+	<div><p>一、CLH 锁的实现：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CLHSpinLock</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Lock</span> {</span>
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;Node&gt; prev;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;Node&gt; node;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicReference&lt;Node&gt; tail = <span class="hljs-keyword">new</span> AtomicReference&lt;Node&gt;(
+            <span class="hljs-keyword">new</span> Node());
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title">CLHSpinLock</span>() {
+        <span class="hljs-keyword">this</span>.node = <span class="hljs-keyword">new</span> ThreadLocal&lt;Node&gt;() {
+            <span class="hljs-keyword">protected</span> Node <span class="hljs-title">initialValue</span>() {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Node();
+            }
+        };
+
+        <span class="hljs-keyword">this</span>.prev = <span class="hljs-keyword">new</span> ThreadLocal&lt;Node&gt;() {
+            <span class="hljs-keyword">protected</span> Node <span class="hljs-title">initialValue</span>() {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+            }
+        };
+    }
+
+    <span class="hljs-javadoc">/**
+     * 1.初始状态 tail 指向一个 node(head) 节点 
+     * +------+ 
+     * | head | &lt;---- tail 
+     * +------+
+     * 
+     * 2.lock-thread 加入等待队列：tail 指向新的 Node，同时 Prev 指向 tail 之前指向的节点
+     * +----------+
+     * | Thread-A |
+     * | := Node  | &lt;---- tail
+     * | := Prev  | -----&gt; +------+
+     * +----------+        | head |
+     *                     +------+ 
+     * 
+     *             +----------+            +----------+
+     *             | Thread-B |            | Thread-A |
+     * tail ----&gt;  | := Node  |     --&gt;    | := Node  | 
+     *             | := Prev  | ----|      | := Prev  | -----&gt;  +------+
+     *             +----------+            +----------+         | head |
+     *                                                          +------+ 
+     * 3.寻找当前 node 的 prev-node 然后开始自旋
+     * 
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lock</span>() {
+        <span class="hljs-keyword">final</span> Node node = <span class="hljs-keyword">this</span>.node.get();
+        node.locked = <span class="hljs-keyword">true</span>;
+        Node pred = <span class="hljs-keyword">this</span>.tail.getAndSet(node);
+        <span class="hljs-keyword">this</span>.prev.set(pred);
+        <span class="hljs-keyword">while</span> (pred.locked); <span class="hljs-comment">// 自旋</span>
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">unlock</span>() {
+        <span class="hljs-keyword">final</span> Node node = <span class="hljs-keyword">this</span>.node.get();
+        node.locked = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">this</span>.node.set(<span class="hljs-keyword">this</span>.prev.get());
+    }
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lockInterruptibly</span>() <span class="hljs-keyword">throws</span> InterruptedException {
+    }
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">tryLock</span>() {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">tryLock</span>(<span class="hljs-keyword">long</span> time, TimeUnit unit)
+            <span class="hljs-keyword">throws</span> InterruptedException {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-annotation">@Override</span>
+    <span class="hljs-keyword">public</span> Condition <span class="hljs-title">newCondition</span>() {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> {</span>
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">boolean</span> locked;
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>……</p></div>
+	<div><p>在 Java 中使用了 ThreadLocal 作为具体实现，AtomicReference 为了消除多个线程并发对 tail 引用 Node 的影响，核心方法 lock() 分为 3 个步骤实现：</p></div>
+	<div><ul style="list-style:none;padding-left:0">
+		<li>
+			<div><p>1. 初始状态 tail 指向一个 node(head) 节点</p></div>
+			<div class="w3-custom-code">
+				<pre>private final AtomicReference&lt;Node&gt; tail = new AtomicReference&lt;Node&gt;(new Node());</pre>
+			</div>
+		</li>
+		<li>
+			<div><p>2. thread 加入等待队列：tail 指向新的 Node，同时 Prev 指向 tail 之前指向的节点，在 Java 代码中使用了 <span class="w3-text-light-green">getAndSet</span> 即 CAS 操作</p></div>
+			<div class="w3-custom-code">
+				<pre>Node pred = this.tail.<span class="w3-text-light-green">getAndSet</span>(node);
+this.prev.set(pred);</pre>
+			</div>
+		</li>
+		<li>
+			<div><p>3. 寻找当前线程对应的 node 的前驱 node，然后开始自旋前驱 node 的 status 判断是否可以获取 lock</p></div>
+			<div class="w3-custom-code">
+				<pre>while (pred.locked);</pre>
+			</div>
+		</li>
+	</ul></div>
+	<div><p>同理 unlock() 方法，获取当前线程的 node，设置 lock status，将当前 node 指向前驱 node（即 tail 指向的就是前驱 node，等同于出队操作）。</p></div>
+	<div><p>二、CLH 锁的测试：</p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="max-height:300px;height:100%;overflow-y:auto">
+			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> CLHSpinLockTest {
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> test(Lock <span class="hljs-keyword">lock</span>) {
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">lock</span>.<span class="hljs-keyword">lock</span>();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10000000</span>; i++)
+                ++count;
+        } <span class="hljs-keyword">finally</span> {
+            <span class="hljs-keyword">lock</span>.unlock();
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+
+        CLHSpinLock clhsl = <span class="hljs-keyword">new</span> CLHSpinLock();
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">50</span>; i++) {
+            <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() {
+
+                @Override
+                <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span>() {
+                    test(clhsl);
+                }
+            }).start();
+        }
+
+        <span class="hljs-keyword">while</span> (Thread.activeCount() &gt; <span class="hljs-number">1</span>) {
+            Thread.<span class="hljs-keyword">yield</span>();
+        }
+        System.<span class="hljs-keyword">out</span>.println(count);
+    }
+}</code></pre>
+		</div>
+	</div>
+	<div><p>……</p></div>
+	<div>
+		<p><strong>参考资料：</strong>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.programering.com/a/MjM5gTNwATE.html">http://www.programering.com/a/MjM5gTNwATE.html</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://gist.github.com/kylefeng/6914708">https://gist.github.com/kylefeng/6914708</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://segmentfault.com/a/1190000007094429">https://segmentfault.com/a/1190000007094429</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://christmaslin.iteye.com/blog/856395">http://christmaslin.iteye.com/blog/856395</a>
+		</p>
+	</div>
+</article>
