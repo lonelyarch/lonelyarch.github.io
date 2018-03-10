@@ -12,7 +12,7 @@
 	<div><p>为了理解 JDK1.8 文档里英文源句的意思，直接给出使用 ThreadLocal 的代码示例，研读代码且注意观察执行结果：</p></div>
 	<div class="w3-example">
 		<div><P class="w3-text-black">示例代码：实例化一个 ThreadLocal 对象，指定该对象提供字符串类型的<span class="w3-text-light-green">线程-本地</span>变量，初始化<span class="w3-text-light-green">线程-本地</span>变量为当前线程名，在主线程内创建两个子线程且两个子线程分别调用 ThreadLocal 对象的 set 方法，然后，子线程、主线程分别调用 ThreadLocal 对象的 get 方法以访问它们各自拥有的<span class="w3-text-light-green">线程-本地</span>变量值。</P></div>
-		<div class="w3-code">
+		<div class="w3-code" style="overflow-y:auto">
 			<pre><code class="hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> ThreadLocalAnalyseDemo {
 
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ThreadLocal&lt;String&gt; tl = <span class="hljs-keyword">new</span> ThreadLocal&lt;String&gt;() {
