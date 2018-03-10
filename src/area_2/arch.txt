@@ -2,6 +2,13 @@
 <article class="list">
 	<hr>
 	<div class="item">
+    	<div><strong>2017-12</strong></div>
+        <ul>
+        	<li><time>08日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/34.txt',id:'prevtonext'},{url:'src/area_2/articles/0035/0035.txt',id:'contents'}]);">Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</a></li>
+        </ul>
+    </div>
+    <hr style="border: none; border-top: 1px dotted white;">
+	<div class="item">
     	<div><strong>2017-11</strong></div>
         <ul>
         	<li><time>13日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/33.txt',id:'prevtonext'},{url:'src/area_2/articles/0034/0034.txt',id:'contents'}]);">Java 并发编程系列：ThreadLocal（13）</a></li>

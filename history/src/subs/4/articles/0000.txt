@@ -21,5 +21,5 @@
 	<div class="box"><strong>F-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0020.txt','contents')">CSS 如何实现自适应的正方形？</a></div>
 	<div class="box"><strong>F-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0021.txt','contents')">CSS 实现完美自适应的正方形？</a></div>
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0022.txt','contents')">解决公平性问题之自旋锁的变种：TicketLock ？</a></div>
-	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0023.txt','contents')">理解 Java 中的弱引用</a></div>
+	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0023/0023.txt','contents')">理解 Java 中的弱引用</a></div>
 </div>

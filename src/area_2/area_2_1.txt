@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之死锁（05）</strong></p><p class="w3-right">2017-09-29</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，使用 synchronized 关键字的目的是确保线程安全，但是，如果你的代码写得不完美，那么就有可能导致死锁。谈到死锁，博主最先想到的是经典的<span class="w3-text-red">哲学家就餐问题</span>，这个问题毕竟是在大学课本里出现过。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/24.txt',id:'prevtonext'},{url:'src/area_2/articles/0025/0025.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：synchronized 关键字之基本应用示例（04）</strong></p><p class="w3-right">2017-09-27</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -99,14 +110,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/15.txt',id:'prevtonext'},{url:'src/area_2/articles/0016/0016.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>flex 使用之 CSS 布局</strong></p><p class="w3-right">2017-04-27</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
-		<p><strong>注意：</strong>以下所有示例基于 <strong>display: flex</strong> 实现</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/14.txt',id:'prevtonext'},{url:'src/area_2/articles/0015/0015.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
