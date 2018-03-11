@@ -1,0 +1,362 @@
+<article>
+	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- JDK1.8 AbstractQueuedSynchronizer 的实现分析（下）</strong></p><p class="w3-right w3-margin-0">2017-12-11</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过本系列的上半部分 <a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/jdk1.8-abstractqueuedsynchronizer">JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</a>的解读，相信很多读者对 AbstractQueuedSynchronizer 的独占功能已了然于胸，趁热打铁，这次我们通过对另一个工具类：CountDownLatch 的分析来解读 AQS 的另外一个功能：共享功能。</P>
+	</div>
+	<div><p><strong>转载文章：</strong><a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/java8-abstractqueuedsynchronizer">JDK1.8 AbstractQueuedSynchronizer 的实现分析（下）</a></p></div>
+	<div><p><strong>文章作者：</strong><a target="_blank" class="w3-link" href="http://www.infoq.com/cn/profile/%e5%88%98%e9%94%9f%e6%b4%8b">刘锟洋</a></p></div>
+	<div><p><span class="w3-text-light-green">共享功能</span></p></div>
+	<div><p>在开始解读 AQS 的共享功能之前，我们再重温一下 CountDownLatch，CountDownLatch 为 JUC 包下的计数器工具类，常被用在多线程环境下，它在初始化时需要指定一个计数器的大小，然后可被多个线程实现并发地减 1 操作，且在计数器为 0 后，调用 await 方法的线程会被唤醒，从而实现多线程之间的协作。它在多线程环境下的基本使用方式为：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-coral">public class</span> CountDownLatchAnalyseDemo {
+
+	<span class="w3-text-coral">private static final int</span> count = 6;
+	<span class="w3-text-coral">private static final</span> CountDownLatch latch = <span class="w3-text-coral">new</span> CountDownLatch(count);
+
+	<span class="w3-text-coral">public static void</span> main(String[] args) {
+		<span class="w3-text-coral">for</span> (<span class="w3-text-coral">int</span> i = 0; i &lt; count; i++) {
+			<span class="w3-text-coral">new</span> Thread(<span class="w3-text-coral">new</span> Runnable() {
+				@Override
+				<span class="w3-text-coral">public void</span> run() {
+					System.out.println("线程" + Thread.currentThread().getId()
+							+ "：开始");
+					<span class="w3-text-coral">try</span> {
+						Thread.sleep(1000);
+					} <span class="w3-text-coral">catch</span> (InterruptedException e) {
+						e.printStackTrace();
+					}
+					System.out.println("线程" + Thread.currentThread().getId()
+							+ "：结束");
+					latch.countDown();
+				}
+			}).start();
+		}
+		<span class="w3-text-coral">try</span> {
+			latch.await();
+		} <span class="w3-text-coral">catch</span> (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("所有线程均执行完毕，一切正常……");
+	}
+}</pre>
+	</div>
+	<div><p>可以看到 CountDownLatch 的作用类似于一个<span style="padding:0 5px" class="w3-light-gray">栅栏</span>，在 CountDownLatch 的计数为 0 之前，调用 await 方法的线程将一直阻塞，直到 CountDownLatch 计数为 0，await 方法才会返回，而 CountDownLatch 的 countDown 方法则一般由各个线程调用，实现 CountDownLatch 计数的减 1 操作。</p></div>
+	<div><p>知道了 CountDownLatch 的基本使用方法，我们就从上述 demo 的 new CountDownLatch(count) 开始，看一下 CountDownLatch 是怎么实现的。首先，看一下 CountDownLatch 的构造方法：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-coral">public</span> CountDownLatch(<span class="w3-text-coral">int</span> count) {
+	<span class="w3-text-coral">if</span> (count &lt; 0) <span class="w3-text-coral">throw new</span> IllegalArgumentException("count &lt; 0");
+	this.sync = <span class="w3-text-coral">new</span> Sync(count);
+}</pre>
+	</div>
+	<div><p>与 ReentrantLock 相似，CountDownLatch 内部也有一个叫做 Sync 的内部类，同样也是用它继承了 AQS，按图索骥，接着看一下 Sync 类：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-coral">private static final class</span> Sync <span class="w3-text-coral">extends</span> AbstractQueuedSynchronizer {
+	<span class="w3-text-coral">private static final long</span> serialVersionUID = 4982264981922014374L;
+
+	Sync(<span class="w3-text-coral">int</span> count) {
+		setState(count);
+	}
+	...
+}</pre>
+	</div>
+	<div><p>如果你看过本系列的上半部分，那么你对 setState 方法一定不会陌生，它用以设置 AQS 的一个<span class="w3-text-light-green">状态位</span>，在不同的场景下，代表不同的含义，例如，在 ReentrantLock 中，表示加锁的次数，在 CountDownLatch 中，则表示 CountDownLatch 的计数器的初始大小：</p></div>
+	<div class="w3-custom-code">
+		<pre>/**
+ * Returns the current value of synchronization state.
+ * This operation has memory semantics of a {@code volatile} read.
+ * @return current state value
+ */
+<span class="w3-text-coral">protected final int</span> getState() {
+	return state;
+}
+
+/**
+ * Sets the value of synchronization state.
+ * This operation has memory semantics of a {@code volatile} write.
+ * @param newState the new state value
+ */
+<span class="w3-text-coral">protected final void</span> setState(<span class="w3-text-coral">int</span> newState) {
+	state = newState;
+}</pre>
+	</div>
+	<div><p>设置完计数器的大小之后，CountDownLatch 的构造方法返回，下面我们再看一下 CountDownLatch 的 await 方法：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-coral">public void</span> await() <span class="w3-text-coral">throws</span> InterruptedException {
+	sync.acquireSharedInterruptibly(1);
+}</pre>
+	</div>
+	<div><p>调用了 Sync 的 acquireSharedInterruptibly 方法，因为 Sync 是 AQS 子类，因此，这里其实是直接调用了 AQS 的 acquireSharedInterruptibly 方法：</p></div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 acquireSharedInterruptibly 方法
+<span class="w3-text-coral">public final void</span> acquireSharedInterruptibly(<span class="w3-text-coral">int</span> arg)
+		<span class="w3-text-coral">throws</span> InterruptedException {
+	<span class="w3-text-coral">if</span> (Thread.interrupted())
+		<span class="w3-text-coral">throw new</span> InterruptedException();
+	<span class="w3-text-coral">if</span> (tryAcquireShared(arg) &lt; 0)
+		doAcquireSharedInterruptibly(arg);
+}</pre>
+	</div>
+	<div><p>从方法名上看，这个方法用以响应线程的中断，所以，在前两行会检查一下线程是否被中断。接着，当前线程尝试获取共享锁，小于 0，表示获取锁失败，通过本系列的上半部分的解读， 我们知道 AQS 在获取锁的思路是，先尝试直接获取锁，如果失败会将当前线程放在队列中，按照 FIFO 的原则等待锁。实际上，共享锁也是这个思路，与独占锁一致，这里的 tryAcquireShared 是个空方法，留给子类去实现：</p></div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 tryAcquireShared 方法
+<span class="w3-text-coral">protected int</span> tryAcquireShared(<span class="w3-text-coral">int</span> arg) {
+	<span class="w3-text-coral">throw new</span> UnsupportedOperationException();
+}</pre>
+	</div>
+	<div><p></p></div>
+	<div class="w3-custom-code">
+		<pre>// CountDownLatch 中的 tryAcquireShared 方法
+<span class="w3-text-coral">protected int</span> tryAcquireShared(<span class="w3-text-coral">int</span> acquires) {
+	<span class="w3-text-coral">return</span> (getState() == 0) ? 1 : -1; // state 为 0，则返回 1，表示获取成功，否则，返回 -1，则表示获取失败
+}</pre>
+	</div>
+	<div><p>看到这里，读者可能会发现，await 方法的获取方式更像是在获取一个独占锁，那为什么这里还会用 tryAcquireShared 呢？</p></div>
+	<div><p>思考一下 CountDownLatch 的 await 方法是不是只能在主线程中调用呢？当然不是，CountDownLatch 的 await 方法可以在多个线程中调用，当 CountDownLatch 的计数器为 0 之后，调用 await 的方法都会依次返回。换言之，可以有多个线程同时在等待 await 方法返回，所以，它被设计成了实现 tryAcquireShared 方法，获取的是一个共享锁，锁在所有调用 await 方法的线程之间共享，所以称为共享锁。回到 acquireSharedInterruptibly 方法：</p></div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 acquireSharedInterruptibly 方法
+<span class="w3-text-coral">public final void</span> acquireSharedInterruptibly(<span class="w3-text-coral">int</span> arg)
+		<span class="w3-text-coral">throws</span> InterruptedException {
+	<span class="w3-text-coral">if</span> (Thread.interrupted())
+		<span class="w3-text-coral">throw new</span> InterruptedException();
+	<span class="w3-text-coral">if</span> (tryAcquireShared(arg) &lt; 0)
+		doAcquireSharedInterruptibly(arg);
+}</pre>
+	</div>
+	<div><p>如果获取共享锁失败（返回了 -1，说明 state 不为 0，也就是 CountDownLatch 的计数器还不为 0），进入调用 doAcquireSharedInterruptibly 方法中，按照我们上述的猜想，应该是要将当前线程放入到队列中去。</p></div>
+	<div><p>在这之前，我们再回顾一下 AQS 队列的数据结构：AQS 是一个双向链表，通过结点中的 next、prev 变量分别指向当前结点的前驱结点和后继结点。其中，每个结点中都包含了一个线程和一个类型变量：表示当前结点是独占结点还是共享结点，头结点中的线程为正在占有锁的线程，后面的所有结点的线程表示为正在等待获取锁的线程。如下图所示：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0036/images/01.jpg" /></div>
+	<div><p>绿色结点为头结点，表示正在获取锁的结点，剩下的蓝色结点（Node1、Node2、Node3）为正在等待锁的结点，它们通过各自的 next、prev 变量分别指向前、后结点，形成了 AQS 中的双向链表。每个线程被加上类型（共享还是独占）之后就是一个 Node，也就是本文中说的结点。再看一下 doAcquireSharedInterruptibly 方法：</p></div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 doAcquireSharedInterruptibly 方法
+<span class="w3-text-coral">private void</span> doAcquireSharedInterruptibly(<span class="w3-text-coral">int</span> arg)
+	<span class="w3-text-coral">throws</span> InterruptedException {
+	<span class="w3-text-coral">final</span> Node node = addWaiter(Node.SHARED);
+	// 将当前线程包装成类型为 Node.SHARED 的结点，标识这是一个共享结点
+	<span class="w3-text-coral">boolean</span> failed = true;
+	<span class="w3-text-coral">try</span> {
+		<span class="w3-text-coral">for</span> (;;) {
+			<span class="w3-text-coral">final</span> Node p = node.predecessor();
+			<span class="w3-text-coral">if</span> (p == head) {
+				// 若新建结点的前驱结点是 Head，说明当前结点是 AQS 队列中等待获取锁的第一个结点
+				// 按照 FIFO 的原则，可以直接尝试获取锁
+				<span class="w3-text-coral">int</span> r = tryAcquireShared(arg);
+				<span class="w3-text-coral">if</span> (r &gt;= 0) {
+					setHeadAndPropagate(node, r);
+					// 获取成功，需要将当前结点设置为 AQS 队列中的第一个结点
+					// 这是 AQS 的规则，队列的头结点表示正在占有锁的结点
+					p.next = null; // help GC
+					failed = false;
+					<span class="w3-text-coral">return</span>;
+				}
+			}
+			<span class="w3-text-coral">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp; // 检查一下是否需要将当前结点挂起
+				parkAndCheckInterrupt())
+				<span class="w3-text-coral">throw new</span> InterruptedException();
+		}
+	} <span class="w3-text-coral">finally</span> {
+		<span class="w3-text-coral">if</span> (failed)
+			cancelAcquire(node);
+	}
+}</pre>
+	</div>
+	<div><p>这块儿代码有几点需要说明：</p></div>
+	<div><p>1. setHeadAndPropagate 方法</p></div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 setHeadAndPropagate 方法
+<span class="w3-text-coral">private void</span> setHeadAndPropagate(Node node, <span class="w3-text-coral">int</span> propagate) {
+	Node h = head; // Record old head for check below
+	setHead(node);
+	/*
+	 * Try to signal next queued node if:
+	 *   Propagation was indicated by caller,
+	 *     or was recorded (as h.waitStatus either before
+	 *     or after setHead) by a previous operation
+	 *     (note: this uses sign-check of waitStatus because
+	 *      PROPAGATE status may transition to SIGNAL.)
+	 * and
+	 *   The next node is waiting in shared mode,
+	 *     or we don't know, because it appears null
+	 *
+	 * The conservatism in both of these checks may cause
+	 * unnecessary wake-ups, but only when there are multiple
+	 * racing acquires/releases, so most need signals now or soon
+	 * anyway.
+	 */
+	<span class="w3-text-coral">if</span> (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||
+		(h = head) == null || h.waitStatus &lt; 0) {
+		Node s = node.next;
+		<span class="w3-text-coral">if</span> (s == null || s.isShared())
+			doReleaseShared();
+	}
+}</pre>
+	</div>
+	<div><p>首先，使用了 CAS 更换了头结点，然后，将当前结点的下一个结点取出来，如果同样是<span class="w3-text-light-green"> shared </span>类型的，就再做一个<span class="w3-text-light-green"> releaseShared </span>操作。看一下 doReleaseShared 方法：</p></div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 doReleaseShared 方法
+<span class="w3-text-coral">private void</span> doReleaseShared() {
+	/*
+	 * Ensure that a release propagates, even if there are other
+	 * in-progress acquires/releases.  This proceeds in the usual
+	 * way of trying to unparkSuccessor of head if it needs
+	 * signal. But if it does not, status is set to PROPAGATE to
+	 * ensure that upon release, propagation continues.
+	 * Additionally, we must loop in case a new node is added
+	 * while we are doing this. Also, unlike other uses of
+	 * unparkSuccessor, we need to know if CAS to reset status
+	 * fails, if so rechecking.
+	 */
+	<span class="w3-text-coral">for</span> (;;) {
+		Node h = head;
+		<span class="w3-text-coral">if</span> (h != null &amp;&amp; h != tail) {
+			<span class="w3-text-coral">int</span> ws = h.waitStatus;
+			<span class="w3-text-coral">if</span> (ws == Node.SIGNAL) {
+			// 若当前结点是 SIGNAL，则表示它正在等待一个信号，即它在等待被唤醒，因此，需要做两件事：
+			// 1.重置 waitStatus 标志位；2.重置成功之后，唤醒下一个结点。
+				<span class="w3-text-coral">if</span> (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+					continue;            // loop to recheck cases
+				unparkSuccessor(h);
+			}
+			<span class="w3-text-coral">else if</span> (ws == 0 &amp;&amp;
+					 !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+			// 如果头结点本身的 waitStatus 是出于重置状态（waitStatus == 0）的，将其设置为<span class="w3-text-light-green">传播</span>状态
+				continue;                // loop on failed CAS
+		}
+		<span class="w3-text-coral">if</span> (h == head)                   // loop if head changed
+			<span class="w3-text-coral">break</span>;
+	}
+}</pre>
+	</div>
+	<div><p>为什么要这么做呢？这就是共享功能和独占功能最不一样的地方，对于独占功能来说，有且只有一个线程（通常只对应一个结点，以 ReentantLock 为例，如果当前持有锁的线程重复调用 lock 方法，那么，根据本系列上半部分我们的介绍可知，它会被包装成多个结点在 AQS 的队列中，所以用一个线程来描述更准确）能够获取锁。</p></div>
+	<div><p>但是，对于共享功能来说，共享的状态是可以被共享的，这意味着 AQS 队列中的其它结点也能够第一时间知道状态的变化。因此，一个结点获取到共享状态的流程图是这样的：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0036/images/02.jpg" /><p style="text-align:center">在 AQS 队列中，当 Node1 调用 tryAcquireShared 成功之后，更换了头结点</p></div>
+	<div><p>Node1 变成了头结点之后，调用 unparkSuccessor 方法唤醒了 Node2，Node2 中持有的线程 A 在上面流程图的 park node 位置，线程 A 被唤醒之后，重复绿色线程的流程，重新检查调用 tryAcquireShared 方法，检查成功与否，如果成功，则又更改头结点，重复以上步骤，以完成结点自身获取共享锁成功之后，唤醒下一个共享类型结点的操作，从而实现共享状态的向后传递。</p></div>
+	<div><p>2. 实际上，对于 doAcquireShared 方法，AQS 还提供了集中类似的实现：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0036/images/03.jpg" /></div>
+	<div><p>对号入座为：</p>
+		<ul style="list-style:decimal">
+			<li>带参数请求共享锁，且忽略中断；</li>
+			<li>带参数请求共享锁，且响应中断（每次循环时，都会检查当前线程的中断状态，以实现对线程中断的响应）；</li>
+			<li>带参数请求共享锁，但是，限制等待时间（第二个参数设置超时时间，超出时间之后，方法返回）。</li>
+		</ul>
+	</div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 doAcquireSharedNanos 方法
+<span class="w3-text-coral">private boolean</span> doAcquireSharedNanos(<span class="w3-text-coral">int</span> arg, <span class="w3-text-coral">long</span> nanosTimeout)
+		<span class="w3-text-coral">throws</span> InterruptedException {
+	<span class="w3-text-coral">if</span> (nanosTimeout &lt;= 0L)
+		<span class="w3-text-coral">return</span> false;
+	<span class="w3-text-light-green"><span class="w3-text-coral">final long</span> deadline = System.nanoTime() + nanosTimeout;</span>
+	<span class="w3-text-coral">final</span> Node node = addWaiter(Node.SHARED);
+	<span class="w3-text-coral">boolean</span> failed = true;
+	<span class="w3-text-coral">try</span> {
+		<span class="w3-text-coral">for</span> (;;) {
+			<span class="w3-text-coral">final</span> Node p = node.predecessor();
+			<span class="w3-text-coral">if</span> (p == head) {
+				<span class="w3-text-coral">int</span> r = tryAcquireShared(arg);
+				<span class="w3-text-coral">if</span> (r &gt;= 0) {
+					setHeadAndPropagate(node, r);
+					p.next = null; // help GC
+					failed = false;
+					<span class="w3-text-coral">return</span> true;
+				}
+			}
+			<span class="w3-text-light-green">nanosTimeout = deadline - System.nanoTime();</span>
+			<span class="w3-text-light-green"><span class="w3-text-coral">if</span> (nanosTimeout &lt;= 0L)</span>
+				<span class="w3-text-light-green"><span class="w3-text-coral">return</span> false;</span>
+			<span class="w3-text-coral">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+				<span class="w3-text-light-green">nanosTimeout &gt; spinForTimeoutThreshold)</span>
+				LockSupport.parkNanos(this, nanosTimeout);
+			<span class="w3-text-coral">if</span> (Thread.interrupted())
+				<span class="w3-text-coral">throw new</span> InterruptedException();
+		}
+	} <span class="w3-text-coral">finally</span> {
+		<span class="w3-text-coral">if</span> (failed)
+			cancelAcquire(node);
+	}
+}</pre>
+	</div>
+	<div><p>最后一个 doAcquireSharedNanos 方法比较特别，我们一起看一下它是怎么实现超时时间控制的。因为该方法与其它获取共享锁的方法在逻辑上是类似的，因此，我用绿色字体标识出了它所不一样的地方，也就是实现超时时间控制的地方。</p></div>
+	<div><p>可以看到，其实就是在进入方法时，计算出了一个 <span class="w3-text-light-green">deadline</span>，每次循环的时候用当前时间和 <span class="w3-text-light-green">deadline</span> 比较，大于 <span class="w3-text-light-green">deadline</span> 说明超时时间已到，直接返回方法。注意，最后一行绿色字体的代码：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-light-green">nanosTimeout &gt; spinForTimeoutThreshold)</span></pre>
+	</div>
+	<div><p>从变量的字面意思可知，这是以超时时间和超时自旋的最小时间进行比较，在这里，Doug Lea 把超时自旋的阈值设置成了 1000ns，即只有超时时间大于 1000ns 才会挂起线程，否则，再次循环，以实现<span class="w3-text-light-green">自旋</span>操作，这是<span class="w3-text-light-green">自旋</span>在 AQS 中的应用之处。</p></div>
+	<div><p>看完 await 方法，我们再来看一下 countDown 方法：</p></div>
+	<div class="w3-custom-code">
+		<pre>// CountDownLatch 中的 countDown 方法
+<span class="w3-text-coral">public void</span> countDown() {
+	sync.releaseShared(1); // 调用了 AQS 的 releaseShared 方法并传入了参数 1
+}
+
+...
+
+// AQS 中的 releaseShared 方法
+<span class="w3-text-coral">public final boolean</span> releaseShared(int arg) {
+	<span class="w3-text-coral">if</span> (tryReleaseShared(arg)) {
+		doReleaseShared();
+		<span class="w3-text-coral">return</span> true;
+	}
+	<span class="w3-text-coral">return</span> false;
+}</pre>
+	</div>
+	<div><p>首先尝试释放锁，tryReleaseShared 同样为空方法，留给子类自己去实现，以下是 CountDownLatch 的内部类 Sync 的实现：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-coral">protected boolean</span> tryReleaseShared(<span class="w3-text-coral">int</span> releases) {
+	// Decrement count; signal when transition to zero
+	<span class="w3-text-coral">for</span> (;;) {
+	// 死循环更新 state 的值，实现 state 的减 1 操作，之所以用死循环是为了确保 state 值的更新成功
+		<span class="w3-text-coral">int</span> c = getState();
+		<span class="w3-text-coral">if</span> (c == 0)
+			<span class="w3-text-coral">return</span> false;
+		<span class="w3-text-coral">int</span> nextc = c-1;
+		<span class="w3-text-coral">if</span> (compareAndSetState(c, nextc))
+			<span class="w3-text-coral">return</span> nextc == 0;
+	}
+}</pre>
+	</div>
+	<div><p>从上文的分析中可知，如果 state 的值为 0，在 CountDownLatch 中意味着：所有的子线程已经执行完毕，这个时候可以唤醒调用 await 方法的线程，而这些线程正在 AQS 的队列中并且是被挂起的，所以，下一步应该去唤醒 AQS 队列中的头结点（AQS 的队列为 FIFO 队列），然后由头结点去依次唤醒 AQS 队列中的其它共享结点。</p></div>
+	<div><p>如果 tryReleaseShared 返回 true，则进入 doReleaseShared 方法：</p></div>
+	<div class="w3-custom-code">
+		<pre>// AQS 中的 doReleaseShared 方法
+<span class="w3-text-coral">private void</span> doReleaseShared() {
+	/*
+	 * Ensure that a release propagates, even if there are other
+	 * in-progress acquires/releases.  This proceeds in the usual
+	 * way of trying to unparkSuccessor of head if it needs
+	 * signal. But if it does not, status is set to PROPAGATE to
+	 * ensure that upon release, propagation continues.
+	 * Additionally, we must loop in case a new node is added
+	 * while we are doing this. Also, unlike other uses of
+	 * unparkSuccessor, we need to know if CAS to reset status
+	 * fails, if so rechecking.
+	 */
+	<span class="w3-text-coral">for</span> (;;) {
+		Node h = head;
+		<span class="w3-text-coral">if</span> (h != null &amp;&amp; h != tail) {
+			<span class="w3-text-coral">int</span> ws = h.waitStatus;
+			<span class="w3-text-coral">if</span> (ws == Node.SIGNAL) {
+			// 若当前结点是 SIGNAL，则表示它正在等待一个信号，即它在等待被唤醒，因此，需要做两件事：
+			// 1.重置 waitStatus 标志位；2.重置成功之后，唤醒下一个结点。
+				<span class="w3-text-coral">if</span> (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+					continue;            // loop to recheck cases
+				unparkSuccessor(h);
+			}
+			<span class="w3-text-coral">else if</span> (ws == 0 &amp;&amp;
+					 !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+			// 如果头结点本身的 waitStatus 是出于重置状态（waitStatus == 0）的，将其设置为<span class="w3-text-light-green">传播</span>状态
+				continue;                // loop on failed CAS
+		}
+		<span class="w3-text-coral">if</span> (h == head)                   // loop if head changed
+			<span class="w3-text-coral">break</span>;
+	}
+}</pre>
+	</div>
+	<div><p>当线程被唤醒之后，会重新尝试获取共享锁，而对于 CountDownLatch 而言，线程获取共享锁的判断依据是 state 是否为 0，而这个时候 state 显然已经变成了 0，因此，可以顺利获取共享锁并且依次唤醒 AQS 队里中后面的结点即对应的线程。</p></div>
+	<div><p>最后总结：</p></div>
+	<div><p>本文从 CountDownLatch 入手，深入分析了 AQS 关于共享锁方面的实现方式：</p></div>
+	<div><p>如果获取共享锁失败，则将请求共享锁的线程封装成 Node 对象放入 AQS 的队列中并挂起 Node 对象对应的线程，以实现请求锁线程的等待操作。等到共享锁可以被获取之后，从头结点开始，依次唤醒头结点以及其后的所有共享类型的结点，实现共享状态的传播。</p></div>
+	<div><p>……</p></div>
+</article>

@@ -7,9 +7,9 @@
 		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;众所周知，ReentrantLock 的功能是实现代码段的并发访问控制，也就是通常意义上所说的锁，在没有看到 AbstractQueuedSynchronizer 之前，你可能会以为它的实现是通过类似于 synchronized，通过给对象加锁来实现的。但事实上，它只是一个工具类，仅是作为一个普普通通的类就完成了代码块的并发访问控制，这就让人疑惑它怎么实现的代码块的并发访问控制的。文中将以 AQS 代替 AbstractQueuedSynchronizer 。</P>
 	</div>
 	<div><p><strong>转载文章：</strong><a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/jdk1.8-abstractqueuedsynchronizer">JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</a></p></div>
-	<div><p><strong>文章作者：</strong><a target="_blank" class="w3-link" href="http://www.infoq.com/cn/profile/%E5%88%98%E9%94%9F%E6%B4%8B">刘锟洋</a></p></div>
+	<div><p><strong>文章作者：</strong><a target="_blank" class="w3-link" href="http://www.infoq.com/cn/profile/%e5%88%98%e9%94%9f%e6%b4%8b">刘锟洋</a></p></div>
 	<div><p>在深入分析 AQS 之前，我想先从 AQS 的功能上简单说明一下 AQS，站在使用者的角度，AQS 的功能可以分为两类：独占功能和共享功能，在它的所有子类中，或实现并使用了它独占锁的功能，或使用了共享锁的功能，而不会同时使用两套 API，即便是它最有名的子类 ReentrantReadWriteLock，也是通过两个内部类：读锁和写锁，分别使用两套 API 来实现的，为什么这么做，后面我会再分析，到目前为止，我们只需要明白 AQS 在功能上有<span class="w3-text-light-green">独占控制</span>和<span class="w3-text-light-green">共享控制</span>两种功能即可。</p></div>
-	<div><p><span class="w3-text-light-green">独占锁</span></p></div>
+	<div><p><span class="w3-text-light-green">独占功能</span></p></div>
 	<div><p>在真正解读 AQS 之前，我想先从使用了它独占控制功能的子类 ReentrantLock 说起，分析 ReentrantLock 的同时看一看 AQS 的实现，再推理出 AQS 独特的设计思路和实现方式。最后，再看 AQS 的共享控制功能的实现。</p></div>
 	<div><p>对于 ReentrantLock 类，使用过的同学应该都知道，通常是这么用它的：</p></div>
 	<div class="w3-custom-code w3-light-gray">

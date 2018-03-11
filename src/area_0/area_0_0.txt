@@ -10,6 +10,18 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.12.11</h4>
+			<p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- JDK1.8 AbstractQueuedSynchronizer 的实现分析（下）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过本系列的上半部分 <a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/jdk1.8-abstractqueuedsynchronizer">JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</a>的解读，相信很多读者对 AbstractQueuedSynchronizer 的独占功能已了然于胸，趁热打铁，这次我们通过对另一个工具类：CountDownLatch 的分析来解读 AQS 的另外一个功能：共享功能。</P>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0036/0036.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.12.08</h4>
 			<p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</strong></p>
 			<div class="w3-container w3-light-gray">
