@@ -1,4 +1,22 @@
 <article>
+	<div><p><strong>Java 并发编程系列：为什么总是在 while 循环之内调用 wait() 方法？（07）</strong></p><p class="w3-right">2017-10-03</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java API 文档里对 Object 类中的 wait() 方法有如下文字描述：</P>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As in the one argument version, interrupts and spurious wakeups are possible, and <span style="color:#8bc34a">this method should always be used in a loop</span>:</p>
+		<pre><code class="hljs w3-light-gray" style="padding:0;overflow:hidden;text-overflow:ellipsis">&nbsp;&nbsp;synchronized (obj) {
+    &nbsp;&nbsp;while (&lt;condition does not hold&gt;)
+        &nbsp;&nbsp;<apan style="color:#8bc34a">obj.wait();</apan>
+    &nbsp;&nbsp;... // Perform action appropriate to condition
+&nbsp;&nbsp;}</code></pre>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这就是说，在调用 Object 类中的 wait() 方法的时候，因为中断和伪唤醒（spurious wakeup）可能会发生，所以应该将 wait() 方法置于 while 循环内执行。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/26.txt',id:'prevtonext'},{url:'src/area_2/articles/0027/0027.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：synchronized 关键字之重入锁的实现（06）</strong></p><p class="w3-right">2017-10-02</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -99,16 +117,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/17.txt',id:'prevtonext'},{url:'src/area_2/articles/0018/0018.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 集合类：HashMap 初探</strong></p><p class="w3-right">2017-05-02</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table based implementation of the Map interface. This implementation provides all of the optional map operations, and permits null values and the null key. (The HashMap class is roughly equivalent to Hashtable, except that it is unsynchronized and permits nulls.)...</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于哈希表的 Map 接口的实现，该实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了<span class="w3-text-light-green">不支持同步</span>和<span class="w3-text-light-green">允许使用 null 值</span>之外，HashMap 与 Hashtable 大致上是相同的。）……</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/16.txt',id:'prevtonext'},{url:'src/area_2/articles/0017/0017.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

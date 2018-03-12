@@ -1,0 +1,136 @@
+<article>
+	<div><p><strong>Java 并发编程系列：ReentrantLock 之源码调试（14）</strong></p><p class="w3-right w3-margin-0">2017-12-16</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在阅读过同行从业者写的关于 AQS（AbstractQueuedSynchronizer）知识点的博文之后，根据理论加以实践是必不可少的，还是那句话：<span class="w3-text-light-green">纸上得来终觉浅，绝知此事要躬行</span>。</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇文章主要是借助 eclipse 开发工具对 JDK1.8 源码之 ReentrantLock 进行调试，以理解基于 AQS 的独占功能的实现过程。</P>
+	</div>
+	<div><p>一、在理解 ReentrantLock 的独占功能之前，通过源码调试，先简单看一下它的<span class="w3-text-light-green">可重入</span>是如何实现的，给出示例代码：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-coral">public class</span> ReentrantLockAnalyseDemo {
+
+	<span class="w3-text-coral">private static</span> ReentrantLock rl = <span class="w3-text-coral">new</span> ReentrantLock(true);
+
+	<span class="w3-text-coral">public static void</span> method0() {
+		rl.lock();
+		System.out.println("method0 say hello...");
+		rl.unlock();
+	}
+
+	<span class="w3-text-coral">public static void</span> method1() {
+		rl.lock();
+		<span class="w3-text-light-green">method0();</span>
+		System.out.println("method1 say hello...");
+		rl.unlock();
+	}
+
+	<span class="w3-text-coral">public static void</span> main(String[] args) {
+		<span class="w3-text-light-green">method1();</span>
+	}
+}</pre>
+	</div>
+	<div><p>简述示例代码大致意思，我们在 ReentrantLockAnalyseDemo 中创建了一个 ReentrantLock 的实例对象 rl，即可重入独占锁，实现了两个方法 method0、method1，重点关注 method1，它首先调用了 rl 实例对象的 lock 方法以获取锁，接着调用 method0 方法以测试可重入，最后，调用 unlock 方法释放锁。在 main 方法中调用 method1 方法开始调试，过程如下所示：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/01.jpg" /></div>
+	<div><p>……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/02.jpg" /></div>
+	<div><p>注意上图<span class="w3-text-light-green">第 1198 行</span>，在 AQS 中，对 tryAcquire 的调用实际上执行的是子类里的实现，即调用了 ReentrantLock 里的实现，确切地说，是调用了 ReentrantLock 里的静态内部类中 tryAcquire 方法的具体实现：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/03.jpg" /></div>
+	<div><p>因为当前线程是第一次获取锁，所以，<span class="w3-text-light-green">变量 c 即 state 值为 0</span>。在 setExclusiveOwnerThread 方法执行结束时，当前线程持有锁，再经过相应方法的返回之后，第一次加锁完成。接着，当前线程调用 method0 方法，开始执行锁的可重入：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/04.jpg" /></div>
+	<div><p>……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/05.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/06.jpg" /></div>
+	<div><p>可以看到，当前线程第二次获取锁的时候，在判断<span class="w3-text-light-green">变量 c 即 state 值不为 0</span> 的情况下，<span class="w3-text-light-green">将 AQS 的属性 state 累加 1</span>。若子类实现的是可重入锁，则 AQS 中的 state 属性表示重入次数。</p></div>
+	<div><p>理解了 ReentrantLock 获取锁以及可重入的过程之后，再看一下它释放锁的过程：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/07.jpg" /></div>
+	<div><p>……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/08.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/09.jpg" /></div>
+	<div><p>如出一辙，在 AQS 中，对 tryRelease 的调用实际上执行的是子类里的实现。查看 tryRelease 的实现可知，当前线程释放锁时，首先会拿到 <span class="w3-text-light-green">AQS 中的 state 值</span>，减 1 之后判断是否为 0，若为 0，则成功释放锁，否则，将 <span class="w3-text-light-green">state 值减 1 </span>并返回 false。当前线程第二次释放锁不言而喻：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/10.jpg" /></div>
+	<div><p>二、在理解了 ReentrantLock 的可重入过程之后，继续源码调试，看一下它的<span class="w3-text-light-green">独占功能</span>是如何实现的，给出示例代码：</p></div>
+	<div class="w3-custom-code">
+		<pre><span class="w3-text-coral">public class</span> ReentrantLockAnalyseDemo {
+
+	<span class="w3-text-coral">private static</span> ReentrantLock rl = <span class="w3-text-coral">new</span> ReentrantLock(true);
+
+	<span class="w3-text-coral">public static void</span> method0() {
+		rl.lock();
+		<span class="w3-text-coral">try</span> {
+			Thread.sleep(1000 * 60 * 10); // 睡眠 10 分钟
+		} <span class="w3-text-coral">catch</span> (InterruptedException e) {
+		}
+		System.out.println("method0 say hello...");
+		rl.unlock();
+	}
+
+	<span class="w3-text-coral">public static void</span> method1() {
+		rl.lock();
+		<span class="w3-text-coral">try</span> {
+			Thread.sleep(1000 * 60 * 20); // 睡眠 20 分钟
+		} <span class="w3-text-coral">catch</span> (InterruptedException e) {
+		}
+		System.out.println("method1 say hello...");
+		rl.unlock();
+	}
+
+	<span class="w3-text-coral">public static void</span> method2() {
+		rl.lock();
+		System.out.println("method2 say hello...");
+		rl.unlock();
+	}
+
+	<span class="w3-text-coral">public static void</span> main(String[] args) {
+		<span class="w3-text-coral">new</span> Thread(<span class="w3-text-coral">new</span> Runnable() {
+			@Override
+			<span class="w3-text-coral">public void</span> run() {
+				method0();
+				System.out.println("thread0 say hello...");
+			}
+		}).start(); <span class="w3-text-light-green">// thread-0</span>
+		<span class="w3-text-coral">new</span> Thread(<span class="w3-text-coral">new</span> Runnable() {
+			@Override
+			<span class="w3-text-coral">public void</span> run() {
+				method1();
+				System.out.println("thread1 say hello...");
+			}
+		}).start(); <span class="w3-text-light-green">// thread-1</span>
+		<span class="w3-text-coral">new</span> Thread(<span class="w3-text-coral">new</span> Runnable() {
+			@Override
+			<span class="w3-text-coral">public void</span> run() {
+				method2();
+				System.out.println("thread2 say hello...");
+			}
+		}).start(); <span class="w3-text-light-green">// thread-2</span>
+	}
+}</pre>
+	</div>
+	<div><p>简述示例代码大致意思，我们在主线程内创建了三个子线程，三个子线程分别调用了 method0、method1、method2 方法，出于对<span class="w3-text-light-green">独占功能</span>的实现过程的调试，将 method0、method1 方法内部分别睡眠 10 分钟、20分钟，即获取锁之后暂不释放锁。我们直接在线程 thread-2 上设置断点，调试过程如下所示：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/11.jpg" /></div>
+	<div><p>……</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/12.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/13.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/14.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/15.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/16.jpg" /></div>
+	<div><p>简述以上代码执行过程（当前线程为 <span class="w3-text-light-green">thread-2</span>，持锁线程为 <span class="w3-text-light-green">thread-0</span>）：</p></div>
+	<div><p>1. 调用 tryAcquire 方法，因 AQS 中的 state 值不为 0，再通过 current == getExclusiveOwnerThread() 判断出当前线程<span class="w3-text-light-green">非锁持有者</span>，返回 false；</p></div>
+	<div><p>2. 调用 addWaiter 方法，将当前线程构造为一个 Node 结点之后再返回；</p></div>
+	<div><p>3. 调用 acquireQueued 方法，将新构造的 Node 结点加入到 AQS 的队列中，再<span class="w3-text-light-green">阻塞</span>当前线程。</p></div>
+	<div><p>最后，我们再查看一下，当线程 thread-2 被阻塞的时候，AQS 队列中的存储结构（值得注意的是，<span class="w3-text-light-green">当前持锁线程</span>并不在 AQS 队列之内）：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/17.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/18.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/19.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0037/images/20.jpg" /></div>
+</article>
