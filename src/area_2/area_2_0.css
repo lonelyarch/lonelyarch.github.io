@@ -337,3 +337,26 @@
 .w3-example-flex-09-02_0016 div:nth-child(7){grid-row:auto/span 2;grid-column:auto/span 2}
 .w3-example-flex-09-02_0016 div:nth-child(11){grid-column:auto/span 3}
 .w3-example-flex-09-02_0016 div:nth-child(13){grid-column:auto/span 3}
+/* 0038 */
+.w3-example-breadcrumb-navigation-01-02_0038 {text-align:center}
+.w3-example-breadcrumb-navigation-01-02_0038 div{display:inline-block;width:100%;overflow:hidden}
+.w3-example-breadcrumb-navigation-01-02_0038 a{position:relative;display:block;float:left;height:44px;width:24.99999%;line-height:44px;color:black;background-color:#8bc34a;cursor:pointer;transition:background-color 1.5s}
+.w3-example-breadcrumb-navigation-01-02_0038 a:hover{color:white;background-color:black}
+.w3-example-breadcrumb-navigation-01-02_0038 a:first-child{border-radius:5px 0 0 5px}
+.w3-example-breadcrumb-navigation-01-02_0038 a:last-child{border-radius:0 5px 5px 0}
+.w3-example-breadcrumb-navigation-01-02_0038 a:after{content:'';position:absolute;top:0;background-color:#8bc34a;z-index:1;right:-22px;width:44px;height:44px;border-radius:0 4px 0 44px;transform:scale(0.707) rotate(45deg);box-shadow:2px -2px 0 2px rgba(0,0,0,0.4),3px -3px 0 2px rgba(255,255,255,0.1);transition:background-color 1.5s}
+.w3-example-breadcrumb-navigation-01-02_0038 a:hover:after{background-color:black}
+.w3-example-breadcrumb-navigation-01-02_0038 a:last-child:after{content:none}
+.w3-example-breadcrumb-navigation-02-02_0038 {text-align:center}
+.w3-example-breadcrumb-navigation-02-02_0038 div{display:inline-block;width:100%;overflow:hidden}
+.w3-example-breadcrumb-navigation-02-02_0038 a{position:relative;display:block;float:left;height:44px;width:24.99999%;line-height:44px;color:black;background-color:coral}
+.w3-example-breadcrumb-navigation-03-02_0038 {text-align:center}
+.w3-example-breadcrumb-navigation-03-02_0038 div{display:inline-block;width:100%;overflow:hidden}
+.w3-example-breadcrumb-navigation-03-02_0038 a{position:relative;display:block;float:left;height:44px;width:24.99999%;line-height:44px;color:black;background-color:coral}
+.w3-example-breadcrumb-navigation-03-02_0038 a:after{content:'';position:absolute;top:0;background-color:coral;z-index:1;right:-22px;width:44px;height:44px;border-radius:0 4px 0 44px;transform:scale(0.707) rotate(45deg);box-shadow:2px -2px 0 2px rgba(0,0,0,0.4),3px -3px 0 2px rgba(255,255,255,0.1);border:1px solid black}
+.w3-example-breadcrumb-navigation-04-02_0038 {text-align:center}
+.w3-example-breadcrumb-navigation-04-02_0038 div{display:inline-block;width:100%;overflow:hidden}
+.w3-example-breadcrumb-navigation-04-02_0038 a{position:relative;display:block;float:left;height:44px;width:24.99999%;line-height:44px;color:black;background-color:coral;cursor:pointer;transition:background-color 1.5s}
+.w3-example-breadcrumb-navigation-04-02_0038 a:after{content:'';position:absolute;top:0;background-color:coral;z-index:1;right:-22px;width:44px;height:44px;border-radius:0 4px 0 44px;transform:scale(0.707) rotate(45deg);box-shadow:2px -2px 0 2px rgba(0,0,0,0.4),3px -3px 0 2px rgba(255,255,255,0.1);transition:background-color 1.5s}
+.w3-example-breadcrumb-navigation-04-02_0038 a:hover{color:white;background-color:black}
+.w3-example-breadcrumb-navigation-04-02_0038 a:hover:after{background-color:black}

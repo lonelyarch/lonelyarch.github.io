@@ -10,6 +10,19 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.12.24</h4>
+			<p><strong>面包屑导航（Breadcrumb Navigation）</strong></p>
+			<div class="w3-example-breadcrumb-navigation-01-02_0038">
+				<div>
+					<a>首页</a><a>关于</a><a>职业提升</a><a>生活随笔</a>
+				</div>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.12.16</h4>
 			<p><strong>Java 并发编程系列：ReentrantLock 之源码调试（14）</strong></p>
 			<div class="w3-container w3-light-gray">

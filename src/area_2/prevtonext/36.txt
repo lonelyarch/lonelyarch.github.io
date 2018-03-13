@@ -1,2 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/37.txt',id:'prevtonext'},{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« 面包屑导航（Breadcrumb Navigation）</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/35.txt',id:'prevtonext'},{url:'src/area_2/articles/0036/0036.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：转载 --- JDK1.8 AbstractQueuedSynchronizer 的实现分析（下） »</a>
 <div style="clear: both;"></div>
