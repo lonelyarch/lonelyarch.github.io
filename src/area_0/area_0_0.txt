@@ -10,6 +10,27 @@
 	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2017.12.25</h4>
+			<p><strong>CSS + JS 实现简易版扫雷</strong></p>
+			<div class="w3-example-mine-sweeping-01-02_0039">
+				<script>
+					(function(){var cols=6;var rows=6;var node=document.getElementsByClassName("w3-example-mine-sweeping-01-02_0039")[0];var arrx=[];var arry=[];var bool=false;for(let col=1;col<=cols;col++){var coln=document.createElement("div");coln.setAttribute("class","cols");arrx[col-1]=[];arry[col-1]=[];for(let row=1;row<=rows;row++){var wrap=document.createElement("div");wrap.setAttribute("class","wrap");var item=document.createElement("div");item.setAttribute("class","item");arry[col-1][row-1]=item;var back=document.createElement("div");back.style.transform="translate(0,-52px)";back.setAttribute("class","back");back.addEventListener("click",function(){if(bool){show();setTimeout(function(){cler();load(rand());},500);bool = false;}});item.addEventListener("click",function(){if(this.nextSibling.className.indexOf("mine")==-1){this.className+=" hide";}else{hide();bool=true;}});wrap.appendChild(item);wrap.appendChild(back);coln.appendChild(wrap);arrx[col-1][row-1]=back;}node.appendChild(coln);}
+						load(rand());
+						function show(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(arry[col-1][row-1].className.indexOf("hide")==-1)continue;arry[col-1][row-1].className=arry[col-1][row-1].className.replace(" hide","");}}}
+						function hide(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(arry[col-1][row-1].className.indexOf("hide")>-1)continue;arry[col-1][row-1].className+=" hide";}}}
+						function rand(){var r=[];var x=Math.floor(Math.random()*10)%5+1;for(let i=0;i<x;i++){var y=Math.floor(Math.random()*100)%36+1;r.push(y);}return r;}
+						function load(arrz){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(jude(arrz,(row-1)*6+col)){if(arrx[col-1][row-1].className.indexOf("mine")>-1)break;arrx[col-1][row-1].className+=" mine";}}}}
+						function jude(arrz,t){for(let n=0;n<arrz.length;n++){if((arrz[n]==t)){return true;}}return false;}
+						function cler(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){arrx[col-1][row-1].className=arrx[col-1][row-1].className.replace(" mine","");}}}
+					})();
+				</script>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0039/0039.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2017.12.24</h4>
 			<p><strong>面包屑导航（Breadcrumb Navigation）</strong></p>
 			<div class="w3-example-breadcrumb-navigation-01-02_0038">

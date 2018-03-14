@@ -1,0 +1,330 @@
+<article>
+<section>
+	<div><p><strong>CSS + JS 实现简易版扫雷</strong></p><p class="w3-right w3-margin-0">2017-12-25</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-example-mine-sweeping-01-02_0039">
+		<script>
+			(function(){var cols=6;var rows=6;var node=document.getElementsByClassName("w3-example-mine-sweeping-01-02_0039")[0];var arrx=[];var arry=[];var bool=false;for(let col=1;col<=cols;col++){var coln=document.createElement("div");coln.setAttribute("class","cols");arrx[col-1]=[];arry[col-1]=[];for(let row=1;row<=rows;row++){var wrap=document.createElement("div");wrap.setAttribute("class","wrap");var item=document.createElement("div");item.setAttribute("class","item");arry[col-1][row-1]=item;var back=document.createElement("div");back.style.transform="translate(0,-52px)";back.setAttribute("class","back");back.addEventListener("click",function(){if(bool){show();setTimeout(function(){cler();load(rand());},500);bool = false;}});item.addEventListener("click",function(){if(this.nextSibling.className.indexOf("mine")==-1){this.className+=" hide";}else{hide();bool=true;}});wrap.appendChild(item);wrap.appendChild(back);coln.appendChild(wrap);arrx[col-1][row-1]=back;}node.appendChild(coln);}
+				load(rand());
+				function show(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(arry[col-1][row-1].className.indexOf("hide")==-1)continue;arry[col-1][row-1].className=arry[col-1][row-1].className.replace(" hide","");}}}
+				function hide(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(arry[col-1][row-1].className.indexOf("hide")>-1)continue;arry[col-1][row-1].className+=" hide";}}}
+				function rand(){var r=[];var x=Math.floor(Math.random()*10)%5+1;for(let i=0;i<x;i++){var y=Math.floor(Math.random()*100)%36+1;r.push(y);}return r;}
+				function load(arrz){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(jude(arrz,(row-1)*6+col)){if(arrx[col-1][row-1].className.indexOf("mine")>-1)break;arrx[col-1][row-1].className+=" mine";}}}}
+				function jude(arrz,t){for(let n=0;n<arrz.length;n++){if((arrz[n]==t)){return true;}}return false;}
+				function cler(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){arrx[col-1][row-1].className=arrx[col-1][row-1].className.replace(" mine","");}}}
+			})();
+		</script>
+	</div>
+	<div><p style="margin:3px 0 7.5px 0"></p></div>
+</section>
+<section>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最初的想法是使用 CSS 实现一个九宫格，但是，在九宫格成形之后，个人觉得不够完美，于是，给九宫格添加了翻牌效果，完成之后依旧觉得还差点什么……最终，九宫格变成了简易版扫雷。</p></div>
+	<div><p>步骤一、制作出 2 行 6 列的格子，关键点是 display 属性值 <span class="w3-text-light-green">flex</span> 的应用（注意浏览器的兼容性）：</p></div>
+	<div class="w3-example-mine-sweeping-02-02_0039">
+		<div class="row">
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+		</div>
+		<div class="row">
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+		</div>
+	</div>
+	<div><p style="margin:3px 0 7.5px 0"></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-tag">body</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding-top</span>:<span class="hljs-value"> <span class="hljs-number">100</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">justify-content</span>:<span class="hljs-value"> center</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">align-items</span>:<span class="hljs-value"> center</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">flex-direction</span>:<span class="hljs-value"> column</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">flex-direction</span>:<span class="hljs-value"> row</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-class">.item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">4</span>px <span class="hljs-number">2</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#bdb76b</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-mine-sweeping"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"row"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"row"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+		</div>
+	</div>
+</section>
+<section>
+	<div><p>步骤二、在步骤一的基础上实现翻牌效果，主要思路是利用 CSS3 的 transform 属性，重点关注各 &lt;div&gt; 标签的 <span class="w3-text-light-green">position</span> 属性值的设置以及 <span class="w3-text-light-green">backface-visibility</span> 属性的应用：</p></div>
+	<div class="w3-example-mine-sweeping-03-02_0039">
+		<div class="row">
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+			<div class="w3-example-mine-sweeping-03-02_0039 wrap">
+				<div class="item"></div>
+				<div class="back"></div>
+			</div>
+		</div>
+		<script>
+			(function() {
+				var arrs = document.getElementsByClassName("w3-example-mine-sweeping-03-02_0039 wrap");
+				for(let i=0; i<arrs.length; i++) {
+					(function(i) {
+						arrs[i].children[0]
+							.addEventListener("click", function() {
+								flip(arrs, 1, 0);
+						});
+						arrs[i].children[1]
+							.addEventListener("click", function() {
+								flip(arrs, 0, 1);
+					});
+					})(i);
+				}
+				function flip(arrs, x, y) {
+					for(let i=0; i<arrs.length; i++) {
+						arrs[i].children[x].className += " show";
+						arrs[i].children[x].className = 
+							arrs[i].children[x].className.replace(" hide", "");
+						arrs[i].children[y].className += " hide";
+						arrs[i].children[y].className = 
+							arrs[i].children[y].className.replace(" show", "");
+					}
+				}
+			})();
+		</script>
+	</div>
+	<div><p style="margin:3px 0 7.5px 0"></p></div>
+	<div class="w3-example">
+		<div class="w3-code" style="height: 300px; overflow-y: auto;">
+			<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span>&gt;</span><span class="css">
+<span class="hljs-tag">body</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> black</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">padding-top</span>:<span class="hljs-value"> <span class="hljs-number">100</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">justify-content</span>:<span class="hljs-value"> center</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">align-items</span>:<span class="hljs-value"> center</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">flex-direction</span>:<span class="hljs-value"> column</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> flex</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">flex-direction</span>:<span class="hljs-value"> row</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-class">.wrap</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-class">.item</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">2</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#bdb76b</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">backface-visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> all <span class="hljs-number">1.0</span>s</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-class">.back</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">44</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">2</span>px</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#2f4f4f</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">backface-visibility</span>:<span class="hljs-value"> hidden</span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">transition</span>:<span class="hljs-value"> all <span class="hljs-number">1.0</span>s</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-class">.show</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> none</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.w3-example-mine-sweeping</span> <span class="hljs-class">.row</span> <span class="hljs-class">.hide</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">transform</span>:<span class="hljs-value"> <span class="hljs-function">rotateY(<span class="hljs-number">180</span>deg)</span></span></span>;
+<span class="hljs-rule">}</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"w3-example-mine-sweeping"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"row"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"row"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"wrap"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"back"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+            <span class="hljs-keyword">var</span> arrs = document.getElementsByClassName(<span class="hljs-string">"wrap"</span>);
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;arrs.length; i++) {
+                (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i)</span> {</span>
+                    arrs[i].children[<span class="hljs-number">0</span>]
+                        .addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+                            flip(arrs, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
+                    });
+                    arrs[i].children[<span class="hljs-number">1</span>]
+                        .addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+                            flip(arrs, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+                });
+                })(i);
+            }
+            <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flip</span><span class="hljs-params">(arrs, x, y)</span> {</span>
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;arrs.length; i++) {
+                    arrs[i].children[x].className += <span class="hljs-string">" show"</span>;
+                    arrs[i].children[x].className = 
+                        arrs[i].children[x].className.replace(<span class="hljs-string">" hide"</span>, <span class="hljs-string">""</span>);
+                    arrs[i].children[y].className += <span class="hljs-string">" hide"</span>;
+                    arrs[i].children[y].className = 
+                        arrs[i].children[y].className.replace(<span class="hljs-string">" show"</span>, <span class="hljs-string">""</span>);
+                }
+            }
+        </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+			</div>
+		</div>
+		<div><p>最后总结：事实上，本示例稍微麻烦的地方在于翻牌效果的实现，主要是 <span class="w3-text-light-green">position</span> 属性以及 <span class="w3-text-light-green">backface-visibility</span> 属性的灵活运用，这两个属性在之前的文章中也反复提及，这里就言简意赅。至于扫雷的实现，纯粹是基于 JS 的简单逻辑控制，没什么技术含量，恕不赘述。</p></div>
+	</section>
+</article>

@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/37.txt',id:'prevtonext'},{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">面包屑导航（Breadcrumb Navigation） »</a>
+<div style="clear: both;"></div>
