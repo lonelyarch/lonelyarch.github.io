@@ -1,0 +1,43 @@
+<article>
+	<div><p><strong>记一次程序员之厨艺展示</strong></p><p class="w3-right w3-margin-0">2018-01-20</p></div>
+	<div style="clear: both;"></div>
+	<div><hr style="margin-top: 0;"></div>
+	<div class="w3-example-photo-gallery-01-03_0009">
+		<div></div>
+		<script>
+			(function(){var rows=6;var cols=6;var node=document.getElementsByClassName("w3-example-photo-gallery-01-03_0009")[0].children[0];var arrp=[];var arrb=[];var urls=["","","","","","","","","","","","","","","url(https://www.wailian.work/images/2018/03/16/0001.jpg)","url(https://www.wailian.work/images/2018/03/16/0002.jpg)","","","","","url(https://www.wailian.work/images/2018/03/16/0003.jpg)","url(https://www.wailian.work/images/2018/03/16/0004.jpg)","","","","","","","","","","","","","",""];for(let row=1;row<=rows;row++){arrp[row-1]=[];arrb[row-1]=[];for(let col=1;col<=cols;col++){var part=document.createElement("div");part.setAttribute("class","part part-"+row+"-"+col+" show-item");var part_item=document.createElement("div");part_item.setAttribute("class","part-item");part_item.style.backgroundImage=urls[(row-1)*rows+(col-1)];var part_wrap=document.createElement("div");part_wrap.setAttribute("class","part-wrap");var part_wrap_back=document.createElement("div");part_wrap_back.setAttribute("class","part-wrap-back");part.appendChild(part_item);part.appendChild(part_wrap);part_wrap.appendChild(part_wrap_back);node.appendChild(part);arrp[row-1][col-1]=part;arrb[row-1][col-1]=part_wrap_back;part_item.addEventListener("click",function(){hide(row,col);load(row,col);});part_wrap.addEventListener("click",function(){show(row,col);});}}function hide(row,col){if(row>rows||col>cols||row<=0||col<=0)return;if(arrp[row-1][col-1].className.indexOf("show-item")==-1)return;arrp[row-1][col-1].className=arrp[row-1][col-1].className.replace(" show-item","");setTimeout(function(){hide(row+1,col);hide(row-1,col);hide(row,col+1);hide(row,col-1);},100);}function show(row,col){if(row>rows||col>cols||row<=0||col<=0)return;if(arrp[row-1][col-1].className.indexOf("show-item")>-1)return;arrp[row-1][col-1].className+=" show-item";setTimeout(function(){show(row+1,col);show(row-1,col);show(row,col+1);show(row,col-1);},100);}function load(row,col){for(let i=0;i<rows;i++){for(let j=0;j<cols;j++){arrb[i][j].style.backgroundImage=urls[(row-1)*rows+(col-1)];}}}})();
+		</script>
+	</div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不知道有没有童鞋可以看出来图片里的四道菜？如果你能脱口而出这四道菜的名字<samp>，</samp>那或许表示你我心灵相通<samp>，</samp>更为重要的是<samp>，</samp>你大概长了一张吃货的相。请原谅我这么说<samp>，</samp>我始终认为一张吃货的相应该就是上帝赐予的福相<samp>，</samp>在任何食物面前<samp>，</samp>五官都会保持高度的统一和团结<samp>，</samp>据说十里之外可以闻到饭香<samp>，</samp>五觉之灵敏异于常人<samp>，</samp>让我这种非吃货的程序员十分羡慕。</p></div>
+	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简短的一番感慨之后还是切入主题<samp>，</samp>现记录下在最近几天里<samp>，</samp>身为程序员所展示出的烹饪技艺<samp>，</samp>算是在不断编码的生活之外另谋了一份乐趣<samp>，</samp>感受码农的时光有多美好。</p></div>
+	<div class="w3-example-photo-cuisine-01-03_0009">
+		<div><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0005.jpg" /></div>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;看到图中一碗红烧肉的童鞋有没有想要咽口水的感觉？虽然这道菜早已经消化在了我幸运的胃里<samp>，</samp>但每逢看到这张图片<samp>，</samp>博主都会忍不住自我表扬<samp>，</samp>没想到第一次做红烧肉就能完美收场。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网上有很多介绍红烧肉做法的文章、视频都大同小异<samp>，</samp>在动手之前<samp>，</samp>我也是恶补了一次红烧肉做法的理论知识<samp>，</samp>事实上<samp>，</samp>为了买到单包香叶<samp>，</samp>我宁愿坐公交车去离家三站之外的大超市<samp>，</samp>在人满为患的氛围里找目标、疾行、排队结账<samp>，</samp>当我拿着一袋小香叶面对收银员的时候<samp>，</samp>对方问了一句<samp>“</samp>就这些？<samp>”</samp><samp>，</samp>之后<samp>，</samp>我突然就很难为情地走出了超市<samp>，</samp>头都不想回。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在烹饪技艺几乎为零的时候<samp>，</samp>要想做出一道令自己满意的菜<samp>，</samp>严守理论知识点实为大前提<samp>，</samp>难以想像一次没有香叶的红烧肉烹饪会是什么样子？捉急、手足无措、糊锅……</p>
+	</div>
+	<div>
+		<p>现介绍一下<span class="w3-text-crimson">郭氏红烧肉</span>的主要食材以及烹饪步骤：</p>
+		<p style="text-align:center">五花肉、冰糖、生抽、老抽、料酒、八角、桂皮、葱段、生姜、香叶、食盐</p>
+		<p>1. 清洗五花肉、葱、姜<samp>，</samp>再将所有必备食材陈列于砧板之上或触手可及的地方<samp>，</samp>检查是否有遗漏<samp>，</samp>生活经验告诉我<samp>，</samp>在烹饪过程中四处翻找某项食材很忌讳<samp>，</samp>有时候容易糊锅：</p>
+		<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0006.jpg" /></div>
+		<p>2. 葱姜切段切片<samp>，</samp>五花肉切丁<samp>，</samp>肉丁大小为 1 厘米左右<samp>，</samp>这种分寸的拿捏主要凭感觉：</p>
+		<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0007.jpg" /></div>
+		<p>3. 将切好的肉丁焯水<samp>，</samp>煮大约 15 分钟<samp>，</samp>期间用大汤勺撇掉浮沫<samp>，</samp>在除油的同时让肉丁塑形<samp>，</samp>待焯水结束之后<samp>，</samp>用筷子捞出再控水：</p>
+		<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0008.jpg" /></div>
+		<p>4. 为了能让肉丁多出油<samp>，</samp>把控水之后的肉丁在锅里煎一会儿<samp>，</samp>煎肉之前可以用姜片把锅底擦一遍以减轻肉粘锅的情况<samp>，</samp>这可是烹饪的小窍门：</p>
+		<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0009.jpg" /></div>
+		<p>5. 利用步骤 4 煎出的油将冰糖融化<samp>，</samp>注意油温<samp>，</samp>否则很容易糊锅：</p>
+		<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0010.jpg" /></div>
+		<p>6. 待冰糖融化完成<samp>，</samp>放入煎过的五花肉并翻炒均匀<samp>，</samp>紧接着放入桂皮、八角、香叶、葱段、姜片<samp>，</samp>倒入生抽、老抽、料酒<samp>，</samp>然后加入清水湮没过五花肉<samp>，</samp>大火煮沸<samp>，</samp>之后转小火炖煮 40 分钟<samp>，</samp>在漫长的等待之后<samp>，</samp>一碗诱人的红烧肉就此呈现：</p>
+		<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0011.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0005.jpg" /></div>
+	</div>
+	<div><p>结语想说<samp>，</samp>经过实践的检验<samp>，</samp>博主应该是具有烹饪天分的<samp>，</samp>众所周知<samp>，</samp>红烧肉做起来不难<samp>，</samp>但能够做出肥而不腻、入口即化的红烧肉谈何容易？最后再陈列一下本人所做的其它菜品：</p></div>
+	<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0013.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0014.jpg" /></div>
+	<div><p style="margin:7.5px 0"></p></div>
+	<div class="w3-example-photo-cuisine-02-03_0009"><img alt="Oops" src="https://www.wailian.work/images/2018/03/16/0015.jpg" /></div>
+</article>

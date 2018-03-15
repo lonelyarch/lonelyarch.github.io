@@ -1,4 +1,17 @@
 <article>
+	<div><p><strong>记一次程序员之厨艺展示</strong></p><p class="w3-right">2018-01-20</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-example-photo-gallery-01-03_0009">
+		<div></div>
+		<script>
+			(function(){var rows=6;var cols=6;var node=document.getElementsByClassName("w3-example-photo-gallery-01-03_0009")[0].children[0];var arrp=[];var arrb=[];var urls=["","","","","","","","","","","","","","","url(https://www.wailian.work/images/2018/03/16/0001.jpg)","url(https://www.wailian.work/images/2018/03/16/0002.jpg)","","","","","url(https://www.wailian.work/images/2018/03/16/0003.jpg)","url(https://www.wailian.work/images/2018/03/16/0004.jpg)","","","","","","","","","","","","","",""];for(let row=1;row<=rows;row++){arrp[row-1]=[];arrb[row-1]=[];for(let col=1;col<=cols;col++){var part=document.createElement("div");part.setAttribute("class","part part-"+row+"-"+col+" show-item");var part_item=document.createElement("div");part_item.setAttribute("class","part-item");part_item.style.backgroundImage=urls[(row-1)*rows+(col-1)];var part_wrap=document.createElement("div");part_wrap.setAttribute("class","part-wrap");var part_wrap_back=document.createElement("div");part_wrap_back.setAttribute("class","part-wrap-back");part.appendChild(part_item);part.appendChild(part_wrap);part_wrap.appendChild(part_wrap_back);node.appendChild(part);arrp[row-1][col-1]=part;arrb[row-1][col-1]=part_wrap_back;part_item.addEventListener("click",function(){hide(row,col);load(row,col);});part_wrap.addEventListener("click",function(){show(row,col);});}}function hide(row,col){if(row>rows||col>cols||row<=0||col<=0)return;if(arrp[row-1][col-1].className.indexOf("show-item")==-1)return;arrp[row-1][col-1].className=arrp[row-1][col-1].className.replace(" show-item","");setTimeout(function(){hide(row+1,col);hide(row-1,col);hide(row,col+1);hide(row,col-1);},100);}function show(row,col){if(row>rows||col>cols||row<=0||col<=0)return;if(arrp[row-1][col-1].className.indexOf("show-item")>-1)return;arrp[row-1][col-1].className+=" show-item";setTimeout(function(){show(row+1,col);show(row-1,col);show(row,col+1);show(row,col-1);},100);}function load(row,col){for(let i=0;i<rows;i++){for(let j=0;j<cols;j++){arrb[i][j].style.backgroundImage=urls[(row-1)*rows+(col-1)];}}}})();
+		</script>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_3/prevtonext/8.txt',id:'prevtonext'},{url:'src/area_3/articles/0009/0009.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>个人博客改版</strong></p><p class="w3-right">2018-01-01</p></div>
 	<div style="clear: both;"></div>
 	<div><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当新年的钟声敲响的时候，屋外的世界是一片欢腾，大街上张灯结彩，人头攒动，快乐的氛围也应该是四处洋溢的，可是，博主却依然坚持了老习惯，深居简出，守在家里写代码，这大概就是程序员的宿命。</p></div>

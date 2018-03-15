@@ -1,2 +1,3 @@
+<a onclick="fetch([{url:'src/area_3/prevtonext/8.txt',id:'prevtonext'},{url:'src/area_3/articles/0009/0009.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« 记一次程序员之厨艺展示</a>
 <a onclick="fetch([{url:'src/area_3/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_3/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">免费视频短片 »</a>
 <div style="clear: both;"></div>

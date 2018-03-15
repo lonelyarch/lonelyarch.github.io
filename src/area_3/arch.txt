@@ -4,6 +4,7 @@
     <div class="item">
     	<div><strong>2018-01</strong></div>
         <ul>
+        	<li><time>20日</time><a onclick="initl();fetch([{url:'src/area_3/prevtonext/8.txt',id:'prevtonext'},{url:'src/area_3/articles/0009/0009.txt',id:'contents'}]);">记一次程序员之厨艺展示</a></li>
             <li><time>01日</time><a onclick="initl();fetch([{url:'src/area_3/prevtonext/2.txt',id:'prevtonext'},{url:'src/area_3/articles/0003/0003.txt',id:'contents'}]);">个人博客改版</a></li>
         </ul>
     </div>

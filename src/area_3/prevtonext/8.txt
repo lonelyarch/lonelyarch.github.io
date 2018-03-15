@@ -1,0 +1,2 @@
+<a onclick="fetch([{url:'src/area_3/prevtonext/2.txt',id:'prevtonext'},{url:'src/area_3/articles/0003/0003.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">个人博客改版 »</a>
+<div style="clear: both;"></div>

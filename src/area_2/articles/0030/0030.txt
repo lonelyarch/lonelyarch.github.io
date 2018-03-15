@@ -132,7 +132,7 @@
 		<img class="w3-width" alt="Oops" src="src/area_2/articles/0030/images/04.jpg" />
 		<p style="text-align:center"><span class="w3-text-light-green">JDK1.7 环境下</span>调用 resize 方法的结果示意图（注意扩容前后 <span class="w3-text-light-green">Node A、Node B、Node D</span> 的顺序）</p>
 	</div>
-	<div><P>由上述示意图可知，扩容前后 <span class="w3-text-light-green">Node A、Node B、Node C</span> 的顺序是相反的，这恰是<span class="w3-text-light-green">头插法</span>导致的结果，在多线程环境下，这种以<span class="w3-text-light-green">头插法</span>方式创建单链表容易造成<span class="w3-text-light-green">链表闭环</span>，进而导致在调用 get 方法时会出现死循环现象。</P></div>
+	<div><P>由上述示意图可知，扩容前后 <span class="w3-text-light-green">Node A、Node B、Node D</span> 的顺序是相反的，这恰是<span class="w3-text-light-green">头插法</span>导致的结果，在多线程环境下，这种以<span class="w3-text-light-green">头插法</span>方式创建单链表容易造成<span class="w3-text-light-green">链表闭环</span>，进而导致在调用 get 方法时会出现死循环现象。</P></div>
 	<div><P>二、JDK1.8 环境下的源码分析之规避方法：</P></div>
 	<div class="w3-example">
 		<div><p style="color:black"><span style="color:#8bc34a">源码分析：</span>重点关注 HashMap 是以何种插入方式创建单链表的</p></div>
