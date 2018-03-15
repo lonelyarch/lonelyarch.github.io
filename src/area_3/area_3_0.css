@@ -43,6 +43,7 @@
 .w3-example-photo-gallery-01-03_0009 .part-6-4 .part-wrap-back{transform:translate(-144px,-240px)}
 .w3-example-photo-gallery-01-03_0009 .part-6-5 .part-wrap-back{transform:translate(-192px,-240px)}
 .w3-example-photo-gallery-01-03_0009 .part-6-6 .part-wrap-back{transform:translate(-240px,-240px)}
+.w3-example-photo-cuisine-01-03_0009 {overflow:hidden}
 .w3-example-photo-cuisine-01-03_0009 div{position:relative;float:left;clear:both;margin-right:15px}
 .w3-example-photo-cuisine-01-03_0009 img{max-width:300px}
 .w3-example-photo-cuisine-01-03_0009 div:after{position:absolute;display:block;max-width:300px;width:100%;bottom:0;height:22px;color:#dc143c;text-align:center;background-color:#fff;opacity:.6}
