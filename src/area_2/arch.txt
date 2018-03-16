@@ -4,6 +4,7 @@
 	<div class="item">
     	<div><strong>2017-12</strong></div>
         <ul>
+        	<li><time>31日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/39.txt',id:'prevtonext'},{url:'src/area_2/articles/0040/0040.txt',id:'contents'}]);">Java 并发编程系列：ThreadPoolExecutor 初探（15）</a></li>
         	<li><time>25日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/38.txt',id:'prevtonext'},{url:'src/area_2/articles/0039/0039.txt',id:'contents'}]);">CSS + JS 实现简易版扫雷</a></li>
         	<li><time>24日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/37.txt',id:'prevtonext'},{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);">面包屑导航（Breadcrumb Navigation）</a></li>
         	<li><time>16日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/36.txt',id:'prevtonext'},{url:'src/area_2/articles/0037/0037.txt',id:'contents'}]);">Java 并发编程系列：ReentrantLock 之源码调试（14）</a></li>

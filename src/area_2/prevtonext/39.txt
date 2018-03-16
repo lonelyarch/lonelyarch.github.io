@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/38.txt',id:'prevtonext'},{url:'src/area_2/articles/0039/0039.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">CSS + JS 实现简易版扫雷 »</a>
+<div style="clear: both;"></div>

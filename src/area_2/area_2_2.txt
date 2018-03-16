@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>深入理解红黑树（red-black tree）</strong></p><p class="w3-right">2017-05-27</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在整理 HashMap 相关知识点的时候，博主就曾碰到过<span class="w3-text-light-green">红黑树</span>，当时浮现在大脑里的树不仅有它，还有哈夫曼树、二叉查找树、B_树，甚至是苹果树，然而，在职场上几经摸爬滚打之后，博主已忘记了这些树原本的模样，真是岁月不饶人。</P>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现打算重温学生时代的记忆和印象，找回过去的那个懂得许多树的我，这么说还是比较浮夸的，从现实出发就是，在将要整理出 TreeMap 知识点的时候，博主又遭遇了 <span class="w3-text-light-green">A Red-Black tree</span>，实属缘分之不易。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/19.txt',id:'prevtonext'},{url:'src/area_2/articles/0020/0020.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 集合类：LinkedHashMap</strong></p><p class="w3-right">2017-05-19</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -175,21 +187,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/10.txt',id:'prevtonext'},{url:'src/area_2/articles/0011/0011.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>立体式可旋转的菜单实现</strong></p><p class="w3-right">2017-03-29</p></div>
-	<div style="clear: both;"></div>
-	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-	<div class="w3-example-3d-rotate-menu">
-		<nav class="main">
-			<ul>
-				<li><a data-title="漫川古镇">漫川古镇</a></li>
-				<li><a data-title="山水相依">山水相依</a></li>
-				<li><a data-title="风景独好">风景独好</a></li>
-			</ul>
-		</nav>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/9.txt',id:'prevtonext'},{url:'src/area_2/articles/0010/0010.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
