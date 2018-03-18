@@ -38,7 +38,7 @@
  * @throws NullPointerException if {@code workQueue}
  *         or {@code threadFactory} or {@code handler} is null
  */
-public ThreadPoolExecutor(<span class="w3-text-coral">int</span> corePoolSize,
+<span class="w3-text-coral">public</span> ThreadPoolExecutor(<span class="w3-text-coral">int</span> corePoolSize,
 			  <span class="w3-text-coral">int</span> maximumPoolSize,
 			  <span class="w3-text-coral">long</span> keepAliveTime,
 			  TimeUnit unit,
@@ -68,8 +68,8 @@ public ThreadPoolExecutor(<span class="w3-text-coral">int</span> corePoolSize,
 
 	<span class="w3-text-coral">private static class</span> ThreadPoolTask <span class="w3-text-coral">implements</span> Runnable {
 		@Override
-		public void run() {
-			// 线程任务是对计数器执行一次累加再输出计数器值
+		<span class="w3-text-coral">public void</span> run() {
+			// 任务是对计数器执行一次累加再输出计数器值
 			System.out.println(Thread.currentThread().getName() + ": "
 					+ count.incrementAndGet());
 		}
@@ -91,37 +91,37 @@ public ThreadPoolExecutor(<span class="w3-text-coral">int</span> corePoolSize,
 		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0040/images/02.jpg" /></div>
 		<div><p style="margin:7.5px 0"></p></div>
 		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0040/images/03.jpg" /></div>
-		<div><p>通过以 debug 模式执行主线程之后，我们可以看到，<span class="w3-text-light-green">线程池 pool-1</span> 起初维护了 4 个线程，即在线程任务数为 7 的场景下，最多创建了 4 个线程并由线程池维护，在 30 秒之后，即处于空闲状态时，两个线程被销毁。</p></div>
+		<div><p>通过以 debug 模式执行主线程之后，我们可以看到，<span class="w3-text-light-green">线程池 pool-1</span> 起初维护了 4 个线程，即在任务数为 7 的场景下，最多创建了 4 个线程并由线程池维护，在 30 秒之后，即处于空闲状态时，两个线程被销毁。</p></div>
 	</section>
 	<section>
-		<div><p>二、ThreadPoolExecutor 之缓冲队列：</p></div>
-		<div><p>ThreadPoolExecutor 构造函数的 workQueue 参数即是需要设置的缓冲队列类型，在示例代码中，我们使用了 ArrayBlockingQueue，根据 API 文档的描述，它是一个典型的<samp>“有界缓冲区（bounded buffer）”</samp>，我们 debug 以理解它的作用：</p></div>
+		<div><p>二、ThreadPoolExecutor 之阻塞队列：</p></div>
+		<div><p>ThreadPoolExecutor 构造函数的 workQueue 参数即是需要设置的阻塞队列类型，在示例代码中，我们使用了 ArrayBlockingQueue，根据 API 文档的描述，它是一个典型的<samp>“有界缓冲区（bounded buffer）”</samp>，我们 debug 以理解它的作用：</p></div>
 		<div class="w3-custom-code">
-			<pre>public class ThreadPoolExecutorAnalyseDemo {
+			<pre><span class="w3-text-coral">public class</span> ThreadPoolExecutorAnalyseDemo {
 
-	private static AtomicInteger count = new AtomicInteger(0); // 计数器
+	<span class="w3-text-coral">private static</span> AtomicInteger count = new AtomicInteger(0); // 计数器
 
-	private static class ThreadPoolTask implements Runnable {
+	<span class="w3-text-coral">private static class</span> ThreadPoolTask implements Runnable {
 
 		<span class="w3-text-light-green">int n = 0;</span>
 
-		public ThreadPoolTask(int n) {
+		<span class="w3-text-coral">public</span> ThreadPoolTask(int n) {
 			this.n = n;
 		}
 
 		@Override
-		public void run() {
+		<span class="w3-text-coral">public void</span> run() {
 			try {
 				<span class="w3-text-light-green">Thread.sleep(1000 * 30 * n);</span> // 睡眠 30 秒
 			} catch (InterruptedException e) {
 			}
-			// 线程任务是对计数器执行一次累加再输出计数器值
+			// 任务是对计数器执行一次累加再输出计数器值
 			System.out.println(Thread.currentThread().getName() + ": "
 					+ count.incrementAndGet());
 		}
 	}
 
-	public static void main(String[] args) {
+	<span class="w3-text-coral">public static void</span> main(String[] args) {
 		int num = 7; // 任务数
 		ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 4, 30,
 				TimeUnit.SECONDS, new ArrayBlockingQueue&lt;Runnable&gt;(3, true));
@@ -131,50 +131,50 @@ public ThreadPoolExecutor(<span class="w3-text-coral">int</span> corePoolSize,
 	}
 }</pre>
 	</div>
-	<div><p>为了便于查看 workQueue 的作用，将示例代码的任务线程稍作修改，添加睡眠时间以暂缓任务线程的执行，任务线程创建之后将依次睡眠 30 秒、60 秒、90 秒……，通过 debug 调试可以看到 workQueue 的变化：</p></div>
+	<div><p>为了便于查看 workQueue 的作用，将示例代码的任务稍作修改，添加睡眠时间以暂缓任务的执行，任务创建之后将依次睡眠 30 秒、60 秒、90 秒……，通过 debug 调试可以看到 workQueue 的变化：</p></div>
 	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0040/images/04.jpg" /></div>
 	<div><p style="margin:7.5px 0"></p></div>
 	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0040/images/05.jpg" /></div>
 	<div><p style="margin:7.5px 0"></p></div>
 	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0040/images/06.jpg" /></div>
-	<div><p>事实上，ThreadPoolExecutor 支持 3 种 BlockingQueue，即<span class="w3-text-light-green">有界队列</span>、<span class="w3-text-light-green">无界队列</span>以及<span class="w3-text-light-green">同步移交</span>（SynchronousQueue），它们在本质上都是实现缓冲的功能。有关缓冲队列的内容会在适当的时间详细介绍，在此点到为止。</p></div>
+	<div><p>事实上，ThreadPoolExecutor 支持 3 种 BlockingQueue，即<span class="w3-text-light-green">有界队列</span>、<span class="w3-text-light-green">无界队列</span>以及<span class="w3-text-light-green">同步移交</span>（SynchronousQueue），它们在本质上都是实现缓冲的功能。有关阻塞队列的内容会在适当的时间详细介绍，在此点到为止。</p></div>
 </section>
 <section>
 	<div><p>三、ThreadPoolExecutor 之饱和策略：</p></div>
-	<div><p>上述两个代码示例中，将线程任务数设置为 <span class="w3-text-light-green">num = 7</span>，当我们将它设置为 <span class="w3-text-light-green">8</span> 的时候，期待会有什么情况发生：</p></div>
+	<div><p>上述两个代码示例中，将任务数设置为 <span class="w3-text-light-green">num = 7</span>，当我们将它设置为 <span class="w3-text-light-green">8</span> 的时候，期待会有什么情况发生：</p></div>
 	<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0040/images/07.jpg" /></div>
-	<div><p>据图可知，当我们将线程任务数设置为 <span class="w3-text-light-green">num = 8</span> 之后，程序就抛出了异常。不难理解，我们设置线程池的最大线程数为 4，缓冲队列为  3，当线程任务数大于 4 的时候，新的线程任务将进入缓冲队列，那么当线程任务数大于 7 的时候，该怎么办呢？<span class="w3-text-light-green">饱和策略</span>就开始发挥作用，查阅 API 文档可知，饱和策略有 4 种：</p></div>
+	<div><p>据图可知，当我们将任务数设置为 <span class="w3-text-light-green">num = 8</span> 之后，程序就抛出了异常。不难理解，我们设置线程池的最大线程数为 4，阻塞队列为  3，当任务数大于 4 的时候，新的任务将进入阻塞队列，那么当任务数大于 7 的时候，该怎么办呢？<span class="w3-text-light-green">饱和策略</span>就开始发挥作用，查阅 API 文档可知，饱和策略有 4 种：</p></div>
 	<div>
 		<ul style="list-style:disc;color:#8bc34a">
 			<li><p class="w3-text-white">中止策略（ThreadPoolExecutor.AbortPolicy），该策略也是默认策略；</p></li>
 			<li><p class="w3-text-white">调用者-运行策略（ThreadPoolExecutor.CallerRunsPolicy），该策略实现了一种调节机制，它既不会丢弃任务，也不会抛出异常，而是将任务交给调用者执行，即哪个线程调用了 execute 方法就由哪个线程执行，就示例代码而言，在这种策略下，饱和之后的新增任务将由主线程执行；</p></li>
 			<li><p class="w3-text-white">丢弃策略（ThreadPoolExecutor.DiscardPolicy），该策略仅是简单地将任务丢弃不执行；</p></li>
-			<li><p class="w3-text-white">丢弃最旧策略（ThreadPoolExecutor.DiscardOldestPolicy），该策略为丢弃缓冲队列之首的任务再执行当前任务。</p></li>
+			<li><p class="w3-text-white">丢弃最旧策略（ThreadPoolExecutor.DiscardOldestPolicy），该策略为丢弃阻塞队列之首的任务再执行当前任务。</p></li>
 		</ul>
 	</div>
 	<div><p>事实上，除了 API 给出的策略实现之外，我们还可以通过 RejectedExecutionHandler 接口自定义策略实现，以下给出自定义策略实现的示例代码：</p></div>
-	<div class="w3-custom-code"><pre>public class ThreadPoolExecutorAnalyseDemo {
+	<div class="w3-custom-code"><pre><span class="w3-text-coral">public class</span> ThreadPoolExecutorAnalyseDemo {
 
-	private static AtomicInteger count = new AtomicInteger(0); // 计数器
+	<span class="w3-text-coral">private static</span> AtomicInteger count = new AtomicInteger(0); // 计数器
 
-	private static class ThreadPoolTask implements Runnable {
+	<span class="w3-text-coral">private static class</span> ThreadPoolTask implements Runnable {
 		@Override
-		public void run() {
-			// 线程任务是对计数器执行一次累加再输出计数器值
+		<span class="w3-text-coral">public void</span> run() {
+			// 任务是对计数器执行一次累加再输出计数器值
 			System.out.println(Thread.currentThread().getName() + ": "
 					+ count.incrementAndGet());
 		}
 	}
 
-	private static class CustomRejectedExecutionHandler implements
+	<span class="w3-text-coral">private static class</span> CustomRejectedExecutionHandler implements
 			RejectedExecutionHandler {
 		@Override
-		public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+		<span class="w3-text-coral">public void</span> rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
 			System.out.println(r.toString() + " is rejected.");
 		}
 	}
 
-	public static void main(String[] args) {
+	<span class="w3-text-coral">public static void</span> main(String[] args) {
 		int num = 8; // 任务数
 		ThreadPoolExecutor tpe = new ThreadPoolExecutor(2, 4, 30,
 				TimeUnit.SECONDS, new ArrayBlockingQueue&lt;Runnable&gt;(3, true),

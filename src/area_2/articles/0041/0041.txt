@@ -1,0 +1,545 @@
+<article>
+	<section>
+		<div><p><strong>Java 并发编程系列：ThreadPoolExecutor 续篇（16）</strong></p><p class="w3-right w3-margin-0">2018-01-02</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 ThreadPoolExecutor 的基本应用、阻塞队列以及饱和策略之后，现以源码为切入点再着重分析一下此线程池的实现原理，尽可能达到知其然知其所以然。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>为了使文章内容在逻辑上更加清晰，在探究 ThreadPoolExecutor 的实现原理之前，我们先抛出几个问题：</p></div>
+		<div>
+			<ul style="list-style:disc;color:#8bc34a">
+				<li><p class="w3-text-white">ThreadPoolExecutor 线程池内的线程是如何处理任务的？</p></li>
+				<li><p class="w3-text-white">ThreadPoolExecutor 线程池是如何对待<span class="w3-text-light-green">正式工</span>的（<span class="w3-text-light-green">corePoolSize</span>）？</p></li>
+				<li><p class="w3-text-white">ThreadPoolExecutor 线程池是如何解雇<span class="w3-text-light-green">临时工</span>的（<span class="w3-text-light-green">maximumPoolSize</span> - <span class="w3-text-light-green">corePoolSize</span>）？</p></li>
+			</ul>
+		</div>
+	</section>
+	<section>
+		<div><p>为了解答上述问题，我们着手分析 ThreadPoolExecutor 的源码。在 ThreadPoolExecutor 源码的开头，就有一段注释，不吝笔墨地描述了 <span class="w3-text-light-green">workerCount</span> 和 <span class="w3-text-light-green">runState</span> 这两个概念以及如何使用同一个 <span class="w3-text-light-green">int</span> 型数值表示这两个概念：</p></div>
+		<div class="w3-custom-code"><pre><span class="w3-text-coral">public class</span> ThreadPoolExecutor <span class="w3-text-coral">extends</span> AbstractExecutorService {
+    /**
+     * The main pool control state, ctl, is an atomic integer packing
+     * two conceptual fields
+     *   <span class="w3-text-light-green">workerCount</span>, indicating the effective number of threads
+     *   <span class="w3-text-light-green">runState</span>,    indicating whether running, shutting down etc
+     *
+     * <span class="w3-text-light-green">In order to pack them into one int, we limit workerCount to</span>
+     * <span class="w3-text-light-green">(2^29)-1 (about 500 million) threads rather than (2^31)-1 (2</span>
+     * <span class="w3-text-light-green">billion) otherwise representable</span>. If this is ever an issue in
+     * the future, the variable can be changed to be an <span class="w3-text-light-green">AtomicLong</span>,
+     * and the shift/mask constants below adjusted. But until the need
+     * arises, this code is a bit faster and simpler using an int.
+     *
+     * The <span class="w3-text-light-green">workerCount</span> is the number of workers that have been
+     * permitted to start and not permitted to stop.  The value may be
+     * transiently different from the actual number of live threads,
+     * for example when a ThreadFactory fails to create a thread when
+     * asked, and when exiting threads are still performing
+     * bookkeeping before terminating. The user-visible pool size is
+     * reported as the current size of the workers set.
+     *
+     * The <span class="w3-text-light-green">runState</span> provides the main lifecycle control, taking on values:
+     *
+     *   RUNNING:  Accept new tasks and process queued tasks
+     *   SHUTDOWN: Don't accept new tasks, but process queued tasks
+     *   STOP:     Don't accept new tasks, don't process queued tasks,
+     *             and interrupt in-progress tasks
+     *   TIDYING:  All tasks have terminated, workerCount is zero,
+     *             the thread transitioning to state TIDYING
+     *             will run the terminated() hook method
+     *   TERMINATED: terminated() has completed
+     *
+     * The numerical order among these values matters, to allow
+     * ordered comparisons. The runState monotonically increases over
+     * time, but need not hit each state. The transitions are:
+     *
+     * RUNNING -&gt; SHUTDOWN
+     *    On invocation of shutdown(), perhaps implicitly in finalize()
+     * (RUNNING or SHUTDOWN) -&gt; STOP
+     *    On invocation of shutdownNow()
+     * SHUTDOWN -&gt; TIDYING
+     *    When both queue and pool are empty
+     * STOP -&gt; TIDYING
+     *    When pool is empty
+     * TIDYING -&gt; TERMINATED
+     *    When the terminated() hook method has completed
+     *
+     * Threads waiting in awaitTermination() will return when the
+     * state reaches TERMINATED.
+     *
+     * Detecting the transition from SHUTDOWN to TIDYING is less
+     * straightforward than you'd like because the queue may become
+     * empty after non-empty and vice versa during SHUTDOWN state, but
+     * we can only terminate if, after seeing that it is empty, we see
+     * that workerCount is 0 (which sometimes entails a recheck -- see
+     * below).
+     */
+    // ctl.get() 初始化值为 <span class="w3-text-light-green">RUNNING | 0</span>，即 11100000000000000000000000000000
+    <span class="w3-text-coral">private final</span> AtomicInteger ctl = <span class="w3-text-coral">new</span> AtomicInteger(ctlOf(RUNNING, 0));
+    <span class="w3-text-coral">private static final int</span> COUNT_BITS = Integer.SIZE - 3;
+    <span class="w3-text-coral">private static final int</span> CAPACITY   = (1 &lt;&lt; COUNT_BITS) - 1; // 将 1 左移 29 位再减 1
+
+    // runState is stored in the high-order bits
+    <span class="w3-text-coral">private static final int</span> RUNNING    = -1 &lt;&lt; COUNT_BITS;
+    <span class="w3-text-coral">private static final int</span> SHUTDOWN   =  0 &lt;&lt; COUNT_BITS;
+    <span class="w3-text-coral">private static final int</span> STOP       =  1 &lt;&lt; COUNT_BITS;
+    <span class="w3-text-coral">private static final int</span> TIDYING    =  2 &lt;&lt; COUNT_BITS;
+    <span class="w3-text-coral">private static final int</span> TERMINATED =  3 &lt;&lt; COUNT_BITS;
+
+    // Packing and unpacking ctl
+    <span class="w3-text-coral">private static int</span> runStateOf(int c)     { <span class="w3-text-coral">return</span> c &amp; ~CAPACITY; }
+    <span class="w3-text-coral">private static int</span> workerCountOf(int c)  { <span class="w3-text-coral">return</span> c &amp; CAPACITY; }
+    <span class="w3-text-coral">private static int</span> ctlOf(int rs, int wc) { <span class="w3-text-coral">return</span> rs | wc; }
+
+    ...
+}</pre></div>
+		<div class="w3-responsive">
+			<div><p>从源码注释可知，<span class="w3-text-light-green">workerCount</span> 表示线程池的 worker 数，<span class="w3-text-light-green">runState</span> 则表示了线程池当前的运行状态。可以看到，上述源码里还包含了<span class="w3-text-light-green">左移</span>（&lt;&lt;）、<span class="w3-text-light-green">取反</span>（~）、<span class="w3-text-light-green">与</span>（&amp;）以及<span class="w3-text-light-green">或</span>（|）操作，为了便于理解，我们给出如下表格：</p></div>
+			<table class="w3-table w3-bordered w3-white">
+				<tbody>
+					<tr class="w3-light-green">
+				      <th></th>
+				      <th>二进制值（32 位表示：高 3 位表示状态，低 29 位表示容量）</th>
+				    </tr>
+				    <tr>
+				      <td><pre>CAPACITY   = (1 &lt;&lt; COUNT_BITS) - 1</pre></td>
+				      <td><span class="w3-text-light-green">000</span>11111111111111111111111111111</td>
+				    </tr>
+				    <tr>
+				      <td><pre>RUNNING    = -1 &lt;&lt; COUNT_BITS</pre></td>
+				      <td><span class="w3-text-light-green">111</span>00000000000000000000000000000</td>
+				    </tr>
+				    <tr>
+				      <td><pre>SHUTDOWN   =  0 &lt;&lt; COUNT_BITS</pre></td>
+				      <td><span class="w3-text-light-green">000</span>00000000000000000000000000000</td>
+				    </tr>
+				    <tr>
+				      <td><pre>STOP       =  1 &lt;&lt; COUNT_BITS</pre></td>
+				      <td><span class="w3-text-light-green">001</span>00000000000000000000000000000</td>
+				    </tr>
+				    <tr>
+				      <td><pre>TIDYING    =  2 &lt;&lt; COUNT_BITS</pre></td>
+				      <td><span class="w3-text-light-green">010</span>00000000000000000000000000000</td>
+				    </tr>
+				    <tr>
+				      <td><pre>TERMINATED =  3 &lt;&lt; COUNT_BITS</pre></td>
+				      <td><span class="w3-text-light-green">011</span>00000000000000000000000000000</td>
+				    </tr>
+				    <tr>
+				      <td><pre>~CAPACITY</pre></td>
+				      <td><span class="w3-text-light-green">111</span>00000000000000000000000000000</td>
+				    </tr>
+				</tbody>
+			</table>
+		</div>
+		<div><p>在初探 ThreadPoolExecutor 时，我们给出了示例代码，回顾一下代码不难发现，在创建了 ThreadPoolExecutor 实例对象之后，给线程池派发任务仅是调用了该实例对象的 <span class="w3-text-light-green">execute</span> 方法，现在看一下 <span class="w3-text-light-green">execute</span> 方法做了什么：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">public void</span> execute(<span class="w3-text-coral">Runnable</span> command) {
+	<span class="w3-text-coral">if</span> (command == null)
+		<span class="w3-text-coral">throw new</span> NullPointerException();
+	<span class="w3-text-coral">int</span> c = ctl.get(); // 注意，ctl 为 AtomicInteger 类型
+	// c &amp; CAPACITY，即 c &amp; 00011111111111111111111111111111，得到 workerCount 值（当前线程池内的线程数）
+	// 若当前线程池内的线程数 &lt; 设定最小值，则调用 addWorker 方法
+	<span class="w3-text-coral">if</span> (workerCountOf(c) &lt; corePoolSize) {
+		<span class="w3-text-coral">if</span> (<span class="w3-text-light-green">addWorker(command, true)</span>)
+			return;
+		c = ctl.get();
+	}
+	// 若当前线程池内的线程数 &gt;= 设定最小值且线程池状态为 RUNNING，则任务进入阻塞队列
+	<span class="w3-text-coral">if</span> (isRunning(c) &amp;&amp; workQueue.offer(command)) {
+		<span class="w3-text-coral">int</span> recheck = ctl.get();
+		// 新增任务入队之后再检查，若此时线程池处于非 RUNNING 状态，则回滚且拒绝接收新增任务
+		<span class="w3-text-coral">if</span> (! isRunning(recheck) &amp;&amp; remove(command))
+			reject(command);
+		<span class="w3-text-coral">else if</span> (workerCountOf(recheck) == 0)
+			addWorker(null, false);
+	}
+	<span class="w3-text-coral">else if</span> (!addWorker(command, false)) // 线程池内的线程数 + 阻塞队列的任务数 &lt; maximumPoolSize
+		// 否则，任务饱和，执行饱和策略
+		reject(command);
+}</pre>
+		</div>
+		<div><p>重点关注 <span class="w3-text-light-green">addWorker(command, true)</span>，这句代码的意思是，新增一个 worker <span style="text-decoration:line-through;text-decoration-color:black">线程</span>，再将任务交给该线程执行，command 参数即当前需要执行的任务，那么参数 true 是什么意思呢？</p></div>
+		<div class="w3-custom-code">
+			<pre>// 参数 core 的源码注释：<span class="w3-text-light-green">if true use corePoolSize as bound, else maximumPoolSize</span>
+<span class="w3-text-coral">private boolean</span> addWorker(Runnable firstTask, <span class="w3-text-coral">boolean</span> core) {
+        retry:
+        <span class="w3-text-coral">for</span> (;;) { // 执行整个 for 循环体的最终目的是对 workerCount + 1
+            <span class="w3-text-coral">int</span> c = ctl.get();
+            <span class="w3-text-coral">int</span> rs = runStateOf(c);
+
+            // Check if queue empty only if necessary.
+            <span class="w3-text-coral">if</span> (rs &gt;= SHUTDOWN &amp;&amp;
+                ! (rs == SHUTDOWN &amp;&amp;
+                   firstTask == null &amp;&amp;
+                   ! workQueue.isEmpty()))
+                <span class="w3-text-coral">return</span> false;
+
+            for (;;) {
+                <span class="w3-text-coral">int</span> wc = workerCountOf(c);
+                <span class="w3-text-coral">if</span> (wc &gt;= CAPACITY ||
+                    // 当参数 core 为 true 时，以 corePoolSize 为临界值，否则，以 maximumPoolSize 为临界值
+                    // 如果对此还有疑问
+                    // 可以回看 execute 方法内两次调用 addWorker 方法时的场景区别，你将豁然开朗
+                    wc &gt;= (<span class="w3-text-light-green">core ? corePoolSize : maximumPoolSize</span>))
+                    <span class="w3-text-coral">return</span> false;
+                <span class="w3-text-coral">if</span> (compareAndIncrementWorkerCount(c)) // 核心代码行，CAS操作（ctl + 1）
+                    break retry;
+                c = ctl.get();  // Re-read ctl
+                <span class="w3-text-coral">if</span> (runStateOf(c) != rs)
+                    continue retry;
+                // else CAS failed due to workerCount change; retry inner loop
+            }
+        }
+
+        <span class="w3-text-coral">boolean</span> workerStarted = false;
+        <span class="w3-text-coral">boolean</span> workerAdded = false;
+        <span class="w3-text-light-green">Worker w = null;</span>
+        <span class="w3-text-coral">try</span> {
+            <span class="w3-text-light-green">w = new Worker(firstTask);</span>
+            <span class="w3-text-light-green">final Thread t = w.thread;</span>
+            <span class="w3-text-coral">if</span> (t != null) {
+                final ReentrantLock mainLock = this.mainLock;
+                mainLock.lock();
+                <span class="w3-text-coral">try</span> {
+                    // Recheck while holding lock.
+                    // Back out on ThreadFactory failure or if
+                    // shut down before lock acquired.
+                    <span class="w3-text-coral">int</span> rs = runStateOf(ctl.get());
+
+                    <span class="w3-text-coral">if</span> (rs &lt; SHUTDOWN ||
+                        (rs == SHUTDOWN &amp;&amp; firstTask == null)) {
+                        <span class="w3-text-coral">if</span> (t.isAlive()) // precheck that t is startable
+                            throw new IllegalThreadStateException();
+                        <span class="w3-text-light-green">workers.add(w);</span> // 将新增 worker 添加至 HashSet
+                        <span class="w3-text-coral">int</span> s = workers.size();
+                        <span class="w3-text-coral">if</span> (s &gt; largestPoolSize)
+                            largestPoolSize = s;
+                        workerAdded = true;
+                    }
+                } <span class="w3-text-coral">finally</span> {
+                    mainLock.unlock();
+                }
+                <span class="w3-text-coral">if</span> (workerAdded) {
+                    <span class="w3-text-light-green">t.start();</span> // 启动 worker <span style="text-decoration:line-through;text-decoration-color:black">线程</span>，执行任务
+                    workerStarted = true;
+                }
+            }
+        } <span class="w3-text-coral">finally</span> {
+            <span class="w3-text-coral">if</span> (! workerStarted)
+                addWorkerFailed(w); // 新增 worker 失败之后，将 ctl - 1 回滚，即 workCount - 1
+        }
+        <span class="w3-text-coral">return</span> workerStarted;
+    }</pre>
+		</div>
+		<div><p>重点关注<span class="w3-text-light-green">绿色字体代码</span>，大致过程是，新增一个 worker 且将当前需要执行的任务作为入参，将新增 worker 添加到 HashSet，最后启动 worker <span style="text-decoration:line-through;text-decoration-color:black">线程</span>。那么，worker <span style="text-decoration:line-through;text-decoration-color:black">线程</span>都做了什么呢？在解答这个问题之前，先了解一下 Worker 类：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">private final class</span> Worker
+	<span class="w3-text-coral">extends</span> AbstractQueuedSynchronizer
+	<span class="w3-text-coral">implements</span> Runnable
+{
+	/**
+	 * This class will never be serialized, but we provide a
+	 * serialVersionUID to suppress a javac warning.
+	 */
+	<span class="w3-text-coral">private static final long</span> serialVersionUID = 6138294804551838833L;
+
+	/** Thread this worker is running in.  Null if factory fails. */
+	<span class="w3-text-coral">final</span> Thread <span class="w3-text-light-green">thread</span>;
+	/** Initial task to run.  Possibly null. */
+	Runnable <span class="w3-text-light-green">firstTask</span>; // 注意该属性的类型
+	/** Per-thread task counter */
+	<span class="w3-text-coral">volatile long</span> completedTasks;
+
+	/**
+	 * Creates with given first task and thread from ThreadFactory.
+	 * @param firstTask the first task (null if none)
+	 */
+	Worker(Runnable <span class="w3-text-light-green">firstTask</span>) {
+		setState(-1); // inhibit interrupts until runWorker
+		<span class="w3-text-coral">this</span>.<span class="w3-text-light-green">firstTask</span> = <span class="w3-text-light-green">firstTask</span>;
+		<span class="w3-text-coral">this</span>.<span class="w3-text-light-green">thread</span> = getThreadFactory().newThread(<span class="w3-text-coral">this</span>);
+	}
+
+	/** Delegates main run loop to outer runWorker  */
+	<span class="w3-text-coral">public void</span> run() {
+		runWorker(<span class="w3-text-coral">this</span>);
+	}
+	...
+}</pre>
+		</div>
+		<div><p>根据 Worker 类的源码可知，当前需要执行的任务交给了 firstTask 属性，调用工厂方法创建了 worker <span style="text-decoration:line-through;text-decoration-color:black">线程</span>，更为确切地说，应该是<span class="w3-text-light-green">在 worker 实例对象的内部属性</span>上创建了用以执行给定任务的线程。现在我们再来看一下 run 方法的内部实现：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">final void</span> runWorker(Worker w) {
+	Thread wt = Thread.currentThread();
+	<span class="w3-text-light-green">Runnable task = w.firstTask;</span>
+	w.firstTask = null;
+	w.unlock(); // allow interrupts
+	<span class="w3-text-coral">boolean</span> completedAbruptly = true;
+	<span class="w3-text-coral">try</span> {
+		<span class="w3-text-coral">while</span> (<span class="w3-text-light-green">task</span> != null || (<span class="w3-text-light-green">task</span> = getTask()) != null) {
+			w.lock();
+			// If pool is stopping, ensure thread is interrupted;
+			// if not, ensure thread is not interrupted.  This
+			// requires a recheck in second case to deal with
+			// shutdownNow race while clearing interrupt
+			<span class="w3-text-coral">if</span> ((runStateAtLeast(ctl.get(), STOP) ||
+				 (Thread.interrupted() &amp;&amp;
+				  runStateAtLeast(ctl.get(), STOP))) &amp;&amp;
+				!wt.isInterrupted())
+				wt.interrupt();
+			<span class="w3-text-coral">try</span> {
+				beforeExecute(wt, task);
+				Throwable thrown = null;
+				<span class="w3-text-coral">try</span> {
+					<span class="w3-text-light-green">task.run();</span> // 特别留意该行代码，这是方法调用而非启动线程
+				} <span class="w3-text-coral">catch</span> (RuntimeException x) {
+					thrown = x; throw x;
+				} <span class="w3-text-coral">catch</span> (Error x) {
+					thrown = x; throw x;
+				} <span class="w3-text-coral">catch</span> (Throwable x) {
+					thrown = x; throw new Error(x);
+				} <span class="w3-text-coral">finally</span> {
+					afterExecute(task, thrown);
+				}
+			} <span class="w3-text-coral">finally</span> {
+				<span class="w3-text-light-green">task = null;</span>
+				w.completedTasks++;
+				w.unlock();
+			}
+		}
+		completedAbruptly = false;
+	} <span class="w3-text-coral">finally</span> {
+		processWorkerExit(w, completedAbruptly);
+	}
+}</pre>
+		</div>
+		<div><p>为了着重强调<span class="w3-text-light-green">方法调用</span>和<span class="w3-text-light-green">线程启动</span>（两者有着天壤之别），我们再给出如下示例：</p></div>
+		<div><pre>		new Thread().<span class="w3-text-light-green">run</span>();   // 方法调用
+		new Thread().<span class="w3-text-light-green">start</span>(); // 启动线程</pre></div>
+		<div><p>至此，关于 ThreadPoolExecutor 线程池内的线程是如何处理任务的这个问题，我们已经有了答案：线程池在接收到任务时，将该任务派发给某个可用的 worker，由 worker 内部属性线程通过调用<span class="w3-text-light-green">任务实例的 run 方法</span>来完成执行任务的工作。</p></div>
+		<div><p>那么，在没有任务的情况下，ThreadPoolExecutor 线程池是如何对待<span class="w3-text-light-green">正式工</span>的（<span class="w3-text-light-green">corePoolSize</span>）呢？现在，我们接着上述源码分析的思路，探究一下 <span class="w3-text-light-green">getTask 方法</span>的内部实现（为了便于理解，忽略对<span class="w3-text-light-green">临时工</span>的分析）：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">private</span> Runnable getTask() {
+	<span class="w3-text-coral">boolean</span> timedOut = false; // Did the last poll() time out?
+
+	<span class="w3-text-coral">for</span> (;;) {
+		<span class="w3-text-coral">int</span> c = ctl.get();
+		<span class="w3-text-coral">int</span> rs = runStateOf(c);
+
+		// Check if queue empty only if necessary.
+		<span class="w3-text-coral">if</span> (rs &gt;= SHUTDOWN &amp;&amp; (rs &gt;= STOP || workQueue.isEmpty())) {
+			decrementWorkerCount();
+			<span class="w3-text-coral">return</span> null;
+		}
+
+		<span class="w3-text-coral">int</span> wc = workerCountOf(c);
+
+		// Are workers subject to culling?
+		boolean timed = allowCoreThreadTimeOut || wc &gt; corePoolSize;
+
+		<span class="w3-text-coral">if</span> ((wc &gt; maximumPoolSize || (timed &amp;&amp; timedOut))
+			&amp;&amp; (wc &gt; 1 || workQueue.isEmpty())) {
+			<span class="w3-text-coral">if</span> (compareAndDecrementWorkerCount(c))
+				<span class="w3-text-coral">return</span> null;
+			continue;
+		}
+
+		<span class="w3-text-coral">try</span> {
+			Runnable <span class="w3-text-light-green">r</span> = timed ?
+				workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) :
+				<span class="w3-text-light-green">workQueue.take();</span> // 关键代码行，调用 take 方法从阻塞队列中获取任务再返回
+			<span class="w3-text-coral">if</span> (r != null)
+				<span class="w3-text-coral">return</span> <span class="w3-text-light-green">r</span>;
+			timedOut = true;
+		} <span class="w3-text-coral">catch</span> (InterruptedException retry) {
+			timedOut = false;
+		}
+	}
+}</pre>
+		</div>
+		<div><p>简单起见，我们就以 <span class="w3-text-light-green">ArrayBlockingQueue</span> 为例，查看一下该类的 take 方法的内部实现，以解答当阻塞队列为空即没有任务时的处理方式：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">public</span> E take() <span class="w3-text-coral">throws</span> InterruptedException {
+	<span class="w3-text-coral">final</span> ReentrantLock lock = <span class="w3-text-coral">this</span>.lock;
+	lock.lockInterruptibly();
+	<span class="w3-text-coral">try</span> {
+		// count == 0 表示当前阻塞队列中没有任务
+		<span class="w3-text-coral">while</span> (count == 0)
+			// notEmpty 为 ConditionObject 实例对象
+			// 追本溯源，await 方法最终也是调用了 Unsafe 实例对象的 park 方法
+			// 调用 await 方法<span class="w3-text-light-green">阻塞当前线程</span>
+			notEmpty.await();
+		<span class="w3-text-coral">return</span> dequeue();
+	} <span class="w3-text-coral">finally</span> {
+		lock.unlock();
+	}
+}</pre>
+		</div>
+		<div><p>可见，在没有任务的情况下，线程池内的线程将被阻塞，直到派发新任务为止。显然，关于 ThreadPoolExecutor 线程池是如何对待<span class="w3-text-light-green">正式工</span>的（<span class="w3-text-light-green">corePoolSize</span>）这个问题，我们也有了答案：有任务时，执行任务，在没有任务的情况下，<span class="w3-text-light-green">正式工</span>被闲置（线程阻塞），直到有新任务派发时再次启用（线程唤醒）。</p></div>
+		<div><p>问题接踵而至，<span class="w3-text-light-green">正式工</span>是如何被再次启用的呢（即线程池内的阻塞线程是如何被唤醒的）？让我们回看一下 execute 方法：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">public void</span> execute(<span class="w3-text-coral">Runnable</span> command) {
+	<span class="w3-text-coral">if</span> (command == null)
+		<span class="w3-text-coral">throw new</span> NullPointerException();
+	<span class="w3-text-coral">int</span> c = ctl.get();
+	<span class="w3-text-coral">if</span> (workerCountOf(c) &lt; corePoolSize) {
+		<span class="w3-text-coral">if</span> (addWorker(command, true))
+			return;
+		c = ctl.get();
+	}
+	// 线程池内的线程数 &gt;= corePoolSize
+	<span class="w3-text-coral">if</span> (isRunning(c) &amp;&amp; <span class="w3-text-light-green">workQueue.offer(command)</span>) { // 新任务到来时，调用 offer 方法
+		<span class="w3-text-coral">int</span> recheck = ctl.get();
+		<span class="w3-text-coral">if</span> (! isRunning(recheck) &amp;&amp; remove(command))
+			reject(command);
+		<span class="w3-text-coral">else if</span> (workerCountOf(recheck) == 0)
+			addWorker(null, false);
+	}
+	<span class="w3-text-coral">else if</span> (!addWorker(command, false))
+		reject(command);
+}</pre>
+		</div>
+		<div><p>为了便于理解，我们将场景简化一下，假设当前线程池内的线程均处于阻塞状态，线程数为 corePoolSize 值，那么此刻，当有新任务下发时，程序会<span class="w3-text-light-green">调用 offer 方法</span>且新任务为入参，看一下<span class="w3-text-light-green"> offer 方法</span>的实现：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">public boolean</span> offer(E e) {
+	checkNotNull(e);
+	<span class="w3-text-coral">final</span> ReentrantLock lock = this.lock;
+	lock.lock();
+	<span class="w3-text-coral">try</span> {
+		<span class="w3-text-coral">if</span> (<span class="w3-text-light-green">count == items.length</span>) // 理解为阻塞队列中的任务数已饱和
+			<span class="w3-text-coral">return</span> false;
+		<span class="w3-text-coral">else</span> {
+			<span class="w3-text-light-green">enqueue(e);</span> // 否则，任务入队
+			<span class="w3-text-coral">return</span> true;
+		}
+	} <span class="w3-text-coral">finally</span> {
+		lock.unlock();
+	}
+}
+
+...
+
+// 在阅读 <span class="w3-text-light-green">enqueue</span> 方法源码时，比照着 <span class="w3-text-light-green">take</span> 方法看会更容易理解
+<span class="w3-text-coral">private void</span> <span class="w3-text-light-green">enqueue(E x)</span> {
+	// assert lock.getHoldCount() == 1;
+	// assert items[putIndex] == null;
+	<span class="w3-text-coral">final</span> Object[] items = this.items; // items 数组的大小即为实例化线程池时给定 BlockingQueue 实例的大小
+	items[putIndex] = x;
+	<span class="w3-text-coral">if</span> (++putIndex == items.length)
+		putIndex = 0;
+	count++; // count 表示阻塞队列中的任务（元素）数
+	notEmpty.signal(); // 唤醒线程池内的某个阻塞线程，这与 notEmpty.await(); 成对
+}</pre>
+		</div>
+		<div><p>通过对 <span class="w3-text-light-green">offer 方法</span>的分析，我们已经知道了线程池内的阻塞线程是如何被唤醒的。现在，我们留有最后一个问题，即 ThreadPoolExecutor 线程池是如何解雇<span class="w3-text-light-green">临时工</span>的（<span class="w3-text-light-green">maximumPoolSize</span> - <span class="w3-text-light-green">corePoolSize</span>）？我们知道，<span class="w3-text-light-green">临时工</span>的出现是因为当前需要处理的任务数过多，确切地说，任务数 &gt; (corePoolSize + 阻塞队列大小)，显而易见，这是临时救急。那么，在淡季的时候，即任务数足够由<span class="w3-text-light-green">正式工</span>处理的情况下，<span class="w3-text-light-green">临时工</span>是会被辞退的即线程被销毁，为了理解这个过程，我们再回看一下 <span class="w3-text-light-green">getTask 方法</span>：</p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">private</span> Runnable getTask() {
+	<span class="w3-text-coral">boolean</span> timedOut = false; // Did the last poll() time out?
+
+	<span class="w3-text-coral">for</span> (;;) {
+		<span class="w3-text-coral">int</span> c = ctl.get();
+		<span class="w3-text-coral">int</span> rs = runStateOf(c);
+
+		// Check if queue empty only if necessary.
+		<span class="w3-text-coral">if</span> (rs &gt;= SHUTDOWN &amp;&amp; (rs &gt;= STOP || workQueue.isEmpty())) {
+			decrementWorkerCount();
+			<span class="w3-text-coral">return</span> null;
+		}
+
+		<span class="w3-text-coral">int</span> wc = workerCountOf(c);
+
+		// Are workers subject to culling?
+		<span class="w3-text-light-green">boolean timed = allowCoreThreadTimeOut || wc &gt; corePoolSize;</span>
+
+		<span class="w3-text-coral">if</span> ((wc &gt; maximumPoolSize || (timed &amp;&amp; timedOut))
+			&amp;&amp; (wc &gt; 1 || workQueue.isEmpty())) {
+			<span class="w3-text-coral">if</span> (compareAndDecrementWorkerCount(c))
+				<span class="w3-text-coral">return</span> null;
+			continue;
+		}
+
+		<span class="w3-text-coral">try</span> {
+			Runnable r = timed ?
+				// workQueue.poll，即调用当前阻塞队列实例化对象的轮询方法
+				// 且将 keepAliveTime 作为入参，注意此时的 keepAliveTime 已经被转化为了纳秒
+				// this.keepAliveTime = unit.toNanos(keepAliveTime);
+				<span class="w3-text-light-green">workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS)</span> :
+				workQueue.take();
+			<span class="w3-text-coral">if</span> (r != null)
+				<span class="w3-text-coral">return</span> r;
+			timedOut = true;
+		} <span class="w3-text-coral">catch</span> (InterruptedException retry) {
+			timedOut = false;
+		}
+	}
+}</pre>
+		</div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code">
+			<pre><span class="w3-text-coral">public</span> E poll(long timeout, TimeUnit unit) throws InterruptedException {
+	<span class="w3-text-coral">long</span> nanos = unit.toNanos(timeout);
+	<span class="w3-text-coral">final</span> ReentrantLock lock = this.lock;
+	lock.lockInterruptibly();
+	<span class="w3-text-coral">try</span> {
+		<span class="w3-text-coral">while</span> (count == 0) {
+			<span class="w3-text-coral">if</span> (<span class="w3-text-light-green">nanos &lt;= 0</span>)
+				// 以《ThreadPoolExecutor 初探》中的示例代码为例，30 秒之后返回 null
+				<span class="w3-text-coral">return</span> null;
+			<span class="w3-text-light-green">nanos = notEmpty.awaitNanos(nanos);</span>
+		}
+		<span class="w3-text-coral">return</span> dequeue();
+	} <span class="w3-text-coral">finally</span> {
+		lock.unlock();
+	}
+}</pre>
+		</div>
+		<div><p>当 workQueue.poll 方法返回 null 时，回看 getTask 方法，它首先设置 timedOut = true，满足相应条件之后，调用 compareAndDecrementWorkerCount 方法对 workerCount 减 1，再返回 null，最终在 runWorker 方法内满足了调用 <span class="w3-text-light-green">processWorkerExit</span> 方法的条件：</p></div>
+		<div class="w3-custom-code"><pre>/**
+ * Performs cleanup and bookkeeping for a dying worker. Called
+ * only from worker threads. Unless completedAbruptly is set,
+ * assumes that workerCount has already been adjusted to account
+ * for exit.  This method removes thread from worker set, and
+ * possibly terminates the pool or replaces the worker if either
+ * it exited due to user task exception or if fewer than
+ * corePoolSize workers are running or queue is non-empty but
+ * there are no workers.
+ *
+ * @param w the worker
+ * @param completedAbruptly <span class="w3-text-light-green">if the worker died due to user exception</span>
+ */
+<span class="w3-text-coral">private void</span> processWorkerExit(Worker w, boolean completedAbruptly) {
+	<span class="w3-text-coral">if</span> (completedAbruptly) // If abrupt, then workerCount wasn't adjusted
+		decrementWorkerCount();
+
+	<span class="w3-text-coral">final</span> ReentrantLock mainLock = <span class="w3-text-coral">this</span>.mainLock;
+	mainLock.lock();
+	<span class="w3-text-coral">try</span> {
+		completedTaskCount += w.completedTasks;
+		<span class="w3-text-light-green">workers.remove(w);</span> // 辞退临时工
+	} <span class="w3-text-coral">finally</span> {
+		mainLock.unlock();
+	}
+
+	tryTerminate();
+
+	<span class="w3-text-coral">int</span> c = ctl.get();
+	<span class="w3-text-coral">if</span> (runStateLessThan(c, STOP)) {
+		<span class="w3-text-coral">if</span> (!completedAbruptly) {
+			<span class="w3-text-coral">int</span> min = allowCoreThreadTimeOut ? 0 : corePoolSize;
+			<span class="w3-text-coral">if</span> (min == 0 &amp;&amp; ! workQueue.isEmpty())
+				min = 1;
+			<span class="w3-text-coral">if</span> (workerCountOf(c) &gt;= min)
+				<span class="w3-text-coral">return</span>; // replacement not needed
+		}
+		addWorker(null, false);
+	}
+}</pre></div>
+		<div><p>到此为止，ThreadPoolExecutor 线程池是如何解雇<span class="w3-text-light-green">临时工</span>的（<span class="w3-text-light-green">maximumPoolSize</span> - <span class="w3-text-light-green">corePoolSize</span>）这个问题最终得以解答：当线程池内的线程数达到 corePoolSize 值时，新增线程执行任务会调用 <span class="w3-text-light-green">workQueue.poll</span> 方法，这将注定该线程的生命是短暂的，原因就在于 <span class="w3-text-light-green">workQueue.poll</span> 方法只能暂时阻塞线程，在达到 keepAliveTime 时间之后会继续向下执行，直至最终调用 Thread 的 exit 方法即销毁线程。</p></div>
+		<div><p>最后总结，在理解 ThreadPoolExecutor 实现原理的时候，重点关注 runWorker、take 以及 poll 方法的理解，在理清它们之间的关系后，实现原理自然会明了于心。</p></div>
+	</section>
+</article>

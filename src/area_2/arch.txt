@@ -2,6 +2,13 @@
 <article class="list">
 	<hr>
 	<div class="item">
+    	<div><strong>2018-01</strong></div>
+        <ul>
+        	<li><time>02日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/40.txt',id:'prevtonext'},{url:'src/area_2/articles/0041/0041.txt',id:'contents'}]);">Java 并发编程系列：ThreadPoolExecutor 续篇（16）</a></li>
+        </ul>
+    </div>
+    <hr style="border: none; border-top: 1px dotted white;">
+	<div class="item">
     	<div><strong>2017-12</strong></div>
         <ul>
         	<li><time>31日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/39.txt',id:'prevtonext'},{url:'src/area_2/articles/0040/0040.txt',id:'contents'}]);">Java 并发编程系列：ThreadPoolExecutor 初探（15）</a></li>

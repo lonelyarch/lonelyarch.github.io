@@ -1,4 +1,17 @@
 <article>
+	<div><p><strong>Java 并发编程系列：ConcurrentHashMap 初探（11）</strong></p><p class="w3-right">2017-10-28</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记得之前在整理 HashMap 相关知识点的时候，顺带查看了官方文档里对 Hashtable 的描述，于是就看到了以下内容：</P>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... If a thread-safe highly-concurrent implementation is desired, then it is recommended to <span class="w3-text-light-green">use ConcurrentHashMap in place of Hashtable</span>.</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实话实说，虽然 HashMap 已烂熟于心，但到目前为止，个人对 <span class="w3-text-light-green">ConcurrentHashMap</span> 这个在 Java 并发编程的世界里早就声名远播的类还是感到十分陌生，这是很难为情的事，为了不偏科，现亡羊补牢。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/30.txt',id:'prevtonext'},{url:'src/area_2/articles/0031/0031.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</strong></p><p class="w3-right">2017-10-22</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -103,16 +116,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/21.txt',id:'prevtonext'},{url:'src/area_2/articles/0022/0022.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：Thread 类（01）</strong></p><p class="w3-right">2017-09-23</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;身为一个以 Java 为主要开发语言的程序员，工作几年了也没有对并发编程这个知识块做过系统性地总结，略表内疚，对不常用的东西要么束之高阁、要么弃之如敝屣，这种处事待物的态度早就习惯了，也就不会过分感觉有所失。从今天起，博主会对 Java 并发编程这个知识块做个相对实用的总结，说服自己的理由是：对并发编程不欣赏的程序员不是个好程序员。</p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言归正传。虽然网上有很多优秀的同行从业者写了很多有关 Java 并发编程这个知识块的优秀博文，但是，读别人的文章总感觉对事物的认知不够深刻，还是那句话，纸上得来终觉浅，绝知此事要躬行。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/20.txt',id:'prevtonext'},{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
