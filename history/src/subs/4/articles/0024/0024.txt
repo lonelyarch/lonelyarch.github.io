@@ -1,0 +1,28 @@
+<article>
+	<div><header class="w3-header"><p>Java NIO 系列：概述（01）</p></header></div>
+	<div><p>Java NIO 核心成员：Channel、Buffer 以及 Selector 。</p></div>
+	<div><p>Channel 和 Buffer</p></div>
+	<div><p>基本上，所有的 IO 在 NIO 中都从一个 Channel 开始。Channel 有点像流。 数据可以从 Channel 读到 Buffer 中，也可以从 Buffer 写到 Channel 中。</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0024/images/01.jpg" /></div>
+	<div><p>Channel 实现：</p></div>
+	<div><ul>
+		<li><p>FileChannel</p></li>
+		<li><p>DatagramChannel（实现 UDP 协议传输）</p></li>
+		<li><p>SocketChannel</p></li>
+		<li><p>ServerSocketChannel</p></li>
+	</ul></div>
+	<div><p>Buffer 实现：</p></div>
+	<div><ul>
+		<li><p>ByteBuffer</p></li>
+		<li><p>CharBuffer</p></li>
+		<li><p>DoubleBuffer</p></li>
+		<li><p>FloatBuffer</p></li>
+		<li><p>IntBuffer</p></li>
+		<li><p>LongBuffer</p></li>
+		<li><p>ShortBuffer</p></li>
+		<li><p>MappedByteBuffer</p></li>
+	</ul></div>
+	<div><p>Selector</p></div>
+	<div><p>Selector 允许单线程处理多个 Channel 。如果你的应用打开了多个连接（通道），但每个连接的流量都很低，使用 Selector 就会很方便。例如，在一个聊天服务器中。</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0024/images/02.jpg" /></div>
+</article>

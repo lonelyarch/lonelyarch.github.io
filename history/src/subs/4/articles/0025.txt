@@ -1,0 +1,35 @@
+<article>
+	<div><header class="w3-header"><p>Java NIO 系列：Channel（02）</p></header></div>
+	<div><p>Java NIO 的通道（Channel）类似流，但又有些不同：</p></div>
+	<div><ul>
+		<li><p><p>既可以从通道中读取数据，又可以写数据到通道，但流的读写通常是单向的；</p></li>
+		<li><p>通道可以异步地读写；</p></li>
+		<li><p>通道中的数据总是要先读到一个 Buffer，或总是要从一个 Buffer 中写入。</p></li>
+	</ul></div>
+	<div><p>Channel 实现：</p></div>
+	<div><ul>
+		<li><p>FileChannel（从文件中读写数据）</p></li>
+		<li><p>DatagramChannel（能通过 UDP 读写网络中的数据）</p></li>
+		<li><p>SocketChannel（能通过 TCP 读写网络中的数据）</p></li>
+		<li><p>ServerSocketChannel（可以监听新进来的 TCP 连接，像 Web 服务器那样，对每一个新进来的连接都会创建一个 SocketChannel）</p></li>
+	</ul></div>
+	<div><p>Channel 示例：</p></div>
+	<div class="w3-custom-code"><pre>public class ChannelDemo {
+	public static void main(String[] args) throws Exception {
+		RandomAccessFile file = new RandomAccessFile(ChannelDemo.class
+				.getResource("data/test.txt").getFile(), "rw");
+		FileChannel channel = file.getChannel();
+		ByteBuffer buffer = ByteBuffer.allocate(512);
+		int read = channel.read(buffer);
+		while (read != -1) {
+			<span class="w3-text-light-green">buffer.flip();</span>
+			while (buffer.hasRemaining()) {
+				System.out.print((char) buffer.get());
+			}
+			buffer.clear();
+			read = channel.read(buffer);
+		}
+		file.close();
+	}
+}</pre></div>
+</article>

@@ -3,7 +3,9 @@
 .w3-wrapper .box{background-color:#272822;color:#fff;border-radius:5px;padding:20px}
 .w3-link{text-decoration:none;cursor:pointer;color:#2196f3!important}
 .w3-header{color:#2196f3}
-.w3-custom-code pre{overflow:hidden;text-overflow:ellipsis}
+/* .w3-custom-code pre{overflow:hidden;text-overflow:ellipsis} */
+.w3-custom-code pre{overflow:auto}
+.w3-custom-code {background-color:seagreen;color:black;padding:0 5px}
 .w3-text-blue{color:#2196f3}
 /* 0020 */
 .w3-example-square-01-04_0020 .square{position:relative;max-width:300px;width:50%;border:1px solid rgba(255,255,255,0.6);margin:0 auto}
