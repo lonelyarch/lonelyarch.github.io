@@ -1,0 +1,98 @@
+<article>
+	<section>
+		<div><p><strong>SVG（Scalable Vector Graphics）</strong></p><p class="w3-right w3-margin-0">2018-01-09</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div>
+			<svg style="width:100%;min-height:300px">
+				<line x1="50%" y1="25%" x2="25%" y2="50%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+				<line x1="50%" y1="25%" x2="75%" y2="50%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+				<line x1="75%" y1="50%" x2="60%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+				<line x1="25%" y1="50%" x2="10%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+				<line x1="25%" y1="50%" x2="40%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+				<circle cx="50%" cy="25%" r="5%" fill="teal" />
+				<text x="50%" y="25%" text-anchor="middle" fill="white" dy="2.5%">7</text>
+				<circle cx="25%" cy="50%" r="5%" fill="teal" />
+				<text x="25%" y="50%" text-anchor="middle" fill="white" dy="2.5%">3</text>
+				<circle cx="75%" cy="50%" r="5%" fill="teal" />
+				<text x="75%" y="50%" text-anchor="middle" fill="white" dy="2.5%">9</text>
+				<circle cx="60%" cy="75%" r="5%" fill="teal" />
+				<text x="60%" y="75%" text-anchor="middle" fill="white" dy="2.5%">8</text>
+				<circle cx="10%" cy="75%" r="5%" fill="teal" />
+				<text x="10%" y="75%" text-anchor="middle" fill="white" dy="2.5%">2</text>
+				<circle cx="40%" cy="75%" r="5%" fill="teal" />
+				<text x="40%" y="75%" text-anchor="middle" fill="white" dy="2.5%">5</text>
+			</svg>
+		</div>
+	</section>
+	<section>
+		<div><p>前言：原本是打算介绍一款令人惊艳的 JavaScript 库 <a target="_blank" class="w3-link" href="https://d3js.org/">d3.js</a>，顺便以此为基础做个 demo，但最终还是敌不过自己的好奇心，为了理解基于该库的部分示例的实现原理，于是有了这篇简略的入门小短文。</p></div>
+	</section>
+	<section>
+		<div><p>步骤一、给定 &lt;svg&gt; 标签并设置它的宽高，再添加子标签 &lt;circle&gt;，设置相应的属性值画出一个圆：</p></div>
+		<div>
+			<svg style="width:100%;height:100px">
+				<circle cx="50%" cy="50%" r="5%" fill="forestgreen" />
+			</svg>
+		</div>
+		<div><p>步骤二、使用 &lt;line&gt; 标签画出两个圆之间的连线：</p></div>
+		<div>
+			<svg style="width:100%;height:150px">
+				<line x1="50%" y1="32%" x2="75%" y2="64%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+				<circle cx="50%" cy="32%" r="5%" fill="forestgreen" />
+				<circle cx="75%" cy="64%" r="5%" fill="forestgreen" />
+			</svg>
+		</div>
+		<div><p>步骤三、使用 &lt;text&gt; 标签在圆内添加文本，注意显示位置，水平居中是相对于父标签即 &lt;svg&gt; 标签设置适当的 x、y 坐标点，垂直居中是调整 dy 属性的值：</p></div>
+		<div>
+			<svg style="width:100%;height:150px">
+				<line x1="50%" y1="32%" x2="75%" y2="64%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+				<circle cx="50%" cy="32%" r="5%" fill="forestgreen" />
+				<text x="50%" y="32%" text-anchor="middle" fill="white" dy="5.0%">5</text>
+				<circle cx="75%" cy="64%" r="5%" fill="forestgreen" />
+				<text x="75%" y="64%" text-anchor="middle" fill="white" dy="5.0%">9</text>
+			</svg>
+		</div>
+		<div><p>简单总结：以上所有步骤的实现，关键点是对各标签位置的调整，&lt;circle&gt;、&lt;line&gt;、&lt;text&gt; 均是相对于父标签 &lt;svg&gt; 的 x、y 坐标点进行设置的，x、y 轴的坐标原点即（0，0）位于标签 &lt;svg&gt; 的左上角。</p></div>
+		<div class="w3-example">
+			<div class="w3-code" style="height: 300px; overflow-y: auto;">
+				<pre><code class="hljs"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>示例代码<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"background-color:black"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"text-align:center;padding-top:50px"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">svg
+</span>            <span class="hljs-attribute">style</span>=<span class="hljs-value">"width:600px;height:250px;border:1px solid rgba(255,255,255,0.6)"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">line</span> <span class="hljs-attribute">x1</span>=<span class="hljs-value">"300px"</span> <span class="hljs-attribute">y1</span>=<span class="hljs-value">"50px"</span> <span class="hljs-attribute">x2</span>=<span class="hljs-value">"150px"</span> <span class="hljs-attribute">y2</span>=<span class="hljs-value">"100px"</span>
+                <span class="hljs-attribute">style</span>=<span class="hljs-value">"stroke:rgba(255,255,255,0.6);stroke-width:1"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">line</span> <span class="hljs-attribute">x1</span>=<span class="hljs-value">"300px"</span> <span class="hljs-attribute">y1</span>=<span class="hljs-value">"50px"</span> <span class="hljs-attribute">x2</span>=<span class="hljs-value">"450px"</span> <span class="hljs-attribute">y2</span>=<span class="hljs-value">"100px"</span>
+                <span class="hljs-attribute">style</span>=<span class="hljs-value">"stroke:rgba(255,255,255,0.6);stroke-width:1"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">line</span> <span class="hljs-attribute">x1</span>=<span class="hljs-value">"150px"</span> <span class="hljs-attribute">y1</span>=<span class="hljs-value">"100px"</span> <span class="hljs-attribute">x2</span>=<span class="hljs-value">"225px"</span> <span class="hljs-attribute">y2</span>=<span class="hljs-value">"200px"</span>
+                <span class="hljs-attribute">style</span>=<span class="hljs-value">"stroke:rgba(255,255,255,0.6);stroke-width:1"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">line</span> <span class="hljs-attribute">x1</span>=<span class="hljs-value">"450px"</span> <span class="hljs-attribute">y1</span>=<span class="hljs-value">"100px"</span> <span class="hljs-attribute">x2</span>=<span class="hljs-value">"375px"</span> <span class="hljs-attribute">y2</span>=<span class="hljs-value">"200px"</span>
+                <span class="hljs-attribute">style</span>=<span class="hljs-value">"stroke:rgba(255,255,255,0.6);stroke-width:1"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">line</span> <span class="hljs-attribute">x1</span>=<span class="hljs-value">"450px"</span> <span class="hljs-attribute">y1</span>=<span class="hljs-value">"100px"</span> <span class="hljs-attribute">x2</span>=<span class="hljs-value">"525px"</span> <span class="hljs-attribute">y2</span>=<span class="hljs-value">"200px"</span>
+                <span class="hljs-attribute">style</span>=<span class="hljs-value">"stroke:rgba(255,255,255,0.6);stroke-width:1"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">circle</span> <span class="hljs-attribute">cx</span>=<span class="hljs-value">"300px"</span> <span class="hljs-attribute">cy</span>=<span class="hljs-value">"50px"</span> <span class="hljs-attribute">r</span>=<span class="hljs-value">"30px"</span> <span class="hljs-attribute">fill</span>=<span class="hljs-value">"forestgreen"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">text</span> <span class="hljs-attribute">x</span>=<span class="hljs-value">"300px"</span> <span class="hljs-attribute">y</span>=<span class="hljs-value">"50px"</span> <span class="hljs-attribute">text-anchor</span>=<span class="hljs-value">"middle"</span> <span class="hljs-attribute">dy</span>=<span class="hljs-value">"2.5%"</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-title">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">circle</span> <span class="hljs-attribute">cx</span>=<span class="hljs-value">"150px"</span> <span class="hljs-attribute">cy</span>=<span class="hljs-value">"100px"</span> <span class="hljs-attribute">r</span>=<span class="hljs-value">"30px"</span> <span class="hljs-attribute">fill</span>=<span class="hljs-value">"forestgreen"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">text</span> <span class="hljs-attribute">x</span>=<span class="hljs-value">"150px"</span> <span class="hljs-attribute">y</span>=<span class="hljs-value">"100px"</span> <span class="hljs-attribute">text-anchor</span>=<span class="hljs-value">"middle"</span> <span class="hljs-attribute">dy</span>=<span class="hljs-value">"2.5%"</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-title">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">circle</span> <span class="hljs-attribute">cx</span>=<span class="hljs-value">"450px"</span> <span class="hljs-attribute">cy</span>=<span class="hljs-value">"100px"</span> <span class="hljs-attribute">r</span>=<span class="hljs-value">"30px"</span> <span class="hljs-attribute">fill</span>=<span class="hljs-value">"forestgreen"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">text</span> <span class="hljs-attribute">x</span>=<span class="hljs-value">"450px"</span> <span class="hljs-attribute">y</span>=<span class="hljs-value">"100px"</span> <span class="hljs-attribute">text-anchor</span>=<span class="hljs-value">"middle"</span> <span class="hljs-attribute">dy</span>=<span class="hljs-value">"2.5%"</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-title">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">circle</span> <span class="hljs-attribute">cx</span>=<span class="hljs-value">"525px"</span> <span class="hljs-attribute">cy</span>=<span class="hljs-value">"200px"</span> <span class="hljs-attribute">r</span>=<span class="hljs-value">"30px"</span> <span class="hljs-attribute">fill</span>=<span class="hljs-value">"forestgreen"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">text</span> <span class="hljs-attribute">x</span>=<span class="hljs-value">"525px"</span> <span class="hljs-attribute">y</span>=<span class="hljs-value">"200px"</span> <span class="hljs-attribute">text-anchor</span>=<span class="hljs-value">"middle"</span> <span class="hljs-attribute">dy</span>=<span class="hljs-value">"2.5%"</span>&gt;</span>9<span class="hljs-tag">&lt;/<span class="hljs-title">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">circle</span> <span class="hljs-attribute">cx</span>=<span class="hljs-value">"375px"</span> <span class="hljs-attribute">cy</span>=<span class="hljs-value">"200px"</span> <span class="hljs-attribute">r</span>=<span class="hljs-value">"30px"</span> <span class="hljs-attribute">fill</span>=<span class="hljs-value">"forestgreen"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">text</span> <span class="hljs-attribute">x</span>=<span class="hljs-value">"375px"</span> <span class="hljs-attribute">y</span>=<span class="hljs-value">"200px"</span> <span class="hljs-attribute">text-anchor</span>=<span class="hljs-value">"middle"</span> <span class="hljs-attribute">dy</span>=<span class="hljs-value">"2.5%"</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-title">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">circle</span> <span class="hljs-attribute">cx</span>=<span class="hljs-value">"225px"</span> <span class="hljs-attribute">cy</span>=<span class="hljs-value">"200px"</span> <span class="hljs-attribute">r</span>=<span class="hljs-value">"30px"</span> <span class="hljs-attribute">fill</span>=<span class="hljs-value">"forestgreen"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">text</span> <span class="hljs-attribute">x</span>=<span class="hljs-value">"225px"</span> <span class="hljs-attribute">y</span>=<span class="hljs-value">"200px"</span> <span class="hljs-attribute">text-anchor</span>=<span class="hljs-value">"middle"</span> <span class="hljs-attribute">dy</span>=<span class="hljs-value">"2.5%"</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-title">text</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">svg</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+			</div>
+		</div>
+	</section>
+</article>

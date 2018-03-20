@@ -4,6 +4,7 @@
 	<div class="item">
     	<div><strong>2018-01</strong></div>
         <ul>
+        	<li><time>09日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/41.txt',id:'prevtonext'},{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);">SVG（Scalable Vector Graphics）</a></li>
         	<li><time>02日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/40.txt',id:'prevtonext'},{url:'src/area_2/articles/0041/0041.txt',id:'contents'}]);">Java 并发编程系列：ThreadPoolExecutor 续篇（16）</a></li>
         </ul>
     </div>

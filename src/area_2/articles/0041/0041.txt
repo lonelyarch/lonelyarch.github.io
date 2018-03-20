@@ -319,7 +319,7 @@
 }</pre>
 		</div>
 		<div><p>为了着重强调<span class="w3-text-light-green">方法调用</span>和<span class="w3-text-light-green">线程启动</span>（两者有着天壤之别），我们再给出如下示例：</p></div>
-		<div><pre style="overflow:hidden;text-overflow:ellipsis">		new Thread().<span class="w3-text-light-green">run</span>();   // 方法调用
+		<div><pre style="overflow:auto">		new Thread().<span class="w3-text-light-green">run</span>();   // 方法调用
 		new Thread().<span class="w3-text-light-green">start</span>(); // 启动线程</pre></div>
 		<div><p>至此，关于 ThreadPoolExecutor 线程池内的线程是如何处理任务的这个问题，我们已经有了答案：线程池在接收到任务时，将该任务派发给某个可用的 worker，由 worker 内部属性线程通过调用<span class="w3-text-light-green">任务实例的 run 方法</span>来完成执行任务的工作。</p></div>
 		<div><p>那么，在没有任务的情况下，ThreadPoolExecutor 线程池是如何对待<span class="w3-text-light-green">正式工</span>的（<span class="w3-text-light-green">corePoolSize</span>）呢？现在，我们接着上述源码分析的思路，探究一下 <span class="w3-text-light-green">getTask 方法</span>的内部实现（为了便于理解，忽略对<span class="w3-text-light-green">临时工</span>的分析）：</p></div>

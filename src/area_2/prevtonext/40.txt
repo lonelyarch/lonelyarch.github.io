@@ -1,2 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/41.txt',id:'prevtonext'},{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« SVG（Scalable Vector Graphics）</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/39.txt',id:'prevtonext'},{url:'src/area_2/articles/0040/0040.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：ThreadPoolExecutor 初探（15） »</a>
 <div style="clear: both;"></div>

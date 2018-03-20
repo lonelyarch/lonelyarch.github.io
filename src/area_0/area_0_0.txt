@@ -15,6 +15,35 @@
 	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2018.01.09</h4>
+			<p><strong>SVG（Scalable Vector Graphics）</strong></p>
+			<div>
+				<svg style="width:100%;min-height:300px">
+					<line x1="50%" y1="25%" x2="25%" y2="50%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+					<line x1="50%" y1="25%" x2="75%" y2="50%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+					<line x1="75%" y1="50%" x2="60%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+					<line x1="25%" y1="50%" x2="10%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+					<line x1="25%" y1="50%" x2="40%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
+					<circle cx="50%" cy="25%" r="5%" fill="teal" />
+					<text x="50%" y="25%" text-anchor="middle" fill="white" dy="2.5%">7</text>
+					<circle cx="25%" cy="50%" r="5%" fill="teal" />
+					<text x="25%" y="50%" text-anchor="middle" fill="white" dy="2.5%">3</text>
+					<circle cx="75%" cy="50%" r="5%" fill="teal" />
+					<text x="75%" y="50%" text-anchor="middle" fill="white" dy="2.5%">9</text>
+					<circle cx="60%" cy="75%" r="5%" fill="teal" />
+					<text x="60%" y="75%" text-anchor="middle" fill="white" dy="2.5%">8</text>
+					<circle cx="10%" cy="75%" r="5%" fill="teal" />
+					<text x="10%" y="75%" text-anchor="middle" fill="white" dy="2.5%">2</text>
+					<circle cx="40%" cy="75%" r="5%" fill="teal" />
+					<text x="40%" y="75%" text-anchor="middle" fill="white" dy="2.5%">5</text>
+				</svg>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2018.01.02</h4>
 			<p><strong>Java 并发编程系列：ThreadPoolExecutor 续篇（16）</strong></p>
 			<div class="w3-container w3-light-gray">
