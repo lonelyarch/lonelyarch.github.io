@@ -1,0 +1,20 @@
+<article>
+	<div><header class="w3-header"><p><a class="w3-link" target="_blank" href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html">Java Garbage Collection Basics</a></p></header></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0034/images/01.jpg" /></div>
+	<div><p>Why Generational Garbage Collection?</p></div>
+	<div><p>As stated earlier, having to mark and compact all the objects in a JVM is inefficient. As more and more objects are allocated, the list of objects grows and grows leading to longer and longer garbage collection time. However, empirical(经验的) analysis of applications has shown that most objects are short lived.</p></div>
+	<div><p>Here is an example of such data. The Y axis shows the number of bytes allocated and the X access shows the number of bytes allocated over time.</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0034/images/02.jpg" /></div>
+	<div><p>As you can see, fewer and fewer objects remain allocated over time. In fact most objects have a very short life as shown by the higher values on the left side of the graph.</p></div>
+	<div><p><strong class="w3-text-light-green">Young generation: </strong>Most of the newly created objects are located here. Since most objects soon become unreachable, many objects are created in the young generation, then disappear. When objects disappear from this area, we say a "<strong>minor GC</strong>" has occurred.</p></div>
+	<div><p><strong class="w3-text-light-green">Old generation: </strong>The objects that did not become unreachable and survived from the young generation are copied here. It is generally larger than the young generation. As it is bigger in size, the GC occurs less frequently than in the young generation. When objects disappear from the old generation, we say a "<strong>major GC</strong>" (or a "<strong>full GC</strong>") has occurred.</p></div>
+	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0034/images/03.jpg" /></div>
+	<div><p>The <strong class="w3-text-light-green">permanent generation</strong> from the chart above is also called the "<strong>method area</strong>" and it stores classes or interned character strings. So, this area is definitely not for objects that survived from the old generation to stay permanently. A GC may occur in this area. The GC that took place here is still counted as a major GC.</p></div>
+	<div><p><strong>What if an object in the old generation need to reference an object in the young generation?</strong></p></div>
+	<div><p>To handle these cases, there is something called the a "<strong>card table</strong>" in the old generation, which is a 512 byte chunk. Whenever an object in the old generation references an object in the young generation, it is recorded in this table. When a GC is executed for the young generation, only this card table is searched to determine whether or not it is subject for GC, instead of checking the reference of all the objects in the old generation. This card table is managed with <strong>write barrier</strong>. This write barrier is a device that allows a faster performance for minor GC. Though a bit of overhead occurs because of this, the overall GC time is reduced.</p></div>
+	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0034/images/04.jpg" /></div>
+	<div><p>参考资料：</p>
+		<p><a target="_blank" class="w3-link" href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html">Java Garbage Collection Basics</a></p>
+		<p><a target="_blank" class="w3-link" href="https://www.cubrid.org/blog/understanding-java-garbage-collection">Understanding Java Garbage Collection</a></p>
+	</div>
+</article>

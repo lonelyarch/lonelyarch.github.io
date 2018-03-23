@@ -1,0 +1,150 @@
+<article>
+	<div><header class="w3-header"><p>Java 线程之间的通信方式</p></header></div>
+	<div><p>问题：编写两个线程，一个线程打印 1~52，另一个线程打印字母 A~Z，打印顺序为 12A34B56C……5152Z，要求使用线程之间的通信。</p></div>
+	<div class="w3-text-blue"><p>共享锁之 wait()、notify()</p></div>
+	<div class="w3-custom-code"><pre>public class ThreadSignalDemo {
+	private static Object lock = new Object();
+	private static class ThreadOne implements Runnable {
+		@Override
+		public void run() {
+			synchronized (lock) {
+				try {
+					for (int i = 1; i &lt;= 52; i++) {
+						System.out.println(i);
+						if (i % 2 == 0) {
+							lock.notify();
+							lock.wait();
+						}
+					}
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	}
+	private static class ThreadTwo implements Runnable {
+		@Override
+		public void run() {
+			synchronized (lock) {
+				try {
+					for (int i = 65; i &lt;= 90; i++) {
+						System.out.println((char) i);
+						lock.notify();
+						lock.wait();
+					}
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	}
+	public static void main(String[] args) {
+		new Thread(new ThreadOne()).start();
+		new Thread(new ThreadTwo()).start();
+	}
+}</pre></div>
+	<div class="w3-text-blue"><p>Lock 和 Condition</p></div>
+	<div class="w3-custom-code"><pre>public class ThreadSignalDemo {
+	private static Lock lock = new ReentrantLock(true);
+	private static Condition condition = lock.newCondition();
+	private static class ThreadOne implements Runnable {
+		@Override
+		public void run() {
+			try {
+				lock.lock();
+				for (int i = 1; i &lt;= 52; i++) {
+					System.out.println(i);
+					if (i % 2 == 0) {
+						condition.signal();
+						condition.await();
+					}
+				}
+			} catch (InterruptedException e) {
+			} finally {
+				lock.unlock();
+			}
+		}
+	}
+	private static class ThreadTwo implements Runnable {
+		@Override
+		public void run() {
+			try {
+				lock.lock();
+				for (int i = 65; i &lt;= 90; i++) {
+					System.out.println((char) i);
+					condition.signal();
+					condition.await();
+				}
+			} catch (InterruptedException e) {
+			} finally {
+				lock.unlock();
+			}
+		}
+	}
+	public static void main(String[] args) {
+		new Thread(new ThreadOne()).start();
+		new Thread(new ThreadTwo()).start();
+	}
+}</pre></div>
+	<div class="w3-text-blue"><p>volatile 共享变量</p></div>
+	<div class="w3-custom-code"><pre>public class ThreadSignalDemo {
+	private static volatile int flag = 1;
+	private static class ThreadOne implements Runnable {
+		@Override
+		public void run() {
+			for (int i = 1; i &lt;= 52; i++) {
+				System.out.println(i);
+				if (i % 2 == 0) {
+					flag = 2;
+				}
+				while (flag == 2);
+			}
+		}
+	}
+	private static class ThreadTwo implements Runnable {
+		@Override
+		public void run() {
+			for (int i = 65; i &lt;= 90; i++) {
+				System.out.println((char) i);
+				flag = 1;
+				while (flag == 1);
+			}
+		}
+	}
+	public static void main(String[] args) {
+		new Thread(new ThreadOne()).start();
+		new Thread(new ThreadTwo()).start();
+	}
+}</pre></div>
+	<div class="w3-text-blue"><p>BlockingQueue</p></div>
+	<div class="w3-custom-code"><pre>public class ThreadSignalDemo {
+	private static BlockingQueue&lt;String&lt; bq = 
+						new ArrayBlockingQueue&lt;String&lt;(1);
+	private static class ThreadOne implements Runnable {
+		@Override
+		public void run() {
+			for (int i = 1; i &lt;= 52; i++) {
+				System.out.println(i);
+				if (i % 2 == 0) {
+					bq.poll();
+					bq.offer("two");
+					while (!"one".equals(bq.peek()));
+				}
+			}
+		}
+	}
+	private static class ThreadTwo implements Runnable {
+		@Override
+		public void run() {
+			for (int i = 65; i &lt;= 90; i++) {
+				while (!"two".equals(bq.peek())); // 非运算是让 ThreadOne 线程先执行
+				System.out.println((char) i);
+				bq.poll();
+				bq.offer("one");
+			}
+		}
+	}
+	public static void main(String[] args) {
+		new Thread(new ThreadOne()).start();
+		new Thread(new ThreadTwo()).start();
+	}
+}</pre></div>
+</article>

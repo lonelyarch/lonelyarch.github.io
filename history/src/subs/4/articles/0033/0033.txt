@@ -1,0 +1,48 @@
+<article>
+	<div><header class="w3-header"><p>虚拟机类加载机制</p></header></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0033/images/01.jpg" /></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0033/images/02.jpg" /></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0033/images/03.jpg" /></div>
+	<div><p>对于任何一个类，都需要由<span class="w3-text-light-green">加载它的类加载器</span>和<span class="w3-text-light-green">这个类本身</span>一同确立它在 Java 虚拟机内的唯一性，每一个类加载器都拥有一个独立的<span class="w3-text-light-green">类名称空间</span>：</p></div>
+	<div class="w3-custom-code"><pre>public class MyClassLoader extends ClassLoader {
+	protected Class<?> findClass(String name) throws ClassNotFoundException {
+		Class<?> clazz = null;
+		String path = name + ".class";
+		File file = new File(path); // path 为 class 文件路径
+		long len = file.length();
+		byte[] arr = new byte[(int) len];
+		try (@SuppressWarnings("resource")
+		FileChannel fc = new FileInputStream(file).getChannel();) {
+			MappedByteBuffer mbb = fc.map(MapMode.READ_ONLY, 0, fc.size());
+			for (int i = 0; i &lt; len; i++) {
+				byte b = mbb.get();
+				arr[i] = b;
+			}
+			// com.hsdis.demo.Sample 为 class 文件内的名称
+			clazz = defineClass("com.hsdis.demo.Sample", arr, 0, arr.length);
+		} catch (Exception e) {
+		}
+		return clazz;
+	}
+	public static void main(String[] args) {
+		MyClassLoader mcl1 = new MyClassLoader(); // 自定义类加载器实例 1
+		MyClassLoader mcl2 = new MyClassLoader(); // 自定义类加载器实例 2
+		try {
+			Class&lt;?&gt; clazz1 = mcl1
+					.loadClass("D:/hsdis/classloader/com.hsdis.demo.Sample");
+			Class&lt;?&gt; clazz2 = mcl2
+					.loadClass("D:/hsdis/classloader/com.hsdis.demo.Sample");
+			Object obj1 = clazz1.newInstance();
+			Object obj2 = clazz2.newInstance();
+			System.out.println(obj1 instanceof com.hsdis.demo.Sample);
+			System.out.println(obj2 instanceof com.hsdis.demo.Sample);
+			Method method = clazz1.getMethod("setSample",
+					java.lang.Object.class);
+			method.invoke(obj1, obj2);
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0033/images/04.jpg" /></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0033/images/05.jpg" /></div>
+</article>
