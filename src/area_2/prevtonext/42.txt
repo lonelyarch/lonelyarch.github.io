@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/41.txt',id:'prevtonext'},{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">SVG（Scalable Vector Graphics） »</a>
+<div style="clear: both;"></div>
