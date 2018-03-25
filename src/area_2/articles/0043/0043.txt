@@ -14,9 +14,9 @@
 	</section>
 	<section class="w3-white w3-text-black w3-padding">
 		<div><p><strong>什么是 CopyOnWrite 容器？</strong></p></div>
-		<div><p>CopyOnWrite 容器即写时复制的容器。通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行 Copy，复制出一个新的容器，然后往新的容器里添加元素，添加完元素之后，再将<span class="w3-text-light-green">原容器的引用指向新的容器</span>。这样做的好处是<span class="w3-text-light-green">我们可以对 CopyOnWrite 容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素</span>。所以 CopyOnWrite 容器也是一种读写分离的思想，读和写不同的容器。</p></div>
+		<div><p>CopyOnWrite 容器即写时复制的容器。通俗的理解是当我们往一个容器添加元素的时候<samp>，</samp>不直接往当前容器添加<samp>，</samp>而是先将当前容器进行 Copy<samp>，</samp>复制出一个新的容器<samp>，</samp>然后往新的容器里添加元素<samp>，</samp>添加完元素之后<samp>，</samp>再将<span class="w3-text-light-green">原容器的引用指向新的容器</span>。这样做的好处是<span class="w3-text-light-green">我们可以对 CopyOnWrite 容器进行并发的读<samp>，</samp>而不需要加锁<samp>，</samp>因为当前容器不会添加任何元素</span>。所以 CopyOnWrite 容器也是一种读写分离的思想<samp>，</samp>读和写不同的容器。</p></div>
 		<div><p><strong>CopyOnWriteArrayList 的实现原理</strong></p></div>
-		<div><p>在使用 CopyOnWriteArrayList 之前，我们先阅读其源码了解下它是如何实现的。以下代码是向 ArrayList 里添加元素，可以发现在添加的时候是需要加锁的，否则多线程写的时候会 Copy 出 N 个副本出来：</p></div>
+		<div><p>在使用 CopyOnWriteArrayList 之前<samp>，</samp>我们先阅读其源码了解下它是如何实现的。以下代码是向 ArrayList 里添加元素<samp>，</samp>可以发现在添加的时候是需要加锁的<samp>，</samp>否则多线程写的时候会 Copy 出 N 个副本出来：</p></div>
 		<div><pre style="overflow:auto"><span class="w3-text-maroon">public boolean</span> add(T e) {
     <span class="w3-text-maroon">final</span> ReentrantLock lock = <span class="w3-text-maroon">this</span>.lock;
     lock.lock();
@@ -38,11 +38,11 @@
 <span class="w3-text-maroon">final void</span> setArray(Object[] a) {
     array = a;
 }</pre></div>
-		<div><p>读的时候不需要加锁，如果读的时候有多个线程正在向 ArrayList 添加数据，读还是会读到旧的数据，因为写的时候不会锁住旧的 ArrayList：</p></div>
+		<div><p>读的时候不需要加锁<samp>，</samp>如果读的时候有多个线程正在向 ArrayList 添加数据<samp>，</samp>读还是会读到旧的数据<samp>，</samp>因为写的时候不会锁住旧的 ArrayList：</p></div>
 		<div><pre style="overflow:auto"><span class="w3-text-maroon">public</span> E get(<span class="w3-text-maroon">int</span> index) {
     <span class="w3-text-maroon">return</span> get(getArray(), index);
 }</pre></div>
-		<div><p>JDK 中并没有提供 CopyOnWriteMap，我们可以参考 CopyOnWriteArrayList 来实现一个，基本代码如下：</p></div>
+		<div><p>JDK 中并没有提供 CopyOnWriteMap<samp>，</samp>我们可以参考 CopyOnWriteArrayList 来实现一个<samp>，</samp>基本代码如下：</p></div>
 		<div><pre style="overflow:auto"><span class="w3-text-maroon">import</span> java.util.Collection;
 <span class="w3-text-maroon">import</span> java.util.Map;
 <span class="w3-text-maroon">import</span> java.util.Set;
@@ -76,9 +76,9 @@
         }
     }
 }</pre></div>
-		<div><p>实现很简单，只要了解了 CopyOnWrite 机制，我们可以实现各种 CopyOnWrite 容器，并且在不同的应用场景中使用。</p></div>
+		<div><p>实现很简单<samp>，</samp>只要了解了 CopyOnWrite 机制<samp>，</samp>我们可以实现各种 CopyOnWrite 容器<samp>，</samp>并且在不同的应用场景中使用。</p></div>
 		<div><p><strong>CopyOnWrite 的应用场景</strong></p></div>
-		<div><p>CopyOnWrite 并发容器<span class="w3-text-light-green">用于读多写少的并发场景</span>。比如白名单，黑名单，商品类目的访问和更新场景，假如我们有一个搜索网站，用户在这个网站的搜索框中，输入关键字搜索内容，但是某些关键字不允许被搜索。这些不能被搜索的关键字会被放在一个黑名单当中，黑名单每天晚上更新一次。当用户搜索时，会检查当前关键字在不在黑名单当中，如果在，则提示不能搜索。实现代码如下：</p></div>
+		<div><p>CopyOnWrite 并发容器<span class="w3-text-light-green">用于读多写少的并发场景</span>。比如白名单<samp>，</samp>黑名单<samp>，</samp>商品类目的访问和更新场景<samp>，</samp>假如我们有一个搜索网站<samp>，</samp>用户在这个网站的搜索框中<samp>，</samp>输入关键字搜索内容<samp>，</samp>但是某些关键字不允许被搜索。这些不能被搜索的关键字会被放在一个黑名单当中<samp>，</samp>黑名单每天晚上更新一次。当用户搜索时<samp>，</samp>会检查当前关键字在不在黑名单当中<samp>，</samp>如果在<samp>，</samp>则提示不能搜索。实现代码如下：</p></div>
 		<div><pre style="overflow:auto"><span class="w3-text-maroon">package</span> com.ifeve.book;
 
 <span class="w3-text-maroon">import</span> java.util.Map;
@@ -114,13 +114,13 @@
     }
 
 }</pre></div>
-		<div><p>代码很简单，但是使用 CopyOnWriteMap 需要注意两件事情：</p></div>
-		<div><p>1. 减少扩容开销。根据实际需要，初始化 CopyOnWriteMap 的大小，避免写时 CopyOnWriteMap 扩容的开销；</p></div>
-		<div><p>2. 使用批量添加。因为每次添加，容器每次都会进行复制，所以减少添加次数，可以减少容器的复制次数。如使用上面代码里的 addBlackList 方法。</p></div>
+		<div><p>代码很简单<samp>，</samp>但是使用 CopyOnWriteMap 需要注意两件事情：</p></div>
+		<div><p>1. 减少扩容开销。根据实际需要<samp>，</samp>初始化 CopyOnWriteMap 的大小<samp>，</samp>避免写时 CopyOnWriteMap 扩容的开销；</p></div>
+		<div><p>2. 使用批量添加。因为每次添加<samp>，</samp>容器每次都会进行复制<samp>，</samp>所以减少添加次数<samp>，</samp>可以减少容器的复制次数。如使用上面代码里的 addBlackList 方法。</p></div>
 		<div><p><strong>CopyOnWrite 的缺点</strong></p></div>
-		<div><p>CopyOnWrite 容器有很多优点，但是同时也存在两个问题，即内存占用问题和数据一致性问题。所以在开发的时候需要注意一下。</p></div>
-		<div><p><strong>内存占用问题。</strong>因为 CopyOnWrite 的写时复制机制，所以在进行写操作的时候，内存里会同时驻扎两个对象的内存，旧的对象和新写入的对象（注意：在复制的时候只是复制容器里的引用，只是在写的时候会创建新对象添加到新容器里，而旧容器的对象还在使用，所以有两份对象内存）。如果这些对象占用的内存比较大，比如说 200M 左右，那么再写入 100M 数据进去，内存就会占用 300M，那么这个时候很有可能造成频繁的 Yong GC 和 Full GC。之前我们系统中使用了一个服务由于每晚使用 CopyOnWrite 机制更新大对象，造成了每晚 15 秒的 Full GC，应用响应时间也随之变长。针对内存占用问题，可以通过压缩容器中的元素的方法来减少大对象的内存消耗，比如，如果元素全是 10 进制的数字，可以考虑把它压缩成 36 进制或 64 进制。或者不使用 CopyOnWrite 容器，而使用其他的并发容器，如 <a target="_blank" class="w3-link" href="http://ifeve.com/concurrenthashmap/">ConcurrentHashMap</a>。</p></div>
-		<div><p><strong>数据一致性问题。</strong>CopyOnWrite 容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用 CopyOnWrite 容器。</p></div>
-		<div><p>关于 C++ 的 STL 中，曾经也有过 Copy-On-Write 的玩法，参见陈皓的《<a target="_blank" class="w3-link" href="https://blog.csdn.net/haoel/article/details/24058">C++ STL String 类中的 Copy-On-Write</a>》，后来，因为有很多线程安全上的事，就被去掉了。</p></div>
+		<div><p>CopyOnWrite 容器有很多优点<samp>，</samp>但是同时也存在两个问题<samp>，</samp>即内存占用问题和数据一致性问题。所以在开发的时候需要注意一下。</p></div>
+		<div><p><strong>内存占用问题。</strong>因为 CopyOnWrite 的写时复制机制<samp>，</samp>所以在进行写操作的时候<samp>，</samp>内存里会同时驻扎两个对象的内存<samp>，</samp>旧的对象和新写入的对象（注意：在复制的时候只是复制容器里的引用<samp>，</samp>只是在写的时候会创建新对象添加到新容器里<samp>，</samp>而旧容器的对象还在使用<samp>，</samp>所以有两份对象内存）。如果这些对象占用的内存比较大<samp>，</samp>比如说 200M 左右<samp>，</samp>那么再写入 100M 数据进去<samp>，</samp>内存就会占用 300M<samp>，</samp>那么这个时候很有可能造成频繁的 Yong GC 和 Full GC。之前我们系统中使用了一个服务由于每晚使用 CopyOnWrite 机制更新大对象<samp>，</samp>造成了每晚 15 秒的 Full GC<samp>，</samp>应用响应时间也随之变长。针对内存占用问题<samp>，</samp>可以通过压缩容器中的元素的方法来减少大对象的内存消耗<samp>，</samp>比如<samp>，</samp>如果元素全是 10 进制的数字<samp>，</samp>可以考虑把它压缩成 36 进制或 64 进制。或者不使用 CopyOnWrite 容器<samp>，</samp>而使用其他的并发容器<samp>，</samp>如 <a target="_blank" class="w3-link" href="http://ifeve.com/concurrenthashmap/">ConcurrentHashMap</a>。</p></div>
+		<div><p><strong>数据一致性问题。</strong>CopyOnWrite 容器只能保证数据的最终一致性<samp>，</samp>不能保证数据的实时一致性。所以如果你希望写入的的数据<samp>，</samp>马上能读到<samp>，</samp>请不要使用 CopyOnWrite 容器。</p></div>
+		<div><p>关于 C++ 的 STL 中<samp>，</samp>曾经也有过 Copy-On-Write 的玩法<samp>，</samp>参见陈皓的《<a target="_blank" class="w3-link" href="https://blog.csdn.net/haoel/article/details/24058">C++ STL String 类中的 Copy-On-Write</a>》<samp>，</samp>后来<samp>，</samp>因为有很多线程安全上的事<samp>，</samp>就被去掉了。</p></div>
 	</section>
 </article>

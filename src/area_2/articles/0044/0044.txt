@@ -1,0 +1,79 @@
+<article>
+	<section>
+		<div><p><strong>负载均衡（Load Balance）</strong></p><p class="w3-right w3-margin-0">2018-01-17</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对<samp>“负载均衡（Load Balance）”</samp>这种技术早有所闻<samp>，</samp>但是<samp>，</samp>只因在实际工作中从来就没有接触过与之有关的项目<samp>，</samp>所以<samp>，</samp>个人对这项技术的认知也只是停留在略有所闻的层面<samp>，</samp>最近在阅读 Web 应用服务器集群的可伸缩性设计的某些文章时遭遇了<samp>“负载均衡（Load Balance）”</samp>的概念<samp>，</samp>通过查阅资料对这项技术有了更进一步的了解<samp>，</samp>现整理之。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在整理<span class="w3-text-light-green">负载均衡（Load Balance）</span>技术的知识点之前<samp>，</samp>为了对该技术有个直观地认识<samp>，</samp>先给出一张 Web 应用的结构图（该图普遍适用于大型网站）：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/01.jpg" /></div>
+		<div><p>以某购物网站为例<samp>，</samp>众多用户通过浏览器向某购物网站发起下单请求<samp>，</samp>假设请求数为 30000<samp>，</samp>请求先到达<span class="w3-text-light-green">负载均衡服务器</span><samp>，</samp>负载均衡服务器根据<span class="w3-text-light-green">适当算法</span>将请求分派给各 Web 服务器进行处理<samp>，</samp>我们假设有 3 个 Web 服务器位于集群<samp>，</samp>那么理想情况下<samp>，</samp>每个 Web 服务器会处理 10000 个请求。</p></div>
+		<div><p>当然<samp>，</samp>真实情况远比示例描述复杂<samp>，</samp><span class="w3-text-light-green">适当算法</span>具体指什么？集群环境下<samp>，</samp>会话（session）如何处理？各服务器之间如何通信？如何确保数据一致性……在本文中<samp>，</samp>我们只是简要整理出<span class="w3-text-light-green">负载均衡</span>技术所涉及的核心内容。</p></div>
+		<div><p>为了加深对<span class="w3-text-light-green">负载均衡（Load Balance）</span>技术的理解<samp>，</samp>我们使用 Nginx + Tomcat 模拟一下上图的请求过程：</p></div>
+		<div><p>1. 从官网上下载 <a target="_blank" class="w3-link" href="https://tomcat.apache.org/download-80.cgi">Tomcat</a> 软件<samp>，</samp>将它解压成 3 份（目的是模拟出 3 个 Web 服务器）<samp>，</samp>分别修改 <span class="w3-text-light-green">server.xml</span> 文件中对应的端口号<samp>，</samp>使各 Tomcat 在启动服务的时候不产生端口冲突<samp>，</samp>如下所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/02.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/03.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/04.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/05.jpg" /></div>
+		<div><p>2. 针对 <span class="w3-text-light-green">3</span> 个 Tomcat 而言<samp>，</samp>分别在 apache-tomcat-8.0.39\<span class="w3-text-light-green">webapps</span> 目录下创建 loadbalance 目录并新建一个 html 页面<samp>，</samp>双击 apache-tomcat-8.0.39\<span class="w3-text-light-green">bin</span> 目录下的 <span class="w3-text-light-green">startup.bat</span> 文件启动 Tomcat 服务<samp>，</samp>如下所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/06.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/07.jpg" /></div>
+		<div><p>3. 打开浏览器<samp>，</samp>在地址栏内输入 <span class="w3-text-light-green">http://localhost:8081/loadbalance/index.html</span>（注意端口号：8081、8082、8083）<samp>，</samp>显示效果如下所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/08.jpg" /></div>
+		<div><p>4. 从官网上下载 <a target="_blank" class="w3-link" href="https://nginx.org/en/download.html">Nginx</a> 软件<samp>，</samp>解压之后修改 <span class="w3-text-light-green">nginx-1.12.2\conf</span> 目录下的 <span class="w3-text-light-green">nginx.conf</span> 文件（参考<a target="_blank" class="w3-link" href="https://nginx.org/en/docs/http/load_balancing.html">官网文档</a>）<samp>，</samp>如下所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/09.jpg" /></div>
+		<div><pre style="overflow:auto">http {
+    upstream <span class="w3-text-light-green">nginx_load_balance</span> {
+        server 127.0.0.1:<span class="w3-text-light-green">8081</span>;
+        server 127.0.0.1:<span class="w3-text-light-green">8082</span>;
+        server 127.0.0.1:<span class="w3-text-light-green">8083</span>;
+    }
+
+    server {
+        listen 8080; // 默认端口为 80，为了显示出差异改为 8080
+        location / {
+            proxy_pass http://<span class="w3-text-light-green">nginx_load_balance</span>;
+        }
+    }
+}</pre></div>
+		<div><p>5. 双击 <span class="w3-text-light-green">nginx.exe</span> 文件<samp>，</samp>启动 Nginx 服务<samp>，</samp>在浏览器地址栏内输入 http://localhost:<span class="w3-text-light-green">8080</span>/loadbalance/index.html<samp>，</samp>按 F5 键刷新页面<samp>，</samp>我们可以看到<samp>，</samp><span class="w3-text-light-green">分别</span>部署在 3 个 Tomcat 服务器内的 html 页面均通过<span class="w3-text-light-green">同一个 URL</span> 地址交替显示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0044/images/10.jpg" /></div>
+		<div><p>实际上<samp>，</samp>如果条件允许<samp>，</samp>我们可以在不同的物理机器上分别搭建 Nginx、Tomcat 服务<samp>，</samp>再相应地修改 <span class="w3-text-light-green">nginx.conf</span> 文件<samp>，</samp>这样模拟出的负载均衡技术的应用会更为严谨。</p></div>
+	</section>
+	<section>
+		<div><p>在简单演示过负载均衡的实现原理之后<samp>，</samp>以下再列出负载均衡算法：</p></div>
+		<div>
+			<ul style="list-style:decimal;padding-left:20px;background-color:white;color:black">
+				<li>
+					<p><strong>轮询：</strong>所有请求被依次分发到每台应用服务器上<samp>，</samp>即每台服务器需要处理的请求数目均相同<samp>，</samp>适合于所有服务器硬件都相同的场景<samp>；</samp></p>
+					<p><strong>优点：</strong>请求数分派均衡<samp>；</samp></p>
+					<p><strong>缺点：</strong>不适用于各服务器配置不同即受压能力不同的情况。</p>
+				</li>
+				<li><p><strong>随机：</strong>请求被随机分配到各个应用服务器<samp>；</samp></p></li>
+				<li><p><strong>最少链接：</strong>记录每个应用服务器当前处理的请求数<samp>，</samp>将新增请求分发给处理最少请求数的服务器上<samp>；</samp></p></li>
+				<li>
+					<p><strong>源地址散列：</strong>根据请求源 IP 地址进行 hash 计算<samp>，</samp>以此分配给对应的服务器去处理请求<samp>，</samp>该算法使得来自同一个 IP 地址的请求总在同一个服务器上处理<samp>；</samp></p>
+					<p><strong>优点：</strong>将来自同一个 IP 地址的请求<samp>，</samp>在同一个会话的生命周期之内<samp>，</samp>转发到相同的服务器以实现会话粘滞<samp>；</samp></p>
+					<p><strong>缺点：</strong>目标服务器宕机之后<samp>，</samp>会话将丢失。</p>
+				</li>
+				<li><p><strong>加权：</strong>在轮询、随机、最少链接、源地址散列算法的基础上<samp>，</samp>通过加权的方式<samp>，</samp>进行负载服务器分配<samp>，</samp>这样会使性能更好的服务器处理更多的请求。</p></li>
+			</ul>
+		</div>
+	</section>
+	<section>
+		<div>
+			<p><strong>参考资料：</strong>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://nginx.org/en/docs/http/load_balancing.html">https://nginx.org/en/docs/http/load_balancing.html</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://nginx.org/en/docs/http/ngx_http_upstream_module.html">https://nginx.org/en/docs/http/ngx_http_upstream_module.html</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.cnblogs.com/itfly8/p/5043452.html">http://www.cnblogs.com/itfly8/p/5043452.html</a>
+		</div>
+	</section>
+</article>

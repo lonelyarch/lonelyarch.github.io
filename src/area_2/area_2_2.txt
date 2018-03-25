@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之基本应用示例（04）</strong></p><p class="w3-right">2017-09-27</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 synchronized 关键字的基本原理之后再给出基本应用示例是非常必要的，没有实践应用，知识点讲得天花乱坠也只能是纸上谈兵，身为一名合格的程序员的前提就是务实的精神常在。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/23.txt',id:'prevtonext'},{url:'src/area_2/articles/0024/0024.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：synchronized 关键字之原理（03）</strong></p><p class="w3-right">2017-09-26</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -98,39 +109,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/14.txt',id:'prevtonext'},{url:'src/area_2/articles/0015/0015.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong><span class="w3-text-light-green">转载</span> ---《CSS3 动画卡顿性能优化解决方案》</strong></p><p class="w3-right">2017-04-15</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-example-02_0014 w3-width">
-		<div class="stage">
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-			<div class="layer"></div>
-		</div>
-	</div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信经常使用 CSS3 的 <span class="w3-text-light-green">transform</span>、<span class="w3-text-light-green">transition</span> 以及 <span class="w3-text-light-green">animation</span> 属性实现各种动画效果的童鞋一定遇到过动画卡顿现象，博主曾在《如何实现栅栏式的相册？》一文中给予的示例就遭遇了又卡又顿的情况，现偶然读到一篇诠释这种卡顿现象的好文，受益之后推而广之。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/13.txt',id:'prevtonext'},{url:'src/area_2/articles/0014/0014.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
