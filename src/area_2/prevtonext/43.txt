@@ -1,2 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/44.txt',id:'prevtonext'},{url:'src/area_2/articles/0045/0045.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« 负载均衡（Load Balance）之数据链路层方式</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/42.txt',id:'prevtonext'},{url:'src/area_2/articles/0043/0043.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Java 并发编程系列：转载 --- Copy-On-Write 容器（17） »</a>
 <div style="clear: both;"></div>

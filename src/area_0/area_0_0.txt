@@ -1,6 +1,19 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2018.01.23</h4>
+			<p><strong>负载均衡（Load Balance）之数据链路层方式</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在初探负载均衡技术之后<samp>，</samp>逐步意识到该技术涉及知识点之深之广<samp>，</samp>单从类别上可分为<span class="w3-text-light-green">硬件</span>负载均衡和<span class="w3-text-light-green">软件</span>负载均衡<samp>，</samp>而基于<span class="w3-text-light-green">软件</span>层面的负载均衡技术的实现方式又可分为 HTTP 重定向负载均衡、DNS 域名解析负载均衡、反向代理负载均衡、IP 负载均衡以及数据链路层负载均衡（LVS 是数据链路层负载均衡开源产品<samp>，</samp>有兴趣的童鞋<a rel="noopener noreferrer nofollow" target="_blank" class="w3-link" href="http://www.linuxvirtualserver.org/zh/lvs1.html">戳这里</a>）。</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文不打算把负载均衡技术所涉及的各方面都整理一遍<samp>，</samp>因为时间宝贵<samp>，</samp>更是囿于个人水平和知识储备<samp>，</samp>现简要整理一下<span class="w3-text-light-green">数据链路层负载均衡</span>的相关知识点<samp>，</samp>以加深理解。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0045/0045.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2018.01.20</h4>
 			<p><strong>记一次程序员之厨艺展示</strong></p>
 			<div class="w3-example-photo-gallery-03-03_0009">

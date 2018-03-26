@@ -4,6 +4,7 @@
 	<div class="item">
     	<div><strong>2018-01</strong></div>
         <ul>
+        	<li><time>23日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/44.txt',id:'prevtonext'},{url:'src/area_2/articles/0045/0045.txt',id:'contents'}]);">负载均衡（Load Balance）之数据链路层方式</a></li>
         	<li><time>17日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/43.txt',id:'prevtonext'},{url:'src/area_2/articles/0044/0044.txt',id:'contents'}]);">负载均衡（Load Balance）</a></li>
         	<li><time>13日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/42.txt',id:'prevtonext'},{url:'src/area_2/articles/0043/0043.txt',id:'contents'}]);">Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- Copy-On-Write 容器（17）</a></li>
         	<li><time>09日</time><a onclick="initl();fetch([{url:'src/area_2/prevtonext/41.txt',id:'prevtonext'},{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);">SVG（Scalable Vector Graphics）</a></li>

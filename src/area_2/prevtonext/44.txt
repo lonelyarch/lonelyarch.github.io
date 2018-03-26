@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/43.txt',id:'prevtonext'},{url:'src/area_2/articles/0044/0044.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">负载均衡（Load Balance） »</a>
+<div style="clear: both;"></div>
