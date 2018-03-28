@@ -2,7 +2,7 @@
 	<div><header class="w3-header"><p>守护（Daemon）线程</p></header></div>
 	<div><p>Java 语言中的线程可分为两种：<samp>“用户线程”</samp>和<samp>“守护线程”</samp>。<samp>“用户线程”</samp>就是我们通常创建的普通线程<samp>，</samp><samp>“守护线程”</samp>主要是用以服务用户线程（例如<samp>，</samp>垃圾回收线程）。</p></div>
 	<div><p>那么如何来区分这两种线程呢？在 JDK 文档有如下描述：</p></div>
-	<div><pre style="color:teal">* The Java Virtual Machine exits when the only threads running are all 
+	<div><pre style="color:teal;overflow:auto">* The Java Virtual Machine exits when the only threads running are all 
 * daemon threads.</pre></div>
 	<div><p>即<span style="color:teal">当线程只剩下守护线程的时候<samp>，</samp>JVM 就会退出<samp>，</samp>但是如果还有其它的任意一个用户线程还在<samp>，</samp>JVM 就不会退出</span>。</p></div>
 	<div><p>下面我们用实验来说明<samp>，</samp>当线程只剩下守护线程的时候<samp>，</samp>JVM 就会退出。</p></div>

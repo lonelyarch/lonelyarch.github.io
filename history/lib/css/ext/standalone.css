@@ -1,3 +1,4 @@
+img{max-width:100%}
 .w3-width{margin:auto;max-width:62rem;width:100%}
 .w3-wrapper{display:grid;grid-gap:15px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));background-color:black;color:#444}
 .w3-wrapper .box{background-color:#272822;color:#fff;border-radius:5px;padding:20px}
