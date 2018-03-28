@@ -1,0 +1,441 @@
+<article>
+	<div><header class="w3-header"><p>如何停止一个正在运行的线程？</p></header></div>
+	<div><p>停止一个线程意味着放弃当前的操作<samp>，</samp>在 java 中有以下 3 种方法可以终止正在运行的线程：</p></div>
+	<div><ul style="list-style:decimal">
+		<li><p>使用退出标志<samp>，</samp>使线程正常退出<samp>，</samp>也就是当 run 方法完成后线程终止<samp>；</samp></p></li>
+		<li><p>使用 stop 方法强行终止<samp>，</samp>但是不推荐这个方法<samp>，</samp>因为 stop 和 suspend 以及 resume 一样都是过期作废的方法<samp>；</samp></p></li>
+		<li><p>使用 interrupt 方法中断线程。</p></li>
+	</ul></div>
+	<div><p><strong class="w3-text-blue">1. 停止不了的线程</strong></p></div>
+	<div><p>interrupt() 方法的使用效果并不像 for + break 语句那样<samp>，</samp>马上就停止循环。调用 interrupt 方法是在当前线程中打了一个停止标志<samp>，</samp>并不是真的停止线程。</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+		public void run() {
+			super.run();
+			for (int i = 0; i &lt; 500000; i++) {
+				System.out.println("i = " + (i + 1));
+			}
+		}
+	}
+
+	public static void main(String args[]) {
+		Thread t = new MyThread();
+		t.start();
+		try {
+			Thread.sleep(2000);
+			<span class="w3-text-white">t.interrupt()</span>;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}</pre></div>
+	<div><p>输出结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>...
+i = 499996
+i = 499997
+i = 499998
+i = 499999
+i = 500000</pre></div>
+	<div><p><strong class="w3-text-blue">2. 判断线程是否为停止状态</strong></p></div>
+	<div><p>Thread 类中提供了两种方法：</p></div>
+	<div><ul style="list-style:decimal">
+		<li><p>this.interrupted()：测试当前线程是否已经中断<samp>；</samp></p></li>
+		<li><p>this.isInterrupted()：测试线程是否已经中断。</p></li>
+	</ul></div>
+	<div><p>那么这两个方法有什么区别呢？</p></div>
+	<div><p>我们先来看看 this.interrupted() 方法的解释：测试当前线程是否已经中断<samp>，</samp>当前线程是指运行 this.interrupted() 方法的线程。</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+		public void run() {
+			super.run();
+			for (int i = 0; i &lt; 500000; i++) {
+				// System.out.println("i = " + (i + 1));
+			}
+		}
+	}
+
+	public static void main(String args[]) {
+		Thread t = new MyThread();
+		t.start();
+		try {
+			Thread.sleep(2000);
+			<span class="w3-text-white">t.interrupt()</span>;
+			System.out.println("stop 1??" + <span class="w3-text-white">Thread.interrupted()</span>);
+			System.out.println("stop 2??" + <span class="w3-text-white">Thread.interrupted()</span>);
+			// System.out.println(Thread.currentThread().getName()); <span class="w3-text-white">当前线程为 main 线程</span>
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>stop 1??false
+stop 2??false</pre></div>
+	<div><p>如何使 main 线程产生中断效果呢？</p></div>
+	<div class="w3-custom-code"><pre>public static void main(String args[]) {
+	<span class="w3-text-white">Thread.currentThread().interrupt()</span>;
+	System.out.println("stop 1??" + Thread.interrupted());
+	System.out.println("stop 2??" + Thread.interrupted());
+	System.out.println("结束 ……");
+}</pre></div>
+	<div><p>运行效果为：</p></div>
+	<div class="w3-custom-code w3-white"><pre>stop 1??<span class="w3-text-red">true</span>
+stop 2??false
+结束 ……</pre></div>
+	<div><p>方法 interrupted() 的确判断出了当前线程是否为停止状态。但为什么第 2 个布尔值是 false 呢？官方帮助文档中对 interrupted 方法的解释：<span class="w3-text-red">测试当前线程是否已经中断。线程的中断状态由该方法清除。</span>换句话说<samp>，</samp>如果连续两次调用该方法<samp>，</samp>则第二次调用返回 false。</p></div>
+	<div><p>下面来看一下 inInterrupted() 方法：</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+		public void run() {
+			super.run();
+			for (int i = 0; i &lt; 500000; i++) {
+				System.out.println("i = " + (i + 1));
+			}
+		}
+	}
+
+	public static void main(String args[]) {
+		Thread t = new MyThread();
+		t.start();
+		t.interrupt();
+		System.out.println("stop 1??" + t.isInterrupted());
+		System.out.println("stop 2??" + t.isInterrupted());
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>stop 1??<span class="w3-text-red">true</span>
+stop 2??<span class="w3-text-red">true</span>
+i = 1
+i = 2
+...
+i = 499998
+i = 499999
+i = 500000</pre></div>
+	<div><p>isInterrupted() 并未清除状态<samp>，</samp>所以打印了两个 true。</p></div>
+	<div><p><strong class="w3-text-blue">3. 能停止的线程 --- 异常法</strong></p></div>
+	<div><p>有了前面学习过的知识点<samp>，</samp>就可以在线程中用 for 语句来判断一下线程是否为停止状态<samp>，</samp>如果是停止状态<samp>，</samp>则后面的代码不再运行即可：</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+		public void run() {
+			super.run();
+			for (int i = 0; i &lt; 500000; i++) {
+				if (<span class="w3-text-white">MyThread.interrupted()</span>) {
+					System.out.println("线程已经终止<samp>，</samp>for 循环不再执行 ……");
+					break;
+				}
+				System.out.println("i=" + (i + 1));
+			}
+		}
+	}
+
+	public static void main(String args[]) {
+		Thread t = new MyThread();
+		t.start();
+		try {
+			Thread.sleep(2000);
+			t.interrupt();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>...
+i=57894
+i=57895
+i=57896
+线程已经终止<samp>，</samp>for 循环不再执行 ……</pre></div>
+	<div><p>上面的示例虽然停止了线程<samp>，</samp>但如果 for 语句下面还有语句<samp>，</samp>还是会继续运行的。看下面的例子：</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+		public void run() {
+			super.run();
+			for (int i = 0; i &lt; 500000; i++) {
+				if (<span class="w3-text-white">MyThread.interrupted()</span>) {
+					System.out.println("线程已经终止<samp>，</samp>for 循环不再执行 ……");
+					break;
+				}
+				System.out.println("i=" + (i + 1));
+			}
+			<span class="w3-text-white">System.out.println("for 循环外的语句也会被执行 ……")</span>;
+		}
+	}
+
+	public static void main(String args[]) {
+		Thread t = new MyThread();
+		t.start();
+		try {
+			Thread.sleep(2000);
+			t.interrupt();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>...
+i=57894
+i=57895
+i=57896
+线程已经终止<samp>，</samp>for 循环不再执行 ……
+<span class="w3-text-red">for 循环外的语句也会被执行 ……</span></pre></div>
+	<div><p>如何解决语句继续运行的问题呢？看一下更新后的代码：</p></div>
+	<div class="w3-custom-code"><pre>static class MyThread extends Thread {
+	public void run() {
+		super.run();
+		try {
+			for (int i = 0; i &lt; 500000; i++) {
+				if (MyThread.interrupted()) {
+					System.out.println("线程已经终止<samp>，</samp>for 循环不再执行 ……");
+					throw new InterruptedException();
+				}
+				System.out.println("i=" + (i + 1));
+			}
+			<span class="w3-text-white">System.out.println("for 循环外的语句也会被执行 ……")</span>;
+		} catch (InterruptedException e) {
+			<span class="w3-text-white">System.out.println("进入 MyThread 类中的 catch 块 ……")</span>;
+			e.printStackTrace();
+		}
+	}
+}</pre></div>
+								<div><p>运行结果如下：</p></div>
+								<div class="w3-custom-code w3-white"><pre>...
+i=87013
+i=87014
+线程已经终止<samp>，</samp>for 循环不再执行 ……
+进入 MyThread 类中的 catch 块 ……
+<span class="w3-text-blue">java.lang.InterruptedException</span>
+	<span class="w3-text-red">at com.hsdis.demo.exam.MyThreadRun$MyThread.run(</span><span class="w3-text-blue">MyThreadRun.java:12</span><span class="w3-text-red">)</span></pre></div>
+	<div><p><strong class="w3-text-blue">4. 在沉睡中停止</strong></p></div>
+	<div><p>如果线程在 sleep() 状态下停止线程<samp>，</samp>会是什么效果呢？</p></div>
+	<div class="w3-custom-code"><pre>static class MyThread extends Thread {
+	public void run() {
+		super.run();
+		try {
+			System.out.println("线程开始 ……");
+			Thread.sleep(200000);
+			System.out.println("线程结束 ……");
+		} catch (InterruptedException e) {
+			System.out
+				.println("在沉睡中被停止<samp>，</samp>进入 catch 块<samp>，</samp>调用 isInterrupted() 方法的结果是："
+					+ this.isInterrupted());
+			e.printStackTrace();
+		}
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>线程开始 ……
+在沉睡中被停止<samp>，</samp>进入 catch 块<samp>，</samp>调用 isInterrupted() 方法的结果是：false
+<span class="w3-text-blue">java.lang.InterruptedException</span><span class="w3-text-red">: sleep interrupted</span>
+	<span class="w3-text-red">at java.lang.Thread.sleep(</span><span class="w3-text-blue">Native Method</span><span class="w3-text-red">)</span>
+	<span class="w3-text-red">at com.hsdis.demo.exam.MyThreadRun$MyThread.run(</span><span class="w3-text-blue">MyThreadRun.java:10</span><span class="w3-text-red">)</span></pre></div>
+	<div><p>从打印的结果来看<samp>，</samp>如果在 sleep 状态下停止某一线程<samp>，</samp>会进入 catch 语句<samp>，</samp>并且清除停止状态值<samp>，</samp>使之变为 false。</p></div>
+	<div><p>前一个实验是先 sleep 然后再用 interrupt() 停止<samp>，</samp>与之相反的操作在学习过程中也要注意：</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+		public void run() {
+			super.run();
+			try {
+				System.out.println("线程开始 ……");
+				for (int i = 0; i &lt; 10000; i++) {
+					System.out.println("i = " + i);
+				}
+				Thread.sleep(200000);
+				System.out.println("线程结束 ……");
+			} catch (InterruptedException e) {
+				System.out.println("先停止<samp>，</samp>再遇到 sleep<samp>，</samp>进入 catch 块");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void main(String args[]) {
+		Thread t = new MyThread();
+		t.start();
+		t.interrupt();
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>...
+i = 8649
+i = 8650
+<span class="w3-text-blue">i</span><span class="w3-text-red">java.lang.InterruptedException: sleep interrupted</span>
+	<span class="w3-text-red">at java.lang.Thread.sleep(</span><span class="w3-text-blue">Native Method</span><span class="w3-text-red">)</span>
+	<span class="w3-text-red">at com.hsdis.demo.exam.MyThreadRun$MyThread.run(</span><span class="w3-text-blue">MyThreadRun.java:13</span><span class="w3-text-red">)</span>
+ = 8651
+i = 8652
+i = 8653
+...
+i = 9999
+先停止<samp>，</samp>再遇到 sleep<samp>，</samp>进入 catch 块</pre></div>
+	<div><p><strong class="w3-text-blue">5. 能停止的线程 --- 暴力停止</strong></p></div>
+	<div><p>使用 stop() 方法停止线程则是非常暴力的。</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+
+		private int i = 0;
+
+		public void run() {
+			super.run();
+			try {
+				while (true) {
+					System.out.println("i=" + i);
+					i++;
+					Thread.sleep(200);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void main(String args[]) throws InterruptedException {
+		Thread thread = new MyThread();
+		thread.start();
+		Thread.sleep(2000);
+		<span class="w3-text-white">thread.stop()</span>;
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>i=0
+i=1
+i=2
+i=3
+i=4
+i=5
+i=6
+i=7
+i=8
+i=9</pre></div>
+	<div><p><strong class="w3-text-blue">6. 方法 stop() 与 java.lang.ThreadDeath 异常</strong></p></div>
+	<div><p>调用 stop() 方法时会抛出 java.lang.ThreadDeath 异常<samp>，</samp>但是通常情况下<samp>，</samp>此异常不需要显示地捕捉。</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+
+		@SuppressWarnings("deprecation")
+		public void run() {
+			super.run();
+			try {
+				this.stop();
+			} catch (<span class="w3-text-white">ThreadDeath</span> e) {
+				System.out.println("进入 catch 块");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void main(String args[]) throws InterruptedException {
+		Thread thread = new MyThread();
+		thread.start();
+	}
+}</pre></div>
+	<div><p>运行结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>进入 catch 块
+<span class="w3-text-red">java.lang.ThreadDeath</span>
+	<span class="w3-text-red">at java.lang.Thread.stop(</span><span class="w3-text-blue">Thread.java:850</span><span class="w3-text-red">)</span>
+	<span class="w3-text-red">at com.hsdis.demo.exam.MyThreadRun$MyThread.run(</span><span class="w3-text-blue">MyThreadRun.java:11</span><span class="w3-text-red">)</span></pre></div>
+	<div><p>stop() 方法已作废<samp>，</samp>因为如果强制让线程停止有可能使一些清理性的工作得不到完成。另外一个情况就是对锁定的对象进行了解锁<samp>，</samp>导致数据得不到同步处理<samp>，</samp>出现数据不一致的问题。</p></div>
+	<div><p><strong class="w3-text-blue">7. 释放锁的不良后果</strong></p></div>
+	<div><p>使用 stop() 释放锁将会给数据造成不一致性的结果。如果出现这样的情况<samp>，</samp>程序处理的数据就有可能遭到破坏<samp>，</samp>最终导致程序执行的流程错误<samp>，</samp>一定要特别注意：</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class SynchronizedObject {
+
+		private String name = "a";
+		private String password = "aa";
+
+		public synchronized void printString(String name, String password) {
+			try {
+				this.name = name;
+				Thread.sleep(100000);
+				this.password = password;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+	}
+
+	static class MyThread extends Thread {
+
+		private SynchronizedObject synchronizedObject;
+
+		public MyThread(SynchronizedObject synchronizedObject) {
+			this.synchronizedObject = synchronizedObject;
+		}
+
+		public void run() {
+			synchronizedObject.printString("b", "bb");
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void main(String args[]) throws InterruptedException {
+		SynchronizedObject synchronizedObject = new SynchronizedObject();
+		Thread thread = new MyThread(synchronizedObject);
+		thread.start();
+		Thread.sleep(500);
+		thread.stop();
+		System.out.println(synchronizedObject.getName() + " "
+				+ synchronizedObject.getPassword());
+	}
+}</pre></div>
+	<div><p>输出结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>b aa</pre></div>
+	<div><p>由于 stop() 方法已经在 JDK 中被标明为<samp>“过期/作废”</samp>的方法<samp>，</samp>显然它在功能上具有缺陷<samp>，</samp>所以不建议在程序中使用 stop() 方法。</p></div>
+	<div><p><strong class="w3-text-blue">8. 使用 return 停止线程</strong></p></div>
+	<div><p>将方法 interrupt() 与 return 结合使用也能实现停止线程的效果：</p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadRun {
+
+	static class MyThread extends Thread {
+
+		public void run() {
+			while (true) {
+				if (this.isInterrupted()) {
+					System.out.println("线程已被停止 ……");
+					return;
+				}
+				System.out.println("Time: " + System.currentTimeMillis());
+			}
+		}
+	}
+
+	public static void main(String args[]) throws InterruptedException {
+		Thread thread = new MyThread();
+		thread.start();
+		Thread.sleep(2000);
+		thread.interrupt();
+	}
+}</pre></div>
+	<div><p>输出结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>...
+Time: 1522226657755
+Time: 1522226657755
+Time: 1522226657755
+线程已被停止 ……</pre></div>
+	<div><p>不过还是建议使用<samp>“抛异常”</samp>的方法来实现线程的停止<samp>，</samp>因为在 catch 块中还可以将异常向上抛<samp>，</samp>使线程停止事件得以传播。</p></div>
+</article>

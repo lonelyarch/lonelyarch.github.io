@@ -1,0 +1,17 @@
+<article>
+	<div><header class="w3-header"><p>Spring IOC 原理总结</p></header></div>
+	<div><p><strong>Spring 容器高层视图</strong></p></div>
+	<div><p>Spring 启动时读取应用程序提供的 Bean 配置信息<samp>，</samp>并在 Spring 容器中生成一份相应的 Bean 配置注册表<samp>，</samp>然后根据这张注册表实例化 Bean<samp>，</samp>装配好 Bean 之间的依赖关系<samp>，</samp>为上层应用提供准备就绪的运行环境。</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0037/images/01.jpg" /></div>
+	<div><p><strong>IOC 容器介绍</strong></p></div>
+	<div><p>Spring 通过一个配置文件描述 Bean 以及 Bean 之间的依赖关系<samp>，</samp>利用 Java 语言的<span class="w3-text-light-green">反射</span>功能实例化 Bean 并建立 Bean 之间的依赖关系。Spring 的 IoC 容器在完成这些底层工作的基础上<samp>，</samp>还提供了 Bean 实例缓存、生命周期管理、 Bean 实例代理、事件发布、资源装载等高级服务。</p></div>
+	<div><p>...</p></div>
+	<div><p>Spring 和 Web 应用的上下文融合：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0037/images/02.jpg" /></div>
+	<div><p>WebApplicationContext 的初始化方式：WebApplicationContext 需要 ServletContext 实例<samp>，</samp>它必须在拥有 Web 容器的前提下才能完成启动的工作。可以在 web.xml 中配置自启动的 Servlet 或定义 Web 容器监听器（ServletContextListener）<samp>，</samp>借助这两者中的任何一个就可以完成启动 Spring Web 应用上下文的工作。</p></div>
+	<div><p>Spring 分别提供了用于启动 WebApplicationContext 的 Servlet 和 Web 容器监听器：</p></div>
+	<div class="w3-custom-code w3-white"><pre>org.springframework.web.context.ContextLoaderServlet
+org.springframework.web.context.ContextLoaderListener</pre></div>
+	<div><p>由于 WebApplicationContext 需要使用日志功能<samp>，</samp>比如日志框架使用 Log4J<samp>，</samp>用户可以将 Log4J 的配置文件放置到类路径 WEB-INF/classes 下<samp>，</samp>这时 Log4J 引擎即可顺利启动。如果 Log4J 配置文件放置在其他位置<samp>，</samp>用户还必须在 web.xml 指定 Log4J 配置文件位置。<a class="w3-link" target="_blank" href="https://www.jianshu.com/p/9fe5a3c25ab6">原文链接</a></p></div>
+	<div><p>...</p></div>
+</article>

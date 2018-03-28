@@ -1,0 +1,55 @@
+<article>
+	<div><header class="w3-header"><p>守护（Daemon）线程</p></header></div>
+	<div><p>Java 语言中的线程可分为两种：<samp>“用户线程”</samp>和<samp>“守护线程”</samp>。<samp>“用户线程”</samp>就是我们通常创建的普通线程<samp>，</samp><samp>“守护线程”</samp>主要是用以服务用户线程（例如<samp>，</samp>垃圾回收线程）。</p></div>
+	<div><p>那么如何来区分这两种线程呢？在 JDK 文档有如下描述：</p></div>
+	<div><pre style="color:teal">* The Java Virtual Machine exits when the only threads running are all 
+* daemon threads.</pre></div>
+	<div><p>即<span style="color:teal">当线程只剩下守护线程的时候<samp>，</samp>JVM 就会退出<samp>，</samp>但是如果还有其它的任意一个用户线程还在<samp>，</samp>JVM 就不会退出</span>。</p></div>
+	<div><p>下面我们用实验来说明<samp>，</samp>当线程只剩下守护线程的时候<samp>，</samp>JVM 就会退出。</p></div>
+	<div><p>代码如下：</p></div>
+	<div class="w3-custom-code"><pre>public class DaemonRunner implements Runnable {
+	public void run() {
+		while (true) {
+			for (int i = 1; i &lt;= 100; i++) {
+				System.out.println(i);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		Thread daemonThread = new Thread(new DaemonRunner());
+		// 设置为守护进程
+		daemonThread.setDaemon(true);
+		daemonThread.start();
+		System.out.println("isDaemon = " + daemonThread.isDaemon());
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		// 接受输入<samp>，</samp>使程序在此停顿<samp>，</samp>一旦接受到用户输入<samp>，</samp>main 线程结束<samp>，</samp>JVM 退出
+		scanner.next();
+		// AddShutdownHook 方法增加 JVM 停止时要做处理事件：
+		// 当 JVM 退出时<samp>，</samp>打印 JVM exit 语句
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				System.out.println("JVM exit ...");
+			}
+		});
+	}
+}</pre></div>
+	<div><p>当程序运行的时候<samp>，</samp>Daemon 线程会不断地在控制台打印数字<samp>，</samp>而 main 线程是一个用户线程<samp>，</samp>执行<samp>“scanner.next()”</samp>等待用户输入<samp>，</samp>属于阻塞了。此时 JVM 当然不会退出。</p></div>
+	<div><p>验证步骤：</p></div>
+	<div><p>这个时候只要我们确定当前用户线程只有一个<samp>，</samp>即只要 main 线程退出<samp>，</samp>然后检查 JVM 是否真的退出了。</p></div>
+	<div><p>那么我们如何确定当前的 JVM 虚拟机中的<samp>，</samp>当前的用户线程和 daemon 有多少呢？我们可以使用 JDK 中自带的查看堆栈工具 jstack：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0041/images/01.jpg" /></div>
+	<div><p></p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0041/images/02.jpg" /></div>
+	<div><p>我们会看到当前 JVM 进程中跑着很多线程<samp>，</samp>但是只有 main 线程是用户线程<samp>，</samp>其它线程或是 daemon 线程（如 Low Memory Detector 或 Thread-0）<samp>，</samp>或是虚拟机内部线程（如 VM Thread 和 VM Periodic Task Thread<samp>，</samp>这些线程我们不用考虑）。</p></div>
+	<div><p>因此<samp>，</samp>当用户线程 main 线程退出时（在本程序中<samp>，</samp>在控制台输入一个字符然后回车）<samp>，</samp>如果 JVM 确实退出了的话<samp>，</samp>会调用 ShutDownHook 在控制台上打印<samp>“JVM exit ...”</samp>。</p></div>
+	<div><p>验证结果：</p></div>
+	<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0041/images/03.jpg" /></div>
+</article>

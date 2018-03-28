@@ -1,0 +1,44 @@
+<article>
+	<div><header class="w3-header"><p>java 中有几种方法可以实现一个线程？</p></header></div>
+	<div><p><strong>两种方法：</strong>（1）继承 Thread 类<samp>；</samp>（2）实现 Runnable 接口。</p></div>
+	<div class="w3-custom-code"><pre>public class MyThread <span class="w3-text-white">extends</span> Thread {
+
+	@Override
+	public void run() {
+		super.run();
+		System.out.println("MyThread ...");
+	}
+
+	public static void main(String[] args) {
+		Thread t = new MyThread();
+		t.start();
+	}
+}</pre></div>
+	<div><p></p></div>
+	<div class="w3-custom-code"><pre>public class <span class="w3-text-white">MyRunnable implements</span> Runnable {
+
+	@Override
+	public void run() {
+		System.out.println("MyThread ...");
+	}
+
+	public static void main(String[] args) {
+		Thread t = new Thread(new <span class="w3-text-white">MyRunnable</span>());
+		t.start();
+	}
+}</pre></div>
+	<div><p></p></div>
+	<div class="w3-custom-code"><pre>public class MyThreadPool {
+	public static void main(String[] args) {
+		ExecutorService pool = Executors.<span class="w3-text-white">newFixedThreadPool</span>(3);
+		for (int i = 0; i &lt; 10; i++) {
+			pool.execute(new Runnable() {
+				@Override
+				public void run() {
+					System.out.println("MyThreadPool ...");
+				}
+			});
+		}
+	}
+}</pre></div>
+</article>

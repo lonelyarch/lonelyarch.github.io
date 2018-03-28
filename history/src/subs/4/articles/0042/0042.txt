@@ -1,0 +1,65 @@
+<article>
+	<section>
+		<div><header class="w3-header"><p>Servlet 是线程安全的吗？</p></header></div>
+		<div><p>...</p></div>
+		<div><p>在 Tomcat 的容器等级中<samp>，</samp>Context 容器是直接管理 Servlet 在容器中的包装类 Wrapper<samp>，</samp>所以 Context 容器如何运行将直接影响 Servlet 的工作方式。</p></div>
+		<div><p>Tomcat 容器模型：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0042/images/01.jpg" /></div>
+		<div><p>从上图可以看出 Tomcat 的容器分为四个等级<samp>，</samp>真正管理 Servlet 的容器是 Context 容器<samp>，</samp>一个 Context 对应一个 Web 工程<samp>，</samp>在 Tomcat 的配置文件中可以很容易发现这一点<samp>，</samp>如下：</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;Context path="/projectOne " docBase="D:\projects\projectOne" reloadable="true" /&gt;</pre></div>
+		<div><p>...</p></div>
+		<div><p>Servlet 不是线程安全的（<span class="w3-text-teal">由 Servlet 的具体实现而定</span>）。</p></div>
+		<div><p>要解释 Servlet 为什么不是线程安全的<samp>，</samp>需要了解 Servlet 容器（即 Tomcat）是如何响应 HTTP 请求的。</p></div>
+		<div><p>当 Tomcat 接收到 Client 发出的 HTTP 请求时<samp>，</samp>Tomcat 从线程池中取出一个线程<samp>，</samp>之后找到该请求对应的 Servlet 对象并进行初始化<samp>，</samp>之后调用 service() 方法。要注意的是每一个 Servlet 对象在 Tomcat 容器中只有一个实例对象<samp>，</samp>即单例模式。如果多个 HTTP 请求的是同一个 Servlet<samp>，</samp>那么着两个 HTTP 请求对应的线程将并发调用 Servlet 的 service() 方法。</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/subs/4/articles/0042/images/02.jpg" /></div>
+		<div><p>上图中的 Thread1 和 Thread2 调用了同一个 Servlet1<samp>，</samp>所以<span class="w3-text-teal">此时如果 Servlet1 中定义了实例变量或静态变量<samp>，</samp>那么可能会发生线程安全问题</span>（因为所有的线程都可能使用这些变量）。</p></div>
+		<div><p>比如下面的 Servlet 中的 name 和 i 变量就会引发线程安全问题。</p></div>
+		<div class="w3-custom-code"><pre>import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class ThreadSafeServlet extends HttpServlet {
+
+    public static String name = "Hello"; // 静态变量<samp>，</samp>可能发生线程安全问题
+    int i; // 实例变量<samp>，</samp>可能发生线程安全问题
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        System.out.println("Servlet 初始化");
+    }
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) 
+            throws ServletException, IOException {
+        System.out.printf("%s：%s[%s]\n", Thread.currentThread().getName(), i, format.format(new Date()));
+        i++;
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.printf("%s：%s[%s]\n", Thread.currentThread().getName(), i, format.format(new Date()));
+        resp.getWriter().println("&lt;html&gt;&lt;body&gt;&lt;h1&gt;" + i + "&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
+    }
+}</pre></div>
+		<div><p>在 Tomcat 中启动这个 Servlet 并在浏览器发起多个 HTTP 访问<samp>，</samp>最后会发现变量 i 是多线程共享的。</p></div>
+		<div><p>如果需要更加深入透彻地了解 Tomcat 接收 HTTP 的细节以及与 Servlet 交互的细节<samp>，</samp>可以深入看看 Tomcat 的架构和源码。</p></div>
+		<div><p><strong>最后总结：</strong></p></div>
+		<div><p class="w3-text-teal">Servlet 本身是无状态的<samp>，</samp>一个无状态的 Servlet 是绝对线程安全的<samp>，</samp>无状态对象设计也是解决线程安全问题的一种有效手段。</p></div>
+		<div><p class="w3-text-teal">所以<samp>，</samp>Servlet 是否线程安全是由它的实现来决定的<samp>，</samp>如果它内部的属性或方法会被多个线程改变<samp>，</samp>它就是线程不安全的<samp>，</samp>反之<samp>，</samp>就是线程安全的。</p></div>
+	</section>
+	<section>
+		<div>
+			<p><strong>参考资料：</strong>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet/">https://www.ibm.com/developerworks/cn/java/j-lo-servlet/</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://www.cnblogs.com/chanshuyi/p/5052426.html">https://www.cnblogs.com/chanshuyi/p/5052426.html</a>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.yesky.com/334/1951334.shtml">http://www.yesky.com/334/1951334.shtml</a>
+		</div>
+	</section>
+</article>
