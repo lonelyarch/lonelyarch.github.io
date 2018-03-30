@@ -1,0 +1,360 @@
+<article>
+	<div><header class="w3-header"><p>Java 中的读/写锁</p></header></div>
+	<div><p>相比 Java 中的锁（Locks in Java）里 Lock 实现<samp>，</samp>读写锁更复杂一些。假设你的程序中涉及到对一些共享资源的读和写操作<samp>，</samp>且写操作没有读操作那么频繁。在没有写操作的时候<samp>，</samp>两个线程同时读一个资源没有任何问题<samp>，</samp>所以应该允许多个线程能在同时读取共享资源。但是如果有一个线程想去写这些共享资源<samp>，</samp>就不应该再有其它线程对该资源进行读或写（译者注：也就是说<samp>，</samp><span class="w3-text-light-green">读-读能共存<samp>，</samp>读-写不能共存<samp>，</samp>写-写不能共存</span>）。这就需要一个读/写锁来解决这个问题。</p></div>
+	<div><p>Java5 在 java.util.concurrent 包中已经包含了读写锁。尽管如此<samp>，</samp>我们还是应该了解其实现背后的原理。</p></div>
+	<div><p><strong>读/写锁的 Java 实现</strong></p></div>
+	<div><p>先让我们对读写访问资源的条件做个概述：</p></div>
+	<div><p><strong>读取</strong><samp>，</samp>没有线程正在做写操作<samp>，</samp>且没有线程在请求写操作。</p></div>
+	<div><p><strong>写入</strong><samp>，</samp>没有线程正在做读写操作。</p></div>
+	<div><p>如果某个线程想要读取资源<samp>，</samp>只要没有线程正在对该资源进行写操作且没有线程请求对该资源的写操作即可。我们假设对写操作的请求比对读操作的请求更重要<samp>，</samp>就要提升写请求的优先级。此外<samp>，</samp>如果读操作发生的比较频繁<samp>，</samp>我们又没有提升写操作的优先级<samp>，</samp>那么就会产生<samp>“饥饿”</samp>现象。请求写操作的线程会一直阻塞<samp>，</samp>直到所有的读线程都从 ReadWriteLock 上解锁了。如果一直保证新线程的读操作权限<samp>，</samp>那么等待写操作的线程就会一直阻塞下去<samp>，</samp>结果就是发生<samp>“饥饿”</samp>。因此<samp>，</samp>只有当没有线程正在锁住 ReadWriteLock 进行写操作<samp>，</samp>且没有线程请求该锁准备执行写操作时<samp>，</samp>才能保证读操作继续。</p></div>
+	<div><p>当其它线程没有对共享资源进行读操作或者写操作时<samp>，</samp>某个线程就有可能获得该共享资源的写锁<samp>，</samp>进而对共享资源进行写操作。有多少线程请求了写锁以及以何种顺序请求写锁并不重要<samp>，</samp>除非你想保证写锁请求的公平性。</p></div>
+	<div><p>按照上面的叙述<samp>，</samp>简单的实现出一个读/写锁<samp>，</samp>代码如下：</p></div>
+	<div class="w3-custom-code"><pre>public class ReadWriteLock {
+
+	private int readers = 0;
+	private int writers = 0;
+	<span class="w3-text-white">private int writeRequests = 0</span>;
+
+	public synchronized void lockRead() throws InterruptedException {
+		while (writers &gt; 0 || <span class="w3-text-white">writeRequests &gt; 0</span>) {
+			wait();
+		}
+		readers++;
+	}
+
+	public synchronized void unlockRead() {
+		readers--;
+		notifyAll();
+	}
+
+	public synchronized void lockWrite() throws InterruptedException {
+		<span class="w3-text-white">writeRequests++</span>;
+		while (readers &gt; 0 || writers &gt; 0) {
+			wait();
+		}
+		<span class="w3-text-white">writeRequests--</span>;
+		writers++;
+	}
+
+	public synchronized void unlockWrite() throws InterruptedException {
+		writers--;
+		notifyAll();
+	}
+}</pre></div>
+	<div><p>ReadWriteLock 类中<samp>，</samp>读锁和写锁各有一个获取锁和释放锁的方法。</p></div>
+	<div><p>读锁的实现在 lockRead() 中<samp>，</samp>只要没有线程拥有写锁（writers == 0）<samp>，</samp>且没有线程在请求写锁（writeRequests == 0）<samp>，</samp>所有想获得读锁的线程都能成功获取。</p></div>
+	<div><p>写锁的实现在 lockWrite() 中<samp>，</samp>当一个线程想获得写锁的时候<samp>，</samp>首先会把写锁请求数加 1（writeRequests++）<samp>，</samp>然后再去判断是否能够真正获得写锁<samp>，</samp>当没有线程持有读锁（readers == 0 ）<samp>，</samp>且没有线程持有写锁（writers == 0）时就能获得写锁。与有多少线程在请求写锁并无关系。</p></div>
+	<div><p>需要注意的是<samp>，</samp>在两个释放锁的方法（unlockRead<samp>，</samp>unlockWrite）中<samp>，</samp>都调用了 notifyAll 方法<samp>，</samp>而不是 notify。要解释这个原因<samp>，</samp>我们可以想像下面一种情形：</p></div>
+	<div><p>如果有线程在等待获取读锁<samp>，</samp>同时又有线程在等待获取写锁。如果这时其中一个等待读锁的线程被 notify 方法唤醒<samp>，</samp>但因为此时仍有请求写锁的线程存在（writeRequests &gt; 0）<samp>，</samp>所以被唤醒的线程会再次进入阻塞状态。然而<samp>，</samp>等待写锁的线程一个也没有被唤醒<samp>，</samp>就像什么也没有发生过一样（译者注：信号丢失现象）。如果用的是 notifyAll 方法<samp>，</samp>所有的线程都会被唤醒<samp>，</samp>然后判断能否获得其请求的锁。</p></div>
+	<div><p>用 notifyAll 还有一个好处。如果有多个读线程在等待读锁且没有线程在等待写锁时<samp>，</samp>调用 unlockWrite() 后<samp>，</samp>所有等待读锁的线程都能立马成功获取读锁 —— 而不是一次只允许一个。</p></div>
+	<div><p><strong>读/写锁的重入</strong></p></div>
+	<div><p>上面实现的读/写锁（ReadWriteLock）是不可重入的<samp>，</samp>当一个已经持有写锁的线程再次请求写锁时<samp>，</samp>就会被阻塞。原因是已经有一个写线程了 —— 就是它自己。此外<samp>，</samp>考虑下面的例子：</p></div>
+	<div><ul style="list-style:decimal">
+		<li><p>Thread1 获得了读锁<samp>；</samp></p></li>
+		<li><p>Thread2 请求写锁<samp>，</samp>但因为 Thread1 持有了读锁<samp>，</samp>所以写锁请求被阻塞<samp>；</samp></p></li>
+		<li><p>Thread1 再想请求一次读锁<samp>，</samp>但因为 Thread2 处于请求写锁的状态<samp>，</samp>所以想再次获取读锁也会被阻塞。</p></li>
+	</ul></div>
+	<div><p>上面这种情形使用前面的 ReadWriteLock 就会被锁定 —— 一种类似于死锁的情形。不会再有线程能够成功获取读锁或写锁了。</p></div>
+	<div><p>为了让 ReadWriteLock 可重入<samp>，</samp>需要对它做一些改进。下面会分别处理读锁的重入和写锁的重入。</p></div>
+	<div><p><strong>读锁重入</strong></p></div>
+	<div><p>为了让 ReadWriteLock 的读锁可重入<samp>，</samp>我们要先为读锁重入建立规则：</p></div>
+	<div><p>要保证某个线程中的读锁可重入<samp>，</samp>要么满足获取读锁的条件（没有写或写请求）<samp>，</samp>要么已经持有读锁（不管是否有写请求）。</p></div>
+	<div><p>要确定一个线程是否已经持有读锁<samp>，</samp>可以用一个 map 来存储已经持有读锁的线程以及对应线程获取读锁的次数<samp>，</samp>当需要判断某个线程能否获得读锁时<samp>，</samp>就利用 map 中存储的数据进行判断。下面是方法 lockRead 和 unlockRead 修改后的的代码：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.HashMap;
+import java.util.Map;
+
+public class ReadWriteLock {
+
+	private Map&lt;Thread, Integer&gt; readingThreads = new HashMap&lt;Thread, Integer&gt;();
+
+	private int writers = 0;
+	private int writeRequests = 0;
+
+	public synchronized void lockRead() throws InterruptedException {
+		Thread callingThread = Thread.currentThread();
+		while (!canGrantReadAccess(callingThread)) {
+			wait();
+		}
+		readingThreads.put(callingThread,
+				(getReadAccessCount(callingThread) + 1));
+	}
+
+	public synchronized void unlockRead() {
+		Thread callingThread = Thread.currentThread();
+		int accessCount = getReadAccessCount(callingThread);
+		if (accessCount == 1) {
+			readingThreads.remove(callingThread);
+		} else {
+			readingThreads.put(callingThread, (accessCount - 1));
+		}
+		notifyAll();
+	}
+
+	private boolean canGrantReadAccess(Thread callingThread) {
+		if (writers &gt; 0)
+			return false;
+		if (isReader(callingThread))
+			return true;
+		if (writeRequests &gt; 0)
+			return false;
+		return true;
+	}
+
+	private int getReadAccessCount(Thread callingThread) {
+		Integer accessCount = readingThreads.get(callingThread);
+		if (accessCount == null)
+			return 0;
+		return accessCount.intValue();
+	}
+
+	private boolean isReader(Thread callingThread) {
+		return readingThreads.get(callingThread) != null;
+	}
+}</pre></div>
+	<div><p>代码中我们可以看到<samp>，</samp>只有在没有线程拥有写锁的情况下才允许读锁的重入。此外<samp>，</samp>重入的读锁比写锁优先级高。</p></div>
+	<div><p><strong>写锁重入</strong></p></div>
+	<div><p>仅当一个线程已经持有写锁<samp>，</samp>才允许写锁重入（再次获得写锁）。下面是方法 lockWrite 和 unlockWrite 修改后的的代码：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.HashMap;
+import java.util.Map;
+
+public class ReadWriteLock {
+	private Map&lt;Thread, Integer&gt; readingThreads = new HashMap&lt;Thread, Integer&gt;();
+
+	private int writeAccesses = 0;
+	private int writeRequests = 0;
+	private Thread writingThread = null;
+
+	public synchronized void lockWrite() throws InterruptedException {
+		writeRequests++;
+		Thread callingThread = Thread.currentThread();
+		while (!canGrantWriteAccess(callingThread)) {
+			wait();
+		}
+		writeRequests--;
+		writeAccesses++;
+		writingThread = callingThread;
+	}
+
+	public synchronized void unlockWrite() throws InterruptedException {
+		writeAccesses--;
+		if (writeAccesses == 0) {
+			writingThread = null;
+		}
+		notifyAll();
+	}
+
+	private boolean canGrantWriteAccess(Thread callingThread) {
+		if (hasReaders())
+			return false;
+		if (writingThread == null)
+			return true;
+		if (!isWriter(callingThread))
+			return false;
+		return true;
+	}
+
+	private boolean hasReaders() {
+		return readingThreads.size() &gt; 0;
+	}
+
+	private boolean isWriter(Thread callingThread) {
+		return writingThread == callingThread;
+	}
+}</pre></div>
+	<div><p>注意在确定当前线程是否能够获取写锁的时候<samp>，</samp>是如何处理的。</p></div>
+	<div><p><strong>读锁升级到写锁</strong></p></div>
+	<div><p>有时<samp>，</samp>我们希望一个拥有读锁的线程<samp>，</samp>也能获得写锁。想要允许这样的操作<samp>，</samp>要求这个线程是唯一一个拥有读锁的线程。writeLock() 需要做点改动来达到这个目的：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.HashMap;
+import java.util.Map;
+
+public class ReadWriteLock {
+
+	private Map&lt;Thread, Integer&gt; readingThreads = new HashMap&lt;Thread, Integer&gt;();
+
+	private int readers = 0;
+
+	private int writeAccesses = 0;
+	private int writeRequests = 0;
+	private Thread writingThread = null;
+
+	public synchronized void lockWrite() throws InterruptedException {
+		writeRequests++;
+		Thread callingThread = Thread.currentThread();
+		while (!canGrantWriteAccess(callingThread)) {
+			wait();
+		}
+		writeRequests--;
+		writeAccesses++;
+		writingThread = callingThread;
+	}
+
+	public synchronized void unlockWrite() throws InterruptedException {
+		writeAccesses--;
+		if (writeAccesses == 0) {
+			writingThread = null;
+		}
+		notifyAll();
+	}
+
+	private boolean canGrantWriteAccess(Thread callingThread) {
+		if (isOnlyReader(callingThread))
+			return true;
+		if (hasReaders())
+			return false;
+		if (writingThread == null)
+			return true;
+		if (!isWriter(callingThread))
+			return false;
+		return true;
+	}
+
+	private boolean hasReaders() {
+		return readingThreads.size() &gt; 0;
+	}
+
+	private boolean isWriter(Thread callingThread) {
+		return writingThread == callingThread;
+	}
+
+	private boolean isOnlyReader(Thread callingThread) {
+		return readers == 1 &amp;&amp; readingThreads.get(callingThread) != null;
+	}
+}</pre></div>
+	<div><p>现在 ReadWriteLock 类就可以从读锁升级到写锁了。</p></div>
+	<div><p><strong>写锁降级到读锁</strong></p></div>
+	<div><p>有时拥有写锁的线程也希望得到读锁。如果一个线程拥有了写锁<samp>，</samp>那么自然其它线程是不可能拥有读锁或写锁了。所以对于一个拥有写锁的线程<samp>，</samp>再获得读锁<samp>，</samp>是不会有什么危险的。我们仅仅需要对上面 canGrantReadAccess 方法进行简单地修改：</p></div>
+	<div class="w3-custom-code"><pre>public class ReadWriteLock{
+	private boolean canGrantReadAccess(Thread callingThread){
+		if(isWriter(callingThread)) return true;
+		if(writingThread != null) return false;
+		if(isReader(callingThread) return true;
+		if(writeRequests &gt; 0) return false;
+		return true;
+	}
+}</pre></div>
+	<div><p><strong>可重入的 ReadWriteLock 的完整实现</strong></p></div>
+	<div><p>下面是完整的 ReadWriteLock 实现。为了便于代码的阅读与理解<samp>，</samp>简单对上面的代码做了重构。重构后的代码如下。</p></div>
+	<div class="w3-custom-code"><pre>import java.util.HashMap;
+import java.util.Map;
+
+public class ReadWriteLock {
+
+	private Map&lt;Thread, Integer&gt; readingThreads = new HashMap&lt;Thread, Integer&gt;();
+
+	private int writeAccesses = 0;
+	private int writeRequests = 0;
+	private Thread writingThread = null;
+
+	public synchronized void lockRead() throws InterruptedException {
+		Thread callingThread = Thread.currentThread();
+		while (!canGrantReadAccess(callingThread)) {
+			wait();
+		}
+		readingThreads.put(callingThread,
+				(getReadAccessCount(callingThread) + 1));
+	}
+
+	private boolean canGrantReadAccess(Thread callingThread) {
+		if (isWriter(callingThread))
+			return true;
+		if (hasWriter())
+			return false;
+		if (isReader(callingThread))
+			return true;
+		if (hasWriteRequests())
+			return false;
+		return true;
+	}
+
+	public synchronized void unlockRead() {
+		Thread callingThread = Thread.currentThread();
+		if (!isReader(callingThread)) {
+			throw new IllegalMonitorStateException("Calling Thread does not"
+					+ " hold a read lock on this ReadWriteLock");
+		}
+		int accessCount = getReadAccessCount(callingThread);
+		if (accessCount == 1) {
+			readingThreads.remove(callingThread);
+		} else {
+			readingThreads.put(callingThread, (accessCount - 1));
+		}
+		notifyAll();
+	}
+
+	public synchronized void lockWrite() throws InterruptedException {
+		writeRequests++;
+		Thread callingThread = Thread.currentThread();
+		while (!canGrantWriteAccess(callingThread)) {
+			wait();
+		}
+		writeRequests--;
+		writeAccesses++;
+		writingThread = callingThread;
+	}
+
+	public synchronized void unlockWrite() throws InterruptedException {
+		if (!isWriter(Thread.currentThread())) {
+			throw new IllegalMonitorStateException("Calling Thread does not"
+					+ " hold the write lock on this ReadWriteLock");
+		}
+		writeAccesses--;
+		if (writeAccesses == 0) {
+			writingThread = null;
+		}
+		notifyAll();
+	}
+
+	private boolean canGrantWriteAccess(Thread callingThread) {
+		if (isOnlyReader(callingThread))
+			return true;
+		if (hasReaders())
+			return false;
+		if (writingThread == null)
+			return true;
+		if (!isWriter(callingThread))
+			return false;
+		return true;
+	}
+
+	private int getReadAccessCount(Thread callingThread) {
+		Integer accessCount = readingThreads.get(callingThread);
+		if (accessCount == null)
+			return 0;
+		return accessCount.intValue();
+	}
+
+	private boolean hasReaders() {
+		return readingThreads.size() &gt; 0;
+	}
+
+	private boolean isReader(Thread callingThread) {
+		return readingThreads.get(callingThread) != null;
+	}
+
+	private boolean isOnlyReader(Thread callingThread) {
+		return readingThreads.size() == 1
+				&amp;&amp; readingThreads.get(callingThread) != null;
+	}
+
+	private boolean hasWriter() {
+		return writingThread != null;
+	}
+
+	private boolean isWriter(Thread callingThread) {
+		return writingThread == callingThread;
+	}
+
+	private boolean hasWriteRequests() {
+		return this.writeRequests &gt; 0;
+	}
+}</pre></div>
+	<div><p><strong>在 finally 中调用 unlock()</strong></p></div>
+	<div><p>在利用 ReadWriteLock 来保护临界区时<samp>，</samp>如果临界区可能抛出异常<samp>，</samp>在 finally 块中调用 readUnlock() 和 writeUnlock() 就显得很重要了。这样做是为了保证 ReadWriteLock 能被成功解锁<samp>，</samp>然后其它线程可以请求到该锁。这里有个例子：</p></div>
+	<div class="w3-custom-code"><pre>lock.lockWrite();
+try{
+	// do critical section code, which may throw exception
+} finally {
+	lock.unlockWrite();
+}</pre></div>
+	<div><p>上面这样的代码结构能够保证临界区中抛出异常时 ReadWriteLock 也会被释放。如果 unlockWrite 方法不是在 finally 块中调用的<samp>，</samp>当临界区抛出了异常时<samp>，</samp>ReadWriteLock 会一直保持在写锁定状态<samp>，</samp>就会导致所有调用 lockRead() 或 lockWrite() 的线程一直阻塞。唯一能够重新解锁 ReadWriteLock 的因素可能就是 ReadWriteLock 是可重入的<samp>，</samp>当抛出异常时<samp>，</samp>这个线程后续还可以成功获取这把锁<samp>，</samp>然后执行临界区以及再次调用 unlockWrite()<samp>，</samp>这就会再次释放 ReadWriteLock。但是如果该线程后续不再获取这把锁了呢？所以<samp>，</samp>在 finally 中调用 unlockWrite 对写出健壮代码是很重要的。<a target="_blank" class="w3-link" href="http://tutorials.jenkov.com/java-concurrency/read-write-locks.html">原文链接</a></p></div>
+</article>

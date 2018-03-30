@@ -1,0 +1,90 @@
+<article>
+	<div><header class="w3-header"><p>如何实现一个流控程序<samp>，</samp>用于控制请求的调用次数？</p></header></div>
+	<div><p>实现一个流控程序。控制客户端每秒调用某个远程服务不超过 N 次<samp>，</samp>客户端是多线程并发调用<samp>，</samp>需要一个轻量简洁的实现<samp>，</samp>大家看看下面的一个实现<samp>，</samp>然后可以自己写一个实现：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+public class AccessControlDemo {
+
+	final static int MAX_QPS = 10;
+	final static Semaphore semaphore = new Semaphore(MAX_QPS);
+
+	public static void main(String args[]) throws Exception {
+		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				semaphore.release(MAX_QPS / 2);
+			}
+		}, 1000, 500, TimeUnit.MILLISECONDS);
+		// command - the task to execute
+		// initialDelay - the time to delay first execution
+		// period - the period between successive（连续的） executions
+		// unit - the time unit of the initialDelay and period parameters
+
+		ExecutorService pool = Executors.newFixedThreadPool(100);
+
+		for (int i = 100; i &gt; 0; i--) {
+			final int x = i;
+			pool.submit(new Runnable() {
+				@Override
+				public void run() {
+					for (int j = 1000; j &gt; 0; j--) {
+						semaphore.<span class="w3-text-white">acquireUninterruptibly(1)</span>;
+						remoteCall(x, j);
+					}
+				}
+			});
+		}
+
+		pool.shutdown();
+		pool.awaitTermination(1, TimeUnit.HOURS);
+		System.out.println("DONE");
+	}
+
+	private static void remoteCall(int i, int j) {
+		System.out.println(String.format("%s - %s: %d %d", new Date(),
+				Thread.currentThread(), i, j));
+	}
+}</pre></div>
+							<div><p></p></div>
+							<div class="w3-custom-code"><pre>import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class AccessControlDemo {
+
+	private static int MAX_EXE_COUNT = 10;
+	private static AtomicInteger count = new AtomicInteger(MAX_EXE_COUNT);
+
+	public static void main(String args[]) {
+		new Thread() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+					}
+					System.out.println("1 秒过去了");
+					<span class="w3-text-white">count.set(MAX_EXE_COUNT)</span>;
+				}
+			}
+		}.start();
+
+		Executor e = Executors.newFixedThreadPool(100);
+		for (int i = 0; i &lt; 100; i++) {
+			e.execute(new Runnable() {
+				public void run() {
+					while (<span class="w3-text-white">count.getAndDecrement()</span> &lt;= 0) {
+					}
+					System.out.println(Thread.currentThread().getName()
+							+ "我调用了一次");
+				}
+			});
+		}
+	}
+}</pre></div>
+</article>

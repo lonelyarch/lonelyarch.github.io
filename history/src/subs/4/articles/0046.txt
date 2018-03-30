@@ -1,0 +1,113 @@
+<article>
+	<div><header class="w3-header">同步屏障 CyclicBarrier<p></p></header></div>
+	<div><p><strong>简介</strong></p></div>
+	<div><p>CyclicBarrier 的字面意思是可循环使用（Cyclic）的屏障（Barrier）。它要做的事情是<samp>，</samp>让一组线程到达一个屏障（也可以叫同步点）时被阻塞<samp>，</samp>直到最后一个线程到达屏障时<samp>，</samp>屏障才会开门<samp>，</samp>所有被屏障拦截的线程才会继续干活。CyclicBarrier 默认的构造方法是 CyclicBarrier(int parties)<samp>，</samp>其参数表示屏障拦截的线程数量<samp>，</samp>每个线程调用 await 方法告诉 CyclicBarrier 我已经到达了屏障<samp>，</samp>然后当前线程被阻塞。</p></div>
+	<div><p>实例代码如下：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.concurrent.CyclicBarrier;
+
+public class CyclicBarrierDemo {
+
+	private static CyclicBarrier cb = new CyclicBarrier(2);
+
+	public static void main(String[] args) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					<span class="w3-text-white">cb.await()</span>;
+				} catch (Exception e) {
+
+				}
+				System.out.println(1);
+			}
+		}).start();
+		try {
+			<span class="w3-text-white">cb.await()</span>;
+		} catch (Exception e) {
+		}
+		System.out.println(2);
+	}
+}</pre></div>
+	<div><p>输出结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>2
+1
+或
+1
+2</pre></div>
+	<div><p>如果把 new CyclicBarrier(2) 修改成 new CyclicBarrier(3) 则主线程和子线程会永远等待<samp>，</samp>因为没有第三个线程执行 await 方法<samp>，</samp>即没有第三个线程到达屏障<samp>，</samp>所以之前到达屏障的两个线程都不会继续执行。</p></div>
+	<div><p>CyclicBarrier 还提供了一个更高级的构造函数 CyclicBarrier(int parties, Runnable barrierAction)<samp>，</samp>用于在线程到达屏障时<samp>，</samp>优先执行 barrierAction<samp>，</samp>方便处理更复杂的业务场景。代码如下：</p></div>
+	<div class="w3-custom-code"><pre>public class CyclicBarrierDemo {
+
+	static CyclicBarrier cb = new CyclicBarrier(2, <span class="w3-text-white">new A()</span>);
+
+	public static void main(String[] args) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					cb.await();
+				} catch (Exception e) {
+				}
+				System.out.println(1);
+			}
+		}).start();
+		try {
+			cb.await();
+		} catch (Exception e) {
+		}
+		System.out.println(2);
+	}
+
+	static class A implements Runnable {
+		@Override
+		public void run() {
+			System.out.println(3);
+		}
+	}
+}</pre></div>
+	<div><p>输出结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>3
+1
+2
+或
+3
+2
+1</pre></div>
+	<div><p><strong>CyclicBarrier 的应用场景</strong></p></div>
+	<div><p>CyclicBarrier 可以用于多线程计算数据<samp>，</samp>最后合并计算结果的应用场景。比如我们用一个 Excel 保存了用户所有银行流水<samp>，</samp>每个 Sheet 保存一个帐户近一年的每笔银行流水<samp>，</samp>现在需要统计用户的日均银行流水<samp>，</samp>先用多线程处理每个 sheet 里的银行流水<samp>，</samp>都执行完之后<samp>，</samp>得到每个 sheet 的日均银行流水<samp>，</samp>最后<samp>，</samp>再用 barrierAction 用这些线程的计算结果<samp>，</samp>计算出整个 Excel 的日均银行流水。</p></div>
+	<div><p><strong>CyclicBarrier 和 CountDownLatch 的区别</strong></p></div>
+	<div><ul>
+		<li><p>CountDownLatch 的计数器只能使用一次。而 CyclicBarrier 的计数器可以使用 reset() 方法重置。所以 CyclicBarrier 能处理更为复杂的业务场景<samp>，</samp>比如如果计算发生错误<samp>，</samp>可以重置计数器<samp>，</samp>并让各线程重新执行一次<samp>；</samp></p></li>
+		<li><p>CyclicBarrier 还提供其它有用的方法<samp>，</samp>比如 getNumberWaiting 方法可以获得 CyclicBarrier 阻塞的线程数量。isBroken 方法用来知道阻塞的线程是否被中断。比如以下代码执行完之后会返回 true。</p></li>
+	</ul></div>
+	<div><p>isBroken 的使用代码如下：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
+public class CyclicBarrierDemo {
+
+	static CyclicBarrier cb = new CyclicBarrier(2);
+
+	public static void main(String[] args) throws InterruptedException,
+			BrokenBarrierException {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					cb.await();
+				} catch (Exception e) {
+				}
+			}
+		});
+		t.start();
+		t.interrupt();
+		try {
+			cb.await();
+		} catch (Exception e) {
+			System.out.println(<span class="w3-text-white">cb.isBroken()</span>);
+		}
+	}
+}</pre></div>
+	<div><p>输出结果：</p></div>
+	<div class="w3-custom-code w3-white"><pre>true</pre></div>
+</article>

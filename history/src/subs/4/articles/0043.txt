@@ -1,0 +1,154 @@
+<article>
+	<div><header class="w3-header"><p>生产者、消费者模式之代码实现</p></header></div>
+	<div><p>生产者、消费者模式是一种实用的设计模式<samp>，</samp>常用于编写多线程或并发代码。下面是它的一些优点：</p></div>
+	<div><ul style="list-style:decimal">
+		<li><p>简化开发<samp>，</samp>你可以独立地或并发地编写消费者和生产者<samp>，</samp>两者仅仅只需要知道共享对象是谁<samp>；</samp></p></li>
+		<li><p>生产者不需要知道谁是消费者或有多少个消费者<samp>，</samp>对消费者来说也是一样的<samp>；</samp></p></li>
+		<li><p>生产者和消费者可以以不同的速度执行<samp>；</samp></p></li>
+		<li><p>分离的消费者和生产者在功能上能写出更简洁、可读、易维护的代码。</p></li>
+	</ul></div>
+	<div><p>使用 wait/notify 实现生产者、消费者模式：</p></div>
+	<div class="w3-custom-code"><pre>public class ProducerConsumerPattern {
+
+	static final int THRESHOLD = 10;
+	static AtomicInteger ai = new AtomicInteger();
+	static LinkedList&lt;Product&gt; queue = new LinkedList&lt;Product&gt;();
+
+	static class Product {
+		private int index;
+
+		Product() {
+			index = ai.getAndIncrement();
+		}
+
+		public String toString() {
+			return "product_" + index + " " + super.toString();
+		}
+	}
+
+	static class Producer implements Runnable {
+		void produce() {
+			<span class="w3-text-white">Product p = new Product();</span>
+			<span class="w3-text-white">queue.add(p);</span>
+			System.out.println("produce " + p.toString());
+		}
+
+		@Override
+		public void run() {
+			while (true) {
+				synchronized (queue) {
+					if (queue.size() == THRESHOLD) {
+						try {
+							<span class="w3-text-white">queue.wait();</span>
+						} catch (InterruptedException e) {
+						}
+					} else {
+						produce();
+					}
+					<span class="w3-text-white">queue.notifyAll();</span>
+				}
+			}
+		}
+	}
+
+	static class Consumer implements Runnable {
+		void consume() {
+			<span class="w3-text-white">Product p = queue.remove(0);</span>
+			System.out.println("consume " + p.toString());
+		}
+
+		@Override
+		public void run() {
+			while (true) {
+				synchronized (queue) {
+					if (queue.size() == 0) {
+						try {
+							<span class="w3-text-white">queue.wait();</span>
+						} catch (InterruptedException e) {
+						}
+					} else {
+						consume();
+					}
+					<span class="w3-text-white">queue.notifyAll();</span>
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		Producer producer = new Producer();
+		Consumer consumer = new Consumer();
+		new Thread(producer).start();
+		new Thread(consumer).start();
+		new Thread(consumer).start();
+	}
+}</pre></div>
+	<div><p>使用阻塞队列实现生产者、消费者模式：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import <span class="w3-text-white">java.util.logging.Level</span>;
+import <span class="w3-text-white">java.util.logging.Logger</span>;
+
+public class ProducerConsumerPattern {
+
+	public static void main(String args[]) {
+
+		// Creating shared object
+		BlockingQueue&lt;Integer&gt; <span class="w3-text-white">sharedQueue</span> = new LinkedBlockingQueue&lt;Integer&gt;();
+
+		// Creating Producer and Consumer Thread
+		Thread prodThread = new Thread(new Producer(sharedQueue));
+		Thread consThread = new Thread(new Consumer(sharedQueue));
+
+		// Starting producer and Consumer thread
+		prodThread.start();
+		consThread.start();
+	}
+}
+
+// Producer Class in java
+class Producer implements Runnable {
+
+	private final BlockingQueue&lt;Integer&gt; sharedQueue;
+
+	public Producer(BlockingQueue&lt;Integer&gt; sharedQueue) {
+		this.sharedQueue = sharedQueue;
+	}
+
+	@Override
+	public void run() {
+		// while (true) {}
+		for (int i = 0; i &lt; 10; i++) {
+			try {
+				System.out.println("Produced: " + i);
+				<span class="w3-text-white">sharedQueue.put(i);</span>
+			} catch (InterruptedException ex) {
+				Logger.getLogger(Producer.class.getName()).log(Level.SEVERE,
+						null, ex);
+			}
+		}
+	}
+}
+
+// Consumer Class in Java
+class Consumer implements Runnable {
+
+	private final BlockingQueue&lt;Integer&gt; sharedQueue;
+
+	public Consumer(BlockingQueue&lt;Integer&gt; sharedQueue) {
+		this.sharedQueue = sharedQueue;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				System.out.println("Consumed: " + <span class="w3-text-white">sharedQueue.take()</span>);
+			} catch (InterruptedException ex) {
+				Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE,
+						null, ex);
+			}
+		}
+	}
+}</pre></div>
+</article>

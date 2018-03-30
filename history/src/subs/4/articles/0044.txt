@@ -1,0 +1,36 @@
+<article>
+	<div><header class="w3-header"><p>控制并发线程数之 Semaphore</p></header></div>
+	<div><p><strong>简介</strong></p></div>
+	<div><p>Semaphore（信号量）是用来控制同时访问特定资源的线程数量<samp>，</samp>它通过协调各个线程<samp>，</samp>以保证合理的使用公共资源。很多年以来<samp>，</samp>我都觉得从字面上很难理解 Semaphore 所表达的含义<samp>，</samp>只能把它比作是控制流量的红绿灯<samp>，</samp>比如 XX 马路要限制流量<samp>，</samp>只允许同时有一百辆车在这条路上行使<samp>，</samp>其它的都必须在路口等待<samp>，</samp>所以前一百辆车会看到绿灯<samp>，</samp>可以开进这条马路<samp>，</samp>后面的车会看到红灯<samp>，</samp>不能驶入 XX 马路<samp>，</samp>但是如果前一百辆中有五辆车已经离开了 XX 马路<samp>，</samp>那么后面就允许有 5 辆车驶入马路<samp>，</samp>这个例子里说的车就是线程<samp>，</samp>驶入马路就表示线程在执行<samp>，</samp>离开马路就表示线程执行完成<samp>，</samp>看见红灯就表示线程被阻塞<samp>，</samp>不能执行。</p></div>
+	<div><p><strong>应用场景</strong></p></div>
+	<div><p>Semaphore 可以用于做流量控制<samp>，</samp>特别公用资源有限的应用场景<samp>，</samp>比如数据库连接。假如有一个需求<samp>，</samp>要读取几万个文件的数据<samp>，</samp>因为都是 IO 密集型任务<samp>，</samp>我们可以启动几十个线程并发的读取<samp>，</samp>但是如果读到内存后<samp>，</samp>还需要存储到数据库中<samp>，</samp>而数据库的连接数只有 10 个<samp>，</samp>这时我们必须控制只有十个线程同时获取数据库连接保存数据<samp>，</samp>否则会报错无法获取数据库连接。这个时候<samp>，</samp>我们就可以使用 Semaphore 来做流控<samp>，</samp>代码如下：</p></div>
+	<div class="w3-custom-code"><pre>import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+
+public class SemaphoreDemo {
+
+	private static final int THREAD_COUNT = 30;
+	private static ExecutorService threadPool = Executors
+			.newFixedThreadPool(THREAD_COUNT);
+	private static Semaphore s = new Semaphore(10);
+
+	public static void main(String[] args) {
+		for (int i = 0; i &lt; THREAD_COUNT; i++) {
+			threadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						<span class="w3-text-white">s.acquire()</span>;
+						System.out.println("save data ...");
+						<span class="w3-text-white">s.release()</span>;
+					} catch (InterruptedException e) {
+					}
+				}
+			});
+		}
+		threadPool.shutdown();
+	}
+}</pre></div>
+	<div><p>在代码中<samp>，</samp>虽然有 30 个线程在执行<samp>，</samp>但是只允许 10 个并发的执行。Semaphore 的构造方法 Semaphore(int permits) 接受一个整型的数字<samp>，</samp>表示可用的许可证数量。Semaphore(10) 表示允许 10 个线程获取许可证<samp>，</samp>也就是最大并发数是 10。Semaphore 的用法也很简单<samp>，</samp>首先线程使用 Semaphore 的 acquire() 获取一个许可证<samp>，</samp>使用完之后调用 release() 归还许可证。还可以用 tryAcquire() 方法尝试获取许可证。</p></div>
+</article>

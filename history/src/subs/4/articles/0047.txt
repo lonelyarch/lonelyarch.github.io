@@ -1,0 +1,61 @@
+<article>
+	<div><header class="w3-header"><p>Callable 和 Future</p></header></div>
+	<div><p>Java 从发布的第一个版本开始就可以很方便地编写多线程的应用程序<samp>，</samp>并在设计中引入异步处理。Thread 类、Runnable 接口和 Java 内存管理模型使得多线程编程简单直接。但正如之前提到过的<samp>，</samp>Thread 类和 Runnable 接口都不允许声明检查型异常（编译时异常）<samp>，</samp>也不能定义返回值。没有返回值这点稍微有些麻烦。</p></div>
+	<div><p>不能声明抛出检查型异常则更麻烦一些。public void run() 方法契约意味着你必须捕获并处理检查型异常。即使你小心地保存了异常信息（译者注：在捕获异常时）以便稍后检查<samp>，</samp>但也不能保证这个类（译者注：Runnable 对象）的所有使用者都读取异常信息。你也可以修改 Runnable 实现的 getter<samp>，</samp>让它们都能抛出任务执行中的异常。但这种方法除了繁琐也不是十分安全可靠<samp>，</samp>你不能强迫使用者调用这些方法<samp>，</samp>程序员很可能会调用 join() 方法等待线程结束然后就不管了。</p></div>
+	<div><p>但是现在不用担心了<samp>，</samp>以上的问题终于在 1.5 中解决了。Callable 接口和 Future 接口的引入以及它们对线程池的支持优雅地解决了这两个问题。</p></div>
+	<div><p><strong>Callable</strong></p></div>
+	<div><p>Callable 接口定义了方法 public T call() throws Exception。我们可以在 Callable 实现中声明强类型的返回值<samp>，</samp>甚至是抛出异常。尽管在 Executors 类中已经有一些方法可以将 Runnable 对象转换为 Callable 对象<samp>，</samp>但你最好还是仔细复审现有的 Runnable 实现或 Thread 的子类。为什么还要这样做？主要是为了检查和清除因为 Runnable 无法抛出检查型异常而采用的变通方案。同时<samp>，</samp>你可能希望利用 call() 方法直接返回结果的能力<samp>，</samp>以省去读取值时的类型转换。</p></div>
+	<div><p><strong>Future</strong></p></div>
+	<div><p>下面就将线程池和 Callable 接口相结合<samp>，</samp>看能发生怎样的效应。Future 是 Java 1.5 中引入的接口<samp>，</samp>当你提交一个 Callable 对象给线程池时<samp>，</samp>将得到一个 Future 对象<samp>，</samp>并且它和你传入的 Callable 有相同的结果类型声明。这个对象取代了 Java 1.5 之前直接操作具体 Thread 实例的做法。过去你不得不用 Thread.join() 或者 Thread.join(long millis) 等待任务完成<samp>，</samp>而现在你可以像下面的例子那样做。</p></div>
+	<div class="w3-custom-code"><pre>import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+public class CallableAndFutureDemo {
+
+	private static final ExecutorService THREAD_POOL = Executors
+			.newFixedThreadPool(2);
+
+	static class ServerAcceptingRequestsVerifier implements <span class="w3-text-white">Callable&lt;Boolean&gt;</span> {
+		public Boolean call() throws Exception {
+			Boolean isAcceptingRequests = null;
+			// ... ask server about taking requests here
+			return isAcceptingRequests;
+		}
+	}
+
+	@SuppressWarnings("serial")
+	static class UnresponsiveException extends Throwable {
+		UnresponsiveException(Throwable e) {
+		}
+	}
+
+	public Boolean isServerTakingRequests(String server)
+			throws UnresponsiveException, InterruptedException {
+		ServerAcceptingRequestsVerifier acceptingRequestsVerifier = 
+							new ServerAcceptingRequestsVerifier();
+		<span class="w3-text-white">Future&lt;Boolean&gt; future = THREAD_POOL.submit(acceptingRequestsVerifier)</span>;
+		try {
+			Boolean isAcceptingRequests = future.get();
+			// waits for the thread to complete, even if it hasn't started
+			return isAcceptingRequests;
+		} catch (ExecutionException e) {
+			throw new UnresponsiveException(e.getCause());
+		}
+	}
+}</pre></div>
+	<div><p>如果要限制等待任务结束的时间<samp>，</samp>也可以添加一个捕获 TimeoutException 的 catch 子句。</p></div>
+	<div class="w3-custom-code"><pre>try {
+	Boolean isAcceptingRequests = future.get(5, TimeUnit.SECONDS);
+	// this waits for 5 seconds, throwing TimeoutException if not done
+	return isAcceptingRequests;
+} catch (TimeoutException e) {
+	LOGGER.warn("Timed out waiting for server check thread." + "We'll try to interrupt it.");
+	future.cancel(true);
+	return Boolean.FALSE;
+} catch (ExecutionException e) {
+	throw new UnresponsiveException(e.getCause());
+}</pre></div>
+</article>
