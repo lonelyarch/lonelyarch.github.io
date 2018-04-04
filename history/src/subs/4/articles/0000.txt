@@ -51,4 +51,6 @@
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0050/0050.txt','contents')">CDN（内容分发网络）技术原理</a></div>
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0051/0051.txt','contents')">分布式事务之两阶段提交协议</a></div>
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0052/0052.txt','contents')">RPC（Remote Procedure Call）原理</a></div>
+	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0053.txt','contents')">JDBC 示例</a></div>
+	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0054/0054.txt','contents')">MyBatis 架构图</a></div>
 </div>
