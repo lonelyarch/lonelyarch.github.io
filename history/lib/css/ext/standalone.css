@@ -8,6 +8,12 @@ img{max-width:100%}
 .w3-custom-code pre{overflow:auto}
 .w3-custom-code {background-color:seagreen;color:black;padding:0 5px}
 .w3-text-blue{color:#2196f3}
+.w3-coral{background-color:coral}
+.w3-text-coral{color:coral}
+.w3-darkslategrey{background-color:darkslategrey}
+.w3-text-darkslategrey{color:darkslategrey}
+.w3-lightslategray{background-color:lightslategray}
+.w3-text-lightslategray{color:lightslategray}
 /* 0020 */
 .w3-example-square-01-04_0020 .square{position:relative;max-width:300px;width:50%;border:1px solid rgba(255,255,255,0.6);margin:0 auto}
 .w3-example-square-01-04_0020 .square:after{content:"";display:block;padding-bottom:100%}

@@ -1,0 +1,52 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Longest Substring Without Repeating Characters 最长无重复子串</p></header></div>
+	<div><p>Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. For "bbbbb" the longest substring is "b", with the length of 1.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>import java.util.Arrays;
+
+public class LC0003 {
+
+	public static int func(String str) {
+		int res = 0;
+		int left = -1;
+		int[] m = new int[256]; // ASCII 码表可以表示 256 个字符
+		<span class="w3-text-white">Arrays.fill(m, -1)</span>;
+		for (int i = 0; i &lt; str.length(); ++i) {
+			left = Math.max(left, m[str.charAt(i)]);
+			m[str.charAt(i)] = i;
+			res = Math.max(res, i - left);
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		String str = "abcdefghabcbwqbefsacmnbv";
+		int res = func(str);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>import java.util.HashSet;
+import java.util.Set;
+
+public class LC0003 {
+
+	public static int func(String str) {
+		int res = 0, left = 0, right = 0;
+		Set&lt;Character&gt; set = new HashSet&lt;Character&gt;();
+		while (right &lt; str.length()) {
+			if (!set.contains(str.charAt(right))) {
+				set.add(str.charAt(right++));
+				res = Math.max(res, set.size());
+			} else {
+				set.remove(str.charAt(left++));
+			}
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		String str = "abcdefghabcbwqbefsacmnbv";
+		int res = func(str);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

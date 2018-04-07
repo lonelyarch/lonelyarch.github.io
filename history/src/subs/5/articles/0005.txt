@@ -1,0 +1,35 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Longest Palindromic Substring 最长回文串</p></header></div>
+	<div><p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0005 {
+
+	public static String func(String str) {
+		if (str == null || str.length() &lt;= 1)
+			return str;
+		int len = str.length();
+		int lon = 1;
+		boolean[][] arr = new boolean[len][len];
+		String res = null;
+		for (int i = 0; i &lt; str.length(); i++) {
+			for (int j = 0; j &lt; len - i; j++) {
+				int k = i + j;
+				if (str.charAt(j) == str.charAt(k)
+						&amp;&amp; (k - j &lt;= 2 || arr[j + 1][k - 1])) {
+					arr[j][k] = true;
+					if (k - j + 1 &gt; lon) {
+						lon = k - j + 1;
+						res = str.substring(j, k + 1);
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		String str = "dabcbac";
+		String res = func(str);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

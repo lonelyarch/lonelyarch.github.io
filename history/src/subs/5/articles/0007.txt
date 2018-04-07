@@ -1,0 +1,31 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Reverse Integer 翻转整数</p></header></div>
+	<div><p>Reverse digits of an integer.</p></div>
+	<div><p>Example1: x = 123, return 321</p></div>
+	<div><p>Example2: x = -123, return -321</p></div>
+	<div><p><a target="_blank" class="w3-link" href="https://oj.leetcode.com/problems/reverse-integer/">click to show spoilers.</a></p></div>
+	<div><p><strong>Have you thought about this?</strong></p></div>
+	<div><p>Here are some good questions to ask before coding. Bonus points for you if you have already thought through this!</p></div>
+	<div><p>If the integer's last digit is 0, what should the output be? ie, cases such as 10, 100.</p></div>
+	<div><p>Did you notice that the reversed integer might overflow? Assume the input is a 32-bit integer, then the reverse of 1000000003 overflows. How should you handle such cases?</p></div>
+	<div><p>For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.</p></div>
+	<div><p class="w3-text-red">Update (2014-11-10):</p></div>
+	<div><p>Test cases had been added to test the overflow behavior.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0007 {
+
+	public static int func(int x) {
+		int res = 0;
+		while (x != 0) {
+			if (Math.abs(res) &gt; Integer.MAX_VALUE / 10) return 0;
+			res = res * 10 + x % 10;
+			x = x / 10;
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		int res = func(1002);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

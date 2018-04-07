@@ -1,0 +1,67 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Add Two Numbers 两个数字相加</p></header></div>
+	<div><p>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p></div>
+	<div><p>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</p></div>
+	<div><p>Output: 7 -&gt; 0 -&gt; 8, <span class="w3-text-red">342 + 465 = 807</span></p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0002 {
+
+	public static class ListNode {
+		int value;
+		ListNode next;
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode l1, ListNode l2) {
+		ListNode dummy = new ListNode(-1);
+		ListNode cur = dummy;
+		int carry = 0;
+		while (l1 != null || l2 != null) {
+			int d1 = l1 == null ? 0 : l1.value;
+			int d2 = l2 == null ? 0 : l2.value;
+			int sum = d1 + d2 + carry;
+			carry = sum &gt;= 10 ? 1 : 0;
+			cur.next = new ListNode(sum % 10);
+			cur = cur.next;
+			if (l1 != null) l1 = l1.next;
+			if (l2 != null) l2 = l2.next;
+		}
+		if (carry == 1) cur.next = new ListNode(1);
+		return dummy.next;
+	}
+
+	public static void main(String[] args) {
+		int[] arr1 = { 2, 4, 3 };
+		int[] arr2 = { 5, 6, 4 };
+		ListNode l0 = null;
+		ListNode l1 = null;
+		ListNode l2 = null;
+		for (int i = 0; i &lt; arr1.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr1[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr1[i]);
+				l0 = l0.next;
+			}
+		}
+		for (int i = 0; i &lt; arr2.length; i++) {
+			if (null == l2) {
+				l2 = new ListNode(arr2[i]);
+				l0 = l2;
+			} else {
+				l0.next = new ListNode(arr2[i]);
+				l0 = l0.next;
+			}
+		}
+		ListNode ln = func(l1, l2);
+		System.out.println(ln);
+	}
+}</pre></div>
+</article>
