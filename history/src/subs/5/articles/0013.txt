@@ -1,0 +1,61 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Roman to Integer 罗马数字转化成整数</p></header></div>
+	<div><p>Given a roman numeral, convert it to an integer.</p></div>
+	<div><p>Input is guaranteed to be within the range from 1 to 3999.</p></div>
+	<div class="w3-responsive">
+		<table class="w3-table w3-bordered w3-white">
+			<tbody>
+				<tr>
+					<td>罗马字符</td>
+					<td>I</td>
+					<td>V</td>
+					<td>X</td>
+					<td>L</td>
+					<td>C</td>
+					<td>D</td>
+					<td>M</td>
+				</tr>
+				<tr>
+					<td>阿拉伯符</td>
+					<td>1</td>
+					<td>5</td>
+					<td>10</td>
+					<td>50</td>
+					<td>100</td>
+					<td>500</td>
+					<td>1000</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="w3-custom-code w3-lightslategray"><pre>import java.util.HashMap;
+import java.util.Map;
+
+public class LC0013 {
+
+	public static int func(String str) {
+		int res = 0;
+		Map&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
+		map.put('I', 1);
+		map.put('V', 5);
+		map.put('X', 10);
+		map.put('L', 50);
+		map.put('C', 100);
+		map.put('D', 500);
+		map.put('M', 1000);
+		for (int i = 0; i &lt; str.length(); ++i) {
+			if (i == 0 || map.get(str.charAt(i)) &lt;= map.get(str.charAt(i - 1)))
+				res += map.get(str.charAt(i));
+			else
+				res += map.get(str.charAt(i)) - 2 * map.get(str.charAt(i - 1));
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		String str = "MCDXXXVII";
+		int res = func(str);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

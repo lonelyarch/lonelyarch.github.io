@@ -1,0 +1,66 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Generate Parentheses 生成括号</p></header></div>
+	<div><p>Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.</p></div>
+	<div><p>For example, given n = 3, a solution set is:</p></div>
+	<div><p>"((()))", "(()())", "(())()", "()(())", "()()()"</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0022 {
+
+	public static List&lt;String&gt; func(int n) {
+		List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+		helper(n, n, "", res);
+		return res;
+	}
+
+	public static void helper(int left, int right, String out, List&lt;String&gt; res) {
+		if (left &lt; 0 || right &lt; 0 || left &gt; right)
+			return;
+		if (left == 0 &amp;&amp; right == 0) {
+			res.add(out);
+			return;
+		}
+		helper(left - 1, right, out + "(", res);
+		helper(left, right - 1, out + ")", res);
+	}
+
+	public static void main(String[] args) {
+		int n = 3;
+		List&lt;String&gt; res = func(n);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class LC0022 {
+
+	public static List&lt;String&gt; func(int n) {
+		Set&lt;String&gt; res = new HashSet&lt;String&gt;();
+		if (n == 0) {
+			res.add("");
+		} else {
+			List&lt;String&gt; pre = func(n - 1);
+			for (String str : pre) {
+				for (int i = 0; i &lt; str.length(); ++i) {
+					if (str.charAt(i) == '(') {
+						str = str.substring(0, i + 1) + "()"
+								+ str.substring(i + 1, str.length());
+						res.add(str);
+						str = str.substring(0, i + 1)
+								+ str.substring(i + 3, str.length());
+					}
+				}
+				res.add("()" + str);
+			}
+		}
+		return new ArrayList&lt;String&gt;(res);
+	}
+
+	public static void main(String[] args) {
+		int n = 3;
+		List&lt;String&gt; res = func(n);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

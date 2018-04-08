@@ -1,0 +1,65 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Letter Combinations of a Phone Number 电话号码的字母组合</p></header></div>
+	<div><p>Given a digit string, return all possible letter combinations that the number could represent.</p></div>
+	<div><p>A mapping of digit to letters (just like on the telephone buttons) is given below.</p></div>
+	<div><p>Input:Digit string "23";</p></div>
+	<div><p>Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].</p></div>
+	<div><p>Note:</p></div>
+	<div><p>Although the above answer is in lexicographical order, your answer could be in any order you want.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class LC0017 {
+
+	public static List&lt;String&gt; func(String digits) {
+
+		Map&lt;Integer, String&gt; map = new HashMap&lt;Integer, String&gt;();
+		map.put(2, "abc");
+		map.put(3, "def");
+		map.put(4, "ghi");
+		map.put(5, "jkl");
+		map.put(6, "mno");
+		map.put(7, "pqrs");
+		map.put(8, "tuv");
+		map.put(9, "wxyz");
+		map.put(0, "");
+
+		List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+		if (digits == null || digits.length() == 0)
+			return res;
+
+		List&lt;Character&gt; temp = new ArrayList&lt;Character&gt;();
+		helper(digits, temp, res, map);
+
+		return res;
+	}
+
+	public static void helper(String digits, List&lt;Character&gt; temp,
+			List&lt;String&gt; res, Map&lt;Integer, String&gt; map) {
+		if (digits.length() == 0) {
+			char[] arr = new char[temp.size()];
+			for (int i = 0; i &lt; temp.size(); i++) {
+				arr[i] = temp.get(i);
+			}
+			res.add(String.valueOf(arr));
+			return;
+		}
+		Integer curr = Integer.valueOf(digits.substring(0, 1));
+		String letters = map.get(curr);
+		for (int i = 0; i &lt; letters.length(); i++) {
+			temp.add(letters.charAt(i));
+			helper(digits.substring(1), temp, res, map);
+			temp.remove(temp.size() - 1);
+		}
+	}
+
+	public static void main(String[] args) {
+		String digits = "23";
+		List&lt;String&gt; res = func(digits);
+		System.out.println("res: " + res.toString());
+	}
+}</pre></div>
+</article>

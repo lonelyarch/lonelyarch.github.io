@@ -1,0 +1,50 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Longest Common Prefix 最长共同前缀</p></header></div>
+	<div><p>Write a function to find the longest common prefix string amongst an array of strings.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0014 {
+
+	public static String func(String[] strs) {
+		String res = "";
+		if (strs == null || strs.length == 0)
+			return "";
+		for (int j = 0; j &lt; strs[0].length(); ++j) {
+			char c = strs[0].charAt(j);
+			for (int i = 1; i &lt; strs.length; ++i) {
+				if (j &gt;= strs[i].length() || strs[i].charAt(j) != c) {
+					return res;
+				}
+			}
+			res += Character.toString(c);
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		String[] strs = { "abcdefgh", "abcdmnlkopy", "abcdwioass", "abcdhegh" };
+		String res = func(strs);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0014 {
+
+	public static String func(String[] strs) {
+		if (strs == null || strs.length == 0)
+			return "";
+		for (int j = 0; j &lt; strs[0].length(); ++j) {
+			for (int i = 0; i &lt; strs.length - 1; ++i) {
+				if (j &gt;= strs[i].length() || j &gt;= strs[i + 1].length()
+						|| strs[i].charAt(j) != strs[i + 1].charAt(j)) {
+					return strs[i].substring(0, j);
+				}
+			}
+		}
+		return strs[0];
+	}
+
+	public static void main(String[] args) {
+		String[] strs = { "abcdefgh", "abcdmnlkopy", "abcdwioass", "abcdhegh" };
+		String res = func(strs);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

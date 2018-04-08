@@ -1,0 +1,75 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Integer to Roman 整数转化成罗马数字 </p></header></div>
+	<div><p>Given an integer, convert it to a roman numeral.</p></div>
+	<div><p>Input is guaranteed to be within the range from 1 to 3999.</p></div>
+	<div class="w3-responsive">
+		<table class="w3-table w3-bordered w3-white">
+			<tbody>
+				<tr>
+					<td>罗马字符</td>
+					<td>I</td>
+					<td>V</td>
+					<td>X</td>
+					<td>L</td>
+					<td>C</td>
+					<td>D</td>
+					<td>M</td>
+				</tr>
+				<tr>
+					<td>阿拉伯符</td>
+					<td>1</td>
+					<td>5</td>
+					<td>10</td>
+					<td>50</td>
+					<td>100</td>
+					<td>500</td>
+					<td>1000</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div><p>举例说明<samp>，</samp>整数 1437 的罗马数字为 MCDXXXVII<samp>，</samp>即 1000 - M、400 - CD、30 - XXX、7 - VII 。使用取商法分别提取各个位上的数字<samp>，</samp>然后分别表示出来：</p></div>
+	<div><pre style="overflow:auto">100 - C
+
+200 - CC
+
+300 - CCC
+
+400 - CD
+
+500 - D
+
+600 - DC
+
+700 - DCC
+
+800 - DCCC
+
+900 - CM</pre></div>
+	<div><p>将整数分为四类<samp>，</samp>100~300 一类<samp>，</samp>400 一类<samp>，</samp>500~800 一类<samp>，</samp>900 一类。代码如下所示：</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0012 {
+
+	public static String func(int num) {
+		String res = "";
+		char roman[] = { 'M', 'D', 'C', 'L', 'X', 'V', 'I' };
+		int value[] = { 1000, 500, 100, 50, 10, 5, 1 };
+		for (int n = 0; n &lt; 7; n += 2) {
+			int x = num / value[n];
+			if (x &lt; 4) {
+				for (int i = 1; i &lt;= x; ++i) res += roman[n];
+			} else if (x == 4) res = res + roman[n] + roman[n - 1];
+			else if (x &gt; 4 &amp;&amp; x &lt; 9) { res += roman[n - 1];
+				for (int i = 6; i &lt;= x; ++i) res += roman[n];
+			} else if (x == 9) res = res + roman[n] + roman[n - 2];
+			num %= value[n];
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		int num = 1437;
+		String res = func(num);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

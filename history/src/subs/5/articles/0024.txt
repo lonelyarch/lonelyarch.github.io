@@ -1,0 +1,129 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Swap Nodes in Pairs 成对交换节点</p></header></div>
+	<div><p>Given a linked list, swap every two adjacent nodes and return its head.</p></div>
+	<div><p>For example,</p></div>
+	<div><p>Given 1-&gt;2-&gt;3-&gt;4, you should return the list as 2-&gt;1-&gt;4-&gt;3.</p></div>
+	<div><p>Your algorithm should use only constant space. You may not modify the values in the list, only nodes itself can be changed.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0024 {
+
+	public static class ListNode {
+
+		int value;
+		ListNode next;
+
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+
+		ListNode h = new ListNode(0);
+		h.next = head;
+		ListNode p = h;
+
+		while (p.next != null &amp;&amp; p.next.next != null) {
+			// use t1 to track first node
+			ListNode t1 = p;
+			p = p.next;
+			t1.next = p.next;
+
+			// use t2 to track next node of the pair
+			ListNode t2 = p.next.next;
+			p.next.next = p;
+			p.next = t2;
+		}
+
+		return h.next;
+	}
+
+	public static void main(String[] args) {
+		int[] arr1 = { 1, 2, 3, 4 };
+		ListNode l0 = null;
+		ListNode l1 = null;
+		for (int i = 0; i &lt; arr1.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr1[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr1[i]);
+				l0 = l0.next;
+			}
+		}
+		ListNode ln = func(l1);
+		System.out.println(ln);
+	}
+}</pre></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0024 {
+
+	public static class ListNode {
+
+		int value;
+		ListNode next;
+
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+
+		// a fake head
+		ListNode h = new ListNode(0);
+		h.next = head;
+
+		ListNode p1 = head;
+		ListNode p2 = head.next;
+
+		ListNode pre = h;
+		while (p1 != null &amp;&amp; p2 != null) {
+			pre.next = p2;
+
+			ListNode t = p2.next;
+			p2.next = p1;
+			pre = p1;
+			p1.next = t;
+
+			p1 = p1.next;
+
+			if (t != null)
+				p2 = t.next;
+		}
+
+		return h.next;
+	}
+
+	public static void main(String[] args) {
+		int[] arr1 = { 1, 2, 3, 4 };
+		ListNode l0 = null;
+		ListNode l1 = null;
+		for (int i = 0; i &lt; arr1.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr1[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr1[i]);
+				l0 = l0.next;
+			}
+		}
+		ListNode ln = func(l1);
+		System.out.println(ln);
+	}
+}</pre></div>
+</article>

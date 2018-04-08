@@ -1,0 +1,36 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Valid Parentheses 验证括号</p></header></div>
+	<div><p>Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.</p></div>
+	<div><p>The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>import java.util.Stack;
+
+public class LC0020 {
+
+	public static boolean func(String str) {
+		Stack&lt;Character&gt; stack = new Stack&lt;Character&gt;();
+		for (int i = 0; i &lt; str.length(); ++i) {
+			if (str.charAt(i) == '(' || str.charAt(i) == '['
+					|| str.charAt(i) == '{')
+				stack.push(str.charAt(i));
+			else {
+				if (stack.empty())
+					return false;
+				if (str.charAt(i) == ')' &amp;&amp; stack.peek() != '(')
+					return false;
+				if (str.charAt(i) == ']' &amp;&amp; stack.peek() != '[')
+					return false;
+				if (str.charAt(i) == '}' &amp;&amp; stack.peek() != '{')
+					return false;
+				stack.pop();
+			}
+		}
+		return stack.empty();
+	}
+
+	public static void main(String[] args) {
+		String str = "((()()))[]{}{{[]}}";
+		boolean res = func(str);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

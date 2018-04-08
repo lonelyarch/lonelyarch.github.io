@@ -1,0 +1,45 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Divide Two Integers 两数相除</p></header></div>
+	<div><p>Divide two integers without using multiplication, division and mod operator.</p></div>
+	<div><p>If it is overflow, return MAX_INT.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0029 {
+
+	public static int func(int dividend, int divisor) {
+		// handle special cases
+		if (divisor == 0)
+			return Integer.MAX_VALUE;
+		if (divisor == -1 &amp;&amp; dividend == Integer.MIN_VALUE)
+			return Integer.MAX_VALUE;
+
+		// get positive values
+		long pDividend = Math.abs((long) dividend);
+		long pDivisor = Math.abs((long) divisor);
+
+		int result = 0;
+		while (pDividend &gt;= pDivisor) {
+			// calculate number of left shifts
+			int numShift = 0;
+			while (pDividend &gt;= (pDivisor &lt;&lt; numShift)) {
+				numShift++;
+			}
+
+			// dividend minus the largest shifted divisor
+			result += 1 &lt;&lt; (numShift - 1);
+			pDividend -= (pDivisor &lt;&lt; (numShift - 1));
+		}
+
+		if ((dividend &gt; 0 &amp;&amp; divisor &gt; 0) || (dividend &lt; 0 &amp;&amp; divisor &lt; 0)) {
+			return result;
+		} else {
+			return -result;
+		}
+	}
+
+	public static void main(String[] args) {
+		int dividend = 100;
+		int divisor = 5;
+		int res = func(dividend, divisor);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

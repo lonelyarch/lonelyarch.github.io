@@ -1,0 +1,124 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Merge Two Sorted Lists 混合插入有序链表</p></header></div>
+	<div><p>Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0021 {
+
+	public static class ListNode {
+		int value;
+		ListNode next;
+
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode l1, ListNode l2) {
+		ListNode dummy = new ListNode(-1), cur = dummy;
+		while (l1 != null &amp;&amp; l2 != null) {
+			if (l1.value &lt; l2.value) {
+				cur.next = l1;
+				l1 = l1.next;
+			} else {
+				cur.next = l2;
+				l2 = l2.next;
+			}
+			cur = cur.next;
+		}
+		cur.next = (l1 != null) ? l1 : l2;
+		return dummy.next;
+	}
+
+	public static void main(String[] args) {
+		int[] arr1 = { 2, 4, 7 }; // 已排序
+		int[] arr2 = { 5, 6, 9 }; // 已排序
+		ListNode l0 = null;
+		ListNode l1 = null;
+		ListNode l2 = null;
+		for (int i = 0; i &lt; arr1.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr1[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr1[i]);
+				l0 = l0.next;
+			}
+		}
+		for (int i = 0; i &lt; arr2.length; i++) {
+			if (null == l2) {
+				l2 = new ListNode(arr2[i]);
+				l0 = l2;
+			} else {
+				l0.next = new ListNode(arr2[i]);
+				l0 = l0.next;
+			}
+		}
+		ListNode ln = func(l1, l2);
+		System.out.println(ln);
+	}
+}</pre></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0021 {
+
+	public static class ListNode {
+		int value;
+		ListNode next;
+
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode l1, ListNode l2) {
+		if (l1 == null)
+			return l2;
+		if (l2 == null)
+			return l1;
+		if (l1.value &lt; l2.value) {
+			l1.next = func(l1.next, l2);
+			return l1;
+		} else {
+			l2.next = func(l1, l2.next);
+			return l2;
+		}
+	}
+
+	public static void main(String[] args) {
+		int[] arr1 = { 2, 4, 7 }; // 已排序
+		int[] arr2 = { 5, 6, 9 }; // 已排序
+		ListNode l0 = null;
+		ListNode l1 = null;
+		ListNode l2 = null;
+		for (int i = 0; i &lt; arr1.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr1[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr1[i]);
+				l0 = l0.next;
+			}
+		}
+		for (int i = 0; i &lt; arr2.length; i++) {
+			if (null == l2) {
+				l2 = new ListNode(arr2[i]);
+				l0 = l2;
+			} else {
+				l0.next = new ListNode(arr2[i]);
+				l0 = l0.next;
+			}
+		}
+		ListNode ln = func(l1, l2);
+		System.out.println(ln);
+	}
+}</pre></div>
+</article>

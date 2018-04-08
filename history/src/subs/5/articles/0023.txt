@@ -1,0 +1,108 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Merge k Sorted Lists 合并 k 个有序链表</p></header></div>
+	<div><p>Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+public class LC0023 {
+
+	public static class ListNode {
+
+		int value;
+		ListNode next;
+
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode[] lists) {
+		if (lists == null || lists.length == 0)
+			return null;
+		Queue&lt;ListNode&gt; queue = new PriorityQueue&lt;ListNode&gt;(
+				new Comparator&lt;ListNode&gt;() {
+					public int compare(ListNode l1, ListNode l2) {
+						return l1.value - l2.value;
+					}
+				});
+		ListNode head = new ListNode(0);
+		ListNode p = head;
+		for (ListNode list : lists) {
+			if (list != null)
+				queue.offer(list);
+		}
+		while (!queue.isEmpty()) {
+			ListNode n = queue.poll();
+			p.next = n;
+			p = p.next;
+			if (n.next != null)
+				queue.offer(n.next);
+		}
+		return head.next;
+	}
+
+	public static void main(String[] args) {
+		int[] arr1 = { 15, 19, 39 };
+		int[] arr2 = { 10, 16, 26 };
+		int[] arr3 = { 11, 55, 76 };
+		ListNode l0 = null;
+		ListNode l1 = null;
+		ListNode l2 = null;
+		ListNode l3 = null;
+		for (int i = 0; i &lt; arr1.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr1[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr1[i]);
+				l0 = l0.next;
+			}
+		}
+		for (int i = 0; i &lt; arr2.length; i++) {
+			if (null == l2) {
+				l2 = new ListNode(arr2[i]);
+				l0 = l2;
+			} else {
+				l0.next = new ListNode(arr2[i]);
+				l0 = l0.next;
+			}
+		}
+		for (int i = 0; i &lt; arr3.length; i++) {
+			if (null == l3) {
+				l3 = new ListNode(arr3[i]);
+				l0 = l3;
+			} else {
+				l0.next = new ListNode(arr3[i]);
+				l0 = l0.next;
+			}
+		}
+
+		ListNode[] lists = { l1, l2, l3 };
+		ListNode ln = func(lists);
+		System.out.println(ln);
+	}
+}</pre></div>
+	<div><p>该题主要考察 PriorityQueue 优先队列的使用<samp>，</samp>现简单给出 PriorityQueue 用例（注意<samp>，</samp>对放入优先队列中的自定义类而言<samp>，</samp>通常需要提供一个比较器）：</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public static void main(String[] args) {
+	Queue&lt;Integer&gt; pq = new PriorityQueue&lt;Integer&gt;();
+	pq.offer(1);
+	pq.offer(21);
+	pq.offer(345);
+	pq.offer(23);
+	pq.offer(22);
+	pq.offer(44);
+	pq.offer(0);
+	pq.offer(34);
+	pq.offer(2);
+	while (pq.peek() != null) {
+		System.out.print(pq.poll() + " "); // 0 1 2 21 22 23 34 44 345
+	}
+}</pre></div>
+</article>

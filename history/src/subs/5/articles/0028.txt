@@ -1,0 +1,34 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Implement strStr() 实现 strStr() 函数</p></header></div>
+	<div><p>Implement strStr().</p></div>
+	<div><p>Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.</p></div>
+	<div><p class="w3-text-red">Update (2014-11-02):</p></div>
+	<div><p>The signature of the function had been updated to return the index instead of the pointer. If you still see your function signature returns a char * or String, please click the reload button to reset your code definition.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0028 {
+
+	public static int func(String haystack, String needle) {
+		if (needle.isEmpty())
+			return 0;
+		int m = haystack.length(), n = needle.length();
+		if (m &lt; n)
+			return -1;
+		for (int i = 0; i &lt;= m - n; ++i) {
+			int j = 0;
+			for (j = 0; j &lt; n; ++j) {
+				if (haystack.charAt(i + j) != needle.charAt(j))
+					break;
+			}
+			if (j == n)
+				return i;
+		}
+		return -1;
+	}
+
+	public static void main(String[] args) {
+		String haystack = "aaatestaaatestaaaaaatestaaa";
+		String needle = "test";
+		int res = func(haystack, needle);
+		System.out.println("res: " + res);
+	}
+}</pre></div>
+</article>

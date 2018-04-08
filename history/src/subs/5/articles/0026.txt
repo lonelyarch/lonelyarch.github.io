@@ -1,0 +1,36 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Remove Duplicates from Sorted Array 有序数组中去除重复项</p></header></div>
+	<div><p>Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.</p></div>
+	<div><p>Do not allocate extra space for another array, you must do this in place with constant memory.</p></div>
+	<div><p>For example,</p></div>
+	<div><p>Given input array A = [1,1,2],</p></div>
+	<div><p>Your function should return length = 2, and A is now [1,2].</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0026 {
+
+	public static int[] func(int[] A) {
+		if (A.length &lt; 2)
+			return A;
+
+		int j = 0;
+		int i = 1;
+
+		while (i &lt; A.length) {
+			if (A[i] == A[j]) {
+				i++;
+			} else {
+				j++;
+				A[j] = A[i];
+				i++;
+			}
+		}
+
+		return <span class="w3-text-white">Arrays.copyOf(A, j + 1)</span>;
+	}
+
+	public static void main(String[] args) {
+		int[] A = { 1, 2, 2, 2, 3, 4, 5, 5, 6, 7, 8, 9, 9, 9, 9 };
+		int[] res = func(A);
+		System.out.println("res: " + <span class="w3-text-white">Arrays.toString(res)</span>);
+	}
+}</pre></div>
+</article>

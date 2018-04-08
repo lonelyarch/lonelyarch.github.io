@@ -1,0 +1,132 @@
+<article>
+	<div><header class="w3-header"><p>[LeetCode] Remove Nth Node From End of List 移除链表倒数第 N 个节点</p></header></div>
+	<div><p>Given a linked list, remove the nth node from the end of list and return its head.</p></div>
+	<div><p>For example,</p></div>
+	<div><pre style="overflow:auto">   Given linked list: 1-&gt;2-&gt;3-&gt;4-&gt;5, and n = 2.
+
+   After removing the second node from the end, the linked list becomes 1-&gt;2-&gt;3-&gt;5.</pre></div>
+	<div><p>Note:</p></div>
+	<div><p>Given n will always be valid.</p></div>
+	<div><p>Try to do this in one pass.</p></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0019 {
+
+	public static class ListNode {
+
+		int value;
+		ListNode next;
+
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode head, int n) {
+		if (head == null)
+			return null;
+
+		// get length of list
+		ListNode p = head;
+		int len = 0;
+		while (p != null) {
+			len++;
+			p = p.next;
+		}
+
+		// if remove first node
+		int fromStart = len - n + 1;
+		if (fromStart == 1)
+			return head.next;
+
+		// remove non-first node
+		p = head;
+		int i = 0;
+		while (p != null) {
+			i++;
+			if (i == fromStart - 1) {
+				p.next = p.next.next;
+			}
+			p = p.next;
+		}
+
+		return head;
+	}
+
+	public static void main(String[] args) {
+		int[] arr = { 1, 2, 3, 4, 5 };
+		ListNode l0 = null;
+		ListNode l1 = null;
+		int n = 2;
+		for (int i = 0; i &lt; arr.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr[i]);
+				l0 = l0.next;
+			}
+		}
+		ListNode ln = func(l1, n);
+		System.out.println(ln);
+	}
+}</pre></div>
+	<div class="w3-custom-code w3-lightslategray"><pre>public class LC0019 {
+
+	public static class ListNode {
+		int value;
+		ListNode next;
+		ListNode(int value) {
+			this.value = value;
+			this.next = null;
+		}
+		@Override
+		public String toString() {
+			return null == next ? this.value + "" : this.value + " -&gt; " + next;
+		}
+	}
+
+	public static ListNode func(ListNode head, int n) {
+		if (head == null)
+			return null;
+		ListNode fast = head;
+		ListNode slow = head;
+		for (int i = 0; i &lt; n; i++) {
+			fast = fast.next;
+		}
+		// if remove the first node
+		if (fast == null) {
+			head = head.next;
+			return head;
+		}
+		while (fast.next != null) {
+			fast = fast.next;
+			slow = slow.next;
+		}
+		slow.next = slow.next.next;
+		return head;
+	}
+
+	public static void main(String[] args) {
+		int[] arr = { 1, 2, 3, 4, 5 };
+		ListNode l0 = null;
+		ListNode l1 = null;
+		int n = 2;
+		for (int i = 0; i &lt; arr.length; i++) {
+			if (null == l1) {
+				l1 = new ListNode(arr[i]);
+				l0 = l1;
+			} else {
+				l0.next = new ListNode(arr[i]);
+				l0 = l0.next;
+			}
+		}
+		ListNode ln = func(l1, n);
+		System.out.println(ln);
+	}
+}</pre></div>
+</article>
