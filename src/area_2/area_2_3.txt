@@ -1,4 +1,26 @@
 <article>
+	<div><p><strong>Java 集合类：HashMap 初探</strong></p><p class="w3-right">2017-05-02</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table based implementation of the Map interface. This implementation provides all of the optional map operations, and permits null values and the null key. (The HashMap class is roughly equivalent to Hashtable, except that it is unsynchronized and permits nulls.)...</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于哈希表的 Map 接口的实现，该实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了<span class="w3-text-light-green">不支持同步</span>和<span class="w3-text-light-green">允许使用 null 值</span>之外，HashMap 与 Hashtable 大致上是相同的。）……</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/16.txt',id:'prevtonext'},{url:'src/area_2/articles/0017/0017.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
+	<div><p><strong>grid 使用之 CSS 布局</strong></p><p class="w3-right">2017-04-28</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
+		<p><strong>注意：</strong>以下所有示例基于 <strong>display: grid</strong> 实现</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/15.txt',id:'prevtonext'},{url:'src/area_2/articles/0016/0016.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>flex 使用之 CSS 布局</strong></p><p class="w3-right">2017-04-27</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
@@ -193,81 +215,4 @@
 	<div class="w3-example-macarons"><div></div></div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/7.txt',id:'prevtonext'},{url:'src/area_2/articles/0008/0008.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>如何实现旋转式太极图？</strong></p><p class="w3-right">2017-03-19</p></div>
-	<div style="clear: both;"></div>
-	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-	<div class="w3-example-taichi">
-		<img style="border-radius:50%;max-width:60rem;width:100%" alt="Oops" src="src/area_2/articles/0007/images/01.jpg" />
-		<div class="w3-example-taichi-l">
-			<div class="w3-example-taichi-l-dot"></div>
-		</div>
-		<div class="w3-example-taichi-r">
-			<div class="w3-example-taichi-r-dot"></div>
-		</div>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/6.txt',id:'prevtonext'},{url:'src/area_2/articles/0007/0007.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>如何实现栅栏式的相册？</strong></p><p class="w3-right">2017-03-18</p></div>
-	<div style="clear: both;"></div>
-	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-	<div>
-		<div class="w3-example-album">
-			<div class="w3-example-album-item">
-				<div class="w3-example-album-item-bg"></div>
-				<div class="w3-example-album-item-close-btn"></div>
-				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" class="w3-link" href="https://unsplash.com/photos/-YHSwy6uqvk">https://unsplash.com/photos/-YHSwy6uqvk</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@lvnatikk?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Lily Lvnatikk"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Lily Lvnatikk</span></a>。</p></div>
-			</div>
-			<div class="w3-example-album-item">
-				<div class="w3-example-album-item-bg"></div>
-				<div class="w3-example-album-item-close-btn"></div>
-				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/D-vDQMTfAAU" class="w3-link">https://unsplash.com/photos/D-vDQMTfAAU</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@charlesdeluvio?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Charles Deluvio</span></a>。</p></div>
-			</div>
-			<div class="w3-example-album-item">
-				<div class="w3-example-album-item-bg"></div>
-				<div class="w3-example-album-item-close-btn"></div>
-				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/MNtag_eXMKw" class="w3-link">https://unsplash.com/photos/MNtag_eXMKw</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@through_these_eyes_photography?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Thomas Tucker</span></a>。</p></div>
-			</div>
-			<div class="w3-example-album-item">
-				<div class="w3-example-album-item-bg"></div>
-				<div class="w3-example-album-item-close-btn"></div>
-				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/qfIVXu7nxGU" class="w3-link">https://unsplash.com/photos/qfIVXu7nxGU</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@sambazon?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Sambazon</span></a>。</p></div>
-			</div>
-			<div class="w3-example-album-item">
-				<div class="w3-example-album-item-bg"></div>
-				<div class="w3-example-album-item-close-btn"></div>
-				<div class="w3-example-album-item-instr-img"><p>特别说明：该图片源自 <a target="_blank" href="https://unsplash.com/photos/Au-LzDMd_Cw" class="w3-link">https://unsplash.com/photos/Au-LzDMd_Cw</a>，作者为 <a style="background-color:#f1f1f1;color:#2196f3;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@stephaniemccabe?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Charles Deluvio"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:#2196f3;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Stephanie McCabe</span></a>。</p></div>
-			</div>
-		</div>
-		<script>
-			var items = [].slice.call(document.querySelectorAll(".w3-example-album-item"));
-			items.forEach(function(item) {
-				item.addEventListener("click", function() {
-					if (this.classList.contains("dynamic")) return;
-					this.classList.add("dynamic");
-					for(let i=0; i<items.length; i++) {
-						if(items[i] == this) continue;
-						items[i].classList.add("forhide");
-					}
-				});
-			});
-			var butns = [].slice.call(document.querySelectorAll(".w3-example-album-item-close-btn"));
-			butns.forEach(function(butn) {
-				butn.addEventListener("click", function(e) {
-					e.stopPropagation();
-					document.querySelector(".w3-example-album-item.dynamic").classList.remove("dynamic");
-					for(let i=0; i<items.length; i++) {
-						items[i].classList.remove("forhide");
-					}
-				});
-			});
-		</script>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/5.txt',id:'prevtonext'},{url:'src/area_2/articles/0006/0006.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

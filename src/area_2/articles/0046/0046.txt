@@ -1,0 +1,45 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：5 分钟搭建 HelloWorld（01）</strong></p><p class="w3-right w3-margin-0">2018-03-07</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信任何开发过 Java Web 应用的童鞋对 SpringMVC 框架一定不陌生<samp>，</samp>至于该框架的优点也是显而易见<samp>，</samp>在此不赘述<samp>，</samp>如果你曾经使用了 Servlet 原生技术实现过类似的 Web 应用或 Demo<samp>，</samp>两相对比之后<samp>，</samp>那么你可能会对 SpringMVC 框架更加情有独钟。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主在最初参加工作的时候<samp>，</samp>准确地说<samp>，</samp>是在参加工作之前的入职培训期间<samp>，</samp>就已经接触过 Spring<samp>，</samp>当时还十分流行 SSH<samp>，</samp>那个时候的 SpringMVC 貌似还不是很出名。在工作期间<samp>，</samp>个人也碰到过使用 SpringMVC 框架实现 Web 应用的项目<samp>，</samp>现将曾经整理过的相关笔记贴出来<samp>，</samp>也算是对 SpringMVC 框架知识点的一次回顾。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>一、搭建准备：</p></div>
+		<div><p>1. 下载 <a target="_blank" class="w3-link" href="http://spring.io/tools/sts/all">Spring Tool Suite™</a> 开发工具<samp>，</samp>该工具是开发基于 Spring 框架的应用之利器<samp>；</samp></p></div>
+		<div><p>2. 下载 <a target="_blank" class="w3-link" href="https://repo.spring.io/release/org/springframework/spring/4.3.14.RELEASE/">Spring Framework</a>（为了之后理解 SpringMVC 原理时便于调式源码<samp>，</samp>我们将 jar 包以及源码均下载至本地<samp>，</samp>在正式项目中会使用 Maven 工具进行管理）<samp>；</samp></p></div>
+		<div><p>3. 下载 <a target="_blank" class="w3-link" href="http://commons.apache.org/proper/commons-logging/download_logging.cgi">Commons Logging</a><samp>，</samp>SpringMVC 框架所依赖的日志记录 jar 包。</div>
+		<div><p>二、正式开工：</p></div>
+		<div><p>1. 新建一个 Dynamic Web Project<samp>，</samp>取名 SpringMVC_Demo：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/01.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/02.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/03.jpg" /></div>
+		<div><p>2. 导入工程所需 jar 包：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/04.jpg" /></div>
+		<div><p>3. 配置 DispatcherServlet 前置控制器：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/05.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/06.jpg" /></div>
+		<div><p>4. 在 src 目录下新建 springmvc_demo.xml 文件<samp>，</samp>配置自动扫描包以及视图解析器：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/07.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/08.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/09.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/10.jpg" /></div>
+		<div><p>5. 创建 UserController 控制器、user.jsp 视图<samp>，</samp>在 tomcat 容器中部署运行：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/11.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/12.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0046/images/13.jpg" /></div>
+	</section>
+</article>

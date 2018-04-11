@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/45.txt',id:'prevtonext'},{url:'src/area_2/articles/0046/0046.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">SpringMVC 系列：5 分钟搭建 HelloWorld（01） »</a>
+<div style="clear: both;"></div>

@@ -1,0 +1,165 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：Web MVC 的工作原理（02）</strong></p><p class="w3-right w3-margin-0">2018-03-09</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单搭建了 HelloWorld 应用之后<samp>，</samp>为了更深入的了解 SpringMVC 中的 Model、View 以及 Controller 之间的运行机制<samp>，</samp>我们有必要探知它内部的实现原理<samp>，</samp>这在处理工作中遇到的问题时会很有帮助。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在探知 SpringMVC 实现原理之前<samp>，</samp>我们先熟悉一下 Spring Web MVC 中的请求处理流程：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0039.png" /></div>
+		<div><p>将 Spring Framework 文档中的请求处理流程稍加修饰<samp>，</samp>可得如下原理图：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0040.jpg" /></div>
+		<div><p>不难推测<samp>，</samp>当 Servlet 容器在启动的时候<samp>，</samp>它首先会加载 Web 应用中的 web.xml 文件<samp>，</samp>再根据该文件中 DispatcherServlet 的初始化参数加载 SpringMVC 配置文件（springmvc_demo.xml）以完成 SpringMVC 上下文信息的加载<samp>，</samp>该过程包含对 HandlerMapping 的初始化：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;servlet&gt;
+	&lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;
+	&lt;servlet-class&gt;<span class="w3-text-white">org.springframework.web.servlet.DispatcherServlet</span>&lt;/servlet-class&gt;
+	&lt;init-param&gt;
+		&lt;!-- 配置 DispatcherServlet 初始化参数：指定 SpringMVC 配置文件的位置和名称 --&gt;
+		&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+		&lt;param-value&gt;<span class="w3-text-white">classpath:springmvc_demo.xml</span>&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;!-- 标记容器是否在启动的时候就加载这个 servlet --&gt;
+	&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+
+&lt;!-- Map all requests to the DispatcherServlet for handling --&gt;
+&lt;servlet-mapping&gt;
+	&lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;
+	&lt;url-pattern&gt;/&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre></div>
+		<div><p>让我们用 debug 调试探知以下两个问题：</p></div>
+		<div><ul style="list-style:decimal">
+			<li><p>springmvc_demo.xml 文件是如何加载的？</p></li>
+			<li><p>HandlerMapping 是如何初始化的？</p></li>
+		</ul></div>
+		<div><p>首先探知一下 springmvc_demo.xml 文件的加载过程<samp>，</samp>我们在 AbstractApplicationContext 类里的 refresh() 方法上打断点<samp>，</samp>再仔细观察 console 中的日志信息：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0041.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0042.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0043.jpg" /></div>
+		<div><p>当断点停留在 AbstractApplicationContext.class 文件的 512 行时<samp>，</samp>由输出日志可知<samp>，</samp>DispatcherServlet 初始化开始<samp>，</samp>当执行完第 515 行即调用 obtainFreshBeanFactory() 方法结束之后<samp>，</samp>日志信息显示对 springmvc_demo.xml 文件的加载。</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0044.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0045.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0046.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0047.jpg" /></div>
+		<div><p>当断点停留在 XmlBeanDefinitionReader.class 文件的 392 行时<samp>，</samp>通过查看 doc 对象可知<samp>，</samp>springmvc_demo.xml 文件已经被加载并解析：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;!-- 配置自动扫描包 --&gt;
+&lt;context:component-scan
+	base-package="<span class="w3-text-white">com.hsdis.controller</span>"&gt;&lt;/context:component-scan&gt;
+
+&lt;!-- 配置视图解析器：把 handler 方法返回值解析为实际物理视图 --&gt;
+&lt;bean
+	class="<span class="w3-text-white">org.springframework.web.servlet.view.InternalResourceViewResolver</span>"&gt;
+	&lt;property name="prefix" value="/WEB-INF/views/"&gt;&lt;/property&gt;
+	&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;
+&lt;/bean&gt;</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0048.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0049.jpg" /></div>
+		<div><p>为了凸显 ClassPathBeanDefinitionScanner 实例对象的 doScan 方法的作用<samp>，</samp>我们再添加一个 ProductController 类控制器<samp>，</samp>可以推测<samp>，</samp>当 doScan 方法执行结束之后<samp>，</samp>集合对象 beanDefinitions 中会包含两个 BeanDefinitionHolder 实例对象：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0050.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0051.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0052.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0053.jpg" /></div>
+		<div><p>据图可知<samp>，</samp>productController、userController 控制器最终是被注册到了 DefaultListableBeanFactory 类的 beanDefinitionMap 成员对象中。同理可知<samp>，</samp>视图解析器最终也是被注册到了 beanDefinitionMap 对象中：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0054.jpg" /></div>
+		<div><p>通过上述调试过程<samp>，</samp>我们已经清楚了 springmvc_demo.xml 文件的加载详情<samp>，</samp>现根据该调试过程给出一张大致的代码执行流程图：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0055.jpg" /></div>
+		<div><p>接着<samp>，</samp>我们再以类似的调试方法跟踪一下 HandlerMapping 的初始化过程：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0056.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0057.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0058.jpg" /></div>
+		<div><p>实际上<samp>，</samp>defaultStrategies 默认策略中的值均加载自 DispatcherServlet.properties 文件（我们重点关注 HandlerMapping 中默认值的设置）：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0059.jpg" /></div>
+		<div><p>在 HandlerMapping 默认配置中有两种处理器映射器 BeanNameUrlHandlerMapping、DefaultAnnotationHandlerMapping<samp>，</samp>由于我们本次示例应用是以注解的方式实现的请求映射<samp>，</samp>因此<samp>，</samp>在调试时只需关注 DefaultAnnotationHandlerMapping 即可：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre><span class="w3-text-white">@Controller</span>
+public class UserController {
+
+	<span class="w3-text-white">@RequestMapping("/queryUser")</span>
+	public String query(Map&lt;String, Object&gt; map) {
+
+		User user = new User();
+		user.setUsername("Tom");
+
+		map.put("user", user);
+		System.out.println("Tom says HelloWorld ...");
+		return "user";
+	}
+}
+
+...
+
+<span class="w3-text-white">@Controller</span>
+public class ProductController {
+
+	<span class="w3-text-white">@RequestMapping("/queryProduct")</span>
+	public String query() {
+		System.out.println("product...");
+		return "product";
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0060.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0061.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0062.jpg" /></div>
+		<div><p>...</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0063.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0064.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0065.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0066.jpg" /></div>
+		<div><p>通过上述调试可知<samp>，</samp>HandlerMapping 的初始化过程已经十分清晰<samp>，</samp>实际上<samp>，</samp>我们还可以通过观察方法调用栈勾勒出该初始化的大致流程：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0067.jpg" /></div>
+		<div><p>SpringMVC 配置文件（例如 springmvc_demo.xml）的加载、HandlerMapping 的初始化均是在 Servlet 容器（例如 tomcat）启动的过程中完成的。当 Servlet 容器启动完成之后<samp>，</samp>我们继续使用 debug 方式探知以下两个问题：</p></div>
+		<div><ul style="list-style:decimal">
+			<li><p>HTTP 请求是如何被分发到特定控制器（例如 userController）的？</p></li>
+			<li><p>视图解析器是如何工作的？</p></li>
+		</ul></div>
+		<div><p>如法炮制<samp>，</samp>继续打断点探知一下 HTTP 请求到达特定控制器的过程：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0068.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0069.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0070.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0071.jpg" /></div>
+		<div><p>在明白了 HandlerMapping 的初始化过程之后<samp>，</samp>调试跟踪 HTTP 请求到达特定控制器的过程将变得更为容易。据图可知<samp>，</samp>HTTP 请求首先会被 Servlet 容器的过滤器（ApplicationFilterChain）拦截<samp>，</samp>当处理到达 DispatcherServlet 时<samp>，</samp>它会根据请求路径从 handlerMappings 里找到对应的控制器实例<samp>，</samp>最终通过 Java 语言的反射机制调用了特定控制器的对应方法（例如 userController 控制器中的 query 方法）：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0072.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0073.jpg" /></div>
+		<div><p>那么<samp>，</samp>控制器得到处理结果即数据模型之后<samp>，</samp>视图解析器是如何工作并最终将视图返回给用户的呢？</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0074.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0075.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0076.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0077.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0078.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0079.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/12/0080.jpg" /></div>
+		<div><p>根据上述对 HTTP 请求、响应进行调试跟踪之后<samp>，</samp>视图解析器的工作原理已经了然于心。值得注意的是<samp>，</samp>在第一次请求生成某个视图时<samp>，</samp>该视图会被缓存到 AbstractCachingViewResolver 类的成员对象 viewCreationCache 中。</p></div>
+		<div><p>最后总结<samp>，</samp>在探知 Web MVC 的工作原理时<samp>，</samp>我们先给出了原理图<samp>，</samp>再根据该原理图对各关键点进行 debug 调试跟踪以知悉它的实现方式。在调试跟踪代码执行的过程中<samp>，</samp>SpringMVC 框架的很多实现细节也随之呈现（这些细节会在适当的时间再次整理）。</p></div>
+	</section>
+</article>

@@ -1,0 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/46.txt',id:'prevtonext'},{url:'src/area_2/articles/0047/0047.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« SpringMVC 系列：Web MVC 的工作原理（02）</a>
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/44.txt',id:'prevtonext'},{url:'src/area_2/articles/0045/0045.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">负载均衡（Load Balance）之数据链路层方式 »</a>
+<div style="clear: both;"></div>
