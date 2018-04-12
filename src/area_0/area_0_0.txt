@@ -1,6 +1,36 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2018.03.11</h4>
+			<p><strong>SpringMVC 系列：参数绑定（04）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数绑定<samp>，</samp>简而言之就是将客户端发起请求时所携带的某些数据映射到对应控制器的具体方法参数上的操作。例如<samp>，</samp>思考一下用户通过注册页面将姓名、密码等数据提交至服务器端的业务场景<samp>，</samp>这些姓名、密码等数据随 HTTP 请求到达服务器端之后<samp>，</samp>它们会由对应控制器的注册方法来接收这些数据<samp>，</samp>那么<samp>，</samp>请求数据与方法入参之间的映射就是参数绑定。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0049/0049.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
+			<h4>2018.03.10</h4>
+			<p><strong>SpringMVC 系列：@Controller 注解之 value 值的生成（03）</strong></p>
+			<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在理解 SpringMVC 工作原理的过程中遇到很多细节疑问<samp>，</samp>解答这些细节疑问的办法也有很多种<samp>，</samp>现举例以 debug 的方式解答一个比较简单的疑问：使用 @Controller 注解<samp>，</samp>在没有指定控制器名称的情况下<samp>，</samp>它的默认值是如何生成的？例如：</p>
+				<pre style="overflow:hidden;text-overflow:ellipsis">    // @Controller(<span class="w3-text-light-green">value</span> = "myCustomUserController")
+    @Controller
+    public class UserController {
+        ...
+    }</pre>
+				<div><p>在 <span class="w3-text-light-green">value</span> 值没有指定的情况下<samp>，</samp>控制器 UserController 的名称是怎样生成的？它会是什么？</p></div>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0048/0048.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2018.03.09</h4>
 			<p><strong>SpringMVC 系列：Web MVC 的工作原理（02）</strong></p>
 			<div class="w3-container w3-light-gray">

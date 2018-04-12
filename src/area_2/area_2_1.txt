@@ -1,4 +1,36 @@
 <article>
+	<div><p><strong>CSS + JS 实现简易版扫雷</strong></p><p class="w3-right">2017-12-25</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-example-mine-sweeping-01-02_0039">
+		<script>
+			(function(){var cols=6;var rows=6;var node=document.getElementsByClassName("w3-example-mine-sweeping-01-02_0039")[0];var arrx=[];var arry=[];var bool=false;for(let col=1;col<=cols;col++){var coln=document.createElement("div");coln.setAttribute("class","cols");arrx[col-1]=[];arry[col-1]=[];for(let row=1;row<=rows;row++){var wrap=document.createElement("div");wrap.setAttribute("class","wrap");var item=document.createElement("div");item.setAttribute("class","item");arry[col-1][row-1]=item;var back=document.createElement("div");back.style.transform="translate(0,-52px)";back.setAttribute("class","back");back.addEventListener("click",function(){if(bool){show();setTimeout(function(){cler();load(rand());},500);bool = false;}});item.addEventListener("click",function(){if(this.nextSibling.className.indexOf("mine")==-1){this.className+=" hide";}else{hide();bool=true;}});wrap.appendChild(item);wrap.appendChild(back);coln.appendChild(wrap);arrx[col-1][row-1]=back;}node.appendChild(coln);}
+				load(rand());
+				function show(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(arry[col-1][row-1].className.indexOf("hide")==-1)continue;arry[col-1][row-1].className=arry[col-1][row-1].className.replace(" hide","");}}}
+				function hide(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(arry[col-1][row-1].className.indexOf("hide")>-1)continue;arry[col-1][row-1].className+=" hide";}}}
+				function rand(){var r=[];var x=Math.floor(Math.random()*10)%5+1;for(let i=0;i<x;i++){var y=Math.floor(Math.random()*100)%36+1;r.push(y);}return r;}
+				function load(arrz){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){if(jude(arrz,(row-1)*6+col)){if(arrx[col-1][row-1].className.indexOf("mine")>-1)break;arrx[col-1][row-1].className+=" mine";}}}}
+				function jude(arrz,t){for(let n=0;n<arrz.length;n++){if((arrz[n]==t)){return true;}}return false;}
+				function cler(){for(let col=1;col<=cols;col++){for(let row=1;row<=rows;row++){arrx[col-1][row-1].className=arrx[col-1][row-1].className.replace(" mine","");}}}
+			})();
+		</script>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/38.txt',id:'prevtonext'},{url:'src/area_2/articles/0039/0039.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
+	<div><p><strong>面包屑导航（Breadcrumb Navigation）</strong></p><p class="w3-right">2017-12-24</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-example-breadcrumb-navigation-01-02_0038">
+		<div>
+			<a>首页</a><a>关于</a><a>职业提升</a><a>生活随笔</a>
+		</div>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/37.txt',id:'prevtonext'},{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：ReentrantLock 之源码调试（14）</strong></p><p class="w3-right">2017-12-16</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -92,26 +124,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/29.txt',id:'prevtonext'},{url:'src/area_2/articles/0030/0030.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：volatile 关键字（09）</strong></p><p class="w3-right">2017-10-13</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，以 volatile 关键字修饰的变量具有两种特性：1.变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）。2.禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/28.txt',id:'prevtonext'},{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：图文并茂之 hsdis 编译（08）</strong></p><p class="w3-right">2017-10-07</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是 <span style="color:#8bc34a">hsdis(HotSpot Disassembler)</span>？顾名思义，它是个反汇编神器，有想目睹 Java 代码编译之后的汇编模样，那么这款神器是你不可错过的。博主原本是打算从 CSDN 上下载一个 <span style="color:#8bc34a">hsdis-amd64.dll</span>，无奈币值不够，只能自力更生。网上有很多文章也介绍了编译 <span style="color:#8bc34a">hsdis</span> 的所需步骤，但基本都是文字描述，看起来比较费劲。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/27.txt',id:'prevtonext'},{url:'src/area_2/articles/0028/0028.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

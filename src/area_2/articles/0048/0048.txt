@@ -1,0 +1,38 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：@Controller 注解之 value 值的生成（03）</strong></p><p class="w3-right w3-margin-0">2018-03-10</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在理解 SpringMVC 工作原理的过程中遇到很多细节疑问<samp>，</samp>解答这些细节疑问的办法也有很多种<samp>，</samp>现举例以 debug 的方式解答一个比较简单的疑问：使用 @Controller 注解<samp>，</samp>在没有指定控制器名称的情况下<samp>，</samp>它的默认值是如何生成的？例如：</p>
+			<pre style="overflow:auto">    // @Controller(<span class="w3-text-light-green">value</span> = "myCustomUserController")
+    @Controller
+    public class UserController {
+        ...
+    }</pre>
+			<div><p>在 <span class="w3-text-light-green">value</span> 值没有指定的情况下<samp>，</samp>控制器 UserController 的名称是怎样生成的？它会是什么？</p></div>
+		</div>
+	</section>
+	<section>
+		<div><p>在分析了 SpringMVC 工作原理之后<samp>，</samp>我们已经知道<samp>，</samp>该框架会根据它的配置文件（例如 springmvc_demo.xml）扫描对应包目录下的各控制器<samp>，</samp>拿到 class 文件再进行后续处理：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;!-- 配置自动扫描包 --&gt;
+&lt;context:component-scan
+	base-package="<span class="w3-text-white">com.hsdis.controller</span>"&gt;&lt;/context:component-scan&gt;</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0048/images/01.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0048/images/02.jpg" /></div>
+		<div><p>据图可知<samp>，</samp>ClassPathBeanDefinitionScanner 类的第 276 行执行结束之后<samp>，</samp>会生成一个 beanName<samp>，</samp>值为 userController<samp>，</samp>这个值和控制器 UserController 的类名如此相似<samp>，</samp>那么<samp>，</samp>我们就重点看一下 generateBeanName 方法的执行过程：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0048/images/03.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0048/images/04.jpg" /></div>
+		<div><p>在 generateBeanName 方法的执行过程中<samp>，</samp>首先会判断入参 BeanDefinition 实例是否为注解类型<samp>，</samp>是注解类型则调用 determineBeanNameFromAnnotation 方法获得 value 值<samp>，</samp>若 value 值不为空则返回<samp>，</samp>否则调用 buildDefaultBeanName 方法：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0048/images/05.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0048/images/06.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0048/images/07.jpg" /></div>
+		<div><p>上述代码通俗易懂<samp>，</samp>就不多解释了。可见<samp>，</samp>当使用 @Controller 注解时<samp>，</samp>在 value 值没有指定的情况下<samp>，</samp>控制器 UserController 名称的生成过程是如此简单。值得注意的是<samp>，</samp>ClassPathBeanDefinitionScanner 类的第 272 行调用 findCandidateComponents 方法是用以加载各控制器 class 文件并最终生成对应控制器的 BeanDefinition 实例<samp>，</samp>有兴趣的童鞋可以自行研究一下。</p></div>
+	</section>
+</article>

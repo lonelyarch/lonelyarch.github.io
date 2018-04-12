@@ -1,0 +1,136 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：参数绑定（04）</strong></p><p class="w3-right w3-margin-0">2018-03-11</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数绑定<samp>，</samp>简而言之就是将客户端发起请求时所携带的某些数据映射到对应控制器的具体方法参数上的操作。例如<samp>，</samp>思考一下用户通过注册页面将姓名、密码等数据提交至服务器端的业务场景<samp>，</samp>这些姓名、密码等数据随 HTTP 请求到达服务器端之后<samp>，</samp>它们会由对应控制器的注册方法来接收这些数据<samp>，</samp>那么<samp>，</samp>请求数据与方法入参之间的映射就是参数绑定。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>1. Java 语言常用数据类型的参数绑定<samp>，</samp>即 int、long、boolean、String 等。举例说明：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;form action="register" method="post"&gt;
+	&lt;label&gt;username: &lt;/label&gt;&lt;input type="text" <span class="w3-text-white">name="username"</span> /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;password: &lt;/label&gt;&lt;input type="password" <span class="w3-text-white">name="password"</span> /&gt;
+	&lt;br /&gt;
+	&lt;input type="submit" value="register" /&gt;
+&lt;/form&gt;</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>@RequestMapping(value = "/register", method = RequestMethod.POST)
+public String register(String <span class="w3-text-white">username</span>, String <span class="w3-text-white">password</span>) {
+	System.out.println("username: " + username + ", password: " + password);
+	return "user";
+}</pre></div>
+		<div><p>2. POJO 类型的参数绑定。举例说明：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;form action="register" method="post"&gt;
+	&lt;label&gt;username: &lt;/label&gt;&lt;input type="text" <span class="w3-text-white">name="username"</span> /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;password: &lt;/label&gt;&lt;input type="password" <span class="w3-text-white">name="password"</span> /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;province: &lt;/label&gt;&lt;input type="text" <span class="w3-text-white">name="address.province"</span> /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;city: &lt;/label&gt;&lt;input type="text" <span class="w3-text-white">name="address.city"</span> /&gt;
+	&lt;br /&gt;
+	&lt;input type="submit" value="register" /&gt;
+&lt;/form&gt;</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>@RequestMapping(value = "/register", method = RequestMethod.POST)
+public String register(<span class="w3-text-white">User user</span>) {
+	System.out.println(user);
+	return "user";
+}
+
+...
+
+public class User {
+
+	private String username;
+	private String password;
+	private <span class="w3-text-white">Address address</span>;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" 
+			+ username + ", password=" + password + ", address=" + address + "]";
+	}
+
+}
+
+...
+
+public class Address {
+
+	private String province;
+	private String city;
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	@Override
+	public String toString() {
+		return "Address [province=" + province + ", city=" + city + "]";
+	}
+
+}
+</pre></div>
+		<div><p>3. Map、List 等集合类型的参数绑定。举例说明：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;form action="register" method="post"&gt;
+	&lt;label&gt;username: &lt;/label&gt;&lt;input type="text" name="username" /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;password: &lt;/label&gt;&lt;input type="password" name="password" /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;province: &lt;/label&gt;&lt;input type="text" name="province" /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;city: &lt;/label&gt;&lt;input type="text" name="city" /&gt;
+	&lt;br /&gt;
+	&lt;input type="submit" value="register" /&gt;
+&lt;/form&gt;</pre></div>
+							<div><p style="margin:7.5px 0"></p></div>
+							<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>@RequestMapping(value = "/register", method = RequestMethod.POST)
+public String register(<span class="w3-text-white">@RequestParam</span> Map&lt;String, Object&gt; map) {
+	System.out.println(map.toString());
+	return "user";
+}</pre></div>
+		<div><p>简单梳理一下参数绑定的实现原理<samp>，</samp>以 Map 类型的参数绑定为例<samp>，</samp>请求数据被转换为 Object 数组<samp>，</samp>再通过 Java 反射机制调用对应控制器的 register 方法：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0049/images/00.jpg" /></div>
+	</section>
+</article>
