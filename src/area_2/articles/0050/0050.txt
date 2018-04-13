@@ -1,0 +1,145 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：支持 PUT、DELETE 请求（05）</strong></p><p class="w3-right w3-margin-0">2018-03-12</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUT、DELETE 请求是用来干什么的？具体可以参考 Spring 官方文档 <a target="_blank" class="w3-link" href="https://spring.io/understanding/REST">Understanding REST</a> 。事实上<samp>，</samp>博主在曾经的工作中也碰到过 RESTful 架构的应用<samp>，</samp>当时也只是简单地使用了 Spring 提供的模板类 RestTemplate 进行开发<samp>，</samp>由于彼时还没有写个人博客的习惯<samp>，</samp>时至今日<samp>，</samp>在开发中遇到的很多细节问题早已淡忘<samp>，</samp>真是岁月不饶人。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有想了解什么是 RESTful 架构的童鞋可以阅读以下资料：</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. <a target="_blank" class="w3-link" href="http://www.ruanyifeng.com/blog/2011/09/restful.html">理解 RESTful 架构</a>（阮一峰老师的博客文章）<samp>；</samp></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 《<a target="_blank" class="w3-link" href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">Architectural Styles and the Design of Network-based Software Architectures</a>》<samp>；</samp></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 《<a target="_blank" class="w3-link" href="https://yuedu.baidu.com/ebook/780324fbf121dd36a32d8269">架构风格与基于网络应用软件的架构设计</a>》<samp>，</samp>Roy Fielding 博士论文中文版。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在 Spring 官方文档 <a target="_blank" class="w3-link" href="https://spring.io/understanding/REST">Understanding REST</a> 里有这样一句话：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>Use HTTP methods to map CRUD (create, retrieve, update, delete) operations to HTTP requests.</pre></div>
+		<div><p>即用 HTTP 方法将 CRUD 操作映射至 HTTP 请求。那么<samp>，</samp>它到底是什么意思呢？现举例说明<samp>，</samp>设想一下某网站的用户管理业务<samp>，</samp>即用户注册、用户查询、用户信息变更以及用户注销这些基本的业务操作<samp>，</samp>我们给出如下表格：</p></div>
+		<div class="w3-responsive">
+			<table class="w3-table w3-bordered w3-white w3-striped">
+				<thead><tr class="w3-lightslategray"><th>CRUD</th><th>HTTP 请求方式</th><th>请求路径</th><th>描述</th></tr></thead>
+				<tbody>
+					<tr>
+						<td>create</td>
+						<td>POST</td>
+						<td>/user</td>
+						<td>用户注册</td>
+					</tr>
+					<tr>
+						<td>retrieve</td>
+						<td>GET</td>
+						<td>/user/9527</td>
+						<td>查询 id=9527 的用户</td>
+					</tr>
+					<tr>
+						<td>update</td>
+						<td>PUT</td>
+						<td>/user/9527</td>
+						<td>变更 id=9527 的用户信息</td>
+					</tr>
+					<tr>
+						<td>delete</td>
+						<td>DELETE</td>
+						<td>/user/9527</td>
+						<td>注销 id=9527 的用户</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div><p>为了更加直观地理解基于 RESTful 架构的应用与非 REST 风格的应用之间实现上的差别<samp>，</samp>我们再以豆瓣和百度为例<samp>，</samp>分别从两个站点请求一张图片<samp>，</samp>再查看浏览器地址栏的 URL 地址：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0050/images/01.jpg" /></div>
+		<div><p>现在<samp>，</samp>我们知道了基于 RESTful 架构的应用依赖 HTTP 的 POST、GET、PUT 以及 DELETE 请求。实际上<samp>，</samp>HTML 中的 form 表单只支持 GET、POST 请求<samp>，</samp>如何使基于 SpringMVC 的 Web 应用支持 PUT、DELETE 请求呢？答案是使用过滤器：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;!-- web.xml --&gt;
+&lt;filter&gt;
+	&lt;filter-name&gt;hiddenHttpMethodFilter&lt;/filter-name&gt;
+	&lt;filter-class&gt;<span class="w3-text-white">org.springframework.web.filter.HiddenHttpMethodFilter</span>&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;hiddenHttpMethodFilter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</pre></div>
+
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;!-- HTML 表单 --&gt;
+&lt;form action="modify/9527" method="post"&gt;
+	&lt;label&gt;username: &lt;/label&gt;&lt;input type="text" name="username" value="Tom" /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;password: &lt;/label&gt;&lt;input type="password" name="password" value="123456" /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;province: &lt;/label&gt;&lt;input type="text" name="province" value="陕西省" /&gt;
+	&lt;br /&gt;
+	&lt;label&gt;city: &lt;/label&gt;&lt;input type="text" name="city" value="西安市" /&gt;
+	&lt;br /&gt;
+	<span class="w3-text-white">&lt;input type="hidden" name="_method" value="put" /&gt;</span>
+	&lt;input type="submit" value="modify" /&gt;
+&lt;/form&gt;</pre></div>
+							<div><p style="margin:7.5px 0"></p></div>
+							<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>/* com.hsdis.controller.UserController */
+@RequestMapping(value = "/modify/{id}", method = <span class="w3-text-white">RequestMethod.PUT</span>)
+@ResponseBody
+public String restfulPut(@PathVariable(value = "id") int id) {
+	System.out.println("user: " + id);
+	return "user";
+}</pre></div>
+		<div><p>那么<samp>，</samp>HiddenHttpMethodFilter 过滤器具体都做了些什么呢？我们可以通过阅读源码获得答案（该过滤器源码简明易懂<samp>，</samp>不多赘述）：</p></div>
+		<div class="w3-custom-code"><pre><span class="w3-text-coral">package</span> org.springframework.web.filter;
+
+<span class="w3-text-coral">import</span> java.io.IOException;
+<span class="w3-text-coral">import</span> java.util.Locale;
+<span class="w3-text-coral">import</span> javax.servlet.FilterChain;
+<span class="w3-text-coral">import</span> javax.servlet.ServletException;
+<span class="w3-text-coral">import</span> javax.servlet.http.HttpServletRequest;
+<span class="w3-text-coral">import</span> javax.servlet.http.HttpServletRequestWrapper;
+<span class="w3-text-coral">import</span> javax.servlet.http.HttpServletResponse;
+
+<span class="w3-text-coral">import</span> org.springframework.util.Assert;
+<span class="w3-text-coral">import</span> org.springframework.util.StringUtils;
+<span class="w3-text-coral">import</span> org.springframework.web.util.WebUtils;
+
+<span class="w3-text-coral">public class</span> HiddenHttpMethodFilter <span class="w3-text-coral">extends</span> OncePerRequestFilter {
+
+	<span class="w3-text-coral">public static final</span> String <span class="w3-text-blue">DEFAULT_METHOD_PARAM</span> = "<span class="w3-text-blue">_method</span>";
+	<span class="w3-text-coral">private</span> String <span class="w3-text-blue">methodParam</span> = <span class="w3-text-blue">DEFAULT_METHOD_PARAM</span>;
+
+	<span class="w3-text-coral">public void</span> setMethodParam(String methodParam) {
+		Assert.hasText(methodParam, "'methodParam' must not be empty");
+		<span class="w3-text-coral">this</span>.methodParam = methodParam;
+	}
+
+	@Override
+	<span class="w3-text-coral">protected void</span> doFilterInternal(HttpServletRequest request, 
+			HttpServletResponse response, FilterChain filterChain)
+			<span class="w3-text-coral">throws</span> ServletException, IOException {
+
+		HttpServletRequest requestToUse = request;
+
+		<span class="w3-text-coral">if</span> ("POST".equals(request.getMethod()) &amp;&amp; 
+			request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == null) {
+			String <span class="w3-text-blue">paramValue</span> = request.getParameter(<span class="w3-text-coral">this</span>.methodParam);
+			<span class="w3-text-coral">if</span> (StringUtils.hasLength(paramValue)) {
+				requestToUse = <span class="w3-text-coral">new</span> HttpMethodRequestWrapper(request, <span class="w3-text-blue">paramValue</span>);
+			}
+		}
+
+		filterChain.doFilter(requestToUse, response);
+	}
+
+	<span class="w3-text-coral">private static class</span> HttpMethodRequestWrapper <span class="w3-text-coral">extends</span> HttpServletRequestWrapper {
+
+		<span class="w3-text-coral">private final</span> String method;
+
+		<span class="w3-text-coral">public</span> HttpMethodRequestWrapper(HttpServletRequest request, String <span class="w3-text-blue">method</span>) {
+			<span class="w3-text-coral">super</span>(request);
+			<span class="w3-text-coral">this</span>.method = <span class="w3-text-blue">method</span>.toUpperCase(Locale.ENGLISH);
+		}
+
+		@Override
+		<span class="w3-text-coral">public</span> String getMethod() {
+			<span class="w3-text-coral">return</span> <span class="w3-text-coral">this</span>.method;
+		}
+	}
+}</pre></div>
+	<div><p>实际上<samp>，</samp>Spring 除了提供 HiddenHttpMethodFilter 过滤器以支持 PUT、DELETE 请求之外<samp>，</samp>还提供了 HttpPutFormContentFilter 以支持 PUT 请求<samp>，</samp>至于两者的区别是什么<samp>，</samp>感兴趣的童鞋请查看相关资料、阅读源码或自行动手实验<samp>，</samp>自己动手<samp>，</samp>丰衣足食。</p></div>
+	</section>
+</article>

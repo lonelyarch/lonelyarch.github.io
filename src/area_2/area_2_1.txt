@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：ThreadPoolExecutor 初探（15）</strong></p><p class="w3-right">2017-12-31</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadPoolExecutor，顾名思义，简单理解为，这是一个用以管理、维护线程的线程池，它与数据库连接池的应用可谓异曲同工，虽然两者管理、维护的对象不同，但核心思想是一致的，即重复使用现有对象以降低因创建、销毁对象等操作所占用的系统资源，从而提升业务处理能力。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/39.txt',id:'prevtonext'},{url:'src/area_2/articles/0040/0040.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>CSS + JS 实现简易版扫雷</strong></p><p class="w3-right">2017-12-25</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-example-mine-sweeping-01-02_0039">
@@ -112,16 +123,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/30.txt',id:'prevtonext'},{url:'src/area_2/articles/0031/0031.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</strong></p><p class="w3-right">2017-10-22</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在整理 ConcurrentHashMap 相关知识点时的基本思路是，先列出 HashMap 在并发环境里存在的问题，再引出 ConcurrentHashMap，以不失文章的完整性。原本打算抛出 HashMap 死循环（infinite loop）这个经典问题，但几经折腾之后才意识到，该问题多存在于 JDK1.7 环境，在 JDK1.8 环境下却难以产生，这是为什么？现给出 JDK1.7、JDK1.8 里 HashMap 相关源码的分析过程。</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：为了维持 <span class="w3-text-gray">Java 并发编程系列</span>的连续性，于是才把该篇文章归在了 <span class="w3-text-gray">Java 并发编程系列</span>。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/29.txt',id:'prevtonext'},{url:'src/area_2/articles/0030/0030.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

@@ -1,2 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/49.txt',id:'prevtonext'},{url:'src/area_2/articles/0050/0050.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« SpringMVC 系列：支持 PUT、DELETE 请求（05）</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/47.txt',id:'prevtonext'},{url:'src/area_2/articles/0048/0048.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">SpringMVC 系列：@Controller 注解之 value 值的生成（03） »</a>
 <div style="clear: both;"></div>

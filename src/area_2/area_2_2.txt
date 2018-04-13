@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</strong></p><p class="w3-right">2017-10-22</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在整理 ConcurrentHashMap 相关知识点时的基本思路是，先列出 HashMap 在并发环境里存在的问题，再引出 ConcurrentHashMap，以不失文章的完整性。原本打算抛出 HashMap 死循环（infinite loop）这个经典问题，但几经折腾之后才意识到，该问题多存在于 JDK1.7 环境，在 JDK1.8 环境下却难以产生，这是为什么？现给出 JDK1.7、JDK1.8 里 HashMap 相关源码的分析过程。</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：为了维持 <span class="w3-text-gray">Java 并发编程系列</span>的连续性，于是才把该篇文章归在了 <span class="w3-text-gray">Java 并发编程系列</span>。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/29.txt',id:'prevtonext'},{url:'src/area_2/articles/0030/0030.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：volatile 关键字（09）</strong></p><p class="w3-right">2017-10-13</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -103,16 +115,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/20.txt',id:'prevtonext'},{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>深入理解红黑树（red-black tree）</strong></p><p class="w3-right">2017-05-27</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在整理 HashMap 相关知识点的时候，博主就曾碰到过<span class="w3-text-light-green">红黑树</span>，当时浮现在大脑里的树不仅有它，还有哈夫曼树、二叉查找树、B_树，甚至是苹果树，然而，在职场上几经摸爬滚打之后，博主已忘记了这些树原本的模样，真是岁月不饶人。</P>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现打算重温学生时代的记忆和印象，找回过去的那个懂得许多树的我，这么说还是比较浮夸的，从现实出发就是，在将要整理出 TreeMap 知识点的时候，博主又遭遇了 <span class="w3-text-light-green">A Red-Black tree</span>，实属缘分之不易。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/19.txt',id:'prevtonext'},{url:'src/area_2/articles/0020/0020.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
