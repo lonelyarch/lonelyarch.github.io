@@ -1,6 +1,18 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2018.03.15</h4>
+			<p><strong>SpringMVC 系列：ASM 之读写字节码（06）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分析 SpringMVC 工作原理时遇到了 ClassReader 类，根据 Spring <a target="_blank" class="w3-link" href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/javadoc-api/org/springframework/asm/ClassReader.html">API</a> 文档可知，该类是 Java class 文件的解析器，即读取字节码。除了 ClassReader 类之外，在 Spring 核心 jar 文件的 org.springframework.asm 包路径下，还涉及了很多用以对字节码进行各种不同处理的类，例如，ClassVisitor、ClassWriter 等，现简要整理一下部分类的用法。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0051/0051.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2018.03.12</h4>
 			<p><strong>SpringMVC 系列：支持 PUT、DELETE 请求（05）</strong></p>
 			<div class="w3-container w3-light-gray">

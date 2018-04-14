@@ -1,0 +1,154 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：ASM 之读写字节码（06）</strong></p><p class="w3-right w3-margin-0">2018-03-15</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分析 SpringMVC 工作原理时遇到了 ClassReader 类，根据 Spring <a target="_blank" class="w3-link" href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/javadoc-api/org/springframework/asm/ClassReader.html">API</a> 文档可知，该类是 Java class 文件的解析器，即读取字节码。除了 ClassReader 类之外，在 Spring 核心 jar 文件的 org.springframework.asm 包路径下，还涉及了很多用以对字节码进行各种不同处理的类，例如，ClassVisitor、ClassWriter 等，现简要整理一下部分类的用法。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>目前，软件市场上存在很多用以操作字节码的类库，例如，apache 的 <a target="_blank" class="w3-link" href="https://commons.apache.org/proper/commons-bcel/">Commons BCEL</a> 、JBoss 的 <a target="_blank" class="w3-link" href="https://jboss-javassist.github.io/javassist/">Javassist</a> 以及 <a target="_blank" class="w3-link" href="http://asm.ow2.org/">asm.ow2.org</a> 的 ASM 等。但稍加留意，可知 Spring 框架内用以操作字节码的各基础类与 <a target="_blank" class="w3-link" href="http://asm.ow2.org/">asm.ow2.org</a> 站点提供的 asm-6.0.jar 文件的 org.objectweb.asm 包路径下的各基础类均一致（在 Spring 中只是多了 SpringAsmInfo.class 文件）：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0051/images/01.jpg" /></div>
+		<div><p>现在，我们引入 <a target="_blank" class="w3-link" href="http://asm.ow2.org/">asm.ow2.org</a> 的 asm-6.0.jar 文件，给出一个读取 Java class 文件的简单示例（这与 Spring 中读取 Java class 文件是一致的）：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.demo.asm;
+public class Test {}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.demo.asm;
+
+import java.util.Arrays;
+import org.objectweb.asm.ClassVisitor;
+
+public class MyClassVisitor extends <span class="w3-text-white">ClassVisitor</span> {
+
+	public MyClassVisitor(int api) {
+		super(api);
+	}
+
+	@Override
+	public void visit(int version, int access, String name, String signature,
+			String superName, String[] interfaces) {
+		super.visit(version, access, name, signature, superName, interfaces);
+		System.out.println("version: " + version);
+		System.out.println("access: " + access);
+		System.out.println("name: " + name);
+		System.out.println("signature: " + signature);
+		System.out.println("superName: " + superName);
+		System.out.println("interfaces: " + Arrays.toString(interfaces));
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.demo.asm;
+
+import java.io.IOException;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Opcodes;
+
+public class ASMDemo {
+
+	public static void main(String[] args) {
+		try {
+			<span class="w3-text-white">ClassReader</span> cr = new <span class="w3-text-white">ClassReader</span>("com.hsdis.demo.asm.Test");
+			MyClassVisitor mcv = new MyClassVisitor(Opcodes.ASM6);
+			cr.accept(mcv, ClassReader.SKIP_DEBUG);
+		} catch (IOException e) {
+		}
+	}
+}</pre></div>
+		<div><p>示例代码的意思是，创建一个 ClassReader 实例用以读取 Test.class 文件，用继承自 ClassVisitor 的自定义类 MyClassVisitor 创建一个类访问者实例以访问从 Test.class 文件中读取出的部分内容（我们将 visit 方法的 6 个参数均打印至 console），代码执行结果如下：</p></div>
+		<div class="w3-custom-code w3-white"><pre>version: 52
+access: 33
+name: com/hsdis/demo/asm/Test
+signature: null
+superName: java/lang/Object
+interfaces: []</pre></div>
+		<div><p>通过查阅 API 文档，version、name、superName 以及 interfaces 参数易于理解，那么，access、signature 参数是什么意思呢？</p></div>
+		<div><ul>
+			<li><p><span class="w3-text-light-green">access</span> - the class's access flags (see <a target="_blank" class="w3-link" href="http://asm.ow2.org/asm60/javadoc/user/org/objectweb/asm/Opcodes.html">Opcodes</a>). This parameter also indicates if the class is deprecated. 即类访问标识（参见<a target="_blank" class="w3-link" href="http://asm.ow2.org/asm60/javadoc/user/org/objectweb/asm/Opcodes.html">操作码</a>）。该参数也可标识类是否废弃。</p></li>
+			<li><p><span class="w3-text-light-green">signature</span> - the signature of this class. May be null if the class is not a generic one, and does not extend or implement generic classes or interfaces. 即类签名。如果该类不是泛型且没有继承或实现任何泛型类或接口，那么参数 signature 的值为 null 。</p></li>
+		</ul></div>
+		<div><p>现在，我们将 Test.java 文件稍加修改再执行示例代码以验证上述对 access、signature 参数的解释：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.demo.asm;
+@Deprecated
+public class Test&lt;T&gt; {}</pre></div>
+		<div><p>执行结果如下所示：</p></div>
+		<div class="w3-custom-code w3-white"><pre>version: 52
+access: <span class="w3-text-light-green">131105</span>
+name: com/hsdis/demo/asm/Test
+signature: <span class="w3-text-light-green">&lt;T:Ljava/lang/Object;&gt;Ljava/lang/Object;</span>
+superName: java/lang/Object
+interfaces: []</pre></div>
+		<div><p>可见，对 Test 类使用了 @Deprecated 注解以及泛型化之后，access、signature 参数值均发生了变化。新的问题是，access 参数值 131105 代表什么意思呢？为此，我们给出 Opcodes 接口的源码：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package org.objectweb.asm;
+
+public interface Opcodes {
+
+    // ASM API versions
+
+    int ASM4 = 4 &lt;&lt; 16 | 0 &lt;&lt; 8 | 0;
+    int ASM5 = 5 &lt;&lt; 16 | 0 &lt;&lt; 8 | 0;
+    int ASM6 = 6 &lt;&lt; 16 | 0 &lt;&lt; 8 | 0;
+
+    // versions
+
+    int V1_1 = 3 &lt;&lt; 16 | 45;
+    int V1_2 = 0 &lt;&lt; 16 | 46;
+    int V1_3 = 0 &lt;&lt; 16 | 47;
+    int V1_4 = 0 &lt;&lt; 16 | 48;
+    int V1_5 = 0 &lt;&lt; 16 | 49;
+    int V1_6 = 0 &lt;&lt; 16 | 50;
+    int V1_7 = 0 &lt;&lt; 16 | 51;
+    <span class="w3-text-white">int V1_8 = 0 &lt;&lt; 16 | 52;</span>
+    int V9 = 0 &lt;&lt; 16 | 53;
+
+    // access flags
+
+    <span class="w3-text-white">int ACC_PUBLIC = 0x0001;</span> // class, field, method
+    int ACC_PRIVATE = 0x0002; // class, field, method
+    int ACC_PROTECTED = 0x0004; // class, field, method
+    int ACC_STATIC = 0x0008; // field, method
+    int ACC_FINAL = 0x0010; // class, field, method, parameter
+    <span class="w3-text-white">int ACC_SUPER = 0x0020;</span> // class
+    int ACC_SYNCHRONIZED = 0x0020; // method
+    int ACC_OPEN = 0x0020; // module
+    int ACC_TRANSITIVE = 0x0020; // module requires
+    int ACC_VOLATILE = 0x0040; // field
+    int ACC_BRIDGE = 0x0040; // method
+    int ACC_STATIC_PHASE = 0x0040; // module requires
+    int ACC_VARARGS = 0x0080; // method
+    int ACC_TRANSIENT = 0x0080; // field
+    int ACC_NATIVE = 0x0100; // method
+    int ACC_INTERFACE = 0x0200; // class
+    int ACC_ABSTRACT = 0x0400; // class, method
+    int ACC_STRICT = 0x0800; // method
+    int ACC_SYNTHETIC = 0x1000; // class, field, method, parameter, module *
+    int ACC_ANNOTATION = 0x2000; // class
+    int ACC_ENUM = 0x4000; // class(?) field inner
+    int ACC_MANDATED = 0x8000; // parameter, module, module *
+    int ACC_MODULE = 0x8000; // class
+    
+
+    // ASM specific pseudo access flags
+
+    <span class="w3-text-white">int ACC_DEPRECATED = 0x20000;</span> // class, field, method
+    
+    ...
+}</pre></div>
+		<div><p>根据操作码值，我们可以这样推测：131105（十进制）= ACC_PUBLIC + ACC_SUPER + ACC_DEPRECATED = 0x0001（十六进制）+ 0x0020（十六进制）+ 0x20000（十六进制）。为了验证该推测，我们再次对 Test 类做如下改造：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.demo.asm;
+@Deprecated
+class Test&lt;T&gt; {}</pre></div>
+		<div><p>执行结果如下所示：</p></div>
+		<div class="w3-custom-code w3-white"><pre>version: 52
+access: <span class="w3-text-light-green">131104</span>
+name: com/hsdis/demo/asm/Test
+signature: <span class="w3-text-light-green">&lt;T:Ljava/lang/Object;&gt;Ljava/lang/Object;</span>
+superName: java/lang/Object
+interfaces: []</pre></div>
+		<div><p>执行结果的两相对比可知，Test.java 文件中的 public 类修饰符对应了类访问标识 ACC_PUBLIC，@Deprecated 注解对应类访问标识 ACC_DEPRECATED 。（更多有关 class 文件中类访问标识、signature 的描述请参考《<a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">Java Virtual Machine Specification</a>》）</p></div>
+	</section>
+	<section>
+		<div><p><strong>参考资料：</strong><a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://docs.oracle.com/javase/specs/jvms/se8/html/index.html">https://docs.oracle.com/javase/specs/jvms/se8/html/index.html</a></p></div>
+	</section>
+</article>

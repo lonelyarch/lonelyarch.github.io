@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>SpringMVC 系列：ASM 之读写字节码（06）</strong></p><p class="w3-right">2018-03-15</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分析 SpringMVC 工作原理时遇到了 ClassReader 类，根据 Spring <a target="_blank" class="w3-link" href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/javadoc-api/org/springframework/asm/ClassReader.html">API</a> 文档可知，该类是 Java class 文件的解析器，即读取字节码。除了 ClassReader 类之外，在 Spring 核心 jar 文件的 org.springframework.asm 包路径下，还涉及了很多用以对字节码进行各种不同处理的类，例如，ClassVisitor、ClassWriter 等，现简要整理一下部分类的用法。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/50.txt',id:'prevtonext'},{url:'src/area_2/articles/0051/0051.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>SpringMVC 系列：支持 PUT、DELETE 请求（05）</strong></p><p class="w3-right">2018-03-12</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -124,15 +135,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/41.txt',id:'prevtonext'},{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：ThreadPoolExecutor 续篇（16）</strong></p><p class="w3-right">2018-01-02</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 ThreadPoolExecutor 的基本应用、阻塞队列以及饱和策略之后，现以源码为切入点再着重分析一下此线程池的实现原理，尽可能达到知其然知其所以然。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/40.txt',id:'prevtonext'},{url:'src/area_2/articles/0041/0041.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
