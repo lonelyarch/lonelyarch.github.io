@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/50.txt',id:'prevtonext'},{url:'src/area_2/articles/0051/0051.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">SpringMVC 系列：ASM 之读写字节码（06） »</a>
+<div style="clear: both;"></div>

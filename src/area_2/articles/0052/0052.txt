@@ -1,0 +1,234 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：Visitor Pattern（07）</strong></p><p class="w3-right w3-margin-0">2018-03-16</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 SpringMVC 框架中存在着诸多设计模式<samp>，</samp>例如<samp>，</samp>单例模式、适配器模式、责任链模式以及访问者模式等<samp>，</samp>当然<samp>，</samp>MVC 模式是显而易见的。因阅读了处理 Java class 文件的源码时遭遇访问者模式<samp>，</samp>现再次整理一下该知识点。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在 Spring 核心 jar 文件（spring-core-4.3.14.RELEASE.jar）中的 org.springframework.core.type.classreading 包路径下<samp>，</samp>存在着很多<samp>“Visitor”</samp>类<samp>，</samp>从访问者模式的角度而言<samp>，</samp>它们基本都是访问者的具体实现类。我们查看一下 SimpleMetadataReader 类的构造方法：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>SimpleMetadataReader(Resource resource, ClassLoader classLoader) throws IOException {
+	InputStream is = new BufferedInputStream(resource.getInputStream());
+	<span class="w3-text-white">ClassReader classReader</span>;
+	try {
+		<span class="w3-text-white">classReader = new ClassReader(is)</span>;
+	}
+	catch (IllegalArgumentException ex) {
+		throw new NestedIOException("ASM ClassReader failed to parse class file - " +
+			"probably due to a new Java class file version that isn't supported yet: " 
+			+ resource, ex);
+	}
+	finally {
+		is.close();
+	}
+
+	<span class="w3-text-white">AnnotationMetadataReadingVisitor visitor = new AnnotationMetadataReadingVisitor(classLoader)</span>;
+	<span class="w3-text-white">classReader.accept(visitor, ClassReader.SKIP_DEBUG)</span>;
+
+	this.annotationMetadata = visitor;
+	// (since AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor)
+	this.classMetadata = visitor;
+	this.resource = resource;
+}</pre></div>
+						</section>
+						<div><p>根据上述源码可知<samp>，</samp>ClassReader 类的实例对象调用 accept 方法接收了 AnnotationMetadataReadingVisitor 类的实例对象作为参数进行后续处理<samp>，</samp>最终得到一个完整的 visitor 。这是典型的访问者模式的具体应用场景<samp>，</samp>即数据与操作分离以达到对<span class="w3-text-light-green">稳定的数据结构</span>与<span class="w3-text-light-green">易变的操作</span>进行解耦的目的。</p></div>
+						<div><p>在对 Java 字节码进行相关操作的场景中<samp>，</samp>我们将已编译的 class 文件作为<span class="w3-text-light-green">稳定的数据结构</span><samp>，</samp>将运行时对加载到内存的字节码进行读取或写入（Spring 框架中基于 CGLIB 实现 AOP 代理）的操作视为<span class="w3-text-light-green">易变的操作</span><samp>，</samp>这样划分的好处即使用访问者模式的优点是<samp>，</samp>对字节码的每一种操作均遵循职责单一原则、在代码的实现上具有较强扩展性且相对灵活。</p></div>
+						<div><p>事实上<samp>，</samp>根据《<a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">Java Virtual Machine Specification</a>》可知<samp>，</samp>一个 Java class 文件是由一个单独的 ClassFile 结构组成<samp>，</samp>现给出 class 文件的数据结构如下所示：</p></div>
+						<div class="w3-custom-code w3-sandybrown w3-text-black"><pre>ClassFile {
+    u4             magic;
+    u2             minor_version;
+    u2             major_version;
+    u2             constant_pool_count;
+    cp_info        constant_pool[constant_pool_count-1];
+    u2             access_flags;
+    u2             this_class;
+    u2             super_class;
+    u2             interfaces_count;
+    u2             interfaces[interfaces_count];
+    u2             fields_count;
+    field_info     fields[fields_count];
+    u2             methods_count;
+    method_info    methods[methods_count];
+    u2             attributes_count;
+    attribute_info attributes[attributes_count];
+}</pre></div>
+		<div><p>也正是因为 class 文件对应的 ClassFile 结构是稳定的<samp>，</samp>因此<samp>，</samp>我们才将 class 文件作为<span class="w3-text-light-green">稳定的数据结构</span>而非 ClassReader 类。</p></div>
+		<div><p>简单梳理了访问者模式（Visitor Pattern）在 Spring 框架中的一次应用之后<samp>，</samp>接下来我们自己实现一个基于访问者模式的示例<samp>，</samp>以加深对该模式的理解：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0052/images/01.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>1. 抽象元素：共享物品
+public interface SharedGoods {
+	public void accept(Visitor visitor);
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>2. 具体元素：共享单车
+public class Bicycle implements SharedGoods {
+
+	private String color; // 共享单车颜色
+	private String company; // 共享单车所属公司
+
+	public Bicycle(String color, String company) {
+		super();
+		this.color = color;
+		this.company = company;
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>3. 具体元素：共享汽车
+public class Car implements SharedGoods {
+
+	private String brand; // 共享汽车品牌
+	private String company; // 共享汽车所属公司
+
+	public Car(String brand, String company) {
+		super();
+		this.brand = brand;
+		this.company = company;
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>4. 抽象访问者
+public interface Visitor {
+	public void visit(Bicycle bicycle);
+	public void visit(Car car);
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>5. 具体访问者：租借访问者
+public class RentVisitor implements Visitor {
+
+	@Override
+	public void visit(Bicycle bicycle) {
+		// 只租红色单车<samp>，</samp>它能带给我激情
+		if ("红色".equals(bicycle.getColor())) {
+			System.out.println("给" + bicycle.getCompany() + "点赞……");
+		}
+	}
+
+	@Override
+	public void visit(Car car) {
+		// 只租宝马汽车<samp>，</samp>它可以给我省油
+		if ("宝马".equals(car.getBrand())) {
+			System.out.println("给" + car.getCompany() + "点赞……");
+		}
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>6. 具体访问者：检修访问者
+public class RepairVisitor implements Visitor {
+
+	@Override
+	public void visit(Bicycle bicycle) {
+		System.out.println("给" + bicycle.getColor() + bicycle.getCompany()
+				+ "单车重新喷漆……");
+	}
+
+	@Override
+	public void visit(Car car) {
+		System.out.println("给" + car.getCompany() + car.getBrand() + "补胎……");
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>7. 对象结构：既是元素容器也提供可使 Visitor 访问的接口
+import java.util.ArrayList;
+import java.util.List;
+
+public class ObjectStructure implements SharedGoods {
+
+	List&lt;SharedGoods&gt; list = new ArrayList&lt;SharedGoods&gt;();
+
+	@Override
+	public void accept(Visitor visitor) {
+		int size = list.size();
+		for (int i = 0; i &lt; size; i++) {
+			SharedGoods sg = list.get(i);
+			sg.accept(visitor);
+		}
+	}
+
+	public void addSharedGoods(SharedGoods sg) {
+		list.add(sg);
+	}
+
+	public void removeSharedGoods(SharedGoods sg) {
+		list.remove(sg);
+	}
+}</pre></div>
+		<div><p>测试代码：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>public class VisitorClient {
+
+	public static void main(String[] args) {
+
+		Bicycle b1 = new Bicycle("红色", "摩拜");
+		Bicycle b2 = new Bicycle("绿色", "酷骑");
+		Bicycle b3 = new Bicycle("蓝色", "悟空");
+		Car c1 = new Car("宝马", "途歌");
+		Car c2 = new Car("吉利", "易开");
+
+		ObjectStructure os = new ObjectStructure();
+		os.addSharedGoods(b1);
+		os.addSharedGoods(b2);
+		os.addSharedGoods(b3);
+		os.addSharedGoods(c1);
+		os.addSharedGoods(c2);
+
+		Visitor rentVisitor = new RentVisitor();
+		os.accept(rentVisitor);
+
+		Visitor repairVisitor = new RepairVisitor();
+		os.accept(repairVisitor);
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0">执行结果：</p></div>
+		<div class="w3-custom-code w3-white w3-text-black"><pre>给摩拜点赞……
+给途歌点赞……
+给红色摩拜单车重新喷漆……
+给绿色酷骑单车重新喷漆……
+给蓝色悟空单车重新喷漆……
+给途歌宝马补胎……
+给易开吉利补胎……</pre></div>
+</article>
