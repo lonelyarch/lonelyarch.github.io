@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>SpringMVC 系列：模拟 SpringMVC 中的过滤器处理流程（08）</strong></p><p class="w3-right">2018-03-17</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 HTML 中的 form 表单只支持 GET、POST 请求<samp>，</samp>为了使基于 SpringMVC 的 Web 应用支持 PUT、DELETE 请求<samp>，</samp>我们可以在 web.xml 文件中添加 HiddenHttpMethodFilter 达到该目的。在默认配置下<samp>，</samp>当我们发起的请求包含中文时<samp>，</samp>后台处理该请求时可能会有乱码产生<samp>，</samp>解决该问题的办法通常也是在 web.xml 文件中添加 CharacterEncodingFilter 。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么 Web 应用中的过滤器是如何工作的呢？现简单模拟一下 Web 应用中过滤器的大致处理流程以及基于责任链模式（Chain of Responsibility Pattern）的过滤器实现。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/52.txt',id:'prevtonext'},{url:'src/area_2/articles/0053/0053.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>SpringMVC 系列：Visitor Pattern（07）</strong></p><p class="w3-right">2018-03-16</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -107,15 +119,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/43.txt',id:'prevtonext'},{url:'src/area_2/articles/0044/0044.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- Copy-On-Write 容器（17）</strong></p><p class="w3-right">2018-01-13</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy-On-Write 简称 COW<samp>，</samp>是一种用于程序设计中的优化策略。它的基本思路是<samp>，</samp>从一开始大家都在共享同一个内容<samp>，</samp>当某个人想要修改这个内容的时候<samp>，</samp>才会真正把内容 Copy 出去形成一个新的内容然后再改<samp>，</samp>这是一种<span class="w3-text-light-green">延时懒惰策略</span>。从 JDK1.5 开始<samp>，</samp>Java 并发包里提供了两个使用 CopyOnWrite 机制实现的并发容器<samp>，</samp>它们是 CopyOnWriteArrayList 和 CopyOnWriteArraySet。CopyOnWrite 容器非常有用<samp>，</samp>可以在非常多的并发场景中使用到。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/42.txt',id:'prevtonext'},{url:'src/area_2/articles/0043/0043.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

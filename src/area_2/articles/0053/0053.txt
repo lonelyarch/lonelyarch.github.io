@@ -1,0 +1,307 @@
+<article>
+	<section>
+		<div><p><strong>SpringMVC 系列：模拟 SpringMVC 中的过滤器处理流程（08）</strong></p><p class="w3-right w3-margin-0">2018-03-17</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 HTML 中的 form 表单只支持 GET、POST 请求<samp>，</samp>为了使基于 SpringMVC 的 Web 应用支持 PUT、DELETE 请求<samp>，</samp>我们可以在 web.xml 文件中添加 HiddenHttpMethodFilter 达到该目的。在默认配置下<samp>，</samp>当我们发起的请求包含中文时<samp>，</samp>后台处理该请求时可能会有乱码产生<samp>，</samp>解决该问题的办法通常也是在 web.xml 文件中添加 CharacterEncodingFilter 。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么 Web 应用中的过滤器是如何工作的呢？现简单模拟一下 Web 应用中过滤器的大致处理流程以及基于责任链模式（Chain of Responsibility Pattern）的过滤器实现。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在模拟实现过滤器处理流程之前<samp>，</samp>先给出一张图<samp>，</samp>简洁明了（稍加注意的是<samp>，</samp>各过滤器均是在 Servlet 容器启动的过程中完成的初始化操作）：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0053/images/01.jpg" /></div>
+		<div><p>记一下工程目录结构（注意工程引入了 <a target="_blank" class="w3-link" href="http://www.jdom.org/downloads/index.html">jdom-2.0.6.jar</a> 文件）：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0053/images/02.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!-- 整个 web.xml 文件的内容 --&gt;
+&lt;filters&gt;
+	&lt;filter&gt;
+		&lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;
+		&lt;filter-class&gt;com.hsdis.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;encoding&lt;/param-name&gt;
+			&lt;param-value&gt;UTF-8&lt;/param-value&gt;
+		&lt;/init-param&gt;
+	&lt;/filter&gt;
+	&lt;filter&gt;
+		&lt;filter-name&gt;hiddenHttpMethodFilter&lt;/filter-name&gt;
+		&lt;filter-class&gt;com.hsdis.filter.HiddenHttpMethodFilter&lt;/filter-class&gt;
+	&lt;/filter&gt;
+&lt;/filters&gt;</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+public interface Filter {
+	public void doFilter(HttpServletRequest request,
+			HttpServletResponse response, <span class="w3-text-white">FilterChain chain</span>);
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+public interface <span class="w3-text-white">FilterChain</span> {
+	public void doFilter(HttpServletRequest request,
+			HttpServletResponse response);
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+public class <span class="w3-text-white">ApplicationFilterConfig</span> {
+
+	private String filterName;
+	private Filter filter;
+
+	public ApplicationFilterConfig(String filterName, Filter filter) {
+		this.filterName = filterName;
+		this.filter = filter;
+	}
+
+	public String getFilterName() {
+		return filterName;
+	}
+
+	public void setFilterName(String filterName) {
+		this.filterName = filterName;
+	}
+
+	public Filter getFilter() {
+		return filter;
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+import java.util.List;
+
+public class ApplicationFilterChain implements FilterChain {
+
+	private int pos = 0;
+	private int n = 0;
+	public static final int INCREMENT = 10;
+
+	<span class="w3-text-white">// 注意<samp>，</samp>该处为数组实现</span>
+	<span class="w3-text-white">private ApplicationFilterConfig[] filters = new ApplicationFilterConfig[0]</span>;
+
+	public void setFilters(List&lt;ApplicationFilterConfig&gt; filterConfigs) {
+		for (ApplicationFilterConfig afc : filterConfigs) {
+			addFilter(afc);
+		}
+	}
+
+	private void addFilter(ApplicationFilterConfig filterConfig) {
+		if (n == filters.length) {
+			ApplicationFilterConfig[] newFilters = new ApplicationFilterConfig[n
+					+ INCREMENT];
+			System.arraycopy(filters, 0, newFilters, 0, n);
+			filters = newFilters;
+		}
+		filters[n++] = filterConfig;
+	}
+
+	@Override
+	public void doFilter(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (pos &lt; n) {
+			ApplicationFilterConfig filterConfig = filters[pos++];
+			Filter filter = filterConfig.getFilter();
+			filter.doFilter(request, response, this);
+		}
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.filter;
+
+import com.hsdis.servlet.Filter;
+import com.hsdis.servlet.FilterChain;
+import com.hsdis.servlet.HttpServletRequest;
+import com.hsdis.servlet.HttpServletResponse;
+
+public class <span class="w3-text-white">CharacterEncodingFilter</span> implements Filter {
+
+	private String <span class="w3-text-white">encoding</span>;
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	@Override
+	public void doFilter(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) {
+		String requestContent = request.getRequestContent();
+		request.setRequestContent(process(requestContent));
+		chain.doFilter(request, response);
+	}
+
+	private String process(String requestContent) {
+		String result = "";
+		try {
+			result = new String(requestContent.getBytes("ISO-8859-1"), <span class="w3-text-white">encoding</span>);
+		} catch (Exception e) {
+		}
+		return result;
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.filter;
+
+import com.hsdis.servlet.Filter;
+import com.hsdis.servlet.FilterChain;
+import com.hsdis.servlet.HttpServletRequest;
+import com.hsdis.servlet.HttpServletResponse;
+
+public class <span class="w3-text-white">HiddenHttpMethodFilter</span> implements Filter {
+
+	@Override
+	public void doFilter(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) {
+		if ("POST".equals(request.getRequestMethod())) {
+			// 在实际应用中<samp>，</samp>PUT 值是从 HTTP 请求中获取的<samp>，</samp>模拟时直接这么写了
+			request.setRequestMethod("PUT");
+		}
+		chain.doFilter(request, response);
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.context;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+
+import com.hsdis.servlet.ApplicationFilterConfig;
+import com.hsdis.servlet.Filter;
+<span class="w3-text-white">// 该类的主要功能：（1）解析 web.xml 文件；（2）初始化过滤器。</span>
+public class <span class="w3-text-white">StandardContext</span> {
+
+	private List&lt;ApplicationFilterConfig&gt; filterConfigs = new ArrayList&lt;&gt;();
+
+	public StandardContext() {
+		webConfig();
+	}
+
+	public List&lt;ApplicationFilterConfig&gt; getFilterConfigs() {
+		return filterConfigs;
+	}
+
+	private void webConfig() {
+		SAXBuilder sb = new SAXBuilder();
+		try {
+			Document doc = sb.build(this.getClass().getClassLoader()
+					.getResourceAsStream("<span class="w3-text-white">web.xml</span>"));
+			Element root = doc.getRootElement();
+			List&lt;Element&gt; list = root.getChildren("filter");
+			for (int i = 0; i &lt; list.size(); i++) {
+				Element element = (Element) list.get(i);
+				String filterName = element.getChild("filter-name").getValue();
+				Filter filter = parse(element);
+				ApplicationFilterConfig filterConfig = new ApplicationFilterConfig(
+						filterName, filter);
+				filterConfigs.add(filterConfig);
+			}
+		} catch (Exception e) {
+		}
+	}
+
+	private Filter parse(Element element) throws Exception {
+		Filter filter;
+		String clazz = element.getChild("filter-class").getValue();
+		filter = (Filter) Class.forName(clazz).newInstance();
+		if (null != element.getChild("init-param")) {
+			String paramName = element.getChild("init-param")
+					.getChild("param-name").getValue();
+			String methodName = "set" + paramName.substring(0, 1).toUpperCase()
+					+ paramName.substring(1);
+			String paramValue = element.getChild("init-param")
+					.getChild("param-value").getValue();
+			Method m = filter.getClass().getMethod(methodName, String.class);
+			m.invoke(filter, paramValue);
+		}
+		return filter;
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+public class HttpServletRequest {
+
+	private String requestMethod;
+	private String requestContent;
+
+	public String getRequestMethod() {
+		return requestMethod;
+	}
+
+	public void setRequestMethod(String requestMethod) {
+		this.requestMethod = requestMethod;
+	}
+
+	public String getRequestContent() {
+		return requestContent;
+	}
+
+	public void setRequestContent(String requestContent) {
+		this.requestContent = requestContent;
+	}
+
+	@Override
+	public String toString() {
+		return "HttpServletRequest [requestMethod=" + requestMethod
+				+ ", requestContent=" + requestContent + "]";
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+public class HttpServletResponse {
+
+	private String responseContent;
+
+	public String getResponseContent() {
+		return responseContent;
+	}
+
+	public void setResponseContent(String responseContent) {
+		this.responseContent = responseContent;
+	}
+}</pre></div>
+							<div><p>测试代码：</p></div>
+							<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.test;
+
+import com.hsdis.context.StandardContext;
+import com.hsdis.servlet.ApplicationFilterChain;
+import com.hsdis.servlet.HttpServletRequest;
+import com.hsdis.servlet.HttpServletResponse;
+
+public class TestClass {
+
+	public static void main(String[] args) throws Exception {
+		// 初始化上下文
+		StandardContext sc = new StandardContext();
+		// 创建过滤器链
+		ApplicationFilterChain fc = new ApplicationFilterChain();
+		fc.setFilters(sc.getFilterConfigs());
+
+		// 模拟发起请求
+		HttpServletRequest request = new HttpServletRequest();
+		request.setRequestMethod("POST");
+		request.setRequestContent(new String("乱码".getBytes(), "ISO-8859-1"));
+		HttpServletResponse response = new HttpServletResponse();
+
+		System.out.println("过滤前：" + request);
+
+		fc.doFilter(request, response);
+
+		System.out.println("过滤后：" + request);
+	}
+}</pre></div>
+		<div><p>执行结果：</p></div>
+		<div class="w3-custom-code w3-white"><pre>过滤前：HttpServletRequest [requestMethod=<span class="w3-text-red">POST</span>, requestContent=<span class="w3-text-red">ä¹±ç </span>]
+过滤后：HttpServletRequest [requestMethod=<span class="w3-text-red">PUT</span>, requestContent=<span class="w3-text-red">乱码</span>]</pre></div>
+		<div><p>最后结语<samp>，</samp>由于重点关注的是过滤器的处理流程以及责任链模式的实现技巧<samp>，</samp>因此<samp>，</samp>示例代码均是以最简化方式完成的<samp>，</samp>先认清事物的本质<samp>，</samp>再丰富之灵魂。</p></div>
+	</section>
+</article>

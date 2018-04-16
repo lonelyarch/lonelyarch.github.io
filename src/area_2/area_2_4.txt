@@ -1,4 +1,17 @@
 <article>
+	<div><p><strong><span class="w3-text-light-green">转载</span> ---《浏览器的工作原理：新式网络浏览器幕后揭秘》</strong></p><p class="w3-right">2017-04-13</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<div style="float:left;clear:both"><img alt="Oops" src="src/area_2/articles/0013/images/taligarsiel.jpg" style="max-width:100px;border-left:5px solid black;border-right:5px solid black;margin-right:5px" /></div>
+		<P style="overflow:inherit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" class="w3-link" href="http://taligarsiel.com/">塔利·加希尔</a>是以色列的一名开发人员。她在 2000 年开始从事网络开发工作，逐渐熟悉了 Netscape 的“邪恶”层模型。就像理查德·费曼 (Richard Feynmann) 一样，她极度热衷于探究事物的原理，因此开始深入了解浏览器的内部原理，并记录研究成果。塔利还发表过一篇<a target="_blank" class="w3-link" href="http://taligarsiel.com/ClientSidePerformance.html">关于客户端性能的简短指南</a>。</P>
+		<P style="overflow:inherit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;转载文章<a target="_blank" class="w3-link" href="https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/">《浏览器的工作原理：新式网络浏览器幕后揭秘》</a>，以博主目前在软件开发领域的水平以及个人眼光而言，这是一篇不可多得的深度好文。废话不多讲，时间很宝贵。最后也感谢该篇文章的译者：<a target="_blank" class="w3-link" href="https://twitter.com/_kosei_">@_kosei_</a>。均是素昧平生，只是感谢分享。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/12.txt',id:'prevtonext'},{url:'src/area_2/articles/0013/0013.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>多级下拉式菜单的实现？</strong></p><p class="w3-right">2017-04-03</p></div>
 	<div style="clear: both;"></div>
 	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
@@ -244,18 +257,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/3.txt',id:'prevtonext'},{url:'src/area_2/articles/0004/0004.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>如何实现淡入淡出效果？</strong></p><p class="w3-right">2016-10-17</p></div>
-	<div style="clear: both;"></div>
-	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
-	<div>
-		<div class="w3-example" style="padding: 0; border: 0; background-color: black;">
-			<img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/01/26/0033.jpg" />
-		</div>
-		<p><strong>特别说明：</strong>该图出自 <a target="_blank" href="https://unsplash.com/" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">https://unsplash.com</a>，作者为<a style="background-color:black;color:white;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@zanonluca?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Luca Zanon"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:white;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Luca Zanon</span></a>，有想知悉 <strong>license</strong> 的童鞋<a target="_blank" href="https://unsplash.com/license" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>。因现实需要，博主对原图有裁剪、压缩。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/2.txt',id:'prevtonext'},{url:'src/area_2/articles/0003/0003.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
