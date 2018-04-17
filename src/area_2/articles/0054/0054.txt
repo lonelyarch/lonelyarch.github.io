@@ -1,0 +1,181 @@
+<article>
+	<section>
+		<div><p><strong><span class="w3-text-light-green">转载</span> --- 透彻的掌握 Spring 中 @transactional 的使用</strong></p><p class="w3-right w3-margin-0">2018-03-20</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;事务管理是应用系统开发中必不可少的一部分。Spring 为事务管理提供了丰富的功能支持。Spring 事务管理分为编码式和声明式两种方式。编程式事务指的是通过编码方式实现事务<samp>；</samp>声明式事务基于 AOP<samp>，</samp>将具体业务逻辑与事务处理解耦。声明式事务管理使业务代码逻辑不受污染<samp>，</samp>因此在实际使用中声明式事务用的比较多。声明式事务有两种方式<samp>，</samp>一种是在配置文件（xml）中做相关的事务规则声明<samp>，</samp>另一种是基于 @Transactional 注解的方式。注释配置是目前流行的使用方式<samp>，</samp>因此本文将着重介绍基于 @Transactional 注解的事务管理。</p>
+		</div>
+	</section>
+	<section>
+		<div><p><strong>转载文章：</strong><a target="_blank" class="w3-link" href="https://www.ibm.com/developerworks/cn/java/j-master-spring-transactional-use/index.html">透彻的掌握 Spring 中 @transactional 的使用</a></p></div>
+		<div><p><strong>文章作者：</strong><a target="_blank" class="w3-link" href="https://www.ibm.com/developerworks/mydeveloperworks/profiles/user/fisher_liu">刘万振</a></p></div>
+	</section>
+	<section>
+		<div><p><strong>@Transactional 注解管理事务的实现步骤</strong></p></div>
+		<div><p>使用 @Transactional 注解管理事务的实现步骤分为两步。第一步<samp>，</samp>在 xml 配置文件中添加如清单 1 的事务配置信息。除了用配置文件的方式<samp>，</samp>@EnableTransactionManagement 注解也可以启用事务管理功能。这里以简单的 DataSourceTransactionManager 为例。</p></div>
+		<div><p>清单 1. 在 xml 配置中的事务配置信息</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;tx:annotation-driven transaction-manager="transactionManager" /&gt;
+&lt;bean id="transactionManager"
+	class="org.springframework.jdbc.datasource.<span class="w3-text-light-green">DataSourceTransactionManager</span>"&gt;
+	&lt;property name="dataSource" ref="dataSource" /&gt;
+&lt;/bean&gt;</pre></div>
+		<div><p>第二步<samp>，</samp>将 @Transactional 注解添加到合适的方法上<samp>，</samp>并设置合适的属性信息。@Transactional 注解的属性信息如表 1 展示。</p></div>
+		<div><p>表 1. @Transactional 注解的属性信息</p></div>
+		<div class="w3-responsive">
+			<table class="w3-table w3-bordered w3-white w3-striped">
+				<tbody>
+					<tr class="w3-light-green">
+						<th>属性名</th>
+						<th>说明</th>
+					</tr>
+					<tr>
+						<td>name</td>
+						<td>当配置文件中有多个 TransactionManager 时<samp>，</samp>可以用该属性指定选择哪个事务管理器。</td>
+					</tr>
+					<tr>
+						<td>propagation</td>
+						<td>事务的传播行为<samp>，</samp>默认值为 REQUIRED 。</td>
+					</tr>
+					<tr>
+						<td>isolation</td>
+						<td>事务的隔离度<samp>，</samp>默认值采用 DEFAULT 。</td>
+					</tr>
+					<tr>
+						<td>timeout</td>
+						<td>事务的超时时间<samp>，</samp>默认值为 -1 。如果超过该时间限制但事务还没有完成<samp>，</samp>则自动回滚事务。</td>
+					</tr>
+					<tr>
+						<td>read-only</td>
+						<td>指定事务是否为只读事务<samp>，</samp>默认值为 false <samp>；</samp>为了忽略那些不需要事务的方法<samp>，</samp>比如读取数据<samp>，</samp>可以设置 read-only 为 true 。</td>
+					</tr>
+					<tr>
+						<td>rollback-for</td>
+						<td>用于指定能够触发事务回滚的异常类型<samp>，</samp>如果有多个异常类型需要指定<samp>，</samp>各类型之间可以通过逗号分隔。</td>
+					</tr>
+					<tr>
+						<td>no-rollback- for</td>
+						<td>抛出 no-rollback-for 指定的异常类型<samp>，</samp>不回滚事务。</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div><p>除此以外<samp>，</samp>@Transactional 注解也可以添加到类级别上。当把 @Transactional 注解放在类级别时<samp>，</samp>表示所有该类的公共方法都配置相同的事务属性信息。见清单 2<samp>，</samp>EmployeeService 的所有方法都支持事务并且是只读。当类级别配置了 @Transactional<samp>，</samp>方法级别也配置了 @Transactional<samp>，</samp>应用程序会以方法级别的事务属性信息来管理事务<samp>，</samp>换言之<samp>，</samp>方法级别的事务属性信息会覆盖类级别的相关配置信息。</p></div>
+		<div><p>清单 2. @Transactional 注解的类级别支持</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+@Service( value = "employeeService" )
+public class EmployeeService</pre></div>
+		<div><p>到此<samp>，</samp>您会发觉使用 @Transactional 注解管理事务的实现步骤很简单。但是如果对 Spring 中的 @transaction 注解的事务管理理解的不够透彻<samp>，</samp>就很容易出现错误<samp>，</samp>比如事务应该回滚（rollback）而没有回滚事务的问题。接下来<samp>，</samp>将首先分析 Spring 的注解方式的事务实现机制<samp>，</samp>然后列出相关的注意事项<samp>，</samp>以最终达到帮助开发人员准确而熟练的使用 Spring 的事务的目的。</p></div>
+		<div><p><strong>Spring 的注解方式的事务实现机制</strong></p></div>
+		<div><p>在应用系统调用声明 @Transactional 的目标方法时<samp>，</samp>Spring Framework 默认使用 AOP 代理<samp>，</samp>在代码运行时生成一个代理对象<samp>，</samp>根据 @Transactional 的属性配置信息<samp>，</samp>这个代理对象决定该声明 @Transactional 的目标方法是否由拦截器 TransactionInterceptor 来使用拦截<samp>，</samp>在 TransactionInterceptor 拦截时<samp>，</samp>会在目标方法开始执行之前创建并加入事务<samp>，</samp>并执行目标方法的逻辑<samp>，</samp>最后根据执行情况是否出现异常<samp>，</samp>利用抽象事务管理器（图 2 有相关介绍）AbstractPlatformTransactionManager 操作数据源 DataSource 提交或回滚事务<samp>，</samp>如图 1 所示。</p></div>
+		<div><p>图 1. Spring 事务实现机制</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0054/images/01.jpg" /></div>
+		<div><p>Spring AOP 代理有 CglibAopProxy 和 JdkDynamicAopProxy 两种<samp>，</samp>图 1 是以 CglibAopProxy 为例<samp>，</samp>对于 CglibAopProxy<samp>，</samp>需要调用其内部类的 DynamicAdvisedInterceptor 的 intercept 方法。对于 JdkDynamicAopProxy<samp>，</samp>需要调用其 invoke 方法。</p></div>
+		<div><p>正如上文提到的<samp>，</samp>事务管理的框架是由抽象事务管理器 AbstractPlatformTransactionManager 来提供的<samp>，</samp>而具体的底层事务处理实现<samp>，</samp>由 PlatformTransactionManager 的具体实现类来实现<samp>，</samp>如事务管理器 DataSourceTransactionManager。不同的事务管理器管理不同的数据资源 DataSource<samp>，</samp>比如 DataSourceTransactionManager 管理 JDBC 的 Connection。</p></div>
+		<div><p>PlatformTransactionManager<samp>，</samp>AbstractPlatformTransactionManager 及具体实现类关系如图 2 所示。</p></div>
+		<div><p>图 2. TransactionManager 类结构</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0054/images/02.jpg" /></div>
+		<div><p><strong>注解方式的事务使用注意事项</strong></p></div>
+		<div><p>当您对 Spring 的基于注解方式的实现步骤和事务内在实现机制有较好的理解之后<samp>，</samp>就会更好的使用注解方式的事务管理<samp>，</samp>避免当系统抛出异常<samp>，</samp>数据不能回滚的问题。</p></div>
+		<div><p><strong>正确的设置 @Transactional 的 propagation 属性</strong></p></div>
+		<div><p>需要注意下面三种 propagation 可以不启动事务。本来期望目标方法进行事务管理<samp>，</samp>但若是错误的配置这三种 propagation<samp>，</samp>事务将不会发生回滚。</p></div>
+		<div><ul style="list-style:decimal">
+			<li><p>TransactionDefinition.PROPAGATION_SUPPORTS：如果当前存在事务<samp>，</samp>则加入该事务<samp>；</samp>如果当前没有事务<samp>，</samp>则以非事务的方式继续运行。</p></li>
+			<li><p>TransactionDefinition.PROPAGATION_NOT_SUPPORTED：以非事务方式运行<samp>，</samp>如果当前存在事务<samp>，</samp>则把当前事务挂起。</p></li>
+			<li><p>TransactionDefinition.PROPAGATION_NEVER：以非事务方式运行<samp>，</samp>如果当前存在事务<samp>，</samp>则抛出异常。</p></li>
+		</ul></div>
+		<div><p><strong>正确的设置 @Transactional 的 rollbackFor 属性</strong></p></div>
+		<div><p>默认情况下<samp>，</samp>如果在事务中抛出了未检查异常（继承自 RuntimeException 的异常）或者 Error<samp>，</samp>则 Spring 将回滚事务<samp>；</samp>除此之外<samp>，</samp>Spring 不会回滚事务。</p></div>
+		<div><p>如果在事务中抛出其它类型的异常<samp>，</samp>并期望 Spring 能够回滚事务<samp>，</samp>可以指定 rollbackFor 。例：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>@Transactional( propagation = Propagation.REQUIRED, rollbackFor = MyException.class )</pre></div>
+		<div><p>通过分析 Spring 源码可以知道<samp>，</samp>若在目标方法中抛出的异常是 rollbackFor 指定的异常的子类<samp>，</samp>事务同样会回滚。</p></div>
+		<div><p>清单 3. RollbackRuleAttribute 的 getDepth 方法</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>private int getDepth(Class&lt;?&gt; exceptionClass, int depth) {
+	if (exceptionClass.getName().contains(this.exceptionName)) {
+		// Found it!
+		return depth;
+	}
+	// If we've gone as far as we can go and haven't found it ...
+	if (exceptionClass == Throwable.class) {
+		return -1;
+	}
+	return getDepth(exceptionClass.getSuperclass(), depth + 1);
+}</pre></div>
+		<div><p><strong>@Transactional 只能应用到 public 方法才有效</strong></p></div>
+		<div><p>只有 @Transactional 注解应用到 public 方法<samp>，</samp>才能进行事务管理。这是因为在使用 Spring AOP 代理时<samp>，</samp>Spring 在调用在图 1 中的 TransactionInterceptor 在目标方法执行前后进行拦截之前<samp>，</samp>DynamicAdvisedInterceptor（CglibAopProxy 的内部类）的 intercept 方法或 JdkDynamicAopProxy 的 invoke 方法会间接调用 AbstractFallbackTransactionAttributeSource（Spring 通过这个类获取表 1. @Transactional 注解的事务属性配置属性信息）的 computeTransactionAttribute 方法。</p></div>
+		<div><p>清单 4. AbstractFallbackTransactionAttributeSource</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>protected TransactionAttribute computeTransactionAttribute(Method method, Class&lt;?&gt; targetClass) {
+	// Don't allow no-public methods as required.
+	if (allowPublicMethodsOnly() &amp;&amp; !Modifier.isPublic(method.getModifiers())) {
+		return null;
+	}
+	...
+}</pre></div>
+		<div><p>这个方法会检查目标方法的修饰符是不是 public<samp>，</samp>若不是 public<samp>，</samp>就不会获取 @Transactional 的属性配置信息<samp>，</samp>最终会造成不会用 TransactionInterceptor 来拦截该目标方法进行事务管理。</p></div>
+		<div><p><strong>避免 Spring 的 AOP 的自调用问题</strong></p></div>
+		<div><p>在 Spring 的 AOP 代理下<samp>，</samp>只有目标方法由外部调用<samp>，</samp>目标方法才由 Spring 生成的代理对象来管理<samp>，</samp>这会造成自调用问题。若同一类中的其它没有 @Transactional 注解的方法内部调用有 @Transactional 注解的方法<samp>，</samp>有 @Transactional 注解的方法的事务被忽略<samp>，</samp>不会发生回滚。见清单 5 举例代码展示。</p></div>
+		<div><p>清单 5.自调用问题举例</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>@Service
+public class OrderService {
+	private void insert() {
+		insertOrder();
+	}
+	@Transactional
+	public void insertOrder() {
+		//insert log info
+		//insertOrder
+		//updateAccount
+	}
+}</pre></div>
+		<div><p>insertOrder 尽管有 @Transactional 注解<samp>，</samp>但它被内部方法 insert 调用<samp>，</samp>事务被忽略<samp>，</samp>出现异常事务不会发生回滚。</p></div>
+		<div><p>上面的两个问题 @Transactional 注解只应用到 public 方法和自调用问题<samp>，</samp>是由于使用 Spring AOP 代理造成的。为解决这两个问题<samp>，</samp>使用 AspectJ 取代 Spring AOP 代理。</p></div>
+		<div><p>需要将下面的 AspectJ 信息添加到 xml 配置信息中。</p></div>
+		<div><p>清单 6. AspectJ 的 xml 配置信息</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;tx:annotation-driven mode="aspectj" /&gt;
+&lt;bean id="transactionManager"
+	class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;
+	&lt;property name="dataSource" ref="dataSource" /&gt;
+&lt;/bean&gt;
+&lt;bean class="org.springframework.transaction.aspectj.AnnotationTransactionAspect"
+	factory-method="aspectOf"&gt;
+	&lt;property name="transactionManager" ref="transactionManager" /&gt;
+&lt;/bean&gt;</pre></div>
+		<div><p>同时在 Maven 的 pom 文件中加入 spring-aspects 和 aspectjrt 的 dependency 以及 aspectj-maven-plugin 。</p></div>
+		<div><p>清单 7. AspectJ 的 pom 配置信息</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;dependency&gt;
+	&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
+	&lt;version&gt;4.3.2.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+	&lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+	&lt;artifactId&gt;aspectjrt&lt;/artifactId&gt;
+	&lt;version&gt;1.8.9&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;plugin&gt;
+	&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+	&lt;artifactId&gt;aspectj-maven-plugin&lt;/artifactId&gt;
+	&lt;version&gt;1.9&lt;/version&gt;
+	&lt;configuration&gt;
+		&lt;showWeaveInfo&gt;true&lt;/showWeaveInfo&gt;
+		&lt;aspectLibraries&gt;
+			&lt;aspectLibrary&gt;
+				&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
+			&lt;/aspectLibrary&gt;
+		&lt;/aspectLibraries&gt;
+	&lt;/configuration&gt;
+	&lt;executions&gt;
+		&lt;execution&gt;
+			&lt;goals&gt;
+				&lt;goal&gt;compile&lt;/goal&gt;
+				&lt;goal&gt;test-compile&lt;/goal&gt;
+			&lt;/goals&gt;
+		&lt;/execution&gt;
+	&lt;/executions&gt;
+&lt;/plugin&gt;</pre></div>
+		<div><p><strong>总结</strong></p></div>
+		<div><p>通过本文的介绍<samp>，</samp>相信读者能够清楚的了解基于 @Transactional 注解的实现步骤<samp>，</samp>能够透彻的理解的 Spring 的内部实现机制<samp>，</samp>并有效的掌握相关使用注意事项<samp>，</samp>从而能够正确而熟练的使用基于 @Transactional 注解的事务管理方式。</p></div>
+	</section>
+</article>

@@ -1,2 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/53.txt',id:'prevtonext'},{url:'src/area_2/articles/0054/0054.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« 转载 --- 透彻的掌握 Spring 中 @transactional 的使用</a>
 <a onclick="initl();fetch([{url:'src/area_2/prevtonext/51.txt',id:'prevtonext'},{url:'src/area_2/articles/0052/0052.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">SpringMVC 系列：Visitor Pattern（07） »</a>
 <div style="clear: both;"></div>

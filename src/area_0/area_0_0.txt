@@ -1,6 +1,18 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2018.03.20</h4>
+			<p><strong><span class="w3-text-light-green">转载</span> --- 透彻的掌握 Spring 中 @transactional 的使用</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;事务管理是应用系统开发中必不可少的一部分。Spring 为事务管理提供了丰富的功能支持。Spring 事务管理分为编码式和声明式两种方式。编程式事务指的是通过编码方式实现事务<samp>；</samp>声明式事务基于 AOP<samp>，</samp>将具体业务逻辑与事务处理解耦。声明式事务管理使业务代码逻辑不受污染<samp>，</samp>因此在实际使用中声明式事务用的比较多。声明式事务有两种方式<samp>，</samp>一种是在配置文件（xml）中做相关的事务规则声明<samp>，</samp>另一种是基于 @Transactional 注解的方式。注释配置是目前流行的使用方式<samp>，</samp>因此本文将着重介绍基于 @Transactional 注解的事务管理。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0054/0054.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2018.03.17</h4>
 			<p><strong>SpringMVC 系列：模拟 SpringMVC 中的过滤器处理流程（08）</strong></p>
 			<div class="w3-container w3-light-gray">

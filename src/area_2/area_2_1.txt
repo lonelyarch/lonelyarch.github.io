@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>负载均衡（Load Balance）</strong></p><p class="w3-right">2018-01-17</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对<samp>“负载均衡（Load Balance）”</samp>这种技术早有所闻<samp>，</samp>但是<samp>，</samp>只因在实际工作中从来就没有接触过与之有关的项目<samp>，</samp>所以<samp>，</samp>个人对这项技术的认知也只是停留在略有所闻的层面<samp>，</samp>最近在阅读 Web 应用服务器集群的可伸缩性设计的某些文章时遭遇了<samp>“负载均衡（Load Balance）”</samp>的概念<samp>，</samp>通过查阅资料对这项技术有了更进一步的了解<samp>，</samp>现整理之。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/43.txt',id:'prevtonext'},{url:'src/area_2/articles/0044/0044.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- Copy-On-Write 容器（17）</strong></p><p class="w3-right">2018-01-13</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -123,18 +134,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/34.txt',id:'prevtonext'},{url:'src/area_2/articles/0035/0035.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：ThreadLocal（13）</strong></p><p class="w3-right">2017-11-13</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This class provides thread-local variables. These variables differ from their normal counterparts in that each thread that accesses one has its own, independently initialized copy of the variable.</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上述英文源自 JDK1.8 官方文档里对 ThreadLocal 的介绍，博主试图这样翻译：</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadLocal 类用以提供<span class="w3-text-light-green">线程-本地</span>变量，这些<span class="w3-text-light-green">线程-本地</span>变量与它们的常规副本的区别是，每一个线程都只能访问它自身拥有的<span class="w3-text-light-green">线程-本地</span>变量，且该<span class="w3-text-light-green">线程-本地</span>变量独立于变量的初始化拷贝。</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然勉强翻译出了字面意思，但个人对英文源句还是不知所云，没关系，直接给出一个代码示例，通过观察执行结果，疑问将豁然开朗。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/33.txt',id:'prevtonext'},{url:'src/area_2/articles/0034/0034.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
