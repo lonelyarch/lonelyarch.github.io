@@ -2,7 +2,7 @@
 	<div><header class="w3-header"><p>CAP 理论、BASE 理论</p></header></div>
 	<div><p><strong>CAP 理论</strong></p></div>
 	<div><p>在分布式系统中<samp>，</samp>一致性（Consistency）、可用性（Availability）和分区容忍性（Partition Tolerance）3 个要素最多只能同时满足两个<samp>，</samp>不可兼得。其中<samp>，</samp>分区容忍性又是不可或缺的。</p></div>
-	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0038/images/00.jpg" /></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0038/images/00.jpg" /></div>
 	<div>
 		<ul>
 			<li><p>一致性：分布式环境下多个节点的数据是否强一致<samp>；</samp></p></li>

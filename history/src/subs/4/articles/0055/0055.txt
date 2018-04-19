@@ -1,0 +1,33 @@
+<article>
+	<div><header class="w3-header"><p>Top 8 Diagrams for Understanding Java</p></header></div>
+	<div><p>A diagram is sometimes worth 1000 words. The following diagrams are from Java tutorials on Program Creek, they have received the most votes so far. Hopefully, they can help you review what you already know. If the problem is not clear by the diagram itself, you may want to go to each article to take a further took.</p></div>
+	<div><p><span class="w3-text-light-green">1. String Immutability</span></p></div>
+	<div><p>The following diagram shows what happens for the following code:</p></div>
+	<div class="w3-custom-code"><pre>String s = "abcd";
+s = s.concat("ef");</pre></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/01.jpg"></div>
+	<div><p><span class="w3-text-light-green">2. The equals() and hashCode() Contract</span></p></div>
+	<div><p>HashCode is designed to improve performance. The contract between equals() and hasCode() is that:</p></div>
+	<div><p>1. If two objects are equal, then they must have the same hash code.</p></div>
+	<div><p>2. If two objects have the same hashcode, they may or may not be equal.</p></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/02.jpg"></div>
+	<div><p><span class="w3-text-light-green">3. Java Exception Class Hierarchy</span></p></div>
+	<div><p>Red colored are checked exceptions which must either be caught or declared in the method’s throws clause.</p></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/03.jpg"></div>
+	<div><p><span class="w3-text-light-green">4. Collections Class Hierarchy</span></p></div>
+	<div><p>Note the difference between Collections and Collection.</p></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/04.jpg"></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/05.jpg"></div>
+	<div><p><span class="w3-text-light-green">5. Java synchronization</span></p></div>
+	<div><p>Java synchronization mechanism can be illustrated by an analogy to a building.</p></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/06.jpg"></div>
+	<div><p><span class="w3-text-light-green">6. Aliasing</span></p></div>
+	<div><p>Aliasing means there are multiple aliases to a location that can be updated, and these aliases have different types.</p></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/07.jpg"></div>
+	<div><p><span class="w3-text-light-green">7. Stack and Heap</span></p></div>
+	<div><p>This diagram shows where methods and objects are in run-time memory.</p></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/08.jpg"></div>
+	<div><p><span class="w3-text-light-green">8. JVM Run-Time Data Areas</span></p></div>
+	<div><p>This diagram shows overall JVM run-time data areas.</p></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0055/images/09.jpg"></div>
+</article>

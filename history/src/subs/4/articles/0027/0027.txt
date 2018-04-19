@@ -6,7 +6,7 @@
 	<div><p>scatter/gather 经常用于需要将传输的数据分开处理的场合，例如传输一个由消息头和消息体组成的消息，你可能会将消息体和消息头分散到不同的 buffer 中，这样你可以方便的处理消息头和消息体。</p></div>
 	<div><p>Scattering Reads</p></div>
 	<div><p>Scattering Reads 是指数据从一个 channel 读取到多个 buffer 中。如下图描述：</p></div>
-	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0027/images/01.jpg" /></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0027/images/01.jpg" /></div>
 	<div class="w3-custom-code"><pre>ByteBuffer header = ByteBuffer.allocate(128);
 ByteBuffer body   = ByteBuffer.allocate(1024);
 ByteBuffer[] bufferArray = { header, body };
@@ -15,7 +15,7 @@ channel.read(bufferArray);</pre></div>
 	<div><p>Scattering Reads 在移动下一个 buffer 前，必须填满当前的 buffer，这也意味着它不适用于动态消息(译者注：消息大小不固定)。换句话说，如果存在消息头和消息体，消息头必须完成填充（例如 128byte），Scattering Reads 才能正常工作。</p></div>
 	<div><p>Gathering Writes</p></div>
 	<div><p>Gathering Writes 是指数据从多个 buffer 写入同一个 channel 中。如下图描述：</p></div>
-	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0027/images/02.jpg" /></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0027/images/02.jpg" /></div>
 	<div><p>示例代码：</p></div>
 	<div class="w3-custom-code"><pre>ByteBuffer header = ByteBuffer.allocate(128);
 ByteBuffer body   = ByteBuffer.allocate(1024);

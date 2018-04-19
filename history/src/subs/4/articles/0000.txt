@@ -53,4 +53,6 @@
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0052/0052.txt','contents')">RPC（Remote Procedure Call）原理</a></div>
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0053.txt','contents')">JDBC 示例</a></div>
 	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0054/0054.txt','contents')">MyBatis 架构图</a></div>
+	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0055/0055.txt','contents')">Top 8 Diagrams for Understanding Java</a></div>
+	<div class="box"><strong>B-END：</strong><a class="w3-link" onclick="usemodal('src/subs/4/articles/0056/0056.txt','contents')">The Introduction of Java Memory Leaks</a></div>
 </div>

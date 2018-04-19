@@ -2,7 +2,7 @@
 	<div><header class="w3-header"><p>Java NIO 系列：Pipe（07）</p></header></div>
 	<div><p>Java NIO 管道是 2 个线程之间的<span class="w3-text-light-green">单向数据连接</span>。Pipe 有一个 source 通道和一个 sink 通道。数据会被写到 sink 通道，从 source 通道读取。</p></div>
 	<div><p>这里是 Pipe 原理的图示：</p></div>
-	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0030/images/pipe.jpg" /></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0030/images/pipe.jpg" /></div>
 	<div><p><strong>创建管道</strong></p></div>
 	<div><p>通过 Pipe.open() 方法打开管道。例如：</p></div>
 	<div class="w3-custom-code"><pre>Pipe pipe = Pipe.open();</pre></div>

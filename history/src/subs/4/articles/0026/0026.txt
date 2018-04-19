@@ -54,7 +54,7 @@
 	</ul></div>
 	<div><p>position 和 limit 的含义取决于 Buffer 处在读模式还是写模式。不管 Buffer 处在什么模式，capacity 的含义总是一样的。</p></div>
 	<div><p>这里有一个关于 capacity、position 和 limit 在读写模式中的说明，详细的解释在插图后面：</p></div>
-	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0026/images/01.jpg" /></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0026/images/01.jpg" /></div>
 	<div><p>capacity</p></div>
 	<div><p>作为一个内存块，Buffer 有一个固定的大小值，也叫<samp>“capacity”</samp>。你只能往里写 capacity 个 byte、long、char 等类型。一旦 Buffer 满了，需要将其清空（通过读数据或清除数据）才能继续往里写数据。</p></div>
 	<div><p>position</p></div>

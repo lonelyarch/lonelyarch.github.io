@@ -15,7 +15,7 @@
 	<div><p>仅用单个线程来处理多个 Channels 的好处是，只需要更少的线程来处理通道。事实上，可以只用一个线程处理所有的通道。对于操作系统来说，线程之间上下文切换的开销很大，而且每个线程都要占用系统的一些资源（如内存）。因此，使用的线程越少越好。</p></div>
 	<div><p>但是，需要记住，现代的操作系统和 CPU 在多任务方面表现的越来越好，所以多线程的开销随着时间的推移，变得越来越小了。实际上，如果一个 CPU 有多个内核，不使用多任务可能是在浪费 CPU 能力。不管怎么说，关于那种设计的讨论应该放在另一篇不同的文章中。在这里，只要知道<span class="w3-text-light-green">使用 Selector 能够处理多个通道</span>就足够了。</p></div>
 	<div><p>下面是单线程使用一个 Selector 处理 3 个 channel 的示例图：</p></div>
-	<div style="text-align:center"><img alt="Oops" src="src/subs/4/articles/0029/images/01.jpg" /></div>
+	<div style="text-align:center" class="w3-white"><img alt="Oops" src="src/subs/4/articles/0029/images/01.jpg" /></div>
 	<div id="02" class="w3-text-blue"><p>Selector 的创建</p></div>
 	<div><p>通过调用 Selector.open() 方法创建一个 Selector，如下：</p></div>
 	<div class="w3-custom-code"><pre>Selector selector = Selector.open();</pre></div>
