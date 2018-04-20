@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>Tomcat 8.0 之工作原理</strong></p><p class="w3-right">2018-03-21</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat 是一个免费且开放源码的 Web 应用服务器<samp>，</samp>主要用以处理 JSP 和 Servlet<samp>，</samp>也可以处理诸如 HTML 等静态资源<samp>，</samp>但性能不比 Apache 或 Nginx 服务器。现简单介绍一下 Tomcat 8.0 之工作原理。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：在理解 Tomcat 8.0 之工作原理之前<samp>，</samp>最好对 Java 语言的线程池（ThreadPoolExecutor）的实现原理有清晰的认识<samp>，</samp>在此基础上再去理解 Tomcat 8.0 之工作原理将变得轻车熟路。对 ThreadPoolExecutor 比较陌生的童鞋请翻看博主之前贴出的文章。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/54.txt',id:'prevtonext'},{url:'src/area_2/articles/0055/0055.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong><span class="w3-text-light-green">转载</span> --- 透彻的掌握 Spring 中 @transactional 的使用</strong></p><p class="w3-right">2018-03-20</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -107,16 +119,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/45.txt',id:'prevtonext'},{url:'src/area_2/articles/0046/0046.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>负载均衡（Load Balance）之数据链路层方式</strong></p><p class="w3-right">2018-01-23</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在初探负载均衡技术之后<samp>，</samp>逐步意识到该技术涉及知识点之深之广<samp>，</samp>单从类别上可分为<span class="w3-text-light-green">硬件</span>负载均衡和<span class="w3-text-light-green">软件</span>负载均衡<samp>，</samp>而基于<span class="w3-text-light-green">软件</span>层面的负载均衡技术的实现方式又可分为 HTTP 重定向负载均衡、DNS 域名解析负载均衡、反向代理负载均衡、IP 负载均衡以及数据链路层负载均衡（LVS 是数据链路层负载均衡开源产品<samp>，</samp>有兴趣的童鞋<a rel="noopener noreferrer nofollow" target="_blank" class="w3-link" href="http://www.linuxvirtualserver.org/zh/lvs1.html">戳这里</a>）。</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文不打算把负载均衡技术所涉及的各方面都整理一遍<samp>，</samp>因为时间宝贵<samp>，</samp>更是囿于个人水平和知识储备<samp>，</samp>现简要整理一下<span class="w3-text-light-green">数据链路层负载均衡</span>的相关知识点<samp>，</samp>以加深理解。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/44.txt',id:'prevtonext'},{url:'src/area_2/articles/0045/0045.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

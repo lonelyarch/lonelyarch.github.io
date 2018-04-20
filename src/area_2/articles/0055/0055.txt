@@ -1,0 +1,274 @@
+<article>
+	<section>
+		<div><p><strong>Tomcat 8.0 之工作原理</strong></p><p class="w3-right w3-margin-0">2018-03-21</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat 是一个免费且开放源码的 Web 应用服务器<samp>，</samp>主要用以处理 JSP 和 Servlet<samp>，</samp>也可以处理诸如 HTML 等静态资源<samp>，</samp>但性能不比 Apache 或 Nginx 服务器。现简单介绍一下 Tomcat 8.0 之工作原理。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：在理解 Tomcat 8.0 之工作原理之前<samp>，</samp>最好对 Java 语言的线程池（ThreadPoolExecutor）的实现原理有清晰的认识<samp>，</samp>在此基础上再去理解 Tomcat 8.0 之工作原理将变得轻车熟路。对 ThreadPoolExecutor 比较陌生的童鞋请翻看博主之前贴出的文章。</p>
+		</div>
+	</section>
+	<section>
+		<div><p><strong>Tomcat 8.0 之容器模型</strong></p></div>
+		<div><p>在理解 Tomcat 8.0 之工作原理之前<samp>，</samp>我们先根据 <span class="w3-text-light-green">server.xml</span> 文件勾勒出一个 Servlet 容器的大致模型<samp>，</samp>认清容器全貌之后再对个别细节深入理解：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0081.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0082.jpg" /></div>
+		<div><p><strong>Tomcat 8.0 容器初始化</strong></p></div>
+		<div><p>为了对 Tomcat 8.0 之工作原理进行深入分析<samp>，</samp>我们搭建一个十分简单的基于原生 Servlet 的 Web 应用<samp>，</samp>以便于对 Tomcat 8.0 源码进行调式跟踪：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0083.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+public class <span class="w3-text-light-green">MyHttpServlet</span> extends <span class="w3-text-light-green">HttpServlet</span> {
+
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("MyHttpServlet");
+		response.getWriter().write("MyHttpServlet:");
+		response.getWriter().write("https://lonelyguo.github.io/");
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+	}
+}</pre></div>
+		<div><p>Tomcat 8.0 在 debug 模式下启动完成之后<samp>，</samp>我们会看到如下图示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0084.jpg" /></div>
+		<div><p>据图可知<samp>，</samp>Tomcat 8.0 启动完成之后<samp>，</samp>容器中除了 main 线程之外还存在很多 Daemon 线程（守护线程）且它们均处于 Running 状态。那么<samp>，</samp>这些 Daemon 线程是如何创建的呢？</p></div>
+		<div><p>我们就从 Bootstrap 类中的 main 方法即程序入口开始 debug 跟踪各 Daemon 线程的创建过程：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>/**
+ * Main method and entry point when starting Tomcat via the provided
+ * scripts.
+ *
+ * @param args Command line arguments to be processed
+ */
+public static void main(String args[]) {
+
+	if (daemon == null) {
+		// Don't set daemon until init() has completed
+		Bootstrap bootstrap = new Bootstrap();
+		try {
+			bootstrap.init();
+		} catch (Throwable t) {
+			handleThrowable(t);
+			t.printStackTrace();
+			return;
+		}
+		daemon = bootstrap;
+	} else {
+		// When running as a service the call to stop will be on a new
+		// thread so make sure the correct class loader is used to prevent
+		// a range of class not found exceptions.
+		Thread.currentThread().setContextClassLoader(daemon.catalinaLoader);
+	}
+
+	try {
+		String command = "start";
+		if (args.length > 0) {
+			command = args[args.length - 1];
+		}
+
+		if (command.equals("startd")) {
+			args[args.length - 1] = "start";
+			daemon.load(args);
+			daemon.start();
+		} else if (command.equals("stopd")) {
+			args[args.length - 1] = "stop";
+			daemon.stop();
+		} else if (command.equals("start")) {
+			daemon.setAwait(true);
+			<span class="w3-text-white">daemon.load(args);</span>
+			<span class="w3-text-white">daemon.start();</span>
+		} else if (command.equals("stop")) {
+			daemon.stopServer(args);
+		} else if (command.equals("configtest")) {
+			daemon.load(args);
+			if (null==daemon.getServer()) {
+				System.exit(1);
+			}
+			System.exit(0);
+		} else {
+			log.warn("Bootstrap: command \"" + command + "\" does not exist.");
+		}
+	} catch (Throwable t) {
+		// Unwrap the Exception for clearer error reporting
+		if (t instanceof InvocationTargetException &amp;&amp;
+				t.getCause() != null) {
+			t = t.getCause();
+		}
+		handleThrowable(t);
+		t.printStackTrace();
+		System.exit(1);
+	}
+
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0085.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0086.jpg" /></div>
+		<div><p>根据 main 方法的代码可知<samp>，</samp>程序首先创建了一个 bootstrap 实例<samp>，</samp>再将它赋值给 daemon 变量<samp>，</samp>然后<samp>，</samp>daemon 调用了 load 方法并传参 "start" 字符串。</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0087.jpg" /></div>
+		<div><p>可见<samp>，</samp>在 daemon.load("start") 执行结束之后<samp>，</samp>主线程创建了两个线程 NioBlockingSelector.BlockPoller-1 和 NioBlockingSelector.BlockPoller-2<samp>，</samp>具体实现如下图所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0088.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0089.jpg" /></div>
+		<div><p>据源码可知<samp>，</samp>这两个线程都是由 BlockPoller 类所产生的不同实例实现的线程创建且均接收了 Selector 实例对象<samp>，</samp>相信了解 NIO 编程的童鞋对此一定不陌生<samp>，</samp>值得注意的是<samp>，</samp>poller 实例不仅维护了 selector 对象还实例化了一个同步队列 events 对象。现贴出 BlockPoller 类的部分源码：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>protected static class BlockPoller extends Thread {
+	protected volatile boolean run = true;
+	<span class="w3-text-white">protected Selector selector = null;</span>
+	<span class="w3-text-white">protected final SynchronizedQueue&lt;Runnable&gt; events = new SynchronizedQueue&lt;&gt;();</span>
+	public void disable() { run = false; selector.wakeup();}
+	protected final AtomicInteger wakeupCounter = new AtomicInteger(0);
+
+	public void cancelKey(final SelectionKey key) {
+		Runnable r = new RunnableCancel(key);
+		events.offer(r);
+		wakeup();
+	}
+
+	public void wakeup() {
+		if (wakeupCounter.addAndGet(1)==0) selector.wakeup();
+	}
+	
+	...
+}</pre></div>
+		<div><p>在上述两个线程创建完成之后<samp>，</samp>主线程紧接着会创建 ContainerBackgroundProcessor[<span class="w3-text-light-green">StandardEngine</span>[Catalina]] 线程<samp>，</samp>让我们继续跟踪该线程的创建过程并试图通过阅读源码注释搞清楚它的作用：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0090.jpg" /></div>
+		<div><p>解析 <span class="w3-text-light-green">server.xml</span> 文件并创建 Engine 实例<samp>，</samp>将 backgroundProcessorDelay 设置为 10<samp>，</samp>注意该变量是父类 ContainerBase 的成员属性：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>public abstract class ContainerBase extends LifecycleMBeanBase
+        implements Container {
+	...
+	
+	/**
+	* The processor delay for this component.
+	*/
+	protected int backgroundProcessorDelay = -1;
+	
+	...
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0091.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0092.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0093.jpg" /></div>
+		<div><p>通过 ContainerBase 类中 threadStart 方法注释可知<samp>，</samp>ContainerBackgroundProcessor[<span class="w3-text-light-green">StandardEngine</span>[Catalina]] 线程的作用是周期性地检查 session 是否超时即会话过期检查。</p></div>
+		<div><p>特别说明一下<samp>，</samp>在 debug 过程中注意查看方法调用栈的信息<samp>，</samp>threadStart 方法会被多次调用<samp>，</samp>但最终只能由 Engine 实例对象调用该方法完成线程创建。当然<samp>，</samp>在容器的后台线程创建完成之前<samp>，</samp>会进行 Web 上下文信息的初始化<samp>，</samp>有兴趣的童鞋可以重点阅读一下 ContextConfig 类中的 webConfig 方法<samp>，</samp>源码注释十分清晰<samp>，</samp>方法的执行步骤鲜明。</p></div>
+		<div><p>现在<samp>，</samp>我们重点关注一下处理 HTTP 请求的线程是如何创建的：</p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0094.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0095.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0096.jpg" /></div>
+		<div><p>根据源码注释可知<samp>，</samp>在 NioEndpoint 类中的第 <span class="w3-text-light-green">425</span> 行<samp>，</samp>主线程调用 createExecutor 方法创建 worker 线程集合<samp>，</samp>该方法的具体实现如下所示：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>public void createExecutor() {
+	internalExecutor = true;
+	<span class="w3-text-white">TaskQueue taskqueue = new TaskQueue();</span>
+	TaskThreadFactory tf = new TaskThreadFactory(getName() + "-exec-", daemon, getThreadPriority());
+	<span class="w3-text-white">executor = new ThreadPoolExecutor(getMinSpareThreads(), </span>
+			<span class="w3-text-white">getMaxThreads(), 60, TimeUnit.SECONDS,taskqueue, tf);</span>
+	taskqueue.setParent( (ThreadPoolExecutor) executor);
+}</pre></div>
+		<div><p>以基于 HTTP 协议的连接器为例<samp>，</samp>由源码可知<samp>，</samp>创建 worker 线程集合主要分为两步：</p></div>
+		<div><ul style="list-style:decimal">
+			<li><p>创建任务队列即 TaskQueue 类（继承自 LinkedBlockingQueue 类）实例<samp>，</samp>该任务队列的作用是<samp>，</samp>当 HTTP 请求数过多致使线程池达到饱和状态即线程池中的所有 worker 线程均在处理 HTTP 请求且仍有请求到达<samp>，</samp>后续到达的请求将进入队列以待处理<samp>；</samp></p></li>
+			<li><p>创建用以处理 HTTP 请求任务的线程池<samp>，</samp>池大小为 10（minSpareThreads = 10）<samp>，</samp>最大线程数为 200（maxThreads = 200）。</p></li>
+		</ul></div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0097.jpg" /></div>
+		<div><p>据图可知<samp>，</samp>createExecutor 方法执行结束时<samp>，</samp>worker 线程池被创建完成。之后<samp>，</samp>主线程会继续创建 poller 线程、acceptor 线程以及基于 AJP 协议的各工作线程。至此<samp>，</samp>Tomcat 8.0 容器中的各 Daemon 线程的创建过程就演示到这里。</p></div>
+		<div><p>实际而言<samp>，</samp>我们可以把基于 HTTP 协议的各工作线程和基于 AJP 协议的各工作线程看作两套相对独立的线程组<samp>，</samp>当不同的请求分别进入 HTTP 端口和 AJP 端口时<samp>，</samp>它们后续的请求处理流程是一致。</p></div>
+		<div><p><strong>Tomcat 8.0 之工作原理</strong></p></div>
+		<div><p>现在<samp>，</samp>我们重点关注 NioEndpoint 类<samp>，</samp>贴出部分源码<samp>，</samp>再给出 worker、poller 以及 acceptor 之间的关系图：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>/**
+ * <span class="w3-text-white">NIO tailored thread pool, providing the following services:</span>
+ * &lt;ul&gt;
+ * &lt;li&gt;<span class="w3-text-white">Socket acceptor thread</span>&lt;/li&gt;
+ * &lt;li&gt;<span class="w3-text-white">Socket poller thread</span>&lt;/li&gt;
+ * &lt;li&gt;<span class="w3-text-white">Worker threads pool</span>&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * When switching to Java 5, there's an opportunity to use the virtual
+ * machine's thread pool.
+ *
+ * @author Mladen Turk
+ * @author Remy Maucherat
+ */
+public class NioEndpoint extends AbstractEndpoint&lt;NioChannel&gt; {
+
+    ...
+	
+    /**
+     * Start the NIO endpoint, creating acceptor, poller threads.
+     */
+    @Override
+    public void startInternal() throws Exception {
+
+        if (!running) {
+            running = true;
+            paused = false;
+
+            processorCache = new SynchronizedStack&lt;&gt;(SynchronizedStack.DEFAULT_SIZE,
+                    socketProperties.getProcessorCache());
+            eventCache = new SynchronizedStack&lt;&gt;(SynchronizedStack.DEFAULT_SIZE,
+                            socketProperties.getEventCache());
+            nioChannels = new SynchronizedStack&lt;&gt;(SynchronizedStack.DEFAULT_SIZE,
+                    socketProperties.getBufferPool());
+
+            <span class="w3-text-white">// Create worker collection</span>
+            if ( getExecutor() == null ) {
+                createExecutor();
+            }
+
+            initializeConnectionLatch();
+
+            <span class="w3-text-white">// Start poller threads</span>
+            pollers = new Poller[getPollerThreadCount()];
+            for (int i=0; i&lt;pollers.length; i++) {
+                pollers[i] = new Poller();
+                Thread pollerThread = new Thread(pollers[i], getName() + "-ClientPoller-"+i);
+                pollerThread.setPriority(threadPriority);
+                pollerThread.setDaemon(true);
+                pollerThread.start();
+            }
+
+            <span class="w3-text-white">// 创建 acceptor 线程</span>
+            startAcceptorThreads();
+        }
+    }
+
+    ...
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div>
+			<img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0098.jpg" />
+			<p><span class="w3-text-red">特别说明</span>：上图出处为 <a style="overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://gearever.iteye.com/blog/1844203">http://gearever.iteye.com/blog/1844203</a></p>
+		</div>
+		<div><p>在搞清楚  worker、poller 以及 acceptor 之间的关系之后<samp>，</samp>我们再给出一张请求处理流程图（正所谓一图胜千言<samp>，</samp>在理解技术原理的时候<samp>，</samp>这张图有助于我们更加直观地认清事物的本质）：</p></div>
+		<div>
+			<img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0099.jpg" />
+			<p><span class="w3-text-red">特别说明</span>：上图参考自 <a style="overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://juejin.im/post/58eb5fdda0bb9f00692a78fc">https://juejin.im/post/58eb5fdda0bb9f00692a78fc</a></p>
+		</div>
+		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0100.jpg" /></div>
+		<div><p>最后简单总结一下<samp>，</samp>在理解 Tomcat 8.0 工作原理时要重点把握 NIO、Socket 编程以及线程池这些知识点<samp>，</samp>以自己最熟悉的方式找到分析问题的切入口<samp>，</samp>再抽丝剥茧。当然<samp>，</samp>在分析 Tomcat 8.0 工作原理时牵扯出了太多技术细节<samp>，</samp>这些诸多细节问题在适当的时间再做整理。</p></div>
+	</section>
+	<section>
+		<div><p><strong>参考资料：</strong>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://tomcat.apache.org/tomcat-8.0-doc/architecture/startup.html">https://tomcat.apache.org/tomcat-8.0-doc/architecture/startup.html</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://www.ntu.edu.sg/home/ehchua/programming/howto/Tomcat_More.html">https://www.ntu.edu.sg/home/ehchua/programming/howto/Tomcat_More.html</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet/">https://www.ibm.com/developerworks/cn/java/j-lo-servlet/</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://gearever.iteye.com/blog/1844203">http://gearever.iteye.com/blog/1844203</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.10tiao.com/html/308/201606/2650075915/1.html">http://www.10tiao.com/html/308/201606/2650075915/1.html</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://www.jianshu.com/p/76ff17bc6dea">https://www.jianshu.com/p/76ff17bc6dea</a>
+		<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://juejin.im/post/58eb5fdda0bb9f00692a78fc">https://juejin.im/post/58eb5fdda0bb9f00692a78fc</a>
+		</p></div>
+	</section>
+</article>

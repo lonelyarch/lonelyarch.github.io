@@ -1,6 +1,19 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2018.03.21</h4>
+			<p><strong>Tomcat 8.0 之工作原理</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat 是一个免费且开放源码的 Web 应用服务器<samp>，</samp>主要用以处理 JSP 和 Servlet<samp>，</samp>也可以处理诸如 HTML 等静态资源<samp>，</samp>但性能不比 Apache 或 Nginx 服务器。现简单介绍一下 Tomcat 8.0 之工作原理。</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：在理解 Tomcat 8.0 之工作原理之前<samp>，</samp>最好对 Java 语言的线程池（ThreadPoolExecutor）的实现原理有清晰的认识<samp>，</samp>在此基础上再去理解 Tomcat 8.0 之工作原理将变得轻车熟路。对 ThreadPoolExecutor 比较陌生的童鞋请翻看博主之前贴出的文章。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0055/0055.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2018.03.20</h4>
 			<p><strong><span class="w3-text-light-green">转载</span> --- 透彻的掌握 Spring 中 @transactional 的使用</strong></p>
 			<div class="w3-container w3-light-gray">

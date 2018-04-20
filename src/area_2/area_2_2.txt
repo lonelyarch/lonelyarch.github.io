@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</strong></p><p class="w3-right">2017-12-08</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;众所周知，ReentrantLock 的功能是实现代码段的并发访问控制，也就是通常意义上所说的锁，在没有看到 AbstractQueuedSynchronizer 之前，你可能会以为它的实现是通过类似于 synchronized，通过给对象加锁来实现的。但事实上，它只是一个工具类，仅是作为一个普普通通的类就完成了代码块的并发访问控制，这就让人疑惑它怎么实现的代码块的并发访问控制的。文中将以 AQS 代替 AbstractQueuedSynchronizer 。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/34.txt',id:'prevtonext'},{url:'src/area_2/articles/0035/0035.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：ThreadLocal（13）</strong></p><p class="w3-right">2017-11-13</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -109,15 +120,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/26.txt',id:'prevtonext'},{url:'src/area_2/articles/0027/0027.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：synchronized 关键字之重入锁的实现（06）</strong></p><p class="w3-right">2017-10-02</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是重入锁？简而言之，当前线程持有了一个锁对象并且需要再次持有该锁对象，即重复加锁。<span style="color:#8bc34a">ReentrantLock</span> 类是 JDK 实现的重入锁，更加确切地说，该类是实现了公平或非公平策略的可重复加锁机制。对 <span style="color:#8bc34a">ReentrantLock</span> 类的深究不在该篇文章的撰写之内，为学习之目的，自造一个简易的轮子。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/25.txt',id:'prevtonext'},{url:'src/area_2/articles/0026/0026.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
