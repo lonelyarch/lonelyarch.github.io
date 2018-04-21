@@ -1,0 +1,3 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/56.txt',id:'prevtonext'},{url:'src/area_2/articles/0057/0057.txt',id:'contents'}]);" class="w3-text-blue w3-left" style="text-decoration: none; cursor: pointer;">« 模拟 HttpServer 系列：接收表单数据（02）</a>
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/54.txt',id:'prevtonext'},{url:'src/area_2/articles/0055/0055.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">Tomcat 8.0 之工作原理 »</a>
+<div style="clear: both;"></div>

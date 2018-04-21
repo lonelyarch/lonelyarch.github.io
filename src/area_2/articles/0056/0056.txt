@@ -1,0 +1,205 @@
+<article>
+	<section>
+		<div><p><strong>模拟 HttpServer 系列：HelloWorld（01）</strong></p><p class="w3-right w3-margin-0">2018-03-25</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了能够更加透彻地理解 Java Web 服务器的工作原理<samp>，</samp>个人打算基于 JDK1.8 实现一个简单的 HttpServer<samp>，</samp>本着实践出真知的信念不断 coding<samp>，</samp>永无止境。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：先以最简单、最熟悉的方式入手<samp>，</samp>然后循序渐进地自我完善。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>1. 基于 ServerSocket 创建 BIO 模式下的 HttpServer<samp>，</samp>使用浏览器作为客户端进行访问<samp>，</samp>为了能够说明问题以及加深理解<samp>，</samp>我们先给出最基本的代码<samp>，</samp>再一点点完善：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>import java.net.ServerSocket;
+import java.net.Socket;
+
+public class HttpServer {
+
+	private final static int port = <span class="w3-text-white">8088</span>;
+
+	public static void main(String[] args) {
+		try {
+			@SuppressWarnings("resource") // ServerSocket 实例没有关闭即没有执行 ss.close()
+			ServerSocket ss = new ServerSocket(port);
+			// 获取客户端 socket
+			Socket socket = ss.accept(); // accept() 为阻塞式方法
+			socket.close();
+			System.out.println("客户端请求已到达……");
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+		<div><p>启动服务：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/01.jpg" /></div>
+		<div><p>请求访问：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/02.jpg" /></div>
+		<div><p>访问结果：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/03.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/04.jpg" /></div>
+		<div><p>据图可知<samp>，</samp>虽然客户端已经访问了服务器<samp>，</samp>但页面显示<samp>“连接失败”</samp><samp>，</samp>为此我们对代码进行改进如下：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Date;
+
+public class HttpServer {
+
+	private final static int port = <span class="w3-text-white">8088</span>;
+
+	public static void main(String[] args) {
+		try {
+			@SuppressWarnings("resource") // ServerSocket 实例没有关闭即没有执行 ss.close()
+			ServerSocket ss = new ServerSocket(port);
+			// 获取客户端 socket
+			Socket socket = ss.accept(); // accept() 为阻塞式方法
+
+			// 获取 socket 输出流<samp>，</samp>写数据
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			BufferedWriter out = new BufferedWriter(osw);
+			String html = "&lt;html&gt;<span class="w3-text-white">Hello World!</span>&lt;/html&gt;";
+			out.write("HTTP/1.1 200 OK");
+			out.write("\r\n");
+			out.write("Date: " + new Date());
+			out.write("\r\n");
+			out.write("Content-Type: text/html");
+			out.write("\r\n");
+			out.write("Content-Length: " + html.length());
+			out.write("\r\n");
+			out.write("\r\n");
+			out.write(html);
+			out.flush();
+
+			osw.close();
+			out.close();
+			socket.close();
+			System.out.println("客户端请求已到达……");
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+		<div><p>启动服务<samp>，</samp>客户端请求访问<samp>，</samp>查看结果：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/04.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/05.jpg" /></div>
+		<div><p>虽然我们已经完成了从浏览器发起访问至页面显示响应结果的整个过程<samp>，</samp>但就目前 HttpServer 的实现而言<samp>，</samp>还存在如下几个最基本的问题：</p></div>
+		<div><ul>
+			<li><p>HttpServer 只能处理一次请求<samp>；</samp></p></li>
+			<li><p>HttpServer 未读取客户端信息<samp>；</samp></p></li>
+			<li><p>为了能够让浏览器正常显示发自 HttpServer 端的信息<samp>，</samp>我们在 Java 代码中拼凑了 html 代码<samp>，</samp>这种实现方式比较糟糕。</p></li>
+		</ul></div>
+		<div><p>2. 为了解决上述几个基本问题<samp>，</samp>我们将代码修改如下：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Date;
+
+import com.hsdis.network.util.FileUtils;
+
+public class HttpServer {
+
+	private final static int port = <span class="w3-text-white">8088</span>;
+
+	public static void main(String[] args) {
+		try {
+			@SuppressWarnings("resource") // ServerSocket 实例没有关闭即没有执行 ss.close()
+			ServerSocket ss = new ServerSocket(port);
+
+			<span class="w3-text-white">while (true) {</span>
+				// 获取客户端 socket
+				Socket socket = ss.accept(); // accept() 为阻塞式方法
+
+				// 获取 socket 输入流<samp>，</samp>读数据
+				InputStreamReader isr = new InputStreamReader(socket.getInputStream());
+				BufferedReader reader = new BufferedReader(isr);
+				String line = null;
+				while (true) {
+					line = reader.readLine();
+					if (null == line || line.isEmpty())
+						break;
+					System.out.println(line);
+				}
+
+				// 获取 socket 输出流<samp>，</samp>写数据
+				OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+				BufferedWriter out = new BufferedWriter(osw);
+				String html = <span class="w3-text-white">FileUtils.read("index.html")</span>;
+				out.write("HTTP/1.1 200 OK");
+				out.write("\r\n");
+				out.write("Date: " + new Date());
+				out.write("\r\n");
+				out.write("Content-Type: text/html");
+				out.write("\r\n");
+				out.write("Content-Length: " + html.length());
+				out.write("\r\n");
+				out.write("\r\n");
+				out.write(html);
+				out.flush();
+
+				osw.close();
+				out.close();
+				socket.close();
+				System.out.println("客户端请求已到达……");
+			<span class="w3-text-white">}</span>
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network.util;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class FileUtils {
+
+	public static String read(String file) {
+		StringBuilder res = new StringBuilder();
+		String path = System.getProperty("user.dir") + "\\src\\web\\" + file;
+		try {
+			InputStream is = new FileInputStream(new File(path));
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				res.append(line);
+			}
+			br.close();
+		} catch (Exception e) {
+		}
+		return res.toString();
+	}
+
+	public static void main(String[] args) {
+		System.out.println(System.getProperty("user.dir"));
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;HttpServer Demo&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="background-color:darkseagreen"&gt;
+	&lt;div style="margin-top:100px;text-align:center;color:white;font-size:50px"&gt;Hello World!&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/06.jpg" /></div>
+		<div><p>启动服务<samp>，</samp>客户端请求访问<samp>，</samp>查看结果：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/07.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0056/images/08.jpg" /></div>
+		<div><p>稍微总结一下<samp>，</samp>根据实现 HelloWorld 程序的默认原则<samp>，</samp>上述示例代码保持了十分简洁易懂的风格。万丈高楼平地起<samp>，</samp>这也是基础中的基础<samp>，</samp>后续将在此基础上一点点改进。</p></div>
+	</section>
+</article>

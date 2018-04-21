@@ -1,0 +1,128 @@
+<article>
+	<section>
+		<div><p><strong>模拟 HttpServer 系列：接收表单数据（02）</strong></p><p class="w3-right w3-margin-0">2018-03-26</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以 GET 方式发起请求时<samp>，</samp>请求参数通常会拼在 URL 地址内<samp>，</samp>获取参数也比较简单<samp>，</samp>现重点关注如何获取表单数据即 POST 请求参数。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在 HelloWorld 程序中<samp>，</samp>我们已经拿到了客户端的部分信息<samp>，</samp>例如<samp>，</samp>请求行信息（方法、URL 以及 HTTP 版本）。现在<samp>，</samp>我们给 index.html 文件添加表单并填写数据再提交<samp>，</samp>看一下在服务器端是否能够获取表单数据：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;HTTP Server Demo&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style="background-color:darkseagreen"&gt;
+	&lt;div style="margin-top:100px;text-align:center;color:white"&gt;hello world!&lt;/div&gt;
+	&lt;br /&gt;
+	&lt;form action="<span class="w3-text-white">register</span>" method="post"&gt;
+		&lt;table style="margin:0 auto"&gt;
+			&lt;tr&gt;
+				&lt;td&gt;&lt;label&gt;username:&lt;/label&gt;&lt;/td&gt;
+				&lt;td&gt;&lt;input type="text" name="username" value="" /&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+				&lt;td&gt;&lt;label&gt;password:&lt;/label&gt;&lt;/td&gt;
+				&lt;td&gt;&lt;input type="text" name="password" value="" /&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;
+			&lt;input style="width:100%;border:1px solid black;height:23px" 
+								type="submit" value="submit" /&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/table&gt;
+	&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+		<div><p>启动服务<samp>，</samp>客户端请求访问<samp>，</samp>查看结果：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0057/images/01.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0057/images/02.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0057/images/03.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0057/images/04.jpg" /></div>
+		<div><p>据图可知<samp>，</samp>虽然在 POST 请求之后<samp>，</samp>表单数据已经到达了服务器端（Content-Length 不为 0）<samp>，</samp>但 HelloWorld 程序并没有读出表单的各项数据内容<samp>，</samp>于是我们改进程序代码如下：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Date;
+
+import com.hsdis.network.util.FileUtils;
+
+public class HttpServer {
+
+	private final static int port = 8088;
+
+	public static void main(String[] args) {
+		try {
+			@SuppressWarnings("resource") // ServerSocket 实例没有关闭即没有执行 ss.close()
+			ServerSocket ss = new ServerSocket(port);
+
+			while (true) {
+				// 获取客户端 socket
+				Socket socket = ss.accept(); // accept() 为阻塞式方法
+
+				// 获取 socket 输入流<samp>，</samp>读数据
+				InputStreamReader isr = new InputStreamReader(socket.getInputStream());
+				BufferedReader reader = new BufferedReader(isr);
+				String line = null;
+				int len = -1;
+				while ((line = reader.readLine()) != null &amp;&amp; (line.length() != 0)) {
+					System.out.println(line);
+					if (line.indexOf("Content-Length:") > -1) {
+					len = new Integer(line.substring(line.indexOf("Content-Length:") 
+						+ 16, line.length())).intValue();
+					}
+				}
+
+				String data = "";
+				if (len > 0) {
+					char[] cbuf = new char[len];
+					reader.read(cbuf, 0, len);
+					data = new String(cbuf);
+				}
+				System.out.println(data);
+
+				// 获取 socket 输出流<samp>，</samp>写数据
+				OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+				BufferedWriter out = new BufferedWriter(osw);
+				String html = FileUtils.read("index.html");
+				out.write("HTTP/1.1 200 OK");
+				out.write("\r\n");
+				out.write("Date: " + new Date());
+				out.write("\r\n");
+				out.write("Content-Type: text/html");
+				out.write("\r\n");
+				out.write("Content-Length: " + html.length());
+				out.write("\r\n");
+				out.write("\r\n");
+				out.write(html);
+				out.flush();
+
+				osw.close();
+				out.close();
+				isr.close();
+				reader.close();
+				socket.close();
+				System.out.println("客户端请求已到达……");
+			}
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+		<div><p>启动服务<samp>，</samp>客户端请求访问<samp>，</samp>查看结果：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0057/images/02.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0057/images/05.jpg" /></div>
+		<div><p>简单总结一下<samp>，</samp>读取客户端请求数据时先拿到其对应 socket 实例的输入流<samp>，</samp>再从 Message Body 中解析表单数据<samp>，</samp>关键点是要清楚 HTTP/1.1 协议的数据包格式<samp>，</samp>详情请参考 <a target="_blank" class="w3-link" href="https://tools.ietf.org/html/rfc2616">RFC 2616</a>（虽然浏览器的厂商各有不同<samp>，</samp>但在实现上都遵循了相同的协议）。</p></div>
+	</section>
+</article>

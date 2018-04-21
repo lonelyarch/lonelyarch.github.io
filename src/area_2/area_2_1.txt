@@ -1,4 +1,27 @@
 <article>
+	<div><p><strong>SpringMVC 系列：Web MVC 的工作原理（02）</strong></p><p class="w3-right">2018-03-09</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单搭建了 HelloWorld 应用之后<samp>，</samp>为了更深入的了解 SpringMVC 中的 Model、View 以及 Controller 之间的运行机制<samp>，</samp>我们有必要探知它内部的实现原理<samp>，</samp>这在处理工作中遇到的问题时会很有帮助。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/46.txt',id:'prevtonext'},{url:'src/area_2/articles/0047/0047.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
+	<div><p><strong>SpringMVC 系列：5 分钟搭建 HelloWorld（01）</strong></p><p class="w3-right">2018-03-07</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信任何开发过 Java Web 应用的童鞋对 SpringMVC 框架一定不陌生<samp>，</samp>至于该框架的优点也是显而易见<samp>，</samp>在此不赘述<samp>，</samp>如果你曾经使用了 Servlet 原生技术实现过类似的 Web 应用或 Demo<samp>，</samp>两相对比之后<samp>，</samp>那么你可能会对 SpringMVC 框架更加情有独钟。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主在最初参加工作的时候<samp>，</samp>准确地说<samp>，</samp>是在参加工作之前的入职培训期间<samp>，</samp>就已经接触过 Spring<samp>，</samp>当时还十分流行 SSH<samp>，</samp>那个时候的 SpringMVC 貌似还不是很出名。在工作期间<samp>，</samp>个人也碰到过使用 SpringMVC 框架实现 Web 应用的项目<samp>，</samp>现将曾经整理过的相关笔记贴出来<samp>，</samp>也算是对 SpringMVC 框架知识点的一次回顾。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/45.txt',id:'prevtonext'},{url:'src/area_2/articles/0046/0046.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>负载均衡（Load Balance）之数据链路层方式</strong></p><p class="w3-right">2018-01-23</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -112,27 +135,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/37.txt',id:'prevtonext'},{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：ReentrantLock 之源码调试（14）</strong></p><p class="w3-right">2017-12-16</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在阅读过同行从业者写的关于 AQS（AbstractQueuedSynchronizer）知识点的博文之后，根据理论加以实践是必不可少的，还是那句话：<span class="w3-text-light-green">纸上得来终觉浅，绝知此事要躬行</span>。</P>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇文章主要是借助 eclipse 开发工具对 JDK1.8 源码之 ReentrantLock 进行调试，以理解基于 AQS 的独占功能的实现过程。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/36.txt',id:'prevtonext'},{url:'src/area_2/articles/0037/0037.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- JDK1.8 AbstractQueuedSynchronizer 的实现分析（下）</strong></p><p class="w3-right">2017-12-11</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过本系列的上半部分 <a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/jdk1.8-abstractqueuedsynchronizer">JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</a>的解读，相信很多读者对 AbstractQueuedSynchronizer 的独占功能已了然于胸，趁热打铁，这次我们通过对另一个工具类：CountDownLatch 的分析来解读 AQS 的另外一个功能：共享功能。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/35.txt',id:'prevtonext'},{url:'src/area_2/articles/0036/0036.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

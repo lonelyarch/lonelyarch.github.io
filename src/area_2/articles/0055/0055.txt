@@ -185,7 +185,7 @@ public static void main(String args[]) {
 		</ul></div>
 		<div><img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/04/20/0097.jpg" /></div>
 		<div><p>据图可知<samp>，</samp>createExecutor 方法执行结束时<samp>，</samp>worker 线程池被创建完成。之后<samp>，</samp>主线程会继续创建 poller 线程、acceptor 线程以及基于 AJP 协议的各工作线程。至此<samp>，</samp>Tomcat 8.0 容器中的各 Daemon 线程的创建过程就演示到这里。</p></div>
-		<div><p>实际而言<samp>，</samp>我们可以把基于 HTTP 协议的各工作线程和基于 AJP 协议的各工作线程看作两套相对独立的线程组<samp>，</samp>当不同的请求分别进入 HTTP 端口和 AJP 端口时<samp>，</samp>它们后续的请求处理流程是一致。</p></div>
+		<div><p>实际而言<samp>，</samp>我们可以把基于 HTTP 协议的各工作线程和基于 AJP 协议的各工作线程看作两套相对独立的线程组<samp>，</samp>当不同的请求分别进入 HTTP 端口和 AJP 端口时<samp>，</samp>它们后续的请求处理流程是一致的。</p></div>
 		<div><p><strong>Tomcat 8.0 之工作原理</strong></p></div>
 		<div><p>现在<samp>，</samp>我们重点关注 NioEndpoint 类<samp>，</samp>贴出部分源码<samp>，</samp>再给出 worker、poller 以及 acceptor 之间的关系图：</p></div>
 		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>/**

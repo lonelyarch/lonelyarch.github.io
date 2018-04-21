@@ -1,6 +1,31 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2018.03.26</h4>
+			<p><strong>模拟 HttpServer 系列：接收表单数据（02）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以 GET 方式发起请求时<samp>，</samp>请求参数通常会拼在 URL 地址内<samp>，</samp>获取参数也比较简单<samp>，</samp>现重点关注如何获取表单数据即 POST 请求参数。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0057/0057.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
+			<h4>2018.03.25</h4>
+			<p><strong>模拟 HttpServer 系列：HelloWorld（01）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了能够更加透彻地理解 Java Web 服务器的工作原理<samp>，</samp>个人打算基于 JDK1.8 实现一个简单的 HttpServer<samp>，</samp>本着实践出真知的信念不断 coding<samp>，</samp>永无止境。</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：先以最简单、最熟悉的方式入手<samp>，</samp>然后循序渐进地自我完善。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0056/0056.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2018.03.21</h4>
 			<p><strong>Tomcat 8.0 之工作原理</strong></p>
 			<div class="w3-container w3-light-gray">

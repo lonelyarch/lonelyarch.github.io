@@ -1,4 +1,27 @@
 <article>
+	<div><p><strong>模拟 HttpServer 系列：接收表单数据（02）</strong></p><p class="w3-right">2018-03-26</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以 GET 方式发起请求时<samp>，</samp>请求参数通常会拼在 URL 地址内<samp>，</samp>获取参数也比较简单<samp>，</samp>现重点关注如何获取表单数据即 POST 请求参数。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/56.txt',id:'prevtonext'},{url:'src/area_2/articles/0057/0057.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
+	<div><p><strong>模拟 HttpServer 系列：HelloWorld（01）</strong></p><p class="w3-right">2018-03-25</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了能够更加透彻地理解 Java Web 服务器的工作原理<samp>，</samp>个人打算基于 JDK1.8 实现一个简单的 HttpServer<samp>，</samp>本着实践出真知的信念不断 coding<samp>，</samp>永无止境。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：先以最简单、最熟悉的方式入手<samp>，</samp>然后循序渐进地自我完善。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/55.txt',id:'prevtonext'},{url:'src/area_2/articles/0056/0056.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Tomcat 8.0 之工作原理</strong></p><p class="w3-right">2018-03-21</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -96,27 +119,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/47.txt',id:'prevtonext'},{url:'src/area_2/articles/0048/0048.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>SpringMVC 系列：Web MVC 的工作原理（02）</strong></p><p class="w3-right">2018-03-09</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单搭建了 HelloWorld 应用之后<samp>，</samp>为了更深入的了解 SpringMVC 中的 Model、View 以及 Controller 之间的运行机制<samp>，</samp>我们有必要探知它内部的实现原理<samp>，</samp>这在处理工作中遇到的问题时会很有帮助。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/46.txt',id:'prevtonext'},{url:'src/area_2/articles/0047/0047.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>SpringMVC 系列：5 分钟搭建 HelloWorld（01）</strong></p><p class="w3-right">2018-03-07</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信任何开发过 Java Web 应用的童鞋对 SpringMVC 框架一定不陌生<samp>，</samp>至于该框架的优点也是显而易见<samp>，</samp>在此不赘述<samp>，</samp>如果你曾经使用了 Servlet 原生技术实现过类似的 Web 应用或 Demo<samp>，</samp>两相对比之后<samp>，</samp>那么你可能会对 SpringMVC 框架更加情有独钟。</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主在最初参加工作的时候<samp>，</samp>准确地说<samp>，</samp>是在参加工作之前的入职培训期间<samp>，</samp>就已经接触过 Spring<samp>，</samp>当时还十分流行 SSH<samp>，</samp>那个时候的 SpringMVC 貌似还不是很出名。在工作期间<samp>，</samp>个人也碰到过使用 SpringMVC 框架实现 Web 应用的项目<samp>，</samp>现将曾经整理过的相关笔记贴出来<samp>，</samp>也算是对 SpringMVC 框架知识点的一次回顾。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/45.txt',id:'prevtonext'},{url:'src/area_2/articles/0046/0046.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
