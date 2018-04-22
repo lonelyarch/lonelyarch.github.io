@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/56.txt',id:'prevtonext'},{url:'src/area_2/articles/0057/0057.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">模拟 HttpServer 系列：接收表单数据（02） »</a>
+<div style="clear: both;"></div>

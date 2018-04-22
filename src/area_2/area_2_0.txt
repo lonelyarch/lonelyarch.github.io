@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>模拟 HttpServer 系列：启用线程池（03）</strong></p><p class="w3-right">2018-03-27</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了提升 HttpServer 的并发处理能力<samp>，</samp>现添加线程池。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Tomcat 8.0 的源码中<samp>，</samp>其内部是实现了 ThreadPoolExecutor 类并以此创建了 worker 线程池<samp>，</samp>但这也只是在 JDK 提供的 ThreadPoolExecutor 类的基础上进行的简单封装。我们直接使用 JDK 的 ThreadPoolExecutor 类创建线程池即可。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/57.txt',id:'prevtonext'},{url:'src/area_2/articles/0058/0058.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>模拟 HttpServer 系列：接收表单数据（02）</strong></p><p class="w3-right">2018-03-26</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -102,21 +114,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/48.txt',id:'prevtonext'},{url:'src/area_2/articles/0049/0049.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>SpringMVC 系列：@Controller 注解之 value 值的生成（03）</strong></p><p class="w3-right">2018-03-10</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在理解 SpringMVC 工作原理的过程中遇到很多细节疑问<samp>，</samp>解答这些细节疑问的办法也有很多种<samp>，</samp>现举例以 debug 的方式解答一个比较简单的疑问：使用 @Controller 注解<samp>，</samp>在没有指定控制器名称的情况下<samp>，</samp>它的默认值是如何生成的？例如：</p>
-		<pre style="overflow:auto">    // @Controller(<span class="w3-text-light-green">value</span> = "myCustomUserController")
-    @Controller
-    public class UserController {
-        ...
-    }</pre>
-		<div><p>在 <span class="w3-text-light-green">value</span> 值没有指定的情况下<samp>，</samp>控制器 UserController 的名称是怎样生成的？它会是什么？</p></div>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/47.txt',id:'prevtonext'},{url:'src/area_2/articles/0048/0048.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

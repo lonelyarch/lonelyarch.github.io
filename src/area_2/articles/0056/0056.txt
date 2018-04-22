@@ -178,10 +178,6 @@ public class FileUtils {
 		}
 		return res.toString();
 	}
-
-	public static void main(String[] args) {
-		System.out.println(System.getProperty("user.dir"));
-	}
 }</pre></div>
 		<div><p style="margin:7.5px 0"></p></div>
 		<div class="w3-custom-code w3-white"><pre>&lt;!DOCTYPE html&gt;

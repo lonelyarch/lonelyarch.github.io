@@ -1,6 +1,19 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2018.03.27</h4>
+			<p><strong>模拟 HttpServer 系列：启用线程池（03）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了提升 HttpServer 的并发处理能力<samp>，</samp>现添加线程池。</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Tomcat 8.0 的源码中<samp>，</samp>其内部是实现了 ThreadPoolExecutor 类并以此创建了 worker 线程池<samp>，</samp>但这也只是在 JDK 提供的 ThreadPoolExecutor 类的基础上进行的简单封装。我们直接使用 JDK 的 ThreadPoolExecutor 类创建线程池即可。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0058/0058.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2018.03.26</h4>
 			<p><strong>模拟 HttpServer 系列：接收表单数据（02）</strong></p>
 			<div class="w3-container w3-light-gray">

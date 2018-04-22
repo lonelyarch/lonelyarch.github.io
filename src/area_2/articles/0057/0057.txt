@@ -84,7 +84,7 @@ public class HttpServer {
 					}
 				}
 
-				String data = "";
+				String data = null;
 				if (len > 0) {
 					char[] cbuf = new char[len];
 					reader.read(cbuf, 0, len);

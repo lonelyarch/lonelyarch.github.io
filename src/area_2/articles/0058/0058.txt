@@ -1,0 +1,299 @@
+<article>
+	<section>
+		<div><p><strong>模拟 HttpServer 系列：启用线程池（03）</strong></p><p class="w3-right w3-margin-0">2018-03-27</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了提升 HttpServer 的并发处理能力<samp>，</samp>现添加线程池。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Tomcat 8.0 的源码中<samp>，</samp>其内部是实现了 ThreadPoolExecutor 类并以此创建了 worker 线程池<samp>，</samp>但这也只是在 JDK 提供的 ThreadPoolExecutor 类的基础上进行的简单封装。我们直接使用 JDK 的 ThreadPoolExecutor 类创建线程池即可。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在添加线程池之前<samp>，</samp>我们将 HttpServer 代码改造一下<samp>，</samp>使之更加符合面向对象的编程思维<samp>，</samp>即我们将服务启动、请求监听以及请求处理拆分开<samp>，</samp>使之相对独立：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>1. 服务启动
+package com.hsdis.network.startup;
+
+import com.hsdis.network.HttpServer;
+
+public class Bootstrap {
+	public static void main(String[] args) {
+		new Thread(new HttpServer()).start();
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>2. 请求监听
+package com.hsdis.network;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class HttpServer implements Runnable {
+
+	private final static int port = 8088;
+
+	@Override
+	public void run() {
+		try {
+			@SuppressWarnings("resource")
+			ServerSocket ss = new ServerSocket(port);
+			while (true) {
+				Socket socket = ss.accept();
+				new Handler(socket).run(); // 注意<samp>，</samp>该处为方法调用而不是启动线程
+			}
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>3. 请求处理
+package com.hsdis.network;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.util.Date;
+
+import com.hsdis.network.util.FileUtils;
+
+public class Handler implements Runnable {
+
+	private final Socket socket;
+	private final StringBuffer sb = new StringBuffer();
+
+	Handler(Socket socket) {
+		this.socket = socket;
+	}
+
+	@Override
+	public void run() {
+		try {
+			reader(socket);
+			print();
+			writer(socket);
+			close();
+		} catch (Exception e) {
+		}
+	}
+
+	private void reader(Socket socket) throws Exception {
+		InputStreamReader isr = new InputStreamReader(socket.getInputStream());
+		BufferedReader reader = new BufferedReader(isr);
+		String line = null;
+		int len = -1;
+		while ((line = reader.readLine()) != null &amp;&amp; (line.length() != 0)) {
+			sb.append(line).append("\r\n");
+			if (line.indexOf("Content-Length:") > -1) {
+				len = new Integer(line.substring(line.indexOf("Content-Length:") 
+					+ 16, line.length())).intValue();
+			}
+		}
+		String data = null;
+		if (len > 0) {
+			char[] cbuf = new char[len];
+			reader.read(cbuf, 0, len);
+			data = new String(cbuf);
+		}
+		sb.append(data).append("\r\n");
+	}
+
+	private void writer(Socket socket) throws Exception {
+		OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+		BufferedWriter out = new BufferedWriter(osw);
+		String html = FileUtils.read("index.html");
+		out.write("HTTP/1.1 200 OK");
+		out.write("\r\n");
+		out.write("Date: " + new Date());
+		out.write("\r\n");
+		out.write("Content-Type: text/html");
+		out.write("\r\n");
+		out.write("Content-Length: " + html.length());
+		out.write("\r\n");
+		out.write("\r\n");
+		out.write(html);
+		out.flush();
+		osw.close();
+		out.close();
+	}
+
+	private void print() {
+		System.out.println(sb.toString());
+	}
+
+	private void close() throws Exception {
+		socket.close();
+	}
+}</pre></div>
+		<div><p>现在<samp>，</samp>我们在上述代码的基础上稍加改造<samp>，</samp>添加线程池（实际上<samp>，</samp>我们最终创建的线程池与 Tomcat 8.0 中调用 createExecutor 方法创建的 worker 线程池在功能上是一致的即均用以处理具体请求）：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network.startup;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import com.hsdis.network.HttpServer;
+
+public class Bootstrap {
+
+	private static final int corePoolSize = 10;
+	private static final int maximumPoolSize = 20;
+	private static final int keepAliveTime = 60;
+	private static final TimeUnit unit = TimeUnit.SECONDS;
+
+	private static final int capacity = 5;
+	private static final boolean fair = true;
+
+	private static void start(Runnable r) {
+		new Thread(r).start();
+	}
+
+	public static void main(String[] args) {
+		ExecutorService executor = <span class="w3-text-white">new ThreadPoolExecutor</span>(corePoolSize, maximumPoolSize, 
+			keepAliveTime, unit, new ArrayBlockingQueue&lt;Runnable&gt;(capacity, fair));
+		Bootstrap.start(new HttpServer(executor));
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+
+public class HttpServer implements Runnable {
+
+	private final static int port = 8088;
+	private final ExecutorService executor;
+
+	public HttpServer(ExecutorService executor) {
+		this.executor = executor;
+	}
+
+	@Override
+	public void run() {
+		try {
+			@SuppressWarnings("resource")
+			ServerSocket ss = new ServerSocket(port);
+			while (true) {
+				Socket socket = ss.accept();
+				<span class="w3-text-white">executor.submit</span>(new Handler(socket));
+			}
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.util.Date;
+
+import com.hsdis.network.util.FileUtils;
+
+public class Handler implements Runnable {
+
+	private final Socket socket;
+	private final StringBuffer sb = new StringBuffer();
+
+	Handler(Socket socket) {
+		this.socket = socket;
+	}
+
+	@Override
+	public void run() {
+		System.out.println("当前执行线程：" + Thread.currentThread().getName());
+		try {
+			reader(socket);
+			print();
+			writer(socket);
+			close();
+		} catch (Exception e) {
+		}
+	}
+
+	private void reader(Socket socket) throws Exception {
+		InputStreamReader isr = new InputStreamReader(socket.getInputStream());
+		BufferedReader reader = new BufferedReader(isr);
+		String line = null;
+		int len = -1;
+		while ((line = reader.readLine()) != null &amp;&amp; (line.length() != 0)) {
+			sb.append(line).append("\r\n");
+			if (line.indexOf("Content-Length:") > -1) {
+				len = new Integer(line.substring(line.indexOf("Content-Length:") 
+					+ 16, line.length())).intValue();
+			}
+		}
+		String data = null;
+		if (len > 0) {
+			char[] cbuf = new char[len];
+			reader.read(cbuf, 0, len);
+			data = new String(cbuf);
+		}
+		sb.append(null == data ? "" : data).append("\r\n");
+	}
+
+	private void writer(Socket socket) throws Exception {
+		OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+		BufferedWriter out = new BufferedWriter(osw);
+		String html = FileUtils.read("index.html");
+		out.write("HTTP/1.1 200 OK");
+		out.write("\r\n");
+		out.write("Date: " + new Date());
+		out.write("\r\n");
+		out.write("Content-Type: text/html");
+		out.write("\r\n");
+		out.write("Content-Length: " + html.length());
+		out.write("\r\n");
+		out.write("\r\n");
+		out.write(html);
+		out.flush();
+		osw.close();
+		out.close();
+	}
+
+	private void print() {
+		System.out.println(sb.toString());
+	}
+
+	private void close() throws Exception {
+		socket.close();
+	}
+}</pre></div>
+		<div><p>测试结果如下所示：</p></div>
+		<div class="w3-custom-code w3-white"><pre><span class="w3-text-red">当前执行线程：pool-1-thread-1</span>
+<span class="w3-text-red">GET</span> /query HTTP/1.1
+Host: 127.0.0.1:8088
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+
+
+<span class="w3-text-red">当前执行线程：pool-1-thread-2</span>
+<span class="w3-text-red">POST</span> /register HTTP/1.1
+Host: 127.0.0.1:8088
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate
+Referer: http://127.0.0.1:8088/query
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 30
+DNT: 1
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+username=Jerry&amp;password=123321
+
+...</pre></div>
+	</section>
+</article>

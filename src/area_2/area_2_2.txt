@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>面包屑导航（Breadcrumb Navigation）</strong></p><p class="w3-right">2017-12-24</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-example-breadcrumb-navigation-01-02_0038">
+		<div>
+			<a>首页</a><a>关于</a><a>职业提升</a><a>生活随笔</a>
+		</div>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/37.txt',id:'prevtonext'},{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：ReentrantLock 之源码调试（14）</strong></p><p class="w3-right">2017-12-16</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -103,15 +115,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/29.txt',id:'prevtonext'},{url:'src/area_2/articles/0030/0030.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：volatile 关键字（09）</strong></p><p class="w3-right">2017-10-13</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，以 volatile 关键字修饰的变量具有两种特性：1.变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）。2.禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/28.txt',id:'prevtonext'},{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
