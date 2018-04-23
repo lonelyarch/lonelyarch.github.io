@@ -1,0 +1,185 @@
+<article>
+	<section>
+		<div><p><strong>模拟 HttpServer 系列：将 BIO 模式改造为 NIO 模式（04）</strong></p><p class="w3-right w3-margin-0">2018-03-29</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查阅文档可知<samp>，</samp>Tomcat 8.0 支持 3 种运行模式<samp>，</samp>即 BIO 模式、NIO 模式以及 APR 模式。前两种模式所使用的技术相对比较熟悉<samp>，</samp>即阻塞式 IO 和非阻塞式 IO<samp>，</samp>至于 APR 模式的详细信息请参阅 <a target="_blank" class="w3-link" href="http://tomcat.apache.org/tomcat-8.0-doc/apr.html">Apache Portable Runtime (APR) based Native library for Tomcat</a> 文档。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了探究 Tomcat 8.0 源码中 NIO 模式的部分处理细节<samp>，</samp>现将 HttpServer 改造为 NIO 模式下的技术实现。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>1. 为了便于理解<samp>，</samp>在使用 NIO 实现 HttpServer 时只启动两个线程<samp>，</samp>一个线程用以接收请求<samp>，</samp>另一个线程用以处理请求（可以理解为生产者-消费者模式）<samp>，</samp>为此<samp>，</samp>我们将 HttpServer 类修改如下：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network;
+
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+
+public class HttpServer {
+
+	private int port = 80; // default
+
+	private SocketAccepter accepter = null;
+	private SocketProcessor processor = null;
+
+	public HttpServer(int port) {
+		this.port = port;
+	}
+
+	public void start() {
+		try {
+			// 共享队列
+			<span class="w3-text-white">Queue&lt;Socket&gt; queue = new ArrayBlockingQueue&lt;Socket&gt;(128);</span>
+			this.accepter = new SocketAccepter(this.port, queue);
+			this.processor = new SocketProcessor(queue);
+			<span class="w3-text-white">new Thread(this.accepter).start();</span> // 请求接收器线程启动
+			<span class="w3-text-white">new Thread(this.processor).start();</span> // 请求处理器线程启动
+		} catch (Exception e) {
+		}
+	}
+}</pre></div>
+		<div><p>2. 接收请求的线程类具体实现如下：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network;
+
+import java.net.InetSocketAddress;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.Queue;
+
+public class SocketAccepter implements Runnable {
+
+	private int port = 80; // default
+	private ServerSocketChannel ssc = null;
+
+	private Queue&lt;Socket&gt; queue = null;
+
+	public SocketAccepter(int port, Queue&lt;Socket&gt; queue) {
+		this.port = port;
+		this.queue = queue;
+	}
+
+	@Override
+	public void run() {
+		try {
+			// 开启 ServerSocket 通道
+			this.ssc = ServerSocketChannel.open();
+			// 端口绑定
+			this.ssc.bind(new InetSocketAddress(port));
+			// 将该通道设置为非阻塞模式
+			this.ssc.configureBlocking(false);
+		} catch (Exception e) {
+		}
+		while (true) { // 自旋
+			try {
+				SocketChannel sc = this.ssc.accept(); // 此时<samp>，</samp>accept 方法为非阻塞方法
+				if (null != sc) {
+					// 接收请求<samp>，</samp>加入共享队列（生产者）
+					this.queue.add(new Socket(sc));
+				}
+			} catch (Exception e) {
+			}
+		}
+	}
+}</pre></div>
+		<div><p>3. 处理请求的线程类具体实现如下：</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.network;
+
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.SocketChannel;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.Set;
+import com.hsdis.network.util.FileUtils;
+
+public class SocketProcessor implements Runnable {
+
+	private Queue&lt;Socket&gt; queue = null;
+	private Selector selector = null;
+
+	public SocketProcessor(Queue&lt;Socket&gt; queue) throws Exception {
+		this.queue = queue;
+		this.selector = Selector.open();
+	}
+
+	@Override
+	public void run() {
+		try {
+			while (true) { // 自旋
+				execute(); // 通道注册
+				handler(); // 请求处理
+			}
+		} catch (Exception e) {
+		}
+	}
+
+	// 从共享队列中取出具体请求并注册到 selector 上
+	private void execute() throws Exception {
+		Socket socket = this.queue.poll();
+		while (null != socket) {
+			SocketChannel channel = socket.getChannel();
+			channel.configureBlocking(false);
+			SelectionKey key = channel.register(selector, 
+				SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+			key.attach(socket);
+			socket = this.queue.poll();
+		}
+	}
+
+	private void handler() throws Exception {
+		while (true) {
+			int ready = selector.selectNow(); // 非阻塞方法
+			if (ready == 0)
+				break;
+			Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
+			Iterator&lt;SelectionKey&gt; iterator = keys.iterator();
+			while (iterator.hasNext()) {
+				SelectionKey key = iterator.next();
+				Socket socket = (Socket) key.attachment();
+				if (key.isReadable()) {
+					reader(socket.getChannel()); // 请求读取
+				}
+				if (key.isWritable()) {
+					writer(socket.getChannel()); // 请求响应
+				}
+				iterator.remove();
+			}
+		}
+	}
+
+	private void reader(SocketChannel channel) throws Exception {
+		ByteBuffer buf = ByteBuffer.allocate(1024 * 1024);
+		int bytes = channel.read(buf);
+		while (bytes > 0) {
+			buf.flip();
+			while (buf.hasRemaining()) {
+				System.out.print((char) buf.get());
+			}
+			buf.clear();
+			bytes = channel.read(buf);
+		}
+	}
+
+	private void writer(SocketChannel channel) throws Exception {
+		StringBuffer sb = new StringBuffer();
+		String html = FileUtils.read("index.html");
+		sb.append("HTTP/1.1 200 OK");
+		sb.append("\r\n");
+		sb.append(("Date: " + new Date()));
+		sb.append("\r\n".getBytes());
+		sb.append("Content-Type: text/html");
+		sb.append("\r\n".getBytes());
+		sb.append(("Content-Length: " + html.length()));
+		sb.append("\r\n");
+		sb.append("\r\n");
+		sb.append(html);
+		channel.write(ByteBuffer.wrap(sb.toString().getBytes()));
+		channel.close();
+	}
+}</pre></div>
+		<div><p>简单说明一下<samp>，</samp>代码的核心点是运用了 Java 语言的 NIO 编程<samp>，</samp>对 Selector、Channel 有一定基础的童鞋而言<samp>，</samp>理解上述代码应该是十分容易的。</p></div>
+	</section>
+</article>

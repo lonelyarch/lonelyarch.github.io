@@ -1,6 +1,19 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
+			<h4>2018.03.29</h4>
+			<p><strong>模拟 HttpServer 系列：将 BIO 模式改造为 NIO 模式（04）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查阅文档可知<samp>，</samp>Tomcat 8.0 支持 3 种运行模式<samp>，</samp>即 BIO 模式、NIO 模式以及 APR 模式。前两种模式所使用的技术相对比较熟悉<samp>，</samp>即阻塞式 IO 和非阻塞式 IO<samp>，</samp>至于 APR 模式的详细信息请参阅 <a target="_blank" class="w3-link" href="http://tomcat.apache.org/tomcat-8.0-doc/apr.html">Apache Portable Runtime (APR) based Native library for Tomcat</a> 文档。</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了探究 Tomcat 8.0 源码中 NIO 模式的部分处理细节<samp>，</samp>现将 HttpServer 改造为 NIO 模式下的技术实现。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0059/0059.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
 			<h4>2018.03.27</h4>
 			<p><strong>模拟 HttpServer 系列：启用线程池（03）</strong></p>
 			<div class="w3-container w3-light-gray">

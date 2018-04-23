@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>模拟 HttpServer 系列：将 BIO 模式改造为 NIO 模式（04）</strong></p><p class="w3-right">2018-03-29</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查阅文档可知<samp>，</samp>Tomcat 8.0 支持 3 种运行模式<samp>，</samp>即 BIO 模式、NIO 模式以及 APR 模式。前两种模式所使用的技术相对比较熟悉<samp>，</samp>即阻塞式 IO 和非阻塞式 IO<samp>，</samp>至于 APR 模式的详细信息请参阅 <a target="_blank" class="w3-link" href="http://tomcat.apache.org/tomcat-8.0-doc/apr.html">Apache Portable Runtime (APR) based Native library for Tomcat</a> 文档。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了探究 Tomcat 8.0 源码中 NIO 模式的部分处理细节<samp>，</samp>现将 HttpServer 改造为 NIO 模式下的技术实现。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/58.txt',id:'prevtonext'},{url:'src/area_2/articles/0059/0059.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>模拟 HttpServer 系列：启用线程池（03）</strong></p><p class="w3-right">2018-03-27</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -103,15 +115,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/49.txt',id:'prevtonext'},{url:'src/area_2/articles/0050/0050.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>SpringMVC 系列：参数绑定（04）</strong></p><p class="w3-right">2018-03-11</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数绑定<samp>，</samp>简而言之就是将客户端发起请求时所携带的某些数据映射到对应控制器的具体方法参数上的操作。例如<samp>，</samp>思考一下用户通过注册页面将姓名、密码等数据提交至服务器端的业务场景<samp>，</samp>这些姓名、密码等数据随 HTTP 请求到达服务器端之后<samp>，</samp>它们会由对应控制器的注册方法来接收这些数据<samp>，</samp>那么<samp>，</samp>请求数据与方法入参之间的映射就是参数绑定。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/48.txt',id:'prevtonext'},{url:'src/area_2/articles/0049/0049.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
