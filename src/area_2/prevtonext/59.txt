@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/58.txt',id:'prevtonext'},{url:'src/area_2/articles/0059/0059.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">模拟 HttpServer 系列：将 BIO 模式改造为 NIO 模式（04） »</a>
+<div style="clear: both;"></div>

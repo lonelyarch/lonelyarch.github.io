@@ -1,0 +1,237 @@
+<article>
+	<section>
+		<div><p><strong>SSO 单点登录系列：HelloWorld（01）</strong></p><p class="w3-right w3-margin-0">2018-04-02</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在之前的工作中<samp>，</samp>本人有参与到 SSO 单点登录的相关开发<samp>，</samp>主要是在 CAS（Central Authentication Service）开源框架的基础上将 SSO 客户端内嵌入 Web 应用以实现访问 SSO Server 的目的。现简要整理一下涉及 CAS 开源框架的个别知识点<samp>，</samp>也算是工作经验总结。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>在使用 CAS 官网提供的样例工程进行 SSO 单点登录演示之前<samp>，</samp>先贴出 CAS 的架构图（明确 CAS Clients 与 CAS Server 之间的关系以及它们所处的位置）：</p></div>
+		<div>
+			<img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/01.jpg" />
+			<p><span class="w3-text-red">特别说明</span>：上图出处为 <a style="overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://apereo.github.io/cas/5.2.x/planning/Architecture.html">https://apereo.github.io/cas/5.2.x/planning/Architecture.html</a></p>
+		</div>
+		<div><p>一、基于 CAS 开源框架下的 SSO 单点登录演示准备</p></div>
+		<div><p>1.1 软件信息：</p></div>
+		<div><ul>
+			<li><p>windows 10（64 位）</p></li>
+			<li><p>jdk 1.8.0_65</p></li>
+			<li><p><a target="_blank" class="w3-link" href="https://tomcat.apache.org/download-80.cgi">apache-tomcat-8.0.50-windows-x64.zip</a></p></li>
+			<li><p><a target="_blank" class="w3-link" href="https://github.com/apereo/cas/releases/download/v3.5.2/cas-server-3.5.2-release.zip">cas-server-3.5.2-release.zip</a>、<a target="_blank" class="w3-link" href="https://github.com/apereo/java-cas-client/archive/cas-client-3.5.0.zip">cas-client-3.5.0.zip</a></p></li>
+		</ul></div>
+		<div><p>1.2 域名配置。在 windows 10 系统的 C:\Windows\System32\drivers\etc 目录下修改 hosts 文件<samp>，</samp>即末尾追加以下内容：</p></div>
+		<div class="w3-custom-code w3-white"><pre>127.0.0.1       demo.hsdis.com
+127.0.0.1       app1.hsdis.com
+127.0.0.1       app2.hsdis.com</pre></div>
+		<div><p>二、安全证书配置</p></div>
+		<div><p>2.1 生成证书：</p></div>
+		<div class="w3-custom-code w3-white"><pre>keytool -genkey -alias ssodemo -keyalg RSA -keysize 1024 
+	-keypass <span class="w3-text-red">hsdispwd</span> -validity 365 -keystore d:\hsdis\sso\ssodemo.keystore -storepass <span class="w3-text-red">hsdispwd</span></pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/02.jpg" /></div>
+		<div><p>2.2 导出证书：</p></div>
+		<div class="w3-custom-code w3-white"><pre>keytool -export -alias ssodemo -keystore d:\hsdis\sso\ssodemo.keystore 
+	-file d:\hsdis\sso\ssodemo.crt -storepass hsdispwd</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/03.jpg" /></div>
+		<div><p>2.3 客户端导入证书：</p></div>
+		<div class="w3-custom-code w3-white"><pre>keytool -import -keystore %JAVA_HOME%\jre\lib\security\cacerts -file d:\hsdis\sso\ssodemo.crt -alias ssodemo</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/04.jpg" /></div>
+		<div><p>注意<samp>，</samp>密钥库口令初始值为 <span class="w3-text-red">changeit</span><samp>，</samp>参见 <a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/8/docs/technotes/tools/windows/keytool.html">keytool</a> 文档：</p></div>
+		<div><p>The initial password of the cacerts keystore file is <span class="w3-text-red">changeit</span>. System administrators should change that password and the default access permission of that file upon installing the SDK.</p></div>
+		<div><p>三、部署 CAS Server</p></div>
+		<div><p>3.1 配置 HTTPS</p></div>
+		<div><p>解压 apache-tomcat-8.0.50-windows-x64.zip 并修改 ..\conf\server.xml 文件：</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!-- 改前 --&gt;
+&lt;!--
+&lt;Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+           maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+           clientAuth="false" sslProtocol="TLS" /&gt;
+--&gt;</pre></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!-- 改后 --&gt;
+&lt;Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+           maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+           <span class="w3-text-red">keystoreFile="d:/hsdis/sso/ssodemo.keystore" keystorePass="hsdispwd"</span>
+           clientAuth="false" sslProtocol="TLS" /&gt;</pre></div>
+		<div><p>3.2 部署 CAS Server</p></div>
+		<div><p>解压 cas-server-3.5.2-release.zip 并拷贝 ..\modules 目录下的 cas-server-webapp-3.5.2.war 文件到 Tomcat 8.0.50 的 webapps 目录下<samp>，</samp>重命名文件名为 cas.war<samp>，</samp>如下所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/05.jpg" /></div>
+		<div><p>启动 apache-tomcat-8.0.50_server 服务器<samp>，</samp>完成之后在浏览器地址栏输入：<span class="w3-text-red">https</span>://demo.hsdis.com:<span class="w3-text-red">8443</span>/cas/login</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/06.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/07.jpg" /></div>
+		<div><p>注意<samp>，</samp>CAS Server 的默认验证规则：用户名、密码一致则验证通过（例如<samp>，</samp>casuser/casuser）。</p></div>
+		<div><p>四、部署 CAS Clients</p></div>
+		<div><p>4.1 编译 CAS Client 客户端</p></div>
+		<div><p>解压 java-cas-client-cas-client-3.5.0.zip 文件<samp>，</samp>进入 ..\cas-client-core 目录并在 DOS 窗口下使用 Maven 工具进行编译<samp>，</samp>如下所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/08.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/09.jpg" /></div>
+		<div><p>4.2 由于本次 SSO 单点登录的演示是在同一台机器上进行的<samp>，</samp>为防止各 Tomcat（server、client_1 以及 client_2）在启动时产生端口冲突<samp>，</samp>我们分别对 apache-tomcat-8.0.50_client_1、apache-tomcat-8.0.50_client_2 中的 ..\conf\server.xml 文件进行如下修改：</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;Server port="<span class="w3-text-red">18005</span>" shutdown="SHUTDOWN"&gt;
+	...
+	&lt;Connector port="<span class="w3-text-red">18080</span>" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="<span class="w3-text-red">18443</span>" /&gt;
+	...
+	&lt;Connector port="<span class="w3-text-red">18009</span>" protocol="AJP/1.3" redirectPort="<span class="w3-text-red">18443</span>" /&gt;
+	...
+&lt;/Server&gt;</pre></div>
+							<div><p style="margin:7.5px 0"></p></div>
+							<div class="w3-custom-code w3-white"><pre>&lt;Server port="<span class="w3-text-red">28005</span>" shutdown="SHUTDOWN"&gt;
+	...
+	&lt;Connector port="<span class="w3-text-red">28080</span>" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="<span class="w3-text-red">28443</span>" /&gt;
+	...
+	&lt;Connector port="<span class="w3-text-red">28009</span>" protocol="AJP/1.3" redirectPort="<span class="w3-text-red">28443</span>" /&gt;
+	...
+&lt;/Server&gt;</pre></div>
+		<div><p>4.3 配置 Web 应用（以 apache-tomcat-8.0.50 自带 Web 应用 examples 为例）</p></div>
+		<div><p>将编译所得 cas-client-core-3.5.0.jar 文件分别拷贝到 apache-tomcat-8.0.50<span class="w3-text-red">_client_1</span> 和 apache-tomcat-8.0.50<span class="w3-text-red">_client_2</span> 自带 Web 应用 examples 下的 ..\WEB-INF\lib 目录中：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/10.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/11.jpg" /></div>
+		<div><p>注意<samp>，</samp>由于 cas-client-core-3.5.0.jar 依赖日志输出<samp>，</samp>因此<samp>，</samp>在 ..\WEB-INF\lib 目录中需要额外添加 slf4j-api-1.7.25.jar 文件。</p></div>
+		<div><p>向 ..\WEB-INF\web.xml 文件中添加过滤器：</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!-- apache-tomcat-8.0.50<span class="w3-text-red">_client_1</span>\webapps\examples\WEB-INF\web.xml --&gt;
+
+&lt;listener&gt;
+	&lt;listener-class&gt;org.jasig.cas.client.session.SingleSignOutHttpSessionListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Single Sign Out Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;org.jasig.cas.client.session.SingleSignOutFilter&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerUrlPrefix&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Single Sign Out Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;org.jasig.cas.client.authentication.AuthenticationFilter&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerLoginUrl&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas/login&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://<span class="w3-text-red">app1</span>.hsdis.com:<span class="w3-text-red">18080</span>&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;
+		org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerUrlPrefix&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://<span class="w3-text-red">app1</span>.hsdis.com:<span class="w3-text-red">18080</span>&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</pre></div>
+							<div><p style="margin:7.5px 0"></p></div>
+							<div class="w3-custom-code w3-white"><pre>&lt;!-- apache-tomcat-8.0.50<span class="w3-text-red">_client_2</span>\webapps\examples\WEB-INF\web.xml --&gt;
+
+&lt;listener&gt;
+	&lt;listener-class&gt;org.jasig.cas.client.session.SingleSignOutHttpSessionListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Single Sign Out Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;org.jasig.cas.client.session.SingleSignOutFilter&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerUrlPrefix&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Single Sign Out Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;org.jasig.cas.client.authentication.AuthenticationFilter&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerLoginUrl&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas/login&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://<span class="w3-text-red">app2</span>.hsdis.com:<span class="w3-text-red">28080</span>&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;
+		org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerUrlPrefix&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://<span class="w3-text-red">app2</span>.hsdis.com:<span class="w3-text-red">28080</span>&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</pre></div>
+		<div><p>CAS Client 过滤器配置详情可参考 <a target="_blank" class="w3-link" href="https://github.com/apereo/java-cas-client">https://github.com/apereo/java-cas-client</a> 文档。</p></div>
+		<div><p>五、SSO 单点登录测试验证</p></div>
+		<div><p>预期流程：</p></div>
+		<div><ul style="list-style:decimal">
+			<li><p>访问 app<span class="w3-text-red">1</span> url ---&gt; 跳转至 CAS Server 进行认证 ---&gt; 显示 app<span class="w3-text-red">1</span> 应用页面 ---&gt; 访问 app<span class="w3-text-red">2</span> url ---&gt; 显示 app<span class="w3-text-red">2</span> 应用页面<samp>；</samp></p></li>
+			<li><p>注销 CAS Server ---&gt; 访问 app<span class="w3-text-red">1</span> url 或 app<span class="w3-text-red">2</span> url ---&gt; 重新跳转至 CAS Server 进行认证。</p></li>
+		</ul></div>
+		<div><p>在浏览器地址栏中输入：<span class="w3-text-red">http</span>://app<span class="w3-text-red">1</span>.hsdis.com:<span class="w3-text-red">18080</span>/</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/12.jpg" /></div>
+		<div><p>点击 Examples<samp>，</samp>跳转至 CAS Server 进行认证</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/13.jpg" /></div>
+		<div><p>显示 app<span class="w3-text-red">1</span> 应用页面</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/14.jpg" /></div>
+		<div><p>打开新页签<samp>，</samp>在浏览器地址栏中输入：<span class="w3-text-red">http</span>://app<span class="w3-text-red">2</span>.hsdis.com:<span class="w3-text-red">28080</span>/</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/15.jpg" /></div>
+		<div><p>点击 Examples<samp>，</samp>直接显示 app<span class="w3-text-red">2</span> 应用页面</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/16.jpg" /></div>
+		<div><p>可见<samp>，</samp>实际测试符合预期流程 1 。现在<samp>，</samp>再开启一个新页签<samp>，</samp>在浏览器地址栏中输入：<span class="w3-text-red">https:</span>//demo.hsdis.com:8443/cas/<span class="w3-text-red">logout</span></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/0060/images/17.jpg" /></div>
+		<div><p>注销 CAS Server 之后<samp>，</samp>不论我们点击 app<span class="w3-text-red">1</span> 应用中的链接还是点击 app<span class="w3-text-red">2</span> 应用中的链接<samp>，</samp>它都会重新跳转至 CAS Server 认证登录页面。至此<samp>，</samp>SSO 单点登录的基本功能演示已完成。</p></div>
+	</section>
+	<section>
+		<div>
+			<p><strong>参考资料：</strong>
+			<a style="display:block;overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="http://www.micmiu.com/enterprise-app/sso/sso-cas-sample/">http://www.micmiu.com/enterprise-app/sso/sso-cas-sample/</a>
+			</p>
+		</div>
+	</section>
+</article>

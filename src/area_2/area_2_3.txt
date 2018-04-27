@@ -1,4 +1,17 @@
 <article>
+	<div><p><strong>Java 并发编程系列：ConcurrentHashMap 初探（11）</strong></p><p class="w3-right">2017-10-28</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记得之前在整理 HashMap 相关知识点的时候，顺带查看了官方文档里对 Hashtable 的描述，于是就看到了以下内容：</P>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... If a thread-safe highly-concurrent implementation is desired, then it is recommended to <span class="w3-text-light-green">use ConcurrentHashMap in place of Hashtable</span>.</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实话实说，虽然 HashMap 已烂熟于心，但到目前为止，个人对 <span class="w3-text-light-green">ConcurrentHashMap</span> 这个在 Java 并发编程的世界里早就声名远播的类还是感到十分陌生，这是很难为情的事，为了不偏科，现亡羊补牢。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/30.txt',id:'prevtonext'},{url:'src/area_2/articles/0031/0031.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：JDK1.8 中的 HashMap 为什么难以出现死循环（10）</strong></p><p class="w3-right">2017-10-22</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -104,16 +117,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/20.txt',id:'prevtonext'},{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>深入理解红黑树（red-black tree）</strong></p><p class="w3-right">2017-05-27</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在整理 HashMap 相关知识点的时候，博主就曾碰到过<span class="w3-text-light-green">红黑树</span>，当时浮现在大脑里的树不仅有它，还有哈夫曼树、二叉查找树、B_树，甚至是苹果树，然而，在职场上几经摸爬滚打之后，博主已忘记了这些树原本的模样，真是岁月不饶人。</P>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现打算重温学生时代的记忆和印象，找回过去的那个懂得许多树的我，这么说还是比较浮夸的，从现实出发就是，在将要整理出 TreeMap 知识点的时候，博主又遭遇了 <span class="w3-text-light-green">A Red-Black tree</span>，实属缘分之不易。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/19.txt',id:'prevtonext'},{url:'src/area_2/articles/0020/0020.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

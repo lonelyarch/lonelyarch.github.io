@@ -1,4 +1,19 @@
 <article>
+	<div><p><strong>SpringMVC 系列：支持 PUT、DELETE 请求（05）</strong></p><p class="w3-right">2018-03-12</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUT、DELETE 请求是用来干什么的？具体可以参考 Spring 官方文档 <a target="_blank" class="w3-link" href="https://spring.io/understanding/REST">Understanding REST</a> 。事实上<samp>，</samp>博主在曾经的工作中也碰到过 RESTful 架构的应用<samp>，</samp>当时也只是简单地使用了 Spring 提供的模板类 RestTemplate 进行开发<samp>，</samp>由于彼时还没有写个人博客的习惯<samp>，</samp>时至今日<samp>，</samp>在开发中遇到的很多细节问题早已淡忘<samp>，</samp>真是岁月不饶人。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有想了解什么是 RESTful 架构的童鞋可以阅读以下资料：</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. <a target="_blank" class="w3-link" href="http://www.ruanyifeng.com/blog/2011/09/restful.html">理解 RESTful 架构</a>（阮一峰老师的博客文章）<samp>；</samp></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 《<a target="_blank" class="w3-link" href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">Architectural Styles and the Design of Network-based Software Architectures</a>》<samp>；</samp></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 《<a target="_blank" class="w3-link" href="https://yuedu.baidu.com/ebook/780324fbf121dd36a32d8269">架构风格与基于网络应用软件的架构设计</a>》<samp>，</samp>Roy Fielding 博士论文中文版。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/49.txt',id:'prevtonext'},{url:'src/area_2/articles/0050/0050.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>SpringMVC 系列：参数绑定（04）</strong></p><p class="w3-right">2018-03-11</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -120,15 +135,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/40.txt',id:'prevtonext'},{url:'src/area_2/articles/0041/0041.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：ThreadPoolExecutor 初探（15）</strong></p><p class="w3-right">2017-12-31</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadPoolExecutor，顾名思义，简单理解为，这是一个用以管理、维护线程的线程池，它与数据库连接池的应用可谓异曲同工，虽然两者管理、维护的对象不同，但核心思想是一致的，即重复使用现有对象以降低因创建、销毁对象等操作所占用的系统资源，从而提升业务处理能力。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/39.txt',id:'prevtonext'},{url:'src/area_2/articles/0040/0040.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

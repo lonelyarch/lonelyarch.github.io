@@ -1,4 +1,16 @@
 <div class="w3-custom-timeline">
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
+			<h4>2018.04.02</h4>
+			<p><strong>SSO 单点登录系列：HelloWorld（01）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在之前的工作中<samp>，</samp>本人有参与到 SSO 单点登录的相关开发<samp>，</samp>主要是在 CAS（Central Authentication Service）开源框架的基础上将 SSO 客户端内嵌入 Web 应用以实现访问 SSO Server 的目的。现简要整理一下涉及 CAS 开源框架的个别知识点<samp>，</samp>也算是工作经验总结。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0060/0060.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
 	<div class="w3-custom-container w3-custom-left">
 		<div class="w3-custom-content">
 			<h4>2018.03.29</h4>

@@ -180,6 +180,6 @@ public class SocketProcessor implements Runnable {
 		channel.close();
 	}
 }</pre></div>
-		<div><p>简单说明一下<samp>，</samp>代码的核心点是运用了 Java 语言的 NIO 编程<samp>，</samp>对 Selector、Channel 有一定基础的童鞋而言<samp>，</samp>理解上述代码应该是十分容易的。</p></div>
+		<div><p>简单说明一下<samp>，</samp>代码的核心点是运用了 Java 语言的 NIO 编程<samp>，</samp>对 Selector、Channel 有一定编程基础的童鞋而言<samp>，</samp>理解上述代码应该是十分容易的。</p></div>
 	</section>
 </article>
