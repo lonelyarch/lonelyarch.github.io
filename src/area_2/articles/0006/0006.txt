@@ -32,7 +32,7 @@
 			</div>
 		</div>
 	</div>
-	<div><p>步骤一、给定 <strong>&lt;div&gt;</strong> 元素，使它的 <strong>position</strong> 属性的值为 <strong>relative</strong>、<strong>height</strong> 属性的值为 <strong>60vh</strong>（vh，Viewport Height，即视口高度）。对该 <strong>&lt;div&gt;</strong> 元素添加一个 <strong>&lt;div&gt;</strong> 子元素，设置子元素的 <strong>class</strong> 值为 <strong>demo-item</strong>，关键点是给该子元素的 <strong>position</strong> 属性的值为 <strong>absolute</strong>、<strong>height</strong> 属性的值为 <strong>100%</strong>，<strong>width</strong> 属性的值根据具体需求做相应设置，本示例是将相册宽度 5 等分，所以给 <strong>width</strong> 属性的值为 <strong>19.2%</strong>。</p></div>
+	<div><p style="overflow:visible">步骤一、给定 <strong>&lt;div&gt;</strong> 元素，使它的 <strong>position</strong> 属性的值为 <strong>relative</strong>、<strong>height</strong> 属性的值为 <strong>60vh</strong>（vh，Viewport Height，即视口高度）。对该 <strong>&lt;div&gt;</strong> 元素添加一个 <strong>&lt;div&gt;</strong> 子元素，设置子元素的 <strong>class</strong> 值为 <strong>demo-item</strong>，关键点是给该子元素的 <strong>position</strong> 属性的值为 <strong>absolute</strong>、<strong>height</strong> 属性的值为 <strong>100%</strong>，<strong>width</strong> 属性的值根据具体需求做相应设置，本示例是将相册宽度 5 等分，所以给 <strong>width</strong> 属性的值为 <strong>19.2%</strong>。</p></div>
 	<div><p>示例代码：</p></div>
 	<div class="w3-row w3-width">
 		<div class="w3-half">
@@ -61,7 +61,7 @@
 			</div>
 		</div>
 	</div>
-	<div><p>步骤二、给 <strong>class</strong> 值为 <strong>demo-item</strong> 的元素添加子元素，使 <strong>class</strong> 值为 <strong>demo-item-bg</strong>，设置相应的宽、高之后再添加背景图片，关键点是使用伪元素 <strong>before</strong>（至于伪元素是什么请自行查阅相关文档，网上资料很多）。</p></div>
+	<div><p style="overflow:visible">步骤二、给 <strong>class</strong> 值为 <strong>demo-item</strong> 的元素添加子元素，使 <strong>class</strong> 值为 <strong>demo-item-bg</strong>，设置相应的宽、高之后再添加背景图片，关键点是使用伪元素 <strong>before</strong>（至于伪元素是什么请自行查阅相关文档，网上资料很多）。</p></div>
 	<div>
 		<div style="position:relative;height:60vh">
 		    <div class="w3-example-demo-item">
@@ -110,7 +110,7 @@
 <span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
 		</div>
 	</div>
-	<div><p>步骤三、怎样才能在点击图片的时候让它变宽呢？关键点是在获得点击事件之后动态改变图片的宽度，对 <strong>class</strong> 值为 <strong>demo-item</strong> 的元素添加监听事件。</p></div>
+	<div><p style="overflow:visible">步骤三、怎样才能在点击图片的时候让它变宽呢？关键点是在获得点击事件之后动态改变图片的宽度，对 <strong>class</strong> 值为 <strong>demo-item</strong> 的元素添加监听事件。</p></div>
 	<div>
 		<div style="position:relative;height:60vh">
 		    <div class="w3-example-demo-item">
@@ -156,7 +156,7 @@
 			</div>
 		</div>
 	</div>
-	<div><p>步骤四、现在，当点击图片的时候，虽然它变宽了，但是，这种变化非常突兀，怎样才能使这种变化看上去更加自然呢？是该 <strong>CSS3</strong> 的 <strong>transition</strong> 属性登场了（对 <strong>transition</strong> 属性有疑问的童鞋请自行查阅相关文档，网上资料很多）。</p></div>
+	<div><p style="overflow:visible">步骤四、现在，当点击图片的时候，虽然它变宽了，但是，这种变化非常突兀，怎样才能使这种变化看上去更加自然呢？是该 <strong>CSS3</strong> 的 <strong>transition</strong> 属性登场了（对 <strong>transition</strong> 属性有疑问的童鞋请自行查阅相关文档，网上资料很多）。</p></div>
 	<div>
 		<div style="position:relative;height:60vh">
 		    <div class="w3-example-demo-item">
@@ -176,7 +176,7 @@
 </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
 		</div>
 	</div>
-	<div><p>步骤五、至此，在点击图片之后的变化看上去就更加自然了，但是，图片展开之后却不能恢复初始状态，这是个缺陷，为了弥补这个缺陷，于是在 <strong>class</strong> 值为 <strong>demo-item-bg</strong> 的元素之下添加同级元素并设置 <strong>class</strong> 值为 <strong>demo-item-close-btn</strong>，再给该同级元素设置相应的 <strong>CSS</strong> 属性、值以及添加监听事件。</p></div>
+	<div><p style="overflow:visible">步骤五、至此，在点击图片之后的变化看上去就更加自然了，但是，图片展开之后却不能恢复初始状态，这是个缺陷，为了弥补这个缺陷，于是在 <strong>class</strong> 值为 <strong>demo-item-bg</strong> 的元素之下添加同级元素并设置 <strong>class</strong> 值为 <strong>demo-item-close-btn</strong>，再给该同级元素设置相应的 <strong>CSS</strong> 属性、值以及添加监听事件。</p></div>
 	<div>
 		<div style="position:relative;height:60vh">
 		    <div class="w3-example-demo-item">

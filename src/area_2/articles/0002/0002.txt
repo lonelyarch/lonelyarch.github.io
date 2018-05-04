@@ -18,7 +18,8 @@ import javax<span class="hljs-preprocessor">.servlet</span><span class="hljs-pre
 @SuppressWarnings(<span class="hljs-string">"serial"</span>)
 public class HelloWorld extends HttpServlet {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws IOException, ServletException {
         response<span class="hljs-preprocessor">.setContentType</span>(<span class="hljs-string">"text/html"</span>)<span class="hljs-comment">;</span>
         PrintWriter <span class="hljs-keyword">out</span> = response<span class="hljs-preprocessor">.getWriter</span>()<span class="hljs-comment">;</span>
         <span class="hljs-keyword">out</span><span class="hljs-preprocessor">.println</span>(<span class="hljs-string">"&lt;html&gt;"</span>)<span class="hljs-comment">;</span>
