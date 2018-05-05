@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>SSO 单点登录系列：CAS 之实现原理（02）</strong></p><p class="w3-right">2018-04-13</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在演示过 SSO 单点登录的基本功能之后<samp>，</samp>再根据 CAS 的样例工程 cas-server-3.5.2、cas-client-3.5.0 探究一下其内部实现原理。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/60.txt',id:'prevtonext'},{url:'src/area_2/articles/2018/04/01/01.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>SSO 单点登录系列：HelloWorld（01）</strong></p><p class="w3-right">2018-04-02</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -100,15 +111,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/51.txt',id:'prevtonext'},{url:'src/area_2/articles/0052/0052.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>SpringMVC 系列：ASM 之读写字节码（06）</strong></p><p class="w3-right">2018-03-15</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分析 SpringMVC 工作原理时遇到了 ClassReader 类<samp>，</samp>根据 Spring <a target="_blank" class="w3-link" href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/javadoc-api/org/springframework/asm/ClassReader.html">API</a> 文档可知<samp>，</samp>该类是 Java class 文件的解析器<samp>，</samp>即读取字节码。除了 ClassReader 类之外<samp>，</samp>在 Spring 核心 jar 文件的 org.springframework.asm 包路径下<samp>，</samp>还涉及了很多用以对字节码进行各种不同处理的类<samp>，</samp>例如<samp>，</samp>ClassVisitor、ClassWriter 等<samp>，</samp>现简要整理一下部分类的用法。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/50.txt',id:'prevtonext'},{url:'src/area_2/articles/0051/0051.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

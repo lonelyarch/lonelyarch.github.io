@@ -1,4 +1,28 @@
 <article>
+	<div><p><strong>如何实现圆儿圈式菜单？</strong></p><p class="w3-right">2017-03-30</p></div>
+	<div style="clear: both;"></div>
+	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
+	<div class="w3-example-3d-circle-menu">
+		<nav class="main">
+			<input type="checkbox" class="menu-open" id="menu-open" />
+			<label class="menu-open-button" for="menu-open">
+				<span class="lines line-0"></span>
+				<span class="lines line-1"></span>
+				<span class="lines line-2"></span>
+			</label>
+			<a class="menu-item">风景</a>
+			<a class="menu-item">文化</a>
+			<a class="menu-item">美食</a>
+			<a class="menu-item">摄影</a>
+			<a class="menu-item">工作</a>
+			<a class="menu-item">热情</a>
+		</nav>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/10.txt',id:'prevtonext'},{url:'src/area_2/articles/0011/0011.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>立体式可旋转的菜单实现</strong></p><p class="w3-right">2017-03-29</p></div>
 	<div style="clear: both;"></div>
 	<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
@@ -191,13 +215,4 @@
 	<div><p>步骤一、新建一个 Web 工程（Dynamic Web Project），在 src 目录下新建 HelloWorld.java 文件：</p></div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/1.txt',id:'prevtonext'},{url:'src/area_2/articles/0002/0002.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Apache Tomcat 8 之源码编译、安装及调试</strong></p><p class="w3-right">2016-09-13</p></div>
-	<div style="clear: both;"></div>
-	<div><p>步骤一、JDK、Ant 的安装请参考其他教程。本次 Tomcat 8.0.37 源码编译使用的 JDK、Ant 版本如下所示：</p></div>
-	<div><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0001.jpg" alt="Oops" /></div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/0.txt',id:'prevtonext'},{url:'src/area_2/articles/0001/0001.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

@@ -1,6 +1,18 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2018.04.13</h4>
+			<p><strong>SSO 单点登录系列：CAS 之实现原理（02）</strong></p>
+				<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在演示过 SSO 单点登录的基本功能之后<samp>，</samp>再根据 CAS 的样例工程 cas-server-3.5.2、cas-client-3.5.0 探究一下其内部实现原理。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/2018/04/01/01.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2018.04.02</h4>
 			<p><strong>SSO 单点登录系列：HelloWorld（01）</strong></p>
 			<div class="w3-container w3-light-gray">

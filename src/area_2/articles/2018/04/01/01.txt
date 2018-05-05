@@ -1,0 +1,195 @@
+<article>
+	<section>
+		<div><p><strong>SSO 单点登录系列：CAS 之实现原理（02）</strong></p><p class="w3-right w3-margin-0">2018-04-13</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在演示过 SSO 单点登录的基本功能之后<samp>，</samp>再根据 CAS 的样例工程 cas-server-3.5.2、cas-client-3.5.0 探究一下其内部实现原理。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>为了易于理解 SSO CAS 内部实现原理<samp>，</samp>我们先给出基于 CAS 协议的 Web 流程时序图<samp>，</samp>以图为线索再逐步跟进其源码实现。官网给出的 Web 流程时序图如下所示：</p></div>
+		<div>
+			<img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0101.jpg" />
+			<p><span class="w3-text-red">特别说明</span>：上图出处为 <a style="overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://apereo.github.io/cas/5.2.x/protocol/CAS-Protocol.html">https://apereo.github.io/cas/5.2.x/protocol/CAS-Protocol.html</a></p>
+		</div>
+		<div><p>可见<samp>，</samp>官网给出了 3 种场景下的 Web 流程时序图<samp>，</samp>即 <span class="w3-text-light-green">First Access</span> 场景、<span class="w3-text-light-green">Second Access To Same Application</span> 场景以及<span class="w3-text-light-green">First Access To Second Application</span> 场景。我们以 <span class="w3-text-light-green">First Access</span> 场景为例进行源码调试。</p></div>
+		<div><p>记录一下用以调试的工程结构图：</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0102.jpg" /></div>
+		<div><p>简述一下<samp>，</samp>app<span class="w3-text-red">1</span>、app<span class="w3-text-red">2</span> 为两个独立的 Web 应用且均引入了 cas-client-core-3.5.0.jar 文件<samp>，</samp>即 Web 应用内嵌入了 CAS Client 端。cas-server、cas-server-core 以及 cas-server-webapp 构成了 CAS Server 端（导入的工程源码为 <a target="_blank" class="w3-link" href="https://github.com/apereo/cas/releases/download/v3.5.2/cas-server-3.5.2-release.zip">cas-server-3.5.2-release.zip</a>）。</p></div>
+		<div><p>简单起见<samp>，</samp>我们对 app<span class="w3-text-red">1</span>、app<span class="w3-text-red">2</span> 的 web.xml 文件做如下配置：</p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!-- app<span class="w3-text-red">1</span> 应用之 web.xml --&gt;
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;<span class="w3-text-red">org.jasig.cas.client.authentication.AuthenticationFilter</span>&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerLoginUrl&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas/login&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://app1.hsdis.com:18080&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;
+		<span class="w3-text-red">org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</span>&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerUrlPrefix&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://app1.hsdis.com:18080&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;servlet&gt;
+	&lt;servlet-name&gt;mxHttpServlet&lt;/servlet-name&gt;
+	&lt;servlet-class&gt;com.hsdis.servlet.MxHttpServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+	&lt;servlet-name&gt;mxHttpServlet&lt;/servlet-name&gt;
+	&lt;url-pattern&gt;/mxHttpServlet/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre></div>
+							<div><p style="margin:7.5px 0"></p></div>
+							<div class="w3-custom-code w3-white"><pre>&lt;!-- app<span class="w3-text-red">2</span> 应用之 web.xml --&gt;
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;<span class="w3-text-red">org.jasig.cas.client.authentication.AuthenticationFilter</span>&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerLoginUrl&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas/login&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://app2.hsdis.com:28080&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;filter&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;filter-class&gt;
+		<span class="w3-text-red">org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</span>&lt;/filter-class&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;casServerUrlPrefix&lt;/param-name&gt;
+		&lt;param-value&gt;https://demo.hsdis.com:8443/cas&lt;/param-value&gt;
+	&lt;/init-param&gt;
+	&lt;init-param&gt;
+		&lt;param-name&gt;serverName&lt;/param-name&gt;
+		&lt;param-value&gt;http://app2.hsdis.com:28080&lt;/param-value&gt;
+	&lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+	&lt;filter-name&gt;CAS Validation Filter&lt;/filter-name&gt;
+	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+&lt;servlet&gt;
+	&lt;servlet-name&gt;myHttpServlet&lt;/servlet-name&gt;
+	&lt;servlet-class&gt;com.hsdis.servlet.MyHttpServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+	&lt;servlet-name&gt;myHttpServlet&lt;/servlet-name&gt;
+	&lt;url-pattern&gt;/myHttpServlet/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre></div>
+		<div><p><strong>org.jasig.cas.client.authentication.AuthenticationFilter</strong></p></div>
+		<div><p>The <span class="w3-light-green">AuthenticationFilter</span> is what detects whether a user needs to be authenticated or not. If a user needs to be authenticated, it will redirect the user to the CAS server. <a target="_blank" class="w3-link" href="https://github.com/apereo/java-cas-client">more</a></p></div>
+		<div><p><strong>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</strong></p></div>
+		<div><p>Validates the tickets using the CAS 2.0 protocol. If you provide either the <span class="w3-light-green">acceptAnyProxy</span> or the <span class="w3-light-green">allowedProxyChains</span> parameters, a <span class="w3-light-green">Cas20ProxyTicketValidator</span> will be constructed. Otherwise a general <span class="w3-light-green">Cas20ServiceTicketValidator</span> will be constructed that does not accept proxy tickets. <a target="_blank" class="w3-link" href="https://github.com/apereo/java-cas-client">more</a></p></div>
+		<div><p>1. 浏览器地址栏内输入 http://app1.hsdis.com:18080/app1/mxHttpServlet/<samp>，</samp>访问 Web 应用。</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0103.jpg" /></div>
+		<div><p>2. AuthenticationFilter 过滤器拦截请求<samp>，</samp>判断 session 为空则构造 urlToRedirectTo 并重定向。</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0104.jpg" /></div>
+		<div><p>3. 第一次访问<samp>，</samp>没有 SSO Session<samp>，</samp>呈现登录认证页面。</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0105.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0106.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0107.jpg" /></div>
+		<div><p>4. 输入用户名、密码<samp>，</samp>提交表单<samp>，</samp>若验证通过则创建 SSO Session<samp>，</samp>生成 TGT、TGC 以及分发票根 ST<samp>，</samp>重定向至 CAS Client 时将 TGC 写入浏览器 Cookie 且携带 ST 进行后续校验。</p></div>
+		<div><p>4.1 验证用户名、密码</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0108.jpg" /></div>
+		<div><p>注意<samp>，</samp>SimpleTestUsernamePasswordAuthenticationHandler 的验证方式仅限于演示之用<samp>，</samp>该类配置于 deployerConfigContext.xml 文件内<samp>，</samp>由 Spring 容器管理：</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0109.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-white"><pre>...
+&lt;bean id="authenticationManager"
+	class="<span class="w3-text-red">org.jasig.cas.authentication.AuthenticationManagerImpl</span>"&gt;
+	&lt;property name="credentialsToPrincipalResolvers"&gt;
+		&lt;list&gt;
+			&lt;bean class="org.jasig.cas.authentication.principal.
+					UsernamePasswordCredentialsToPrincipalResolver" &gt;
+				&lt;property name="attributeRepository" ref="attributeRepository" /&gt;
+			&lt;/bean&gt;
+			&lt;bean
+				class="org.jasig.cas.authentication.principal.
+						HttpBasedServiceCredentialsToPrincipalResolver" /&gt;
+		&lt;/list&gt;
+	&lt;/property&gt;
+	&lt;property name="<span class="w3-text-red">authenticationHandlers</span>"&gt;
+		&lt;list&gt;
+			&lt;bean class="org.jasig.cas.authentication.handler.support.
+					HttpBasedServiceCredentialsAuthenticationHandler"
+				p:httpClient-ref="httpClient" /&gt;
+			&lt;bean 
+				class="<span class="w3-text-red">org.jasig.cas.authentication.handler.support.</span>
+						<span class="w3-text-red">SimpleTestUsernamePasswordAuthenticationHandler</span>" /&gt;
+		&lt;/list&gt;
+	&lt;/property&gt;
+&lt;/bean&gt;
+...</pre></div>
+		<div><p>4.2 生成 TGT 并缓存至 ticketRegistry</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0110.jpg" /></div>
+		<div><p>4.3 将 ticketGrantingTicketId 写入 Cookie 即生成 TGC</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0111.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0112.jpg" /></div>
+		<div><p>值得注意的是<samp>，</samp>将 ticketGrantingTicketId 写入 Cookie 时<samp>，</samp>设置 cookieSecure 为 true<samp>，</samp>即确保 CAS Client 与 CAS Server 之间的 Cookie 值传递使用 https 协议。</p></div>
+		<div><p>4.4 生成 ST 即票根并缓存至 serviceTicketRegistry 再重定向至 CAS Client 端</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0113.jpg" /></div>
+		<div><p>5. CAS Client 端获得票根 ST 之后将该 ST 回传至 CAS Server 校验。</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0114.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0115.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0116.jpg" /></div>
+		<div><p>6. CAS Server 端校验来自 CAS Client 端回传的 ST<samp>，</samp>若校验通过则向 CAS Client 端发送已认证用户的相关信息。</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0117.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0118.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0119.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0120.jpg" /></div>
+		<div><p>7. CAS Client 端接收 CAS Server 发送的用户相关信息并最终重定向至 Web 应用页面。</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0121.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0122.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0123.jpg" /></div>
+		<div><p><strong>调试中遇到的错误</strong></p></div>
+		<div><p>基于 cas-server-3.5.2 源码工程的调试<samp>，</samp>在默认配置下<samp>，</samp>当我们 debug 以逐步跟进源码对 SSO CAS 的实现过程时<samp>，</samp>最终呈现于浏览器上的会是一个错误页面：</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0124.jpg" /></div>
+		<div><p>原因是<samp>，</samp>在默认配置下<samp>，</samp>ST 的失效策略时长为 10 秒<samp>，</samp>当 CAS Client 回传 ST 校验时因 ST 超时抛异常：</p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0125.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0126.jpg" /></div>
+		<div><p>最后总结<samp>，</samp>官网给出了 3 种场景下的 Web 流程时序图<samp>，</samp>博主只整理出了第一种场景下的源码大致实现原理<samp>，</samp>剩余的两种场景以时序图为基础分析起来也相对简单<samp>，</samp>在此不赘述。SSO CAS 源码实现牵扯太多细枝末节<samp>，</samp>适当的时间再整理吧。</p></div>
+	</section>
+</article>

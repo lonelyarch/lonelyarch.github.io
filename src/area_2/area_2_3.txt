@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：ConcurrentHashMap 续篇（12）</strong></p><p class="w3-right">2017-11-09</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ConcurrentHashMap 初探之后遗留了很多问题，深感 JDK1.8 版本的 ConcurrentHashMap 实现之复杂性，现简要整理一下 CAS（Compare And Swap，即比较并交换）的相关知识点。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/31.txt',id:'prevtonext'},{url:'src/area_2/articles/0032/0032.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：ConcurrentHashMap 初探（11）</strong></p><p class="w3-right">2017-10-28</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -105,16 +116,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/21.txt',id:'prevtonext'},{url:'src/area_2/articles/0022/0022.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：Thread 类（01）</strong></p><p class="w3-right">2017-09-23</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;身为一个以 Java 为主要开发语言的程序员，工作几年了也没有对并发编程这个知识块做过系统性地总结，略表内疚，对不常用的东西要么束之高阁、要么弃之如敝屣，这种处事待物的态度早就习惯了，也就不会过分感觉有所失。从今天起，博主会对 Java 并发编程这个知识块做个相对实用的总结，说服自己的理由是：对并发编程不欣赏的程序员不是个好程序员。</p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言归正传。虽然网上有很多优秀的同行从业者写了很多有关 Java 并发编程这个知识块的优秀博文，但是，读别人的文章总感觉对事物的认知不够深刻，还是那句话，纸上得来终觉浅，绝知此事要躬行。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/20.txt',id:'prevtonext'},{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
