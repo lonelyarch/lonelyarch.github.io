@@ -40,7 +40,7 @@
 	    				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当我们单击列表中的每一项（&lt;li&gt; 元素）时，它都会触发点击事件并弹出相应信息。现在，我们新增一项（&lt;li&gt; 元素）到列表中，<span style="color: red;">测试新增元素的事件是否能够正常触发</span>：</p>
 				    	<div class="w3-example" style="margin: 0 30px;">
 	    					<div class="w3-code">
-	    						<pre><code class="hljs">$("#list").append( "<span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">'#'</span>&gt;</span>Item #5<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>" );</code></pre>
+	    						<pre style="overflow:auto"><code class="hljs">$("#list").append( "<span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">'#'</span>&gt;</span>Item #5<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>" );</code></pre>
 	    					</div>
 	    				</div>
 	    				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单击新增元素之后可知，点击事件没有被正常触发，这是因为新增 &lt;li&gt; 元素的代码晚于事件注册的代码执行。在某些情况下，我们可能会对列表中的 &lt;li&gt; 元素进行<span style="color: red;">频繁的新增、删除操作</span>，那么以上示例代码中对 &lt;a&gt; 元素的事件注册方式就显得不合理。现在，我们修改以上示例代码，如下所示：</p>

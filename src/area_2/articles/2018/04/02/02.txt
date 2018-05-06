@@ -1,0 +1,181 @@
+<article>
+	<section>
+		<div><p><strong>SSO 单点登录系列：Cookie 属性之 Secure 的作用（03）</strong></p><p class="w3-right w3-margin-0">2018-04-15</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分析 SSO CAS 源码实现时遇到 cookie.setSecure(<span class="w3-text-red">true</span>)<samp>，</samp>现根据 <a target="_blank" class="w3-link" href="https://developer.mozilla.org/en-US/">MDN web docs</a> 文档中对 Secure 属性的描述实际演示一下它的作用。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MDN web docs 文档中对 Secure 属性的描述：A secure cookie will only be sent to the server when a request is made using SSL and the HTTPS protocol. <a target="_blank" class="w3-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">more</a></p>
+		</div>
+	</section>
+	<section>
+		<div><p>搭建 Web 工程。本次示例只是对 Cookie 属性之 Secure 的作用进行演示说明<samp>，</samp>因此<samp>，</samp>我们只需要一个十分简单的 Servlet 工程即可达成目标：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/01.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+	&lt;div&gt;&lt;label&gt;Cookie Secure Test: &lt;/label&gt;
+	&lt;a href="http://localhost:8080/test/mxHttpServlet/"&gt;step 1&lt;/a&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+		<div><p>1. 使用 Secure 属性的默认值演示（注意<samp>，</samp>Cookie 是由 Tomcat 基于 Servlet 规范的实现）</p></div>
+		<div><p>设置 Cookie 到浏览器</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+public class MxHttpServlet extends HttpServlet {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Cookie cookie = new Cookie("<span class="w3-text-white">CASTGC</span>", "");
+		cookie.setPath("<span class="w3-text-white">/test/myHttpServlet/</span>");
+		cookie.setValue("<span class="w3-text-white">TGT-1234567890-TEST</span>");
+		response.addCookie(<span class="w3-text-white">cookie</span>);
+		response.getWriter().write("&lt;div&gt;&lt;label&gt;Cookie Secure Test: &lt;/label&gt;"
+			+ "&lt;a href=\"http://localhost:8080/test/myHttpServlet/\"&gt;step 2&lt;/a&gt;&lt;/div&gt;");
+		System.out.println("Default secure: " + <span class="w3-text-white">cookie.getSecure()</span>);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+	}
+}</pre></div>
+		<div><p>读取从浏览器传回的 Cookie</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+public class MyHttpServlet extends HttpServlet {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Cookie[] cookies = request.getCookies();
+		for (Cookie <span class="w3-text-white">cookie</span> : cookies) {
+			System.out.println(cookie.getName() + ": " + cookie.getValue());
+		}
+		response.getWriter().write("MyHttpServlet");
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+	}
+}</pre></div>
+		<div><p>1.1 启动 Tomcat<samp>，</samp>在浏览器地址栏内输入 http://localhost:8080/test/index.html</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/02.jpg" /></div>
+		<div><p>1.2 单击 <span class="w3-text-blue">step 1</span> 超链<samp>，</samp>即写入 Cookie 信息至浏览器</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/03.jpg" /></div>
+		<div><p>1.3 单击 <span class="w3-text-blue">step 2</span> 超链<samp>，</samp>即 Server 端读取浏览器回传的 Cookie 信息</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/04.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/05.jpg" /></div>
+		<div><p>可见<samp>，</samp>Secure 属性值为 false 时<samp>，</samp>以 HTTP 发起的请求是能够回传浏览器中的 Cookie 信息。</p></div>
+		<div><p>2. 设置 Secure 属性值为 true 并重新发起请求</p></div>
+		<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+public class MxHttpServlet extends HttpServlet {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Cookie cookie = new Cookie("CASTGC", "");
+		cookie.setPath("/test/myHttpServlet/");
+		cookie.setValue("TGT-1234567890-TEST");
+		if (!cookie.getSecure()) {
+			<span class="w3-text-white">cookie.setSecure(true)</span>;
+		}
+		response.addCookie(cookie);
+		response.getWriter().write("&lt;div&gt;&lt;label&gt;Cookie Secure Test: &lt;/label&gt;"
+			+ "&lt;a href=\"http://localhost:8080/test/myHttpServlet/\"&gt;step 2&lt;/a&gt;&lt;/div&gt;");
+		System.out.println("Default secure: " + cookie.getSecure());
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+	}
+}</pre></div>
+		<div><p>2.1 重启 Tomcat<samp>，</samp>在浏览器地址栏内输入 http://localhost:8080/test/index.html</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/06.jpg" /></div>
+		<div><p>2.2 单击 <span class="w3-text-blue">step 1</span> 超链<samp>，</samp>即写入 Cookie 信息至浏览器</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/07.jpg" /></div>
+		<div><p>2.3 单击 <span class="w3-text-blue">step 2</span> 超链<samp>，</samp>即 Server 端读取浏览器回传的 Cookie 信息</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/08.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/09.jpg" /></div>
+		<div><p>可见<samp>，</samp>将 Secure 属性值设置为 true 之后<samp>，</samp>以 HTTP 协议发起的请求是无法回传 Cookie 信息至 Server 端的（页面显示 500 错误且 Server 端的错误信息也通俗易懂）。</p></div>
+		<div><p>3. 配置 HTTPS</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/10.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div class="w3-custom-code w3-white"><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+	&lt;div&gt;&lt;label&gt;Cookie Secure Test: &lt;/label&gt;
+	&lt;a href="<span class="w3-text-red">https</span>://localhost:<span class="w3-text-red">8443</span>/test/mxHttpServlet/"&gt;step 1&lt;/a&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+							<div><p style="margin:7.5px 0"></p></div>
+							<div class="w3-custom-code w3-lightslategray w3-text-black"><pre>package com.hsdis.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+public class MxHttpServlet extends HttpServlet {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Cookie cookie = new Cookie("CASTGC", "");
+		cookie.setPath("/test/myHttpServlet/");
+		cookie.setValue("TGT-1234567890-TEST");
+		if (!cookie.getSecure()) {
+			cookie.setSecure(true);
+		}
+		response.addCookie(cookie);
+		response.getWriter().write("&lt;div&gt;&lt;label&gt;Cookie Secure Test: &lt;/label&gt;"
+			+ "&lt;a href=\"<span class="w3-text-white">https</span>://localhost:<span class="w3-text-white">8443</span>/test/myHttpServlet/\"&gt;step 2&lt;/a&gt;&lt;/div&gt;");
+		System.out.println("Default secure: " + cookie.getSecure());
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+	}
+}</pre></div>
+		<div><p>3.1 重启 Tomcat<samp>，</samp>在浏览器地址栏内输入 http://localhost:8080/test/index.html</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/11.jpg" /></div>
+		<div><p>3.2 单击 <span class="w3-text-blue">step 1</span> 超链<samp>，</samp>即写入 Cookie 信息至浏览器</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/12.jpg" /></div>
+		<div><p>3.3 单击 <span class="w3-text-blue">step 2</span> 超链<samp>，</samp>即 Server 端读取浏览器回传的 Cookie 信息</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/13.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/02/images/14.jpg" /></div>
+		<div><p>可见<samp>，</samp>将 Secure 属性值设置为 true 之后<samp>，</samp>以 HTTPS 协议发起的请求是能够回传 Cookie 信息至 Server 端的。</p></div>
+		<div><p>简单总结<samp>，</samp>我们将 Cookie 的属性 Secure 的值设置为 true 之后<samp>，</samp>分别演示了基于 HTTP 协议和 HTTPS 协议下的浏览器与 Server 端之间传递 Cookie 信息的实际情况<samp>，</samp>结果也一目了然<samp>，</samp>可谓实践出真知。</p></div>
+	</section>
+</article>

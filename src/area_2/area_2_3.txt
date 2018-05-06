@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- 克雷格.兰丁&amp;hagersten (CLH Lock)</strong></p><p class="w3-right">2017-11-12</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLH lock is Craig, Landin, and Hagersten (CLH) locks, CLH lock is <span class="w3-text-light-green">a spin lock</span>, can ensure no hunger, provide fairness <span class="w3-text-light-green">first come first service</span>.</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The CLH lock is a scalable, high performance, fairness and spin lock <span class="w3-text-light-green">based on the list</span>, the application thread spin only on a local variable, it constantly polling the precursor state, if it is found that the pre release lock end spin.</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/32.txt',id:'prevtonext'},{url:'src/area_2/articles/0033/0033.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：ConcurrentHashMap 续篇（12）</strong></p><p class="w3-right">2017-11-09</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -105,15 +117,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/23.txt',id:'prevtonext'},{url:'src/area_2/articles/0024/0024.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：synchronized 关键字之起因（02）</strong></p><p class="w3-right">2017-09-25</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谈及并发编程，进程、线程是不可回避的两点，简而言之，它们是并发编程里的两个基本执行单元，都是为了提升系统的处理能力和资源使用率而存在。在 Java 并发编程里，我们主要涉及线程。有想了解进程、线程详情的童鞋<a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/tutorial/essential/concurrency/procthread.html">戳这里</a>。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/21.txt',id:'prevtonext'},{url:'src/area_2/articles/0022/0022.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

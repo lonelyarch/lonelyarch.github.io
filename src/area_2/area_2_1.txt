@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>SpringMVC 系列：Visitor Pattern（07）</strong></p><p class="w3-right">2018-03-16</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 SpringMVC 框架中存在着诸多设计模式<samp>，</samp>例如<samp>，</samp>单例模式、适配器模式、责任链模式以及访问者模式等<samp>，</samp>当然<samp>，</samp>MVC 模式是显而易见的。因阅读了处理 Java class 文件的源码时遭遇访问者模式<samp>，</samp>现再次整理一下该知识点。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/51.txt',id:'prevtonext'},{url:'src/area_2/articles/0052/0052.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>SpringMVC 系列：ASM 之读写字节码（06）</strong></p><p class="w3-right">2018-03-15</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -107,32 +118,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/42.txt',id:'prevtonext'},{url:'src/area_2/articles/0043/0043.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>SVG（Scalable Vector Graphics）</strong></p><p class="w3-right">2018-01-09</p></div>
-	<div style="clear: both;"></div>
-	<div>
-		<svg style="width:100%;min-height:300px">
-			<line x1="50%" y1="25%" x2="25%" y2="50%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
-			<line x1="50%" y1="25%" x2="75%" y2="50%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
-			<line x1="75%" y1="50%" x2="60%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
-			<line x1="25%" y1="50%" x2="10%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
-			<line x1="25%" y1="50%" x2="40%" y2="75%" style="stroke:rgba(255,255,255,0.6);stroke-width:1" />
-			<circle cx="50%" cy="25%" r="5%" fill="teal" />
-			<text x="50%" y="25%" text-anchor="middle" fill="white" dy="2.5%">7</text>
-			<circle cx="25%" cy="50%" r="5%" fill="teal" />
-			<text x="25%" y="50%" text-anchor="middle" fill="white" dy="2.5%">3</text>
-			<circle cx="75%" cy="50%" r="5%" fill="teal" />
-			<text x="75%" y="50%" text-anchor="middle" fill="white" dy="2.5%">9</text>
-			<circle cx="60%" cy="75%" r="5%" fill="teal" />
-			<text x="60%" y="75%" text-anchor="middle" fill="white" dy="2.5%">8</text>
-			<circle cx="10%" cy="75%" r="5%" fill="teal" />
-			<text x="10%" y="75%" text-anchor="middle" fill="white" dy="2.5%">2</text>
-			<circle cx="40%" cy="75%" r="5%" fill="teal" />
-			<text x="40%" y="75%" text-anchor="middle" fill="white" dy="2.5%">5</text>
-		</svg>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/41.txt',id:'prevtonext'},{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

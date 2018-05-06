@@ -14,7 +14,7 @@
 			<img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0101.jpg" />
 			<p><span class="w3-text-red">特别说明</span>：上图出处为 <a style="overflow:hidden;text-overflow:ellipsis" target="_blank" class="w3-link" href="https://apereo.github.io/cas/5.2.x/protocol/CAS-Protocol.html">https://apereo.github.io/cas/5.2.x/protocol/CAS-Protocol.html</a></p>
 		</div>
-		<div><p>可见<samp>，</samp>官网给出了 3 种场景下的 Web 流程时序图<samp>，</samp>即 <span class="w3-text-light-green">First Access</span> 场景、<span class="w3-text-light-green">Second Access To Same Application</span> 场景以及<span class="w3-text-light-green">First Access To Second Application</span> 场景。我们以 <span class="w3-text-light-green">First Access</span> 场景为例进行源码调试。</p></div>
+		<div><p>可见<samp>，</samp>官网给出了 3 种场景下的 Web 流程时序图<samp>，</samp>即 <span class="w3-text-light-green">First Access</span> 场景、<span class="w3-text-light-green">Second Access To Same Application</span> 场景以及 <span class="w3-text-light-green">First Access To Second Application</span> 场景。我们以 <span class="w3-text-light-green">First Access</span> 场景为例进行源码调试。</p></div>
 		<div><p>记录一下用以调试的工程结构图：</p></div>
 		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0102.jpg" /></div>
 		<div><p>简述一下<samp>，</samp>app<span class="w3-text-red">1</span>、app<span class="w3-text-red">2</span> 为两个独立的 Web 应用且均引入了 cas-client-core-3.5.0.jar 文件<samp>，</samp>即 Web 应用内嵌入了 CAS Client 端。cas-server、cas-server-core 以及 cas-server-webapp 构成了 CAS Server 端（导入的工程源码为 <a target="_blank" class="w3-link" href="https://github.com/apereo/cas/releases/download/v3.5.2/cas-server-3.5.2-release.zip">cas-server-3.5.2-release.zip</a>）。</p></div>
@@ -189,7 +189,7 @@
 		<div><p>原因是<samp>，</samp>在默认配置下<samp>，</samp>ST 的失效策略时长为 10 秒<samp>，</samp>当 CAS Client 回传 ST 校验时因 ST 超时抛异常：</p></div>
 		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0125.jpg" /></div>
 		<div><p style="margin:7.5px 0"></p></div>
-		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/05/0126.jpg" /></div>
+		<div><img class="w3-width" alt="Oops" src="http://www.wailian.work/images/2018/05/06/0126.jpg" /></div>
 		<div><p>最后总结<samp>，</samp>官网给出了 3 种场景下的 Web 流程时序图<samp>，</samp>博主只整理出了第一种场景下的源码大致实现原理<samp>，</samp>剩余的两种场景以时序图为基础分析起来也相对简单<samp>，</samp>在此不赘述。SSO CAS 源码实现牵扯太多细枝末节<samp>，</samp>适当的时间再整理吧。</p></div>
 	</section>
 </article>
