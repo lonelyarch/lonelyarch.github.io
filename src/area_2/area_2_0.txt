@@ -1,4 +1,16 @@
 <article>
+	<div><p><strong>SSO 单点登录系列：cas-5.2.4 源码编译（04）</strong></p><p class="w3-right">2018-04-16</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在演示 SSO CAS 单点登录的基本功能、分析 CAS 源码实现原理时<samp>，</samp>CAS Server 端使用的是 cas-server-3.5.2 较旧的版本<samp>，</samp>新版本内容太多<samp>，</samp>过于眼花缭乱。在初步理解 SSO CAS 核心实现之后<samp>，</samp>现部署一下最新版本的 CAS Server<samp>，</samp>目的主要是记录一下 <a target="_blank" class="w3-link" href="https://github.com/apereo/cas/releases">cas-5.2.4</a> 源码的编译过程<samp>，</samp>限于网速<samp>，</samp>该过程十分痛苦。</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单说明一下<samp>，</samp>cas-5.2.4 源码编译用到了 gradle 构建工具<samp>，</samp>有关 gradle 的安装、使用等请参考 <a target="_blank" class="w3-link" href="https://gradle.org/">https://gradle.org</a> 官网指南。</p>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/62.txt',id:'prevtonext'},{url:'src/area_2/articles/2018/04/03/03.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>SSO 单点登录系列：Cookie 属性之 Secure 的作用（03）</strong></p><p class="w3-right">2018-04-15</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -100,16 +112,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/53.txt',id:'prevtonext'},{url:'src/area_2/articles/0054/0054.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>SpringMVC 系列：模拟 SpringMVC 中的过滤器处理流程（08）</strong></p><p class="w3-right">2018-03-17</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 HTML 中的 form 表单只支持 GET、POST 请求<samp>，</samp>为了使基于 SpringMVC 的 Web 应用支持 PUT、DELETE 请求<samp>，</samp>我们可以在 web.xml 文件中添加 HiddenHttpMethodFilter 达到该目的。在默认配置下<samp>，</samp>当我们发起的请求包含中文时<samp>，</samp>后台处理该请求时可能会有乱码产生<samp>，</samp>解决该问题的办法通常也是在 web.xml 文件中添加 CharacterEncodingFilter 。</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么 Web 应用中的过滤器是如何工作的呢？现简单模拟一下 Web 应用中过滤器的大致处理流程以及基于责任链模式（Chain of Responsibility Pattern）的过滤器实现。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/52.txt',id:'prevtonext'},{url:'src/area_2/articles/0053/0053.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

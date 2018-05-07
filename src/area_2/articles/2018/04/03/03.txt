@@ -1,0 +1,42 @@
+<article>
+	<section>
+		<div><p><strong>SSO 单点登录系列：cas-5.2.4 源码编译（04）</strong></p><p class="w3-right w3-margin-0">2018-04-16</p></div>
+		<div style="clear: both;"></div>
+		<div><hr style="margin-top: 0;"></div>
+		<div class="w3-container w3-light-gray">
+			<p><strong>前言：</strong></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在演示 SSO CAS 单点登录的基本功能、分析 CAS 源码实现原理时<samp>，</samp>CAS Server 端使用的是 cas-server-3.5.2 较旧的版本<samp>，</samp>新版本内容太多<samp>，</samp>过于眼花缭乱。在初步理解 SSO CAS 核心实现之后<samp>，</samp>现部署一下最新版本的 CAS Server<samp>，</samp>目的主要是记录一下 <a target="_blank" class="w3-link" href="https://github.com/apereo/cas/releases">cas-5.2.4</a> 源码的编译过程<samp>，</samp>限于网速<samp>，</samp>该过程十分痛苦。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单说明一下<samp>，</samp>cas-5.2.4 源码编译用到了 gradle 构建工具<samp>，</samp>有关 gradle 的安装、使用等请参考 <a target="_blank" class="w3-link" href="https://gradle.org/">https://gradle.org</a> 官网指南。</p>
+		</div>
+	</section>
+	<section>
+		<div><p>1. 解压 cas-5.2.4.zip 文件<samp>，</samp>在 DOS 窗口下 cd 到 ..\cas-5.2.4\webapp\cas-server-webapp 目录：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/01.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/02.jpg" /></div>
+		<div><p>2. 执行 gradle assemble 命令：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/03.jpg" /></div>
+		<div><p>可以看到<samp>，</samp>执行 gradle assemble 命令之后构建失败<samp>，</samp>根据错误提示信息<samp>，</samp>我们打开 cas-5.2.4 根目录下的 build.gradle 文件并对其做适当修改：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/04.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/05.jpg" /></div>
+		<div><p>3. 执行 gradle assemble 命令：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/06.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/07.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><p>错误原因是将 jre 中的 rt.jar 文件替换成了自编译的 rt_debug.jar 文件<samp>，</samp>解决办法是使 rt_debug.jar 失效：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/08.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/09.jpg" /></div>
+		<div><p>4. 执行 gradle assemble 命令：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/10.jpg" /></div>
+		<div><p>...</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/11.jpg" /></div>
+		<div><p style="margin:7.5px 0"></p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/12.jpg" /></div>
+		<div><p>在 <span class="w3-text-light-green">BUILD SUCCESSFUL</span> 之前<samp>，</samp>还出现了多次因从远程仓库下载依赖 jar 文件超时引起的错误<samp>，</samp>解决办法是根据 jar 文件名称 google 出可用远程仓库地址<samp>，</samp>再将其添加到 cas-5.2.4 根目录下的 build.gradle 文件中<samp>，</samp>如下所示：</p></div>
+		<div><img class="w3-width" alt="Oops" src="src/area_2/articles/2018/04/03/images/13.jpg" /></div>
+		<div><p>据图可知<samp>，</samp>最后一次成功执行 gradle assemble 命令用时 47m 23s<samp>，</samp>这还不算之前多次试错过程用时<samp>，</samp>总之<samp>，</samp>整个编译过程是相当之漫长<samp>，</samp>几乎用在了依赖 jar 文件的下载（当然<samp>，</samp>如果国内存在可用的镜像仓库站点会更好）。</p></div>
+	</section>
+</article>

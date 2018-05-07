@@ -1,6 +1,19 @@
 <div class="w3-custom-timeline">
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
+			<h4>2018.04.16</h4>
+			<p><strong>SSO 单点登录系列：cas-5.2.4 源码编译（04）</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>前言：</strong></p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在演示 SSO CAS 单点登录的基本功能、分析 CAS 源码实现原理时<samp>，</samp>CAS Server 端使用的是 cas-server-3.5.2 较旧的版本<samp>，</samp>新版本内容太多<samp>，</samp>过于眼花缭乱。在初步理解 SSO CAS 核心实现之后<samp>，</samp>现部署一下最新版本的 CAS Server<samp>，</samp>目的主要是记录一下 <a target="_blank" class="w3-link" href="https://github.com/apereo/cas/releases">cas-5.2.4</a> 源码的编译过程<samp>，</samp>限于网速<samp>，</samp>该过程十分痛苦。</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单说明一下<samp>，</samp>cas-5.2.4 源码编译用到了 gradle 构建工具<samp>，</samp>有关 gradle 的安装、使用等请参考 <a target="_blank" class="w3-link" href="https://gradle.org/">https://gradle.org</a> 官网指南。</p>
+			</div>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/2018/04/03/03.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
+	<div class="w3-custom-container w3-custom-right">
+		<div class="w3-custom-content">
 			<h4>2018.04.15</h4>
 			<p><strong>SSO 单点登录系列：Cookie 属性之 Secure 的作用（03）</strong></p>
 			<div class="w3-container w3-light-gray">

@@ -1,4 +1,15 @@
 <article>
+	<div><p><strong>Java 并发编程系列：synchronized 关键字之原理（03）</strong></p><p class="w3-right">2017-09-26</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在概述了 synchronized 关键字因何而来之后，身为一个不折不扣的程序员，为了知其然再知其所以然，是不是需要了解一下它的实现原理？</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/22.txt',id:'prevtonext'},{url:'src/area_2/articles/0023/0023.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：<span class="w3-text-light-green">转载</span> --- 克雷格.兰丁&amp;hagersten (CLH Lock)</strong></p><p class="w3-right">2017-11-12</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -106,15 +117,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/24.txt',id:'prevtonext'},{url:'src/area_2/articles/0025/0025.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：synchronized 关键字之基本应用示例（04）</strong></p><p class="w3-right">2017-09-27</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 synchronized 关键字的基本原理之后再给出基本应用示例是非常必要的，没有实践应用，知识点讲得天花乱坠也只能是纸上谈兵，身为一名合格的程序员的前提就是务实的精神常在。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/23.txt',id:'prevtonext'},{url:'src/area_2/articles/0024/0024.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
