@@ -1,0 +1,2 @@
+<a onclick="initl();fetch([{url:'src/area_2/prevtonext/62.txt',id:'prevtonext'},{url:'src/area_2/articles/2018/04/03/03.txt',id:'contents'}]);" class="w3-text-blue w3-right" style="text-decoration: none; cursor: pointer;">SSO 单点登录系列：cas-5.2.4 源码编译（04） »</a>
+<div style="clear: both;"></div>

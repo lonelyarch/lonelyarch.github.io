@@ -1,4 +1,18 @@
 <article>
+	<div><p><strong>网络协议</strong></p><p class="w3-right w3-margin-0">2019-08-31</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>基本内容：</strong></p>
+		<ol>
+			<li><p>什么是网络协议<samp>？</samp></p></li>
+			<li><p>TCP/IP</p></li>
+		</ol>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/63.txt',id:'prevtonext'},{url:'src/area_2/articles/2019/08/01/01.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>SSO 单点登录系列：cas-5.2.4 源码编译（04）</strong></p><p class="w3-right">2018-04-16</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -101,15 +115,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/54.txt',id:'prevtonext'},{url:'src/area_2/articles/0055/0055.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong><span class="w3-text-light-green">转载</span> --- 透彻的掌握 Spring 中 @transactional 的使用</strong></p><p class="w3-right">2018-03-20</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;事务管理是应用系统开发中必不可少的一部分。Spring 为事务管理提供了丰富的功能支持。Spring 事务管理分为编码式和声明式两种方式。编程式事务指的是通过编码方式实现事务<samp>；</samp>声明式事务基于 AOP<samp>，</samp>将具体业务逻辑与事务处理解耦。声明式事务管理使业务代码逻辑不受污染<samp>，</samp>因此在实际使用中声明式事务用的比较多。声明式事务有两种方式<samp>，</samp>一种是在配置文件（xml）中做相关的事务规则声明<samp>，</samp>另一种是基于 @Transactional 注解的方式。注释配置是目前流行的使用方式<samp>，</samp>因此本文将着重介绍基于 @Transactional 注解的事务管理。</p>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/53.txt',id:'prevtonext'},{url:'src/area_2/articles/0054/0054.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>

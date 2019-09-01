@@ -1,4 +1,18 @@
 <article>
+	<div><p><strong>Java 并发编程系列：ThreadLocal（13）</strong></p><p class="w3-right">2017-11-13</p></div>
+	<div style="clear: both;"></div>
+	<div class="w3-container w3-light-gray">
+		<p><strong>前言：</strong></p>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This class provides thread-local variables. These variables differ from their normal counterparts in that each thread that accesses one has its own, independently initialized copy of the variable.</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上述英文源自 JDK1.8 官方文档里对 ThreadLocal 的介绍，博主试图这样翻译：</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadLocal 类用以提供<span class="w3-text-light-green">线程-本地</span>变量，这些<span class="w3-text-light-green">线程-本地</span>变量与它们的常规副本的区别是，每一个线程都只能访问它自身拥有的<span class="w3-text-light-green">线程-本地</span>变量，且该<span class="w3-text-light-green">线程-本地</span>变量独立于变量的初始化拷贝。</P>
+		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然勉强翻译出了字面意思，但个人对英文源句还是不知所云，没关系，直接给出一个代码示例，通过观察执行结果，疑问将豁然开朗。</P>
+	</div>
+	<div><p>……</p></div>
+	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/33.txt',id:'prevtonext'},{url:'src/area_2/articles/0034/0034.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
+</article>
+<hr style="border: none; border-top: 1px dotted white;">
+<article>
 	<div><p><strong>Java 并发编程系列：synchronized 关键字之原理（03）</strong></p><p class="w3-right">2017-09-26</p></div>
 	<div style="clear: both;"></div>
 	<div class="w3-container w3-light-gray">
@@ -106,15 +120,4 @@
 	</div>
 	<div><p>……</p></div>
 	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/25.txt',id:'prevtonext'},{url:'src/area_2/articles/0026/0026.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
-</article>
-<hr style="border: none; border-top: 1px dotted white;">
-<article>
-	<div><p><strong>Java 并发编程系列：synchronized 关键字之死锁（05）</strong></p><p class="w3-right">2017-09-29</p></div>
-	<div style="clear: both;"></div>
-	<div class="w3-container w3-light-gray">
-		<p><strong>前言：</strong></p>
-		<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，使用 synchronized 关键字的目的是确保线程安全，但是，如果你的代码写得不完美，那么就有可能导致死锁。谈到死锁，博主最先想到的是经典的<span class="w3-text-red">哲学家就餐问题</span>，这个问题毕竟是在大学课本里出现过。</P>
-	</div>
-	<div><p>……</p></div>
-	<div><p style="text-align: right;"><a onclick="initl();fetch([{url:'src/area_2/prevtonext/24.txt',id:'prevtonext'},{url:'src/area_2/articles/0025/0025.txt',id:'contents'}]);" href="javascript:void(0);" class="w3-text-blue" style="text-decoration: none;">继续阅读 »</a></p></div>
 </article>
