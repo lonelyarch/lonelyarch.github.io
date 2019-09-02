@@ -1,4 +1,19 @@
 <div class="w3-custom-timeline">
+	<div class="w3-custom-container w3-custom-left">
+		<div class="w3-custom-content">
+			<h4>2019.08.31</h4>
+			<p><strong>网络协议</strong></p>
+			<div class="w3-container w3-light-gray">
+				<p><strong>基本内容：</strong></p>
+				<ol>
+					<li><p>什么是网络协议<samp>？</samp></p></li>
+					<li><p>TCP/IP</p></li>
+				</ol>
+			</div>
+			<p class="w3-center">……</p>
+			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/2019/08/01/01.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
+		</div>
+	</div>
 	<div class="w3-custom-container w3-custom-right">
 		<div class="w3-custom-content">
 			<h4>2018.04.16</h4>
@@ -8,7 +23,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在演示 SSO CAS 单点登录的基本功能、分析 CAS 源码实现原理时<samp>，</samp>CAS Server 端使用的是 cas-server-3.5.2 较旧的版本<samp>，</samp>新版本内容太多<samp>，</samp>过于眼花缭乱。在初步理解 SSO CAS 核心实现之后<samp>，</samp>现部署一下最新版本的 CAS Server<samp>，</samp>目的主要是记录一下 <a target="_blank" class="w3-link" href="https://github.com/apereo/cas/releases">cas-5.2.4</a> 源码的编译过程<samp>，</samp>限于网速<samp>，</samp>该过程十分痛苦。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单说明一下<samp>，</samp>cas-5.2.4 源码编译用到了 gradle 构建工具<samp>，</samp>有关 gradle 的安装、使用等请参考 <a target="_blank" class="w3-link" href="https://gradle.org/">https://gradle.org</a> 官网指南。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/2018/04/03/03.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -21,7 +36,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分析 SSO CAS 源码实现时遇到 cookie.setSecure(<span class="w3-text-red">true</span>)<samp>，</samp>现根据 <a target="_blank" class="w3-link" href="https://developer.mozilla.org/en-US/">MDN web docs</a> 文档中对 Secure 属性的描述实际演示一下它的作用。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MDN web docs 文档中对 Secure 属性的描述：A secure cookie will only be sent to the server when a request is made using SSL and the HTTPS protocol. <a target="_blank" class="w3-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">more</a></p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/2018/04/02/02.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -33,7 +48,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在演示过 SSO 单点登录的基本功能之后<samp>，</samp>再根据 CAS 的样例工程 cas-server-3.5.2、cas-client-3.5.0 探究一下其内部实现原理。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/2018/04/01/01.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -45,7 +60,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在之前的工作中<samp>，</samp>本人有参与到 SSO 单点登录的相关开发<samp>，</samp>主要是在 CAS（Central Authentication Service）开源框架的基础上将 SSO 客户端内嵌入 Web 应用以实现访问 SSO Server 的目的。现简要整理一下涉及 CAS 开源框架的个别知识点<samp>，</samp>也算是工作经验总结。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0060/0060.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -58,7 +73,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查阅文档可知<samp>，</samp>Tomcat 8.0 支持 3 种运行模式<samp>，</samp>即 BIO 模式、NIO 模式以及 APR 模式。前两种模式所使用的技术相对比较熟悉<samp>，</samp>即阻塞式 IO 和非阻塞式 IO<samp>，</samp>至于 APR 模式的详细信息请参阅 <a target="_blank" class="w3-link" href="http://tomcat.apache.org/tomcat-8.0-doc/apr.html">Apache Portable Runtime (APR) based Native library for Tomcat</a> 文档。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了探究 Tomcat 8.0 源码中 NIO 模式的部分处理细节<samp>，</samp>现将 HttpServer 改造为 NIO 模式下的技术实现。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0059/0059.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -71,7 +86,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了提升 HttpServer 的并发处理能力<samp>，</samp>现添加线程池。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Tomcat 8.0 的源码中<samp>，</samp>其内部是实现了 ThreadPoolExecutor 类并以此创建了 worker 线程池<samp>，</samp>但这也只是在 JDK 提供的 ThreadPoolExecutor 类的基础上进行的简单封装。我们直接使用 JDK 的 ThreadPoolExecutor 类创建线程池即可。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0058/0058.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -83,7 +98,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以 GET 方式发起请求时<samp>，</samp>请求参数通常会拼在 URL 地址内<samp>，</samp>获取参数也比较简单<samp>，</samp>现重点关注如何获取表单数据即 POST 请求参数。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0057/0057.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -96,7 +111,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了能够更加透彻地理解 Java Web 服务器的工作原理<samp>，</samp>个人打算基于 JDK1.8 实现一个简单的 HttpServer<samp>，</samp>本着实践出真知的信念不断 coding<samp>，</samp>永无止境。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：先以最简单、最熟悉的方式入手<samp>，</samp>然后循序渐进地自我完善。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0056/0056.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -109,7 +124,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat 是一个免费且开放源码的 Web 应用服务器<samp>，</samp>主要用以处理 JSP 和 Servlet<samp>，</samp>也可以处理诸如 HTML 等静态资源<samp>，</samp>但性能不比 Apache 或 Nginx 服务器。现简单介绍一下 Tomcat 8.0 之工作原理。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：在理解 Tomcat 8.0 之工作原理之前<samp>，</samp>最好对 Java 语言的线程池（ThreadPoolExecutor）的实现原理有清晰的认识<samp>，</samp>在此基础上再去理解 Tomcat 8.0 之工作原理将变得轻车熟路。对 ThreadPoolExecutor 比较陌生的童鞋请翻看博主之前贴出的文章。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0055/0055.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -121,7 +136,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;事务管理是应用系统开发中必不可少的一部分。Spring 为事务管理提供了丰富的功能支持。Spring 事务管理分为编码式和声明式两种方式。编程式事务指的是通过编码方式实现事务<samp>；</samp>声明式事务基于 AOP<samp>，</samp>将具体业务逻辑与事务处理解耦。声明式事务管理使业务代码逻辑不受污染<samp>，</samp>因此在实际使用中声明式事务用的比较多。声明式事务有两种方式<samp>，</samp>一种是在配置文件（xml）中做相关的事务规则声明<samp>，</samp>另一种是基于 @Transactional 注解的方式。注释配置是目前流行的使用方式<samp>，</samp>因此本文将着重介绍基于 @Transactional 注解的事务管理。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0054/0054.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -134,7 +149,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 HTML 中的 form 表单只支持 GET、POST 请求<samp>，</samp>为了使基于 SpringMVC 的 Web 应用支持 PUT、DELETE 请求<samp>，</samp>我们可以在 web.xml 文件中添加 HiddenHttpMethodFilter 达到该目的。在默认配置下<samp>，</samp>当我们发起的请求包含中文时<samp>，</samp>后台处理该请求时可能会有乱码产生<samp>，</samp>解决该问题的办法通常也是在 web.xml 文件中添加 CharacterEncodingFilter 。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么 Web 应用中的过滤器是如何工作的呢？现简单模拟一下 Web 应用中过滤器的大致处理流程以及基于责任链模式（Chain of Responsibility Pattern）的过滤器实现。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0053/0053.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -146,7 +161,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 SpringMVC 框架中存在着诸多设计模式<samp>，</samp>例如<samp>，</samp>单例模式、适配器模式、责任链模式以及访问者模式等<samp>，</samp>当然<samp>，</samp>MVC 模式是显而易见的。因阅读了处理 Java class 文件的源码时遭遇访问者模式<samp>，</samp>现再次整理一下该知识点。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0052/0052.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -158,7 +173,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分析 SpringMVC 工作原理时遇到了 ClassReader 类<samp>，</samp>根据 Spring <a target="_blank" class="w3-link" href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/javadoc-api/org/springframework/asm/ClassReader.html">API</a> 文档可知<samp>，</samp>该类是 Java class 文件的解析器<samp>，</samp>即读取字节码。除了 ClassReader 类之外<samp>，</samp>在 Spring 核心 jar 文件的 org.springframework.asm 包路径下<samp>，</samp>还涉及了很多用以对字节码进行各种不同处理的类<samp>，</samp>例如<samp>，</samp>ClassVisitor、ClassWriter 等<samp>，</samp>现简要整理一下部分类的用法。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0051/0051.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -174,7 +189,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 《<a target="_blank" class="w3-link" href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">Architectural Styles and the Design of Network-based Software Architectures</a>》<samp>；</samp></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 《<a target="_blank" class="w3-link" href="https://yuedu.baidu.com/ebook/780324fbf121dd36a32d8269">架构风格与基于网络应用软件的架构设计</a>》<samp>，</samp>Roy Fielding 博士论文中文版。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0050/0050.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -186,7 +201,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数绑定<samp>，</samp>简而言之就是将客户端发起请求时所携带的某些数据映射到对应控制器的具体方法参数上的操作。例如<samp>，</samp>思考一下用户通过注册页面将姓名、密码等数据提交至服务器端的业务场景<samp>，</samp>这些姓名、密码等数据随 HTTP 请求到达服务器端之后<samp>，</samp>它们会由对应控制器的注册方法来接收这些数据<samp>，</samp>那么<samp>，</samp>请求数据与方法入参之间的映射就是参数绑定。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0049/0049.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -204,7 +219,7 @@
     }</pre>
 				<div><p>在 <span class="w3-text-light-green">value</span> 值没有指定的情况下<samp>，</samp>控制器 UserController 的名称是怎样生成的？它会是什么？</p></div>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0048/0048.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -216,7 +231,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单搭建了 HelloWorld 应用之后<samp>，</samp>为了更深入的了解 SpringMVC 中的 Model、View 以及 Controller 之间的运行机制<samp>，</samp>我们有必要探知它内部的实现原理<samp>，</samp>这在处理工作中遇到的问题时会很有帮助。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0047/0047.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -229,7 +244,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信任何开发过 Java Web 应用的童鞋对 SpringMVC 框架一定不陌生<samp>，</samp>至于该框架的优点也是显而易见<samp>，</samp>在此不赘述<samp>，</samp>如果你曾经使用了 Servlet 原生技术实现过类似的 Web 应用或 Demo<samp>，</samp>两相对比之后<samp>，</samp>那么你可能会对 SpringMVC 框架更加情有独钟。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主在最初参加工作的时候<samp>，</samp>准确地说<samp>，</samp>是在参加工作之前的入职培训期间<samp>，</samp>就已经接触过 Spring<samp>，</samp>当时还十分流行 SSH<samp>，</samp>那个时候的 SpringMVC 貌似还不是很出名。在工作期间<samp>，</samp>个人也碰到过使用 SpringMVC 框架实现 Web 应用的项目<samp>，</samp>现将曾经整理过的相关笔记贴出来<samp>，</samp>也算是对 SpringMVC 框架知识点的一次回顾。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0046/0046.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -242,7 +257,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在初探负载均衡技术之后<samp>，</samp>逐步意识到该技术涉及知识点之深之广<samp>，</samp>单从类别上可分为<span class="w3-text-light-green">硬件</span>负载均衡和<span class="w3-text-light-green">软件</span>负载均衡<samp>，</samp>而基于<span class="w3-text-light-green">软件</span>层面的负载均衡技术的实现方式又可分为 HTTP 重定向负载均衡、DNS 域名解析负载均衡、反向代理负载均衡、IP 负载均衡以及数据链路层负载均衡（LVS 是数据链路层负载均衡开源产品<samp>，</samp>有兴趣的童鞋<a rel="noopener noreferrer nofollow" target="_blank" class="w3-link" href="http://www.linuxvirtualserver.org/zh/lvs1.html">戳这里</a>）。</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文不打算把负载均衡技术所涉及的各方面都整理一遍<samp>，</samp>因为时间宝贵<samp>，</samp>更是囿于个人水平和知识储备<samp>，</samp>现简要整理一下<span class="w3-text-light-green">数据链路层负载均衡</span>的相关知识点<samp>，</samp>以加深理解。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0045/0045.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -256,7 +271,7 @@
 					(function(){var rows=5;var cols=5;var node=document.getElementsByClassName("w3-example-photo-gallery-03-03_0009")[0].children[0];var arrp=[];var arrb=[];var urls=["","","","","","","url(https://www.wailian.work/images/2018/03/16/0001.jpg)","","url(https://www.wailian.work/images/2018/03/16/0002.jpg)","","","","","","","","url(https://www.wailian.work/images/2018/03/16/0003.jpg)","","url(https://www.wailian.work/images/2018/03/16/0004.jpg)","","","","","",""];for(let row=1;row<=rows;row++){arrp[row-1]=[];arrb[row-1]=[];for(let col=1;col<=cols;col++){var part=document.createElement("div");part.setAttribute("class","part part-"+row+"-"+col+" show-item");var part_item=document.createElement("div");part_item.setAttribute("class","part-item");part_item.style.backgroundImage=urls[(row-1)*rows+(col-1)];var part_wrap=document.createElement("div");part_wrap.setAttribute("class","part-wrap");var part_wrap_back=document.createElement("div");part_wrap_back.setAttribute("class","part-wrap-back");part.appendChild(part_item);part.appendChild(part_wrap);part_wrap.appendChild(part_wrap_back);node.appendChild(part);arrp[row-1][col-1]=part;arrb[row-1][col-1]=part_wrap_back;part_item.addEventListener("click",function(){hide(row,col);load(row,col);});part_wrap.addEventListener("click",function(){show(row,col);});}}function hide(row,col){if(row>rows||col>cols||row<=0||col<=0)return;if(arrp[row-1][col-1].className.indexOf("show-item")==-1)return;arrp[row-1][col-1].className=arrp[row-1][col-1].className.replace(" show-item","");setTimeout(function(){hide(row+1,col);hide(row-1,col);hide(row,col+1);hide(row,col-1);},100);}function show(row,col){if(row>rows||col>cols||row<=0||col<=0)return;if(arrp[row-1][col-1].className.indexOf("show-item")>-1)return;arrp[row-1][col-1].className+=" show-item";setTimeout(function(){show(row+1,col);show(row-1,col);show(row,col+1);show(row,col-1);},100);}function load(row,col){for(let i=0;i<rows;i++){for(let j=0;j<cols;j++){arrb[i][j].style.backgroundImage=urls[(row-1)*rows+(col-1)];}}}})();
 				</script>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_3/articles/0009/0009.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -268,7 +283,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对<samp>“负载均衡（Load Balance）”</samp>这种技术早有所闻<samp>，</samp>但是<samp>，</samp>只因在实际工作中从来就没有接触过与之有关的项目<samp>，</samp>所以<samp>，</samp>个人对这项技术的认知也只是停留在略有所闻的层面<samp>，</samp>最近在阅读 Web 应用服务器集群的可伸缩性设计的某些文章时遭遇了<samp>“负载均衡（Load Balance）”</samp>的概念<samp>，</samp>通过查阅资料对这项技术有了更进一步的了解<samp>，</samp>现整理之。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0044/0044.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -280,7 +295,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy-On-Write 简称 COW<samp>，</samp>是一种用于程序设计中的优化策略。它的基本思路是<samp>，</samp>从一开始大家都在共享同一个内容<samp>，</samp>当某个人想要修改这个内容的时候<samp>，</samp>才会真正把内容 Copy 出去形成一个新的内容然后再改<samp>，</samp>这是一种<span class="w3-text-light-green">延时懒惰策略</span>。从 JDK1.5 开始<samp>，</samp>Java 并发包里提供了两个使用 CopyOnWrite 机制实现的并发容器<samp>，</samp>它们是 CopyOnWriteArrayList 和 CopyOnWriteArraySet。CopyOnWrite 容器非常有用<samp>，</samp>可以在非常多的并发场景中使用到。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0043/0043.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -309,7 +324,7 @@
 					<text x="40%" y="75%" text-anchor="middle" fill="white" dy="2.5%">5</text>
 				</svg>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0042/0042.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -321,7 +336,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 ThreadPoolExecutor 的基本应用、阻塞队列以及饱和策略之后，现以源码为切入点再着重分析一下此线程池的实现原理，尽可能达到知其然知其所以然。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0041/0041.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -330,7 +345,7 @@
 			<h4>2018.01.01</h4>
 			<p><strong>个人博客改版</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当新年的钟声敲响的时候，屋外的世界是一片欢腾，大街上张灯结彩，人头攒动，快乐的氛围也应该是四处洋溢的，可是，博主却依然坚持了老习惯，深居简出，守在家里写代码，这大概就是程序员的宿命。</p>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_3/articles/0003/0003.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -342,7 +357,7 @@
 				<p><strong>前言：</strong></p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadPoolExecutor，顾名思义，简单理解为，这是一个用以管理、维护线程的线程池，它与数据库连接池的应用可谓异曲同工，虽然两者管理、维护的对象不同，但核心思想是一致的，即重复使用现有对象以降低因创建、销毁对象等操作所占用的系统资源，从而提升业务处理能力。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0040/0040.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -363,7 +378,7 @@
 					})();
 				</script>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0039/0039.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -376,7 +391,7 @@
 					<a>首页</a><a>关于</a><a>职业提升</a><a>生活随笔</a>
 				</div>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0038/0038.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -389,7 +404,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在阅读过同行从业者写的关于 AQS（AbstractQueuedSynchronizer）知识点的博文之后，根据理论加以实践是必不可少的，还是那句话：<span class="w3-text-light-green">纸上得来终觉浅，绝知此事要躬行</span>。</P>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇文章主要是借助 eclipse 开发工具对 JDK1.8 源码之 ReentrantLock 进行调试，以理解基于 AQS 的独占功能的实现过程。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0037/0037.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -401,7 +416,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过本系列的上半部分 <a target="_blank" class="w3-link" href="http://www.infoq.com/cn/articles/jdk1.8-abstractqueuedsynchronizer">JDK1.8 AbstractQueuedSynchronizer 的实现分析（上）</a>的解读，相信很多读者对 AbstractQueuedSynchronizer 的独占功能已了然于胸，趁热打铁，这次我们通过对另一个工具类：CountDownLatch 的分析来解读 AQS 的另外一个功能：共享功能。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0036/0036.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -413,7 +428,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;众所周知，ReentrantLock 的功能是实现代码段的并发访问控制，也就是通常意义上所说的锁，在没有看到 AbstractQueuedSynchronizer 之前，你可能会以为它的实现是通过类似于 synchronized，通过给对象加锁来实现的。但事实上，它只是一个工具类，仅是作为一个普普通通的类就完成了代码块的并发访问控制，这就让人疑惑它怎么实现的代码块的并发访问控制的。文中将以 AQS 代替 AbstractQueuedSynchronizer 。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0035/0035.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -428,7 +443,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ThreadLocal 类用以提供<span class="w3-text-light-green">线程-本地</span>变量，这些<span class="w3-text-light-green">线程-本地</span>变量与它们的常规副本的区别是，每一个线程都只能访问它自身拥有的<span class="w3-text-light-green">线程-本地</span>变量，且该<span class="w3-text-light-green">线程-本地</span>变量独立于变量的初始化拷贝。</P>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然勉强翻译出了字面意思，但个人对英文源句还是不知所云，没关系，直接给出一个代码示例，通过观察执行结果，疑问将豁然开朗。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0034/0034.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -441,7 +456,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLH lock is Craig, Landin, and Hagersten (CLH) locks, CLH lock is <span class="w3-text-light-green">a spin lock</span>, can ensure no hunger, provide fairness <span class="w3-text-light-green">first come first service</span>.</P>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The CLH lock is a scalable, high performance, fairness and spin lock <span class="w3-text-light-green">based on the list</span>, the application thread spin only on a local variable, it constantly polling the precursor state, if it is found that the pre release lock end spin.</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0033/0033.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -453,7 +468,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ConcurrentHashMap 初探之后遗留了很多问题，深感 JDK1.8 版本的 ConcurrentHashMap 实现之复杂性，现简要整理一下 CAS（Compare And Swap，即比较并交换）的相关知识点。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0032/0032.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -467,7 +482,7 @@
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... If a thread-safe highly-concurrent implementation is desired, then it is recommended to <span class="w3-text-light-green">use ConcurrentHashMap in place of Hashtable</span>.</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实话实说，虽然 HashMap 已烂熟于心，但到目前为止，个人对 <span class="w3-text-light-green">ConcurrentHashMap</span> 这个在 Java 并发编程的世界里早就声名远播的类还是感到十分陌生，这是很难为情的事，为了不偏科，现亡羊补牢。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0031/0031.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -480,7 +495,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在整理 ConcurrentHashMap 相关知识点时的基本思路是，先列出 HashMap 在并发环境里存在的问题，再引出 ConcurrentHashMap，以不失文章的完整性。原本打算抛出 HashMap 死循环（infinite loop）这个经典问题，但几经折腾之后才意识到，该问题多存在于 JDK1.7 环境，在 JDK1.8 环境下却难以产生，这是为什么？现给出 JDK1.7、JDK1.8 里 HashMap 相关源码的分析过程。</P>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别说明：为了维持 <span class="w3-text-gray">Java 并发编程系列</span>的连续性，于是才把该篇文章归在了 <span class="w3-text-gray">Java 并发编程系列</span>。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0030/0030.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -492,7 +507,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，以 volatile 关键字修饰的变量具有两种特性：1.变量对所有线程可见（<span style="color:#8bc34a">可见性</span>）。2.禁止指令重排序优化（<span style="color:#8bc34a">有序性</span>）。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0029/0029.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -504,7 +519,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是 <span style="color:#8bc34a">hsdis(HotSpot Disassembler)</span>？顾名思义，它是个反汇编神器，有想目睹 Java 代码编译之后的汇编模样，那么这款神器是你不可错过的。博主原本是打算从 CSDN 上下载一个 <span style="color:#8bc34a">hsdis-amd64.dll</span>，无奈币值不够，只能自力更生。网上有很多文章也介绍了编译 <span style="color:#8bc34a">hsdis</span> 的所需步骤，但基本都是文字描述，看起来比较费劲。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0028/0028.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -523,7 +538,7 @@
 &nbsp;&nbsp;}</code></pre>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这就是说，在调用 Object 类中的 wait() 方法的时候，因为中断和伪唤醒（spurious wakeup）可能会发生，所以应该将 wait() 方法置于 while 循环内执行。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0027/0027.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -535,7 +550,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是重入锁？简而言之，当前线程持有了一个锁对象并且需要再次持有该锁对象，即重复加锁。<span style="color:#8bc34a">ReentrantLock</span> 类是 JDK 实现的重入锁，更加确切地说，该类是实现了公平或非公平策略的可重复加锁机制。对 <span style="color:#8bc34a">ReentrantLock</span> 类的深究不在该篇文章的撰写之内，为学习之目的，自造一个简易的轮子。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0026/0026.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -547,7 +562,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Java 编程语言里，使用 synchronized 关键字的目的是确保线程安全，但是，如果你的代码写得不完美，那么就有可能导致死锁。谈到死锁，博主最先想到的是经典的<span class="w3-text-red">哲学家就餐问题</span>，这个问题毕竟是在大学课本里出现过。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0025/0025.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -559,7 +574,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在简单了解 synchronized 关键字的基本原理之后再给出基本应用示例是非常必要的，没有实践应用，知识点讲得天花乱坠也只能是纸上谈兵，身为一名合格的程序员的前提就是务实的精神常在。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0024/0024.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -571,7 +586,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在概述了 synchronized 关键字因何而来之后，身为一个不折不扣的程序员，为了知其然再知其所以然，是不是需要了解一下它的实现原理？</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0023/0023.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -583,7 +598,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谈及并发编程，进程、线程是不可回避的两点，简而言之，它们是并发编程里的两个基本执行单元，都是为了提升系统的处理能力和资源使用率而存在。在 Java 并发编程里，我们主要涉及线程。有想了解进程、线程详情的童鞋<a target="_blank" class="w3-link" href="https://docs.oracle.com/javase/tutorial/essential/concurrency/procthread.html">戳这里</a>。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0022/0022.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -596,7 +611,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;身为一个以 Java 为主要开发语言的程序员，工作几年了也没有对并发编程这个知识块做过系统性地总结，略表内疚，对不常用的东西要么束之高阁、要么弃之如敝屣，这种处事待物的态度早就习惯了，也就不会过分感觉有所失。从今天起，博主会对 Java 并发编程这个知识块做个相对实用的总结，说服自己的理由是：对并发编程不欣赏的程序员不是个好程序员。</p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言归正传。虽然网上有很多优秀的同行从业者写了很多有关 Java 并发编程这个知识块的优秀博文，但是，读别人的文章总感觉对事物的认知不够深刻，还是那句话，纸上得来终觉浅，绝知此事要躬行。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0021/0021.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -605,7 +620,7 @@
 			<h4>2017.06.04</h4>
 			<p><strong>免费视频短片</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;真诚推荐一款相当有奉献精神的站点 <a target="_blank" href="http://vidlery.com/" class="w3-text-blue" style="text-decoration: none;">http://vidlery.com</a>，该站点提供了可用于页面背景的视频短片，并且它们均遵从 <strong>CC0 1.0</strong> 协议，将这些视频短片嵌入到你的博客主页之后，可以想像你的博客会是多么拉风。</p>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_3/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -614,7 +629,7 @@
 			<h4>2017.06.03</h4>
 			<p><strong>免费背景音乐</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请不要被这个标题唬住，这里不提供任何背景音乐，博主只能告诉你免费的东西哪里有，之所以打出<strong class="w3-opacity">免费背景音乐</strong>这个幌子，纯粹是因为它独特的文化魅力，任何事物只要和<strong class="w3-opacity">免费</strong>两个字有瓜葛，就有可能引起大家的共鸣，是不是？</p>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_3/articles/0001/0001.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -627,7 +642,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之前在整理 HashMap 相关知识点的时候，博主就曾碰到过<span class="w3-text-light-green">红黑树</span>，当时浮现在大脑里的树不仅有它，还有哈夫曼树、二叉查找树、B_树，甚至是苹果树，然而，在职场上几经摸爬滚打之后，博主已忘记了这些树原本的模样，真是岁月不饶人。</P>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现打算重温学生时代的记忆和印象，找回过去的那个懂得许多树的我，这么说还是比较浮夸的，从现实出发就是，在将要整理出 TreeMap 知识点的时候，博主又遭遇了 <span class="w3-text-light-green">A Red-Black tree</span>，实属缘分之不易。</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0020/0020.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -640,7 +655,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table and linked list implementation of the Map interface, with predictable iteration order. This implementation differs from HashMap in that it maintains a doubly-linked list running through all of its entries...</P>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于 Map 接口的哈希表和链表实现，具有可预测的迭代顺序，与 HashMap 的不同之处在于，它对所有的 entry 操作都是基于双向链表完成的（LinkedHashMap&lt;K,V&gt; extends <span class="w3-text-light-green">HashMap&lt;K,V&gt;</span> implements Map&lt;K,V&gt;）……</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0019/0019.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -653,7 +668,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在初探 HashMap 之后尚有很多遗留问题，例如，HashMap 大小为什么是 2 的 n 次方？HashMap 为什么会使用红黑树存储数据？HashMap 死循环是怎样造成的……</P>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因时间所限，博主挑了一个易于理解的问题简单回答一下，棘手的问题将在适当的时间再次整理。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0018/0018.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -666,7 +681,7 @@
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hash table based implementation of the Map interface. This implementation provides all of the optional map operations, and permits null values and the null key. (The HashMap class is roughly equivalent to Hashtable, except that it is unsynchronized and permits nulls.)...</P>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于哈希表的 Map 接口的实现，该实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了<span class="w3-text-light-green">不支持同步</span>和<span class="w3-text-light-green">允许使用 null 值</span>之外，HashMap 与 Hashtable 大致上是相同的。）……</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0017/0017.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -677,7 +692,7 @@
 			<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
 				<p><strong>注意：</strong>以下所有示例基于 <strong>display: grid</strong> 实现</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0016/0016.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -688,7 +703,7 @@
 			<div class="w3-container w3-blue" style="display:flex;justify-content:center;align-items:center;height:132px">
 				<p><strong>注意：</strong>以下所有示例基于 <strong>display: flex</strong> 实现</p>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0015/0015.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -724,7 +739,7 @@
 				<p><strong>前言：</strong></p>
 				<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相信经常使用 CSS3 的 <span class="w3-text-light-green">transform</span>、<span class="w3-text-light-green">transition</span> 以及 <span class="w3-text-light-green">animation</span> 属性实现各种动画效果的童鞋一定遇到过动画卡顿现象，博主曾在《如何实现栅栏式的相册？》一文中给予的示例就遭遇了又卡又顿的情况，现偶然读到一篇诠释这种卡顿现象的好文，受益之后推而广之。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0014/0014.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -738,7 +753,7 @@
 				<P style="overflow:inherit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" class="w3-link" href="http://taligarsiel.com/">塔利·加希尔</a>是以色列的一名开发人员。她在 2000 年开始从事网络开发工作，逐渐熟悉了 Netscape 的“邪恶”层模型。就像理查德·费曼 (Richard Feynmann) 一样，她极度热衷于探究事物的原理，因此开始深入了解浏览器的内部原理，并记录研究成果。塔利还发表过一篇<a target="_blank" class="w3-link" href="http://taligarsiel.com/ClientSidePerformance.html">关于客户端性能的简短指南</a>。</P>
 				<P style="overflow:inherit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;转载文章<a target="_blank" class="w3-link" href="https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/">《浏览器的工作原理：新式网络浏览器幕后揭秘》</a>，以博主目前在软件开发领域的水平以及个人眼光而言，这是一篇不可多得的深度好文。废话不多讲，时间很宝贵。最后也感谢该篇文章的译者：<a target="_blank" class="w3-link" href="https://twitter.com/_kosei_">@_kosei_</a>。均是素昧平生，只是感谢分享。</P>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0013/0013.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -776,7 +791,7 @@
 					</ul>
 				</div>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0012/0012.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -801,7 +816,7 @@
 					<a class="menu-item">热情</a>
 				</nav>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0011/0011.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -835,7 +850,7 @@
 					}
 				</script>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0010/0010.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -874,7 +889,7 @@
 					</ul>
 				</nav>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0009/0009.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -884,7 +899,7 @@
 			<p><strong>纯手工制作：法式马卡龙</strong></p>
 			<div><p>废话少说，直接给出示例，再逐步分解实现过程：</p></div>
 			<div class="w3-example-macarons-small"><div></div></div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0008/0008.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -902,7 +917,7 @@
 					<div class="w3-example-taichi-r-dot"></div>
 				</div>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0007/0007.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -958,7 +973,7 @@
 				});
 			</script>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0006/0006.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -978,7 +993,7 @@
 					<button class="w3-example-button-z" title="w3-example-button"></button>
 				</div>
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0005/0005.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -992,7 +1007,7 @@
 				<span style="position:absolute;top:0;left:0;width:100%;height:100%;background-color:#8bc34a;border-radius:50%"></span>
 				<hr style="position:absolute;top:50%;width:50%;margin:0" />
 			</div>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0004/0004.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -1005,7 +1020,7 @@
 				<img class="w3-width" alt="Oops" src="https://www.wailian.work/images/2018/01/26/0033.jpg" />
 			</div>
 			<p><strong>特别说明：</strong>该图出自 <a target="_blank" href="https://unsplash.com/" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">https://unsplash.com</a>，作者为<a style="background-color:black;color:white;text-decoration:none;padding:4px 6px;display:inline-block;border-radius:3px;" href="https://unsplash.com/@zanonluca?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Luca Zanon"><span style="display:inline-block;padding:2px 3px;"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:white;" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px;">Luca Zanon</span></a>，有想知悉 <strong>license</strong> 的童鞋<a target="_blank" href="https://unsplash.com/license" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>。因现实需要，博主对原图有裁剪、压缩。</p>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0003/0003.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -1014,7 +1029,7 @@
 			<h4>2016.09.14</h4>
 			<p><strong>Apache Tomcat 8 之源码调试续篇</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;步骤一、新建一个 Web 工程（Dynamic Web Project），在 src 目录下新建 HelloWorld.java 文件：</p>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0002/0002.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
@@ -1024,7 +1039,7 @@
 			<p><strong>Apache Tomcat 8 之源码编译、安装及调试</strong></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;步骤一、JDK、Ant 的安装请参考其他教程。本次 Tomcat 8.0.37 源码编译使用的 JDK、Ant 版本如下所示：</p>
 			<p><img class="w3-width" src="https://www.wailian.work/images/2018/01/23/0001.jpg" alt="Oops" /></p>
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……</p>
+			<p class="w3-center">……</p>
 			<p style="text-align: right;"><a onclick="fetch([{url:'src/area_2/articles/0001/0001.txt',id:'contents'}]);" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">继续阅读 »</a></p>
 		</div>
 	</div>
