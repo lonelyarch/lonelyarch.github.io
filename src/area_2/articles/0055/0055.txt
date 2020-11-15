@@ -34,7 +34,7 @@ public class <span class="w3-text-light-green">MyHttpServlet</span> extends <spa
 			HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("MyHttpServlet");
 		response.getWriter().write("MyHttpServlet:");
-		response.getWriter().write("https://lonelyrose.github.io/");
+		response.getWriter().write("https://lonelyarch.github.io/");
 	}
 
 	protected void doPost(HttpServletRequest request,
