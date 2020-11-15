@@ -47,7 +47,7 @@
 	</div>
 </div>
 <div class="w3-row">
-	<p style="margin: 16px 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主姓名，郭伟，2013 年毕业于西北大学计算机科学与技术专业，陕西省山阳县人。毕业至今已将近 5 年，太多的事情还没有做，宝贵的光阴就这么没了，蓦然回首，不知不觉就过了许多个春夏秋冬，不禁感慨时间过得快，岁月匆匆如流水。</p>
+	<p style="margin: 16px 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博主姓名，郭伟，2013 年毕业于西北大学计算机科学与技术专业，陕西省西安市人。毕业至今已将近 5 年，太多的事情还没有做，宝贵的光阴就这么没了，蓦然回首，不知不觉就过了许多个春夏秋冬，不禁感慨时间过得快，岁月匆匆如流水。</p>
 	<p style="margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时不我待，年华稍纵即逝。虽然曾经的生活趋于平淡，但这丝毫不会影响一个人对新生活的美好向往，珍惜当下的每时每刻，博主期待下一个 5 年的生活会多姿多彩。最后，有想了解博客起源的童鞋<a id="summ" class="w3-text-blue" style="text-decoration: none; cursor: pointer;">戳这里</a>，祝君生活快乐！</p>
 	<script>
 		var summ = document.getElementById("summ");
